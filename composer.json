@@ -31,8 +31,8 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "Acme\\SyliusExamplePlugin\\": "src/",
-            "Tests\\Acme\\SyliusExamplePlugin\\": "tests/"
+            "BitBag\\SyliusMolliePlugin\\": "src/",
+            "Tests\\BitBag\\SyliusMolliePlugin\\": "tests/"
         }
     },
     "autoload-dev": {

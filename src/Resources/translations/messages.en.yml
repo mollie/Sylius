@@ -1,0 +1,4 @@
+bitbag_sylius_mollie_plugin:
+    ui:
+        api_key: API Key
+        mollie_gateway_label: Mollie

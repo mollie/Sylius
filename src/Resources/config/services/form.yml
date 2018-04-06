@@ -1,0 +1,6 @@
+services:
+    bitbag_sylius_mollie_plugin.form.type.mollie_gateway_configuration:
+        class: BitBag\SyliusMolliePlugin\Form\Type\MollieGatewayConfigurationType
+        tags:
+            - { name: sylius.gateway_configuration_type, type: mollie, label: bitbag_sylius_mollie_plugin.ui.mollie_gateway_label }
+            - { name: form.type }

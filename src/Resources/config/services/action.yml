@@ -1,0 +1,22 @@
+services:
+    bitbag_sylius_mollie_plugin.action.capture:
+        class: BitBag\SyliusMolliePlugin\Action\CaptureAction
+        tags:
+            - { name: payum.action, factory: mollie, alias: payum.action.capture }
+
+    bitbag_sylius_mollie_plugin.action.notify:
+        class: BitBag\SyliusMolliePlugin\Action\NotifyAction
+        tags:
+            - { name: payum.action, factory: mollie, alias: payum.action.notify }
+
+    bitbag_sylius_mollie_plugin.action.status:
+        class: BitBag\SyliusMolliePlugin\Action\StatusAction
+        tags:
+            - { name: payum.action, factory: mollie, alias: payum.action.status }
+
+    bitbag_sylius_mollie_plugin.action.convert_payment:
+        class: BitBag\SyliusMolliePlugin\Action\ConvertPaymentAction
+        arguments:
+            - "@sylius.payment_description_provider"
+        tags:
+            - { name: payum.action, factory: mollie, alias: payum.action.convert_payment }

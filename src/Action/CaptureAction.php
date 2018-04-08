@@ -32,7 +32,7 @@ final class CaptureAction implements ActionInterface, ApiAwareInterface, Generic
     /**
      * @var \Mollie_API_Client
      */
-    private $api;
+    private $mollieApiClient;
 
     /**
      * @var GenericTokenFactoryInterface
@@ -42,13 +42,13 @@ final class CaptureAction implements ActionInterface, ApiAwareInterface, Generic
     /**
      * {@inheritDoc}
      */
-    public function setApi($api): void
+    public function setApi($mollieApiClient): void
     {
-        if (false === $api instanceof \Mollie_API_Client) {
+        if (false === $mollieApiClient instanceof \Mollie_API_Client) {
             throw new UnsupportedApiException('Not supported.Expected an instance of '. \Mollie_API_Client::class);
         }
 
-        $this->api = $api;
+        $this->mollieApiClient = $mollieApiClient;
     }
 
     /**
@@ -73,7 +73,7 @@ final class CaptureAction implements ActionInterface, ApiAwareInterface, Generic
         /** @var ArrayObject $details */
         $details = $request->getModel();
 
-        if (true === isset($details['status']) || true === isset($details['id'])) {
+        if (true === isset($details['id'])) {
             return;
         }
 
@@ -83,11 +83,11 @@ final class CaptureAction implements ActionInterface, ApiAwareInterface, Generic
         $notifyToken = $this->tokenFactory->createNotifyToken($token->getGatewayName(), $token->getDetails());
 
         $details['redirectUrl'] = $token->getTargetUrl();
-        $details['webhookUrl'] = $notifyToken->getTargetUrl();
+        $details['webhookUrl'] = str_replace('http://127.0.0.1:8000/', 'https://e820fac0.ngrok.io/', $notifyToken->getTargetUrl());
 
-        $payment = $this->api->payments->create($details->toUnsafeArray());
+        $payment = $this->mollieApiClient->payments->create($details->toUnsafeArray());
 
-        $details['status'] = $payment->status;
+        $details['id'] = $payment->id;
 
         throw new HttpPostRedirect($payment->getPaymentUrl());
     }

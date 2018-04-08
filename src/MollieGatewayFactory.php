@@ -19,6 +19,10 @@ final class MollieGatewayFactory extends GatewayFactory
 {
     const FACTORY_NAME = 'mollie';
 
+    const LOCALES_AVAILABLE = ['en_US', 'de_AT', 'de_CH', 'de_DE', 'es_ES', 'fr_BE', 'fr_FR', 'nl_BE', 'nl_NL'];
+
+    const CURRENCIES_AVAILABLE = ['EUR'];
+
     /**
      * {@inheritDoc}
      */
@@ -43,10 +47,12 @@ final class MollieGatewayFactory extends GatewayFactory
             $config['payum.api'] = function (ArrayObject $config) {
                 $config->validateNotEmpty($config['payum.required_options']);
 
-                $mollie = new \Mollie_API_Client();
-                $mollie->setApiKey($config['api_key']);
+                /** @var \Mollie_API_Client $mollieApiClient */
+                $mollieApiClient = $config['payum.http_client'];
 
-                return $mollie;
+                $mollieApiClient->setApiKey($config['api_key']);
+
+                return $mollieApiClient;
             };
         }
     }

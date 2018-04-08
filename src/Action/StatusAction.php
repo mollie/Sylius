@@ -28,18 +28,18 @@ final class StatusAction implements ActionInterface, GatewayAwareInterface, ApiA
     /**
      * @var \Mollie_API_Client
      */
-    private $api;
+    private $mollieApiClient;
 
     /**
      * {@inheritDoc}
      */
-    public function setApi($api): void
+    public function setApi($mollieApiClient): void
     {
-        if (false === $api instanceof \Mollie_API_Client) {
+        if (false === $mollieApiClient instanceof \Mollie_API_Client) {
             throw new UnsupportedApiException('Not supported.Expected an instance of '. \Mollie_API_Client::class);
         }
 
-        $this->api = $api;
+        $this->mollieApiClient = $mollieApiClient;
     }
 
     /**
@@ -56,12 +56,12 @@ final class StatusAction implements ActionInterface, GatewayAwareInterface, ApiA
 
         $details = $payment->getDetails();
 
-        if (false === isset($details['status']) && false === isset($details['id'])) {
+        if (false === isset($details['id'])) {
             $request->markNew();
             return;
         }
 
-        $paymentData = $this->api->payments->get($details['id']);
+        $paymentData = $this->mollieApiClient->payments->get($details['id']);
 
         if (true === $paymentData->isPaid() || true === $paymentData->isPaidOut()) {
             $request->markCaptured();
@@ -83,7 +83,7 @@ final class StatusAction implements ActionInterface, GatewayAwareInterface, ApiA
             return;
         }
 
-        if ($paymentData->isChargedBack() || $paymentData->isRefunded()) {
+        if (true === $paymentData->isChargedBack() || true === $paymentData->isRefunded()) {
             $request->markRefunded();
         }
 

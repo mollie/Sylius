@@ -29,18 +29,31 @@ final class NotifyAction implements ActionInterface, ApiAwareInterface, GatewayA
     /**
      * @var \Mollie_API_Client
      */
-    private $api;
+    private $mollieApiClient;
+
+    /**
+     * @var GetHttpRequest
+     */
+    private $getHttpRequest;
+
+    /**
+     * @param GetHttpRequest $getHttpRequest
+     */
+    public function __construct(GetHttpRequest $getHttpRequest)
+    {
+        $this->getHttpRequest = $getHttpRequest;
+    }
 
     /**
      * {@inheritDoc}
      */
-    public function setApi($api): void
+    public function setApi($mollieApiClient): void
     {
-        if (false === $api instanceof \Mollie_API_Client) {
+        if (false === $mollieApiClient instanceof \Mollie_API_Client) {
             throw new UnsupportedApiException('Not supported.Expected an instance of '. \Mollie_API_Client::class);
         }
 
-        $this->api = $api;
+        $this->mollieApiClient = $mollieApiClient;
     }
 
     /**
@@ -54,12 +67,12 @@ final class NotifyAction implements ActionInterface, ApiAwareInterface, GatewayA
 
         $details = ArrayObject::ensureArrayObject($request->getModel());
 
-        $this->gateway->execute($httpRequest = new GetHttpRequest());
+        $this->gateway->execute($this->getHttpRequest);
 
-        $payment = $this->api->payments->get($httpRequest->request['id']);
+        $payment = $this->mollieApiClient->payments->get($this->getHttpRequest->request['id']);
 
         if ($details['metadata']['order_id'] === filter_var($payment->metadata->order_id, FILTER_VALIDATE_INT)) {
-            $details['id'] = $httpRequest->request['id'];
+            $details['id'] = $this->getHttpRequest->request['id'];
         }
     }
 

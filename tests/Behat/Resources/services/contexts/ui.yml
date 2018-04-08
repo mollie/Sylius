@@ -1,0 +1,17 @@
+services:
+    bitbag_sylius_mollie_plugin.behat.context.ui.admin.managing_payment_method_mollie:
+        class: Tests\BitBag\SyliusMolliePlugin\Behat\Context\Ui\Admin\ManagingPaymentMethodContext
+        arguments:
+            - "@bitbag_sylius_mollie_plugin.page.admin.payment_method.create"
+        tags:
+            - { name: fob.context_service }
+
+    bitbag_sylius_mollie_plugin.behat.context.ui.shop.checkout:
+        class: Tests\BitBag\SyliusMolliePlugin\Behat\Context\Ui\Shop\CheckoutContext
+        arguments:
+            - "@sylius.behat.page.shop.checkout.complete"
+            - "@sylius.behat.page.shop.order.show"
+            - "@bitbag_sylius_mollie_plugin.behat.mollie_api_mocker"
+            - "@bitbag_sylius_mollie_plugin.page.external.payment"
+        tags:
+            - { name: fob.context_service }

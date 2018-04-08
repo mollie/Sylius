@@ -14,11 +14,11 @@ namespace BitBag\SyliusMolliePlugin\Action;
 
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
+use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\Exception\UnsupportedApiException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\GetStatusInterface;
-use Payum\Core\Exception\RequestNotSupportedException;
 use Sylius\Component\Core\Model\PaymentInterface;
 
 final class StatusAction implements ActionInterface, GatewayAwareInterface, ApiAwareInterface
@@ -31,19 +31,19 @@ final class StatusAction implements ActionInterface, GatewayAwareInterface, ApiA
     private $mollieApiClient;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setApi($mollieApiClient): void
     {
         if (false === $mollieApiClient instanceof \Mollie_API_Client) {
-            throw new UnsupportedApiException('Not supported.Expected an instance of '. \Mollie_API_Client::class);
+            throw new UnsupportedApiException('Not supported.Expected an instance of ' . \Mollie_API_Client::class);
         }
 
         $this->mollieApiClient = $mollieApiClient;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @param GetStatusInterface $request
      */
@@ -58,6 +58,7 @@ final class StatusAction implements ActionInterface, GatewayAwareInterface, ApiA
 
         if (false === isset($details['id'])) {
             $request->markNew();
+
             return;
         }
 
@@ -65,21 +66,25 @@ final class StatusAction implements ActionInterface, GatewayAwareInterface, ApiA
 
         if (true === $paymentData->isPaid() || true === $paymentData->isPaidOut()) {
             $request->markCaptured();
+
             return;
         }
 
         if (true === $paymentData->isCancelled()) {
             $request->markCanceled();
+
             return;
         }
 
         if (true === $paymentData->isFailed()) {
             $request->markFailed();
+
             return;
         }
 
         if (true === $paymentData->isExpired()) {
             $request->markExpired();
+
             return;
         }
 
@@ -91,7 +96,7 @@ final class StatusAction implements ActionInterface, GatewayAwareInterface, ApiA
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function supports($request): bool
     {

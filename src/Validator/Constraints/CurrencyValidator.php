@@ -41,6 +41,7 @@ final class CurrencyValidator extends ConstraintValidator
         foreach ($paymentMethod->getChannels() as $channel) {
             if (false === in_array(strtoupper($channel->getBaseCurrency()->getCode()), MollieGatewayFactory::CURRENCIES_AVAILABLE)) {
                 $this->context->buildViolation($constraint->message)->atPath('channels')->addViolation();
+
                 return;
             }
         }

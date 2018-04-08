@@ -48,8 +48,7 @@ final class StatusActionSpec extends ObjectBehavior
         PaymentInterface $payment,
         GatewayInterface $gateway,
         \Mollie_API_Client $mollieApiClient
-    ): void
-    {
+    ): void {
         $this->setApi($mollieApiClient);
         $this->setGateway($gateway);
 
@@ -65,8 +64,7 @@ final class StatusActionSpec extends ObjectBehavior
     function it_supports_only_get_status_request_and_array_access(
         GetStatusInterface $request,
         PaymentInterface $payment
-    ): void
-    {
+    ): void {
         $request->getModel()->willReturn($payment);
 
         $this->supports($request)->shouldReturn(true);

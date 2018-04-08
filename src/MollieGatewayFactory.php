@@ -24,7 +24,7 @@ final class MollieGatewayFactory extends GatewayFactory
     const CURRENCIES_AVAILABLE = ['EUR'];
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function populateConfig(ArrayObject $config): void
     {
@@ -33,7 +33,7 @@ final class MollieGatewayFactory extends GatewayFactory
             'payum.factory_title' => 'Mollie',
         ]);
 
-        if (false === (bool)$config['payum.api']) {
+        if (false === (bool) $config['payum.api']) {
             $config['payum.default_options'] = [
                 'api_key' => null,
             ];

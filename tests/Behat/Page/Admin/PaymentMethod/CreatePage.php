@@ -18,7 +18,7 @@ use Sylius\Behat\Page\Admin\Crud\CreatePage as BaseCreatePage;
 final class CreatePage extends BaseCreatePage implements CreatePageInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setApiKey(string $apiKey): void
     {
@@ -26,7 +26,7 @@ final class CreatePage extends BaseCreatePage implements CreatePageInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function containsErrorWithMessage(string $message, bool $strict = true): bool
     {

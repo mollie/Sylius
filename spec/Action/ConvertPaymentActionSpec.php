@@ -14,8 +14,8 @@ namespace spec\BitBag\SyliusMolliePlugin\Action;
 
 use BitBag\SyliusMolliePlugin\Action\ConvertPaymentAction;
 use Payum\Core\Action\ActionInterface;
-use PhpSpec\ObjectBehavior;
 use Payum\Core\Request\Convert;
+use PhpSpec\ObjectBehavior;
 use Sylius\Bundle\PayumBundle\Provider\PaymentDescriptionProviderInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
@@ -42,11 +42,10 @@ final class ConvertPaymentActionSpec extends ObjectBehavior
         PaymentInterface $payment,
         OrderInterface $order,
         PaymentDescriptionProviderInterface $paymentDescriptionProvider
-    ): void
-    {
+    ): void {
         $order->getId()->willReturn(1);
         $order->getLocaleCode()->willReturn('pl_PL');
-        
+
         $payment->getOrder()->willReturn($order);
         $payment->getAmount()->willReturn(445535);
 
@@ -67,8 +66,7 @@ final class ConvertPaymentActionSpec extends ObjectBehavior
     function it_supports_only_convert_request_payment_source_and_array_to(
         Convert $request,
         PaymentInterface $payment
-    ): void
-    {
+    ): void {
         $request->getSource()->willReturn($payment);
         $request->getTo()->willReturn('array');
 

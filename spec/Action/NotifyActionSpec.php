@@ -55,8 +55,7 @@ final class NotifyActionSpec extends ObjectBehavior
         GetHttpRequest $getHttpRequest,
         \Mollie_API_Client $mollieApiClient,
         \Mollie_API_Resource_Base $mollieApiResourceBase
-    ): void
-    {
+    ): void {
         $this->setGateway($gateway);
 
         $this->setApi($mollieApiClient);
@@ -68,7 +67,7 @@ final class NotifyActionSpec extends ObjectBehavior
         $payment = \Mockery::mock('payment');
 
         $payment->id = 1;
-        $payment->metadata = (object)[
+        $payment->metadata = (object) [
             'order_id' => 1,
         ];
 
@@ -84,8 +83,7 @@ final class NotifyActionSpec extends ObjectBehavior
     function it_supports_only_notify_request_and_array_access(
         Notify $request,
         \ArrayAccess $arrayAccess
-    ): void
-    {
+    ): void {
         $request->getModel()->willReturn($arrayAccess);
 
         $this->supports($request)->shouldReturn(true);

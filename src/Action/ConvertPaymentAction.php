@@ -39,7 +39,7 @@ final class ConvertPaymentAction implements ActionInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @param Convert $request
      */

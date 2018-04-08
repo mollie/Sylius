@@ -14,18 +14,18 @@ namespace spec\BitBag\SyliusMolliePlugin\Action;
 
 use BitBag\SyliusMolliePlugin\Action\CaptureAction;
 use Payum\Core\Action\ActionInterface;
+use Payum\Core\ApiAwareInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
+use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayInterface;
 use Payum\Core\Payum;
 use Payum\Core\Reply\HttpPostRedirect;
 use Payum\Core\Request\Capture;
 use Payum\Core\Security\GenericTokenFactory;
+use Payum\Core\Security\GenericTokenFactoryAwareInterface;
 use Payum\Core\Security\TokenInterface;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\PaymentInterface;
-use Payum\Core\Security\GenericTokenFactoryAwareInterface;
-use Payum\Core\ApiAwareInterface;
-use Payum\Core\GatewayAwareInterface;
 
 final class CaptureActionSpec extends ObjectBehavior
 {
@@ -65,8 +65,7 @@ final class CaptureActionSpec extends ObjectBehavior
         GatewayInterface $gateway,
         \Mollie_API_Client $mollieApiClient,
         \Mollie_API_Resource_Base $mollieApiResourceBase
-    ): void
-    {
+    ): void {
         $this->setGateway($gateway);
 
         $this->setApi($mollieApiClient);
@@ -115,8 +114,7 @@ final class CaptureActionSpec extends ObjectBehavior
     function it_supports_only_capture_request_and_array_access(
         Capture $request,
         \ArrayAccess $arrayAccess
-    ): void
-    {
+    ): void {
         $request->getModel()->willReturn($arrayAccess);
 
         $this->supports($request)->shouldReturn(true);

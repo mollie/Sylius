@@ -14,12 +14,12 @@ namespace Tests\BitBag\SyliusMolliePlugin\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use BitBag\SyliusMolliePlugin\MollieGatewayFactory;
+use Doctrine\Common\Persistence\ObjectManager;
 use Sylius\Behat\Service\SharedStorageInterface;
 use Sylius\Bundle\CoreBundle\Fixture\Factory\ExampleFactoryInterface;
 use Sylius\Component\Core\Model\PaymentMethodInterface;
 use Sylius\Component\Core\Repository\PaymentMethodRepositoryInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
-use Doctrine\Common\Persistence\ObjectManager;
 
 final class MollieContext implements Context
 {
@@ -84,7 +84,6 @@ final class MollieContext implements Context
         $this->paymentMethodManager->flush();
     }
 
-
     /**
      * @param string $name
      * @param string $code
@@ -100,8 +99,7 @@ final class MollieContext implements Context
         string $description = '',
         bool $addForCurrentChannel = true,
         int $position = null
-    ): PaymentMethodInterface
-    {
+    ): PaymentMethodInterface {
         /** @var PaymentMethodInterface $paymentMethod */
         $paymentMethod = $this->paymentMethodExampleFactory->create([
             'name' => ucfirst($name),

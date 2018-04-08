@@ -45,19 +45,19 @@ final class NotifyAction implements ActionInterface, ApiAwareInterface, GatewayA
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setApi($mollieApiClient): void
     {
         if (false === $mollieApiClient instanceof \Mollie_API_Client) {
-            throw new UnsupportedApiException('Not supported.Expected an instance of '. \Mollie_API_Client::class);
+            throw new UnsupportedApiException('Not supported.Expected an instance of ' . \Mollie_API_Client::class);
         }
 
         $this->mollieApiClient = $mollieApiClient;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @param Notify $request
      */
@@ -77,7 +77,7 @@ final class NotifyAction implements ActionInterface, ApiAwareInterface, GatewayA
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function supports($request): bool
     {

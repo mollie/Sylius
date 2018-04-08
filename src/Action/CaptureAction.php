@@ -40,12 +40,12 @@ final class CaptureAction implements ActionInterface, ApiAwareInterface, Generic
     private $tokenFactory;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setApi($mollieApiClient): void
     {
         if (false === $mollieApiClient instanceof \Mollie_API_Client) {
-            throw new UnsupportedApiException('Not supported.Expected an instance of '. \Mollie_API_Client::class);
+            throw new UnsupportedApiException('Not supported.Expected an instance of ' . \Mollie_API_Client::class);
         }
 
         $this->mollieApiClient = $mollieApiClient;
@@ -53,8 +53,6 @@ final class CaptureAction implements ActionInterface, ApiAwareInterface, Generic
 
     /**
      * @param GenericTokenFactoryInterface $genericTokenFactory
-     *
-     * @return void
      */
     public function setGenericTokenFactory(GenericTokenFactoryInterface $genericTokenFactory = null): void
     {
@@ -62,7 +60,7 @@ final class CaptureAction implements ActionInterface, ApiAwareInterface, Generic
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @param Capture $request
      */
@@ -93,7 +91,7 @@ final class CaptureAction implements ActionInterface, ApiAwareInterface, Generic
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function supports($request): bool
     {

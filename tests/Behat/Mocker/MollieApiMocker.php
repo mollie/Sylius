@@ -64,13 +64,13 @@ final class MollieApiMocker
     }
 
     /**
-    * @param callable $action
-    */
+     * @param callable $action
+     */
     public function mockApiSuccessfulPayment(callable $action): void
     {
         $payment = \Mockery::mock('payment');
 
-        $payment->metadata = (object)[
+        $payment->metadata = (object) [
             'order_id' => 1,
         ];
 
@@ -111,7 +111,7 @@ final class MollieApiMocker
     {
         $payment = \Mockery::mock('payment');
 
-        $payment->metadata = (object)[
+        $payment->metadata = (object) [
             'order_id' => 1,
         ];
 

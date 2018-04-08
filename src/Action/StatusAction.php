@@ -90,6 +90,8 @@ final class StatusAction implements ActionInterface, GatewayAwareInterface, ApiA
 
         if (true === $paymentData->isChargedBack() || true === $paymentData->isRefunded()) {
             $request->markRefunded();
+
+            return;
         }
 
         $request->markUnknown();

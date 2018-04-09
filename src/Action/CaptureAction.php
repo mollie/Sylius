@@ -35,7 +35,7 @@ final class CaptureAction implements ActionInterface, ApiAwareInterface, Generic
     private $mollieApiClient;
 
     /**
-     * @var GenericTokenFactoryInterface
+     * @var GenericTokenFactoryInterface|null
      */
     private $tokenFactory;
 
@@ -78,10 +78,13 @@ final class CaptureAction implements ActionInterface, ApiAwareInterface, Generic
         /** @var TokenInterface $token */
         $token = $request->getToken();
 
-        $notifyToken = $this->tokenFactory->createNotifyToken($token->getGatewayName(), $token->getDetails());
+        if (null !== $this->tokenFactory) {
+            $notifyToken = $this->tokenFactory->createNotifyToken($token->getGatewayName(), $token->getDetails());
+
+            $details['webhookUrl'] = $notifyToken->getTargetUrl();
+        }
 
         $details['redirectUrl'] = $token->getTargetUrl();
-        $details['webhookUrl'] = str_replace('http://127.0.0.1:8000/', 'https://e820fac0.ngrok.io/', $notifyToken->getTargetUrl());
 
         $payment = $this->mollieApiClient->payments->create($details->toUnsafeArray());
 

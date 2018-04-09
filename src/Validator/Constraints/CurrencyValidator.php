@@ -23,12 +23,14 @@ final class CurrencyValidator extends ConstraintValidator
 {
     /**
      * @param PaymentMethodInterface $paymentMethod
+     * @param Constraint|Currency $constraint
      *
      * {@inheritdoc}
      */
     public function validate($paymentMethod, Constraint $constraint): void
     {
         Assert::isInstanceOf($paymentMethod, PaymentMethodInterface::class);
+
         Assert::isInstanceOf($constraint, Currency::class);
 
         $gatewayConfig = $paymentMethod->getGatewayConfig();
@@ -39,8 +41,13 @@ final class CurrencyValidator extends ConstraintValidator
 
         /** @var ChannelInterface $channel */
         foreach ($paymentMethod->getChannels() as $channel) {
-            if (false === in_array(strtoupper($channel->getBaseCurrency()->getCode()), MollieGatewayFactory::CURRENCIES_AVAILABLE)) {
-                $this->context->buildViolation($constraint->message)->atPath('channels')->addViolation();
+            if (
+                null === $channel->getBaseCurrency() ||
+                false === in_array(strtoupper($channel->getBaseCurrency()->getCode()), MollieGatewayFactory::CURRENCIES_AVAILABLE)
+            ) {
+                $message = isset($constraint->message) ? $constraint->message : null;
+
+                $this->context->buildViolation($message)->atPath('channels')->addViolation();
 
                 return;
             }

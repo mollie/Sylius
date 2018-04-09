@@ -32,29 +32,27 @@ final class CaptureAction implements ActionInterface, ApiAwareInterface, Generic
     /**
      * @var \Mollie_API_Client
      */
-    private $api;
+    private $mollieApiClient;
 
     /**
-     * @var GenericTokenFactoryInterface
+     * @var GenericTokenFactoryInterface|null
      */
     private $tokenFactory;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function setApi($api): void
+    public function setApi($mollieApiClient): void
     {
-        if (false === $api instanceof \Mollie_API_Client) {
-            throw new UnsupportedApiException('Not supported.Expected an instance of '. \Mollie_API_Client::class);
+        if (false === $mollieApiClient instanceof \Mollie_API_Client) {
+            throw new UnsupportedApiException('Not supported.Expected an instance of ' . \Mollie_API_Client::class);
         }
 
-        $this->api = $api;
+        $this->mollieApiClient = $mollieApiClient;
     }
 
     /**
      * @param GenericTokenFactoryInterface $genericTokenFactory
-     *
-     * @return void
      */
     public function setGenericTokenFactory(GenericTokenFactoryInterface $genericTokenFactory = null): void
     {
@@ -62,7 +60,7 @@ final class CaptureAction implements ActionInterface, ApiAwareInterface, Generic
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @param Capture $request
      */
@@ -73,27 +71,30 @@ final class CaptureAction implements ActionInterface, ApiAwareInterface, Generic
         /** @var ArrayObject $details */
         $details = $request->getModel();
 
-        if (true === isset($details['status']) || true === isset($details['id'])) {
+        if (true === isset($details['id'])) {
             return;
         }
 
         /** @var TokenInterface $token */
         $token = $request->getToken();
 
-        $notifyToken = $this->tokenFactory->createNotifyToken($token->getGatewayName(), $token->getDetails());
+        if (null !== $this->tokenFactory) {
+            $notifyToken = $this->tokenFactory->createNotifyToken($token->getGatewayName(), $token->getDetails());
+
+            $details['webhookUrl'] = $notifyToken->getTargetUrl();
+        }
 
         $details['redirectUrl'] = $token->getTargetUrl();
-        $details['webhookUrl'] = $notifyToken->getTargetUrl();
 
-        $payment = $this->api->payments->create($details->toUnsafeArray());
+        $payment = $this->mollieApiClient->payments->create($details->toUnsafeArray());
 
-        $details['status'] = $payment->status;
+        $details['id'] = $payment->id;
 
         throw new HttpPostRedirect($payment->getPaymentUrl());
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function supports($request): bool
     {

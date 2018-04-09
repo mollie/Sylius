@@ -1,0 +1,11 @@
+services:
+    bitbag_sylius_mollie_plugin.behat.context.setup.mollie:
+        class: Tests\BitBag\SyliusMolliePlugin\Behat\Context\Setup\MollieContext
+        arguments:
+            - "@sylius.behat.shared_storage"
+            - "@__symfony__.sylius.repository.payment_method"
+            - "@__symfony__.sylius.fixture.example_factory.payment_method"
+            - "@__symfony__.sylius.factory.payment_method_translation"
+            - "@__symfony__.sylius.manager.payment_method"
+        tags:
+            - { name: fob.context_service }

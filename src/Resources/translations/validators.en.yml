@@ -1,3 +1,7 @@
 bitbag_sylius_mollie_plugin:
     api_key:
         not_blank: API key cannot be blank.
+        invalid: Invalid API key. An API key must start with 'test_' or 'live_'.
+        min_length: API key must be at least {{ limit }} characters long.
+    channel:
+        required_currency: The base currency of the channel must be EUR.

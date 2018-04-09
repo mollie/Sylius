@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Action;
 
+use BitBag\SyliusMolliePlugin\MollieGatewayFactory;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareTrait;
@@ -23,8 +24,6 @@ use Sylius\Component\Core\Model\PaymentInterface;
 final class ConvertPaymentAction implements ActionInterface
 {
     use GatewayAwareTrait;
-
-    const LOCALES_AVAILABLE = ['en_US', 'de_AT', 'de_CH', 'de_DE', 'es_ES', 'fr_BE', 'fr_FR', 'nl_BE', 'nl_NL'];
 
     /**
      * @var PaymentDescriptionProviderInterface
@@ -40,7 +39,7 @@ final class ConvertPaymentAction implements ActionInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @param Convert $request
      */
@@ -55,9 +54,9 @@ final class ConvertPaymentAction implements ActionInterface
         $order = $payment->getOrder();
 
         $details = [
-            'amount' => $payment->getAmount(), //TODO format and valid, only EUR
+            'amount' => abs($payment->getAmount() / 100),
             'description' => $this->paymentDescriptionProvider->getPaymentDescription($payment),
-            'locale' => true === in_array($order->getLocaleCode(), self::LOCALES_AVAILABLE) ? $order->getLocaleCode() : null,
+            'locale' => true === in_array($order->getLocaleCode(), MollieGatewayFactory::LOCALES_AVAILABLE) ? $order->getLocaleCode() : 'en_US',
             'metadata' => [
                 'order_id' => $order->getId(),
             ],

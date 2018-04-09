@@ -6,6 +6,8 @@ services:
 
     bitbag_sylius_mollie_plugin.action.notify:
         class: BitBag\SyliusMolliePlugin\Action\NotifyAction
+        arguments:
+            - "@bitbag_sylius_mollie_plugin.get_http_request"
         tags:
             - { name: payum.action, factory: mollie, alias: payum.action.notify }
 

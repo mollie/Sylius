@@ -1,0 +1,7 @@
+services:
+    bitbag_sylius_mollie_plugin.page.admin.payment_method.create:
+         class: Tests\BitBag\SyliusMolliePlugin\Behat\Page\Admin\PaymentMethod\CreatePage
+         parent: "sylius.behat.page.admin.crud.create"
+         public: false
+         arguments:
+             - "sylius_admin_payment_method_create"

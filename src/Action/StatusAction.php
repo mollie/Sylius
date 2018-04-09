@@ -14,11 +14,11 @@ namespace BitBag\SyliusMolliePlugin\Action;
 
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
+use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\Exception\UnsupportedApiException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\GetStatusInterface;
-use Payum\Core\Exception\RequestNotSupportedException;
 use Sylius\Component\Core\Model\PaymentInterface;
 
 final class StatusAction implements ActionInterface, GatewayAwareInterface, ApiAwareInterface
@@ -28,22 +28,22 @@ final class StatusAction implements ActionInterface, GatewayAwareInterface, ApiA
     /**
      * @var \Mollie_API_Client
      */
-    private $api;
+    private $mollieApiClient;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function setApi($api): void
+    public function setApi($mollieApiClient): void
     {
-        if (false === $api instanceof \Mollie_API_Client) {
-            throw new UnsupportedApiException('Not supported.Expected an instance of '. \Mollie_API_Client::class);
+        if (false === $mollieApiClient instanceof \Mollie_API_Client) {
+            throw new UnsupportedApiException('Not supported.Expected an instance of ' . \Mollie_API_Client::class);
         }
 
-        $this->api = $api;
+        $this->mollieApiClient = $mollieApiClient;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @param GetStatusInterface $request
      */
@@ -56,42 +56,49 @@ final class StatusAction implements ActionInterface, GatewayAwareInterface, ApiA
 
         $details = $payment->getDetails();
 
-        if (false === isset($details['status']) && false === isset($details['id'])) {
+        if (false === isset($details['id'])) {
             $request->markNew();
+
             return;
         }
 
-        $paymentData = $this->api->payments->get($details['id']);
+        $paymentData = $this->mollieApiClient->payments->get($details['id']);
 
         if (true === $paymentData->isPaid() || true === $paymentData->isPaidOut()) {
             $request->markCaptured();
+
             return;
         }
 
         if (true === $paymentData->isCancelled()) {
             $request->markCanceled();
+
             return;
         }
 
         if (true === $paymentData->isFailed()) {
             $request->markFailed();
+
             return;
         }
 
         if (true === $paymentData->isExpired()) {
             $request->markExpired();
+
             return;
         }
 
-        if ($paymentData->isChargedBack() || $paymentData->isRefunded()) {
+        if (true === $paymentData->isChargedBack() || true === $paymentData->isRefunded()) {
             $request->markRefunded();
+
+            return;
         }
 
         $request->markUnknown();
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function supports($request): bool
     {

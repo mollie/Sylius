@@ -1,0 +1,9 @@
+imports:
+    - { resource: "services/contexts.yml" }
+    - { resource: "services/pages.yml" }
+
+services:
+    bitbag_sylius_mollie_plugin.behat.mollie_api_mocker:
+        class: Tests\BitBag\SyliusMolliePlugin\Behat\Mocker\MollieApiMocker
+        arguments:
+            - "@sylius.behat.mocker"

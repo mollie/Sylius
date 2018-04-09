@@ -29,22 +29,35 @@ final class NotifyAction implements ActionInterface, ApiAwareInterface, GatewayA
     /**
      * @var \Mollie_API_Client
      */
-    private $api;
+    private $mollieApiClient;
 
     /**
-     * {@inheritDoc}
+     * @var GetHttpRequest
      */
-    public function setApi($api): void
-    {
-        if (false === $api instanceof \Mollie_API_Client) {
-            throw new UnsupportedApiException('Not supported.Expected an instance of '. \Mollie_API_Client::class);
-        }
+    private $getHttpRequest;
 
-        $this->api = $api;
+    /**
+     * @param GetHttpRequest $getHttpRequest
+     */
+    public function __construct(GetHttpRequest $getHttpRequest)
+    {
+        $this->getHttpRequest = $getHttpRequest;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
+     */
+    public function setApi($mollieApiClient): void
+    {
+        if (false === $mollieApiClient instanceof \Mollie_API_Client) {
+            throw new UnsupportedApiException('Not supported.Expected an instance of ' . \Mollie_API_Client::class);
+        }
+
+        $this->mollieApiClient = $mollieApiClient;
+    }
+
+    /**
+     * {@inheritdoc}
      *
      * @param Notify $request
      */
@@ -54,17 +67,17 @@ final class NotifyAction implements ActionInterface, ApiAwareInterface, GatewayA
 
         $details = ArrayObject::ensureArrayObject($request->getModel());
 
-        $this->gateway->execute($httpRequest = new GetHttpRequest());
+        $this->gateway->execute($this->getHttpRequest);
 
-        $payment = $this->api->payments->get($httpRequest->request['id']);
+        $payment = $this->mollieApiClient->payments->get($this->getHttpRequest->request['id']);
 
         if ($details['metadata']['order_id'] === filter_var($payment->metadata->order_id, FILTER_VALIDATE_INT)) {
-            $details['id'] = $httpRequest->request['id'];
+            $details['id'] = $this->getHttpRequest->request['id'];
         }
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function supports($request): bool
     {

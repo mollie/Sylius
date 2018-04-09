@@ -26,7 +26,8 @@
         "phpunit/phpunit": "^6.5",
         "se/selenium-server-standalone": "^2.52",
         "sylius-labs/coding-standard": "^1.0",
-        "symplify/easy-coding-standard": "^2.4"
+        "symplify/easy-coding-standard": "^2.4",
+        "nelmio/alice": "^3.3"
     },
     "prefer-stable": true,
     "autoload": {

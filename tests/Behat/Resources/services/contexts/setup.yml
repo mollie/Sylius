@@ -9,3 +9,12 @@ services:
             - "@__symfony__.sylius.manager.payment_method"
         tags:
             - { name: fob.context_service }
+
+    bitbag_sylius_mollie_plugin.context.setup.order:
+        class: Tests\BitBag\SyliusMolliePlugin\Behat\Context\Setup\OrderContext
+        arguments:
+            - "@__symfony__.doctrine.orm.default_entity_manager"
+            - "@__symfony__.sm.factory"
+            - "@__symfony__.payum"
+        tags:
+            - { name: fob.context_service }

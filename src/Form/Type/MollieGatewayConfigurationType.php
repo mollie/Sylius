@@ -52,6 +52,8 @@ final class MollieGatewayConfigurationType extends AbstractType
                 $data = $event->getData();
 
                 $data['payum.http_client'] = '@bitbag_sylius_mollie_plugin.mollie_api_client';
+
+                $event->setData($data);
             })
         ;
     }

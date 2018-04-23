@@ -22,3 +22,9 @@ services:
             - "@sylius.payment_description_provider"
         tags:
             - { name: payum.action, factory: mollie, alias: payum.action.convert_payment }
+
+    bitbag_sylius_mollie_plugin.payum_action.refund:
+        class: BitBag\SyliusMolliePlugin\Action\RefundAction
+        arguments:
+        tags:
+            - { name: payum.action, factory: mollie, alias: payum.action.refund }

@@ -19,10 +19,10 @@ use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\Exception\UnsupportedApiException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
-use Payum\Core\Request\GetHttpRequest;
-use Payum\Core\Request\Notify;
+use Payum\Core\Request\Refund;
+use Sylius\Component\Resource\Exception\UpdateHandlingException;
 
-final class NotifyAction implements ActionInterface, ApiAwareInterface, GatewayAwareInterface
+final class RefundAction implements ActionInterface, ApiAwareInterface, GatewayAwareInterface
 {
     use GatewayAwareTrait;
 
@@ -30,19 +30,6 @@ final class NotifyAction implements ActionInterface, ApiAwareInterface, GatewayA
      * @var \Mollie_API_Client
      */
     private $mollieApiClient;
-
-    /**
-     * @var GetHttpRequest
-     */
-    private $getHttpRequest;
-
-    /**
-     * @param GetHttpRequest $getHttpRequest
-     */
-    public function __construct(GetHttpRequest $getHttpRequest)
-    {
-        $this->getHttpRequest = $getHttpRequest;
-    }
 
     /**
      * {@inheritdoc}
@@ -57,9 +44,9 @@ final class NotifyAction implements ActionInterface, ApiAwareInterface, GatewayA
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
-     * @param Notify $request
+     * @param Refund $request
      */
     public function execute($request): void
     {
@@ -67,22 +54,26 @@ final class NotifyAction implements ActionInterface, ApiAwareInterface, GatewayA
 
         $details = ArrayObject::ensureArrayObject($request->getModel());
 
-        $this->gateway->execute($this->getHttpRequest);
+        try {
+            $payment = $this->mollieApiClient->payments->get($details['mollie_id']);
 
-        $payment = $this->mollieApiClient->payments->get($this->getHttpRequest->request['id']);
-
-        if ($details['metadata']['order_id'] === filter_var($payment->metadata->order_id, FILTER_VALIDATE_INT)) {
-            $details['mollie_id'] = $this->getHttpRequest->request['id'];
+            if (true === $payment->canBeRefunded()) {
+                $this->mollieApiClient->payments->refund($payment, $details['amount']);
+            } else {
+                throw new UpdateHandlingException(sprintf("Payment %s can not be refunded.", $payment->id));
+            }
+        } catch (\Mollie_API_Exception $e) {
+            throw new UpdateHandlingException(sprintf("API call failed: %s", htmlspecialchars($e->getMessage())));
         }
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function supports($request): bool
     {
         return
-            $request instanceof Notify &&
+            $request instanceof Refund &&
             $request->getModel() instanceof \ArrayAccess
         ;
     }

@@ -144,4 +144,40 @@ final class MollieApiMocker
 
         $this->mocker->unmockAll();
     }
+
+    /**
+     * @param callable $action
+     */
+    public function mockApiRefundedPayment(callable $action): void
+    {
+        $payment = \Mockery::mock('payment');
+
+        $payment
+            ->shouldReceive('canBeRefunded')
+            ->andReturn(true)
+        ;
+
+        $payments = \Mockery::mock('payments');
+
+        $payments
+            ->shouldReceive('get')
+            ->andReturn($payment)
+        ;
+
+        $payments
+            ->shouldReceive('refund')
+        ;
+
+        $mock = $this->mocker->mockService('bitbag_sylius_mollie_plugin.mollie_api_client', \Mollie_API_Client::class);
+
+        $mock
+            ->shouldReceive('setApiKey')
+        ;
+
+        $mock->payments = $payments;
+
+        $action();
+
+        $this->mocker->unmockAll();
+    }
 }

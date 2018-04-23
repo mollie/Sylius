@@ -3,6 +3,7 @@ imports:
     - { resource: "services/gateway_factory.yml" }
     - { resource: "services/action.yml" }
     - { resource: "services/validators.yml" }
+    - { resource: "services/controller.yml" }
 
 services:
     bitbag_sylius_mollie_plugin.mollie_api_client:

@@ -56,16 +56,22 @@ final class StatusAction implements ActionInterface, GatewayAwareInterface, ApiA
 
         $details = $payment->getDetails();
 
-        if (false === isset($details['id'])) {
+        if (false === isset($details['mollie_id'])) {
             $request->markNew();
 
             return;
         }
 
-        $paymentData = $this->mollieApiClient->payments->get($details['id']);
+        $paymentData = $this->mollieApiClient->payments->get($details['mollie_id']);
 
         if (true === $paymentData->isPaid() || true === $paymentData->isPaidOut()) {
             $request->markCaptured();
+
+            return;
+        }
+
+        if (true === $paymentData->isPending()) {
+            $request->markPending();
 
             return;
         }

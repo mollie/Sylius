@@ -80,16 +80,21 @@ final class CaptureActionSpec extends ObjectBehavior
         $token->getHash()->willReturn('test');
 
         $genericTokenFactory->createNotifyToken('test', [])->willReturn($notifyToken);
+        $genericTokenFactory->createRefundToken('test', [])->willReturn($notifyToken);
 
         $this->setGenericTokenFactory($genericTokenFactory);
 
         $payum->getTokenFactory()->willReturn($genericTokenFactory);
 
         $arrayObject->toUnsafeArray()->willReturn([]);
-        $arrayObject->offsetExists('id')->shouldBeCalled();
+        $arrayObject->offsetExists('mollie_id')->shouldBeCalled();
         $arrayObject->offsetSet('redirectUrl', 'url')->shouldBeCalled();
         $arrayObject->offsetSet('webhookUrl', 'url')->shouldBeCalled();
-        $arrayObject->offsetSet('id', 1)->shouldBeCalled();
+        $arrayObject->offsetExists('mollie_id')->shouldBeCalled();
+        $arrayObject->offsetGet('metadata')->shouldBeCalled();
+        $arrayObject->offsetSet('metadata', ["refund_token" => "test"])->shouldBeCalled();
+        $arrayObject->offsetSet('mollie_id', 1)->shouldBeCalled();
+
 
         $request->getModel()->willReturn($arrayObject);
         $request->getFirstModel()->willReturn($payment);

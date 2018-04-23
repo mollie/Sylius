@@ -71,7 +71,7 @@ final class CaptureAction implements ActionInterface, ApiAwareInterface, Generic
         /** @var ArrayObject $details */
         $details = $request->getModel();
 
-        if (true === isset($details['id'])) {
+        if (true === isset($details['mollie_id'])) {
             return;
         }
 
@@ -80,15 +80,22 @@ final class CaptureAction implements ActionInterface, ApiAwareInterface, Generic
 
         if (null !== $this->tokenFactory) {
             $notifyToken = $this->tokenFactory->createNotifyToken($token->getGatewayName(), $token->getDetails());
+            $refundToken = $this->tokenFactory->createRefundToken($token->getGatewayName(), $token->getDetails());
 
             $details['webhookUrl'] = $notifyToken->getTargetUrl();
+
+            $metadata = $details['metadata'];
+
+            $metadata['refund_token'] = $refundToken->getHash();
+
+            $details['metadata'] = $metadata;
         }
 
         $details['redirectUrl'] = $token->getTargetUrl();
 
         $payment = $this->mollieApiClient->payments->create($details->toUnsafeArray());
 
-        $details['id'] = $payment->id;
+        $details['mollie_id'] = $payment->id;
 
         throw new HttpPostRedirect($payment->getPaymentUrl());
     }

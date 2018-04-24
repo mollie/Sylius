@@ -116,7 +116,7 @@ final class MollieApiMocker
         ];
 
         $payment
-            ->shouldReceive('isPaid', 'isPaidOut')
+            ->shouldReceive('isPaid', 'isPaidOut', 'isPending')
             ->andReturn(false)
         ;
 

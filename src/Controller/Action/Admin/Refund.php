@@ -98,7 +98,7 @@ final class Refund
         /** @var PaymentMethodInterface $paymentMethod */
         $paymentMethod = $payment->getMethod();
 
-        $factoryName = $paymentMethod->getGatewayConfig()->getFactoryName() ?? '';
+        $factoryName = $paymentMethod->getGatewayConfig()->getFactoryName() ?? null;
 
         if (MollieGatewayFactory::FACTORY_NAME !== $factoryName) {
             $this->applyStateMachineTransition($payment);

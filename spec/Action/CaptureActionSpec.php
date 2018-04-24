@@ -92,9 +92,8 @@ final class CaptureActionSpec extends ObjectBehavior
         $arrayObject->offsetSet('webhookUrl', 'url')->shouldBeCalled();
         $arrayObject->offsetExists('mollie_id')->shouldBeCalled();
         $arrayObject->offsetGet('metadata')->shouldBeCalled();
-        $arrayObject->offsetSet('metadata', ["refund_token" => "test"])->shouldBeCalled();
+        $arrayObject->offsetSet('metadata', ['refund_token' => 'test'])->shouldBeCalled();
         $arrayObject->offsetSet('mollie_id', 1)->shouldBeCalled();
-
 
         $request->getModel()->willReturn($arrayObject);
         $request->getFirstModel()->willReturn($payment);

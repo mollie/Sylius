@@ -70,8 +70,7 @@ final class RefundActionSpec extends ObjectBehavior
     function it_supports_only_refund_request_and_array_access(
         Refund $request,
         \ArrayAccess $arrayAccess
-    ): void
-    {
+    ): void {
         $request->getModel()->willReturn($arrayAccess);
 
         $this->supports($request)->shouldReturn(true);

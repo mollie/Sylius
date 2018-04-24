@@ -44,7 +44,7 @@ final class RefundAction implements ActionInterface, ApiAwareInterface, GatewayA
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @param Refund $request
      */
@@ -60,15 +60,15 @@ final class RefundAction implements ActionInterface, ApiAwareInterface, GatewayA
             if (true === $payment->canBeRefunded()) {
                 $this->mollieApiClient->payments->refund($payment, $details['amount']);
             } else {
-                throw new UpdateHandlingException(sprintf("Payment %s can not be refunded.", $payment->id));
+                throw new UpdateHandlingException(sprintf('Payment %s can not be refunded.', $payment->id));
             }
         } catch (\Mollie_API_Exception $e) {
-            throw new UpdateHandlingException(sprintf("API call failed: %s", htmlspecialchars($e->getMessage())));
+            throw new UpdateHandlingException(sprintf('API call failed: %s', htmlspecialchars($e->getMessage())));
         }
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function supports($request): bool
     {

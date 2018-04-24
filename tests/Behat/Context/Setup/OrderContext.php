@@ -67,6 +67,7 @@ final class OrderContext implements Context
     /**
      * @param OrderInterface $order
      * @param $transition
+     *
      * @throws \SM\SMException
      */
     private function applyMolliePaymentTransitionOnOrder(OrderInterface $order, $transition): void

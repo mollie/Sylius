@@ -15,6 +15,8 @@ namespace BitBag\SyliusMolliePlugin\Controller\Action\Admin;
 use BitBag\SyliusMolliePlugin\MollieGatewayFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Payum\Core\Payum;
+use Payum\Core\Request\Refund as RefundAction;
+use Payum\Core\Security\TokenInterface;
 use SM\Factory\FactoryInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Core\Model\PaymentMethodInterface;
@@ -27,7 +29,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Payum\Core\Request\Refund as RefundAction;
 
 final class Refund
 {
@@ -87,7 +88,7 @@ final class Refund
      */
     public function __invoke(Request $request): Response
     {
-        /** @var PaymentInterface $payment */
+        /** @var PaymentInterface|null $payment */
         $payment = $this->paymentRepository->find($request->get('id'));
 
         if (null === $payment) {
@@ -97,10 +98,12 @@ final class Refund
         /** @var PaymentMethodInterface $paymentMethod */
         $paymentMethod = $payment->getMethod();
 
-        if (MollieGatewayFactory::FACTORY_NAME !== $paymentMethod->getGatewayConfig()->getFactoryName()) {
+        $factoryName = $paymentMethod->getGatewayConfig()->getFactoryName() ?? '';
+
+        if (MollieGatewayFactory::FACTORY_NAME !== $factoryName) {
             $this->applyStateMachineTransition($payment);
 
-            $this->session->getFlashBag()->add("success", "sylius.payment.refunded");
+            $this->session->getFlashBag()->add('success', 'sylius.payment.refunded');
 
             return $this->redirectToReferer($request);
         }
@@ -108,15 +111,18 @@ final class Refund
         if (!isset($payment->getDetails()['mollie_id']) || !isset($payment->getDetails()['metadata']['refund_token'])) {
             $this->applyStateMachineTransition($payment);
 
-            $this->session->getFlashBag()->add("info", "The payment refund was made only locally."); //TODO trans
+            $this->session->getFlashBag()->add('info', 'bitbag_sylius_mollie_plugin.ui.refunded_only_locally');
 
             return $this->redirectToReferer($request);
         }
 
         $hash = $payment->getDetails()['metadata']['refund_token'];
 
-        if (false === $token = $this->payum->getTokenStorage()->find($hash)) {
-            throw new BadRequestHttpException(sprintf("A token with hash `%s` could not be found.", $hash));
+        /** @var TokenInterface|null $token */
+        $token = $this->payum->getTokenStorage()->find($hash);
+
+        if (null === $token || !$token instanceof TokenInterface) {
+            throw new BadRequestHttpException(sprintf('A token with hash `%s` could not be found.', $hash));
         }
 
         $gateway = $this->payum->getGateway($token->getGatewayName());
@@ -126,9 +132,9 @@ final class Refund
 
             $this->applyStateMachineTransition($payment);
 
-            $this->session->getFlashBag()->add("success", "sylius.payment.refunded");
+            $this->session->getFlashBag()->add('success', 'sylius.payment.refunded');
         } catch (UpdateHandlingException $e) {
-            $this->session->getFlashBag()->add("error", $e->getMessage());
+            $this->session->getFlashBag()->add('error', $e->getMessage());
         }
 
         return $this->redirectToReferer($request);
@@ -159,6 +165,9 @@ final class Refund
      */
     private function redirectToReferer(Request $request): Response
     {
-        return new RedirectResponse($request->headers->get('referer', null, true));
+        /** @var string $url */
+        $url = $request->headers->get('referer', null, true);
+
+        return new RedirectResponse($url);
     }
 }

@@ -14,6 +14,6 @@ namespace BitBag\SyliusMolliePlugin\Request\Api;
 
 use Payum\Core\Request\Generic;
 
-final class CreateSepaMandate extends Generic
+class CreateSepaMandate extends Generic
 {
 }

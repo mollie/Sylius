@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Tests\BitBag\SyliusMolliePlugin\Behat\Mocker;
 
+use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
 use Sylius\Behat\Service\Mocker\MockerInterface;
 
 final class MollieApiMocker
@@ -50,7 +51,7 @@ final class MollieApiMocker
             ->andReturn($payment)
         ;
 
-        $mock = $this->mocker->mockService('bitbag_sylius_mollie_plugin.mollie_api_client', \Mollie_API_Client::class);
+        $mock = $this->mocker->mockService('bitbag_sylius_mollie_plugin.mollie_api_client', MollieApiClient::class);
 
         $mock
             ->shouldReceive('setApiKey')
@@ -88,7 +89,7 @@ final class MollieApiMocker
             ->andReturn($payment)
         ;
 
-        $mock = $this->mocker->mockService('bitbag_sylius_mollie_plugin.mollie_api_client', \Mollie_API_Client::class);
+        $mock = $this->mocker->mockService('bitbag_sylius_mollie_plugin.mollie_api_client', MollieApiClient::class);
 
         $mock
             ->shouldReceive('setApiKey')
@@ -126,7 +127,7 @@ final class MollieApiMocker
             ->andReturn($payment)
         ;
 
-        $mock = $this->mocker->mockService('bitbag_sylius_mollie_plugin.mollie_api_client', \Mollie_API_Client::class);
+        $mock = $this->mocker->mockService('bitbag_sylius_mollie_plugin.mollie_api_client', MollieApiClient::class);
 
         $mock
             ->shouldReceive('setApiKey')
@@ -169,7 +170,7 @@ final class MollieApiMocker
             ->shouldReceive('refund')
         ;
 
-        $mock = $this->mocker->mockService('bitbag_sylius_mollie_plugin.mollie_api_client', \Mollie_API_Client::class);
+        $mock = $this->mocker->mockService('bitbag_sylius_mollie_plugin.mollie_api_client', MollieApiClient::class);
 
         $mock
             ->shouldReceive('setApiKey')
@@ -229,7 +230,7 @@ final class MollieApiMocker
             ->andReturn($payment)
         ;
 
-        $mock = $this->mocker->mockService('bitbag_sylius_mollie_plugin.mollie_api_client', \Mollie_API_Client::class);
+        $mock = $this->mocker->mockService('bitbag_sylius_mollie_plugin.mollie_api_client', MollieApiClient::class);
 
         $mock
             ->shouldReceive('setApiKey', 'setConfig', 'setIsRecurringSubscription')
@@ -279,7 +280,7 @@ final class MollieApiMocker
             ->andReturn($payment)
         ;
 
-        $mock = $this->mocker->mockService('bitbag_sylius_mollie_plugin.mollie_api_client', \Mollie_API_Client::class);
+        $mock = $this->mocker->mockService('bitbag_sylius_mollie_plugin.mollie_api_client', MollieApiClient::class);
 
         $mock
             ->shouldReceive('setApiKey', 'setConfig', 'setIsRecurringSubscription')

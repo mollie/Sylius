@@ -62,21 +62,27 @@ final class StatusRecurringSubscriptionAction extends BaseApiAwareAction impleme
         switch ($this->mollieApiClient->customers_subscriptions->get($subscription->getSubscriptionId())->status) {
             case \Mollie_API_Object_Customer_Subscription::STATUS_ACTIVE:
                 $this->applyStateMachineTransition($subscription, SubscriptionTransitions::TRANSITION_ACTIVATE);
+
                 break;
             case \Mollie_API_Object_Customer_Subscription::STATUS_PENDING:
                 $this->applyStateMachineTransition($subscription, SubscriptionTransitions::TRANSITION_PROCESS);
+
                 break;
             case \Mollie_API_Object_Customer_Subscription::STATUS_CANCELLED:
                 $this->applyStateMachineTransition($subscription, SubscriptionTransitions::TRANSITION_CANCEL);
+
                 break;
             case \Mollie_API_Object_Customer_Subscription::STATUS_COMPLETED:
                 $this->applyStateMachineTransition($subscription, SubscriptionTransitions::TRANSITION_COMPLETE);
+
                 break;
             case \Mollie_API_Object_Customer_Subscription::STATUS_SUSPENDED:
                 $this->applyStateMachineTransition($subscription, SubscriptionTransitions::TRANSITION_SUSPEND);
+
                 break;
             default:
                 $this->applyStateMachineTransition($subscription, SubscriptionTransitions::TRANSITION_FAIL);
+
                 break;
         }
     }

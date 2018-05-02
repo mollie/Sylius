@@ -48,10 +48,16 @@ final class CancelRecurringSubscriptionProcessor implements CancelRecurringSubsc
     {
         $payment = $subscription->getOrder()->getLastPayment();
 
+        if (null === $payment) {
+            return;
+        }
+
         /** @var PaymentMethodInterface $paymentMethod */
         $paymentMethod = $payment->getMethod();
 
-        if (MollieSubscriptionGatewayFactory::FACTORY_NAME !== $paymentMethod->getGatewayConfig()->getFactoryName()) {
+        if (null === $paymentMethod->getGatewayConfig() ||
+            MollieSubscriptionGatewayFactory::FACTORY_NAME !== $paymentMethod->getGatewayConfig()->getFactoryName()
+        ) {
             return;
         }
 

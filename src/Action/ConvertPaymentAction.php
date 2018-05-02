@@ -68,10 +68,10 @@ final class ConvertPaymentAction extends BaseApiAwareAction implements ActionInt
             'description' => $this->paymentDescriptionProvider->getPaymentDescription($payment),
             'metadata' => [
                 'order_id' => $order->getId(),
-                'customer_id' => $customer->getId(),
+                'customer_id' => $customer->getId() ?? null,
             ],
-            'full_name' => $customer->getFullName(),
-            'email' => $customer->getEmail(),
+            'full_name' => $customer->getFullName() ?? null,
+            'email' => $customer->getEmail() ?? null,
         ];
 
         if (true === $this->mollieApiClient->isRecurringSubscription()) {

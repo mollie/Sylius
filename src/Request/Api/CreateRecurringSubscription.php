@@ -14,6 +14,6 @@ namespace BitBag\SyliusMolliePlugin\Request\Api;
 
 use Payum\Core\Request\Generic;
 
-final class CreateRecurringSubscription extends Generic
+class CreateRecurringSubscription extends Generic
 {
 }

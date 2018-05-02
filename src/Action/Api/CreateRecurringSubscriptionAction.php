@@ -22,10 +22,10 @@ use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
+use SM\Factory\FactoryInterface as SateMachineFactoryInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
-use SM\Factory\FactoryInterface as SateMachineFactoryInterface;
 
 final class CreateRecurringSubscriptionAction extends BaseApiAwareAction implements ActionInterface, GatewayAwareInterface, ApiAwareInterface
 {
@@ -81,7 +81,6 @@ final class CreateRecurringSubscriptionAction extends BaseApiAwareAction impleme
         $model = ArrayObject::ensureArrayObject($request->getModel());
 
         if (true === isset($model['subscription_id'])) {
-
             return;
         }
 

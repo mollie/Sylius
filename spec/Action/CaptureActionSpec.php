@@ -89,18 +89,18 @@ final class CaptureActionSpec extends ObjectBehavior
         $payment->id = 1;
         $payment->shouldReceive('getPaymentUrl')->andReturn('');
         $mollieApiResourceBase->create([
-            "amount" => null,
-            "description" => null,
-            "redirectUrl" => "url",
-            "webhookUrl" => null,
-            "metadata" => null
+            'amount' => null,
+            'description' => null,
+            'redirectUrl' => 'url',
+            'webhookUrl' => null,
+            'metadata' => null,
         ])->willReturn($payment);
         $mollieApiClient->payments = $mollieApiResourceBase;
 
-        $arrayObject->offsetGet("description")->shouldBeCalled();
-        $arrayObject->offsetGet("webhookUrl")->shouldBeCalled();
-        $arrayObject->offsetGet("amount")->shouldBeCalled();
-        $arrayObject->offsetExists("subscription_mollie_id")->shouldBeCalled();
+        $arrayObject->offsetGet('description')->shouldBeCalled();
+        $arrayObject->offsetGet('webhookUrl')->shouldBeCalled();
+        $arrayObject->offsetGet('amount')->shouldBeCalled();
+        $arrayObject->offsetExists('subscription_mollie_id')->shouldBeCalled();
         $arrayObject->offsetExists('payment_mollie_id')->shouldBeCalled();
         $arrayObject->offsetExists('payment_mollie_id')->shouldBeCalled();
         $arrayObject->offsetGet('metadata')->shouldBeCalled();

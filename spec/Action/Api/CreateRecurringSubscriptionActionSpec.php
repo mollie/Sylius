@@ -24,10 +24,10 @@ use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayInterface;
 use PhpSpec\ObjectBehavior;
+use SM\Factory\FactoryInterface as SateMachineFactoryInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
-use SM\Factory\FactoryInterface as SateMachineFactoryInterface;
 
 final class CreateRecurringSubscriptionActionSpec extends ObjectBehavior
 {
@@ -88,25 +88,25 @@ final class CreateRecurringSubscriptionActionSpec extends ObjectBehavior
         $mollieApiClient->customers_subscriptions = $subscriptions;
         $orderRepository->find(1)->willReturn($order);
         $subscriptionFactory->createNew()->willReturn($subscription);
-        $arrayObject->offsetGet("customer_mollie_id")->willReturn('id_1');
-        $arrayObject->offsetGet("interval")->willReturn('3 days');
-        $arrayObject->offsetGet("description")->willReturn('');
-        $arrayObject->offsetGet("webhookUrl")->willReturn('www.example.com/webhookUrl');
-        $arrayObject->offsetGet("metadata")->willReturn(['order_id' => 1]);
-        $arrayObject->offsetGet("amount")->willReturn(100);
+        $arrayObject->offsetGet('customer_mollie_id')->willReturn('id_1');
+        $arrayObject->offsetGet('interval')->willReturn('3 days');
+        $arrayObject->offsetGet('description')->willReturn('');
+        $arrayObject->offsetGet('webhookUrl')->willReturn('www.example.com/webhookUrl');
+        $arrayObject->offsetGet('metadata')->willReturn(['order_id' => 1]);
+        $arrayObject->offsetGet('amount')->willReturn(100);
         $resourceBase->create([
-            "amount" => 100,
-            "interval" => "3 days",
-            "description" => "",
-            "method" => "directdebit",
-            "webhookUrl" => "www.example.com/webhookUrl",
-            "metadata" => ["order_id" => 1]
+            'amount' => 100,
+            'interval' => '3 days',
+            'description' => '',
+            'method' => 'directdebit',
+            'webhookUrl' => 'www.example.com/webhookUrl',
+            'metadata' => ['order_id' => 1],
         ])->willReturn($customerSubscription);
         $subscriptions->withParentId('id_1')->willReturn($resourceBase);
         $request->getModel()->willReturn($arrayObject);
 
-        $arrayObject->offsetExists("subscription_id")->shouldBeCalled();
-        $arrayObject->offsetSet("subscription_mollie_id", null)->shouldBeCalled();
+        $arrayObject->offsetExists('subscription_id')->shouldBeCalled();
+        $arrayObject->offsetSet('subscription_mollie_id', null)->shouldBeCalled();
 
         $this->execute($request);
     }

@@ -66,7 +66,6 @@ final class StatusRecurringSubscriptionActionSpec extends ObjectBehavior
         FactoryInterface $subscriptionSateMachineFactory,
         StateMachineInterface $stateMachine
     ): void {
-
         $this->setApi($mollieApiClient);
         $stateMachine->can(SubscriptionTransitions::TRANSITION_ACTIVATE)->willReturn();
         $customerSubscription->status = \Mollie_API_Object_Customer_Subscription::STATUS_ACTIVE;

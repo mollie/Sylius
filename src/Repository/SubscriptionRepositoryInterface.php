@@ -18,7 +18,7 @@ use Sylius\Component\Resource\Repository\RepositoryInterface;
 interface SubscriptionRepositoryInterface extends RepositoryInterface
 {
     /**
-     * @param $orderId
+     * @param mixed $orderId
      *
      * @return SubscriptionInterface|null
      */

@@ -57,7 +57,6 @@ final class CaptureAction extends BaseApiAwareAction implements ActionInterface,
         $details = ArrayObject::ensureArrayObject($request->getModel());
 
         if (true === isset($details['payment_mollie_id']) || true === isset($details['subscription_mollie_id'])) {
-
             return;
         }
 
@@ -88,7 +87,6 @@ final class CaptureAction extends BaseApiAwareAction implements ActionInterface,
         }
 
         if (false === $this->mollieApiClient->isRecurringSubscription()) {
-
             $metadata = $details['metadata'];
 
             $metadata['refund_token'] = $refundToken->getHash();

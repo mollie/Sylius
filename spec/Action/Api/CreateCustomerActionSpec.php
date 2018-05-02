@@ -53,12 +53,12 @@ final class CreateCustomerActionSpec extends ObjectBehavior
         $mollieApiClient->customers = $customers;
         $this->setApi($mollieApiClient);
         $customer->id = 'id_1';
-        $arrayObject->offsetGet("fullName")->willReturn('Jan Kowalski');
-        $arrayObject->offsetGet("email")->willReturn('shop@example.com');
+        $arrayObject->offsetGet('fullName')->willReturn('Jan Kowalski');
+        $arrayObject->offsetGet('email')->willReturn('shop@example.com');
         $request->getModel()->willReturn($arrayObject);
-        $customers->create(["name" => "Jan Kowalski", "email" => "shop@example.com"])->willReturn($customer);
+        $customers->create(['name' => 'Jan Kowalski', 'email' => 'shop@example.com'])->willReturn($customer);
 
-        $arrayObject->offsetSet("customer_mollie_id", 'id_1')->shouldBeCalled();
+        $arrayObject->offsetSet('customer_mollie_id', 'id_1')->shouldBeCalled();
 
         $this->execute($request);
     }

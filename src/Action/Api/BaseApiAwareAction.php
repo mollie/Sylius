@@ -29,8 +29,8 @@ abstract class BaseApiAwareAction implements ActionInterface, ApiAwareInterface
      */
     public function setApi($mollieApiClient): void
     {
-        if (false === $mollieApiClient instanceof \Mollie_API_Client) {
-            throw new UnsupportedApiException('Not supported.Expected an instance of ' . \Mollie_API_Client::class);
+        if (false === $mollieApiClient instanceof MollieApiClient) {
+            throw new UnsupportedApiException('Not supported.Expected an instance of ' . MollieApiClient::class);
         }
 
         $this->mollieApiClient = $mollieApiClient;

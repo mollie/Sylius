@@ -18,11 +18,11 @@ use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
 use BitBag\SyliusMolliePlugin\Request\Api\CreateSepaMandate;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
+use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Payum\Core\Bridge\Spl\ArrayObject;
 
 final class CreateSepaMandateActionSpec extends ObjectBehavior
 {
@@ -73,19 +73,19 @@ final class CreateSepaMandateActionSpec extends ObjectBehavior
         $mollieApiClient->customers_mandates = $customersMandates;
         $customerMandate->id = 'id_1';
         $resourceBase->create([
-            "consumerAccount" => "57357086404",
-            "consumerName" => "Example",
-            "method" => "directdebit"
+            'consumerAccount' => '57357086404',
+            'consumerName' => 'Example',
+            'method' => 'directdebit',
         ])->willReturn($customerMandate);
         $customersMandates->withParentId('id_1')->willReturn($resourceBase);
         $session->get('mollie_direct_debit_data', null)->willReturn([
             'iban' => '57357086404',
             'consumerName' => 'Example',
         ]);
-        $arrayObject->offsetGet("customer_mollie_id")->willReturn('id_1');
+        $arrayObject->offsetGet('customer_mollie_id')->willReturn('id_1');
         $request->getModel()->willReturn($arrayObject);
 
-        $arrayObject->offsetSet("mandate_mollie_id", 'id_1')->shouldBeCalled();
+        $arrayObject->offsetSet('mandate_mollie_id', 'id_1')->shouldBeCalled();
 
         $this->execute($request);
     }

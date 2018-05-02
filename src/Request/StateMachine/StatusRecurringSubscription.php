@@ -14,6 +14,6 @@ namespace BitBag\SyliusMolliePlugin\Request\StateMachine;
 
 use Payum\Core\Request\Generic;
 
-final class StatusRecurringSubscription extends Generic
+class StatusRecurringSubscription extends Generic
 {
 }

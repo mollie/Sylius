@@ -35,22 +35,22 @@ interface SubscriptionInterface extends ResourceInterface
     public function setOrder(OrderInterface $order): void;
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getSubscriptionId(): ?string;
 
     /**
-     * @param null|string $subscriptionId
+     * @param string|null $subscriptionId
      */
     public function setSubscriptionId(?string $subscriptionId): void;
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getCustomerId(): ?string;
 
     /**
-     * @param null|string $customerId
+     * @param string|null $customerId
      */
     public function setCustomerId(?string $customerId): void;
 

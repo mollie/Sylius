@@ -16,11 +16,11 @@ use BitBag\SyliusMolliePlugin\Request\Api\CreateCustomer;
 use BitBag\SyliusMolliePlugin\Request\Api\CreateSepaMandate;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
+use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Payum\Core\Bridge\Spl\ArrayObject;
 
 final class CreateSepaMandateAction extends BaseApiAwareAction implements ActionInterface, GatewayAwareInterface, ApiAwareInterface
 {
@@ -49,7 +49,6 @@ final class CreateSepaMandateAction extends BaseApiAwareAction implements Action
         RequestNotSupportedException::assertSupports($this, $request);
 
         if (null === $directDebitData = $this->session->get('mollie_direct_debit_data', null)) {
-
             return;
         }
 
@@ -62,7 +61,7 @@ final class CreateSepaMandateAction extends BaseApiAwareAction implements Action
             'consumerName' => $directDebitData['consumerName'] ?? null,
             'method' => \Mollie_API_Object_Method::DIRECTDEBIT,
         ]);
-        
+
         $model['mandate_mollie_id'] = $mandate->id;
     }
 

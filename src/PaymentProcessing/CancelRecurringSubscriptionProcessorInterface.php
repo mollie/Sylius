@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\PaymentProcessing;
 
 use BitBag\SyliusMolliePlugin\Entity\SubscriptionInterface;
-use Sylius\Component\Core\Model\PaymentInterface;
 
 interface CancelRecurringSubscriptionProcessorInterface
 {

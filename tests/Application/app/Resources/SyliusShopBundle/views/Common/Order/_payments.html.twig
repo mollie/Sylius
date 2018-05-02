@@ -9,10 +9,7 @@
         </div>
         <p>{{ money.format(payment.amount, payment.currencyCode) }}</p>
 
-        {% if form.directDebit is defined %}
-            {{ form_row(form.directDebit.consumerName) }}
-            {{ form_row(form.directDebit.iban) }}
-        {% endif %}
+        {% include 'BitBagSyliusMolliePlugin:DirectDebit:_form.html.twig' %}
     </div>
 </div>
 {% endfor %}

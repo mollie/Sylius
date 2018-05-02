@@ -64,14 +64,17 @@ final class StatusRecurringSubscriptionActionSpec extends ObjectBehavior
         \Mollie_API_Resource_Customers_Subscriptions $subscriptions,
         \Mollie_API_Object_Customer_Subscription $customerSubscription,
         FactoryInterface $subscriptionSateMachineFactory,
-        StateMachineInterface $stateMachine
+        StateMachineInterface $stateMachine,
+        \Mollie_API_Resource_Base $resourceBase
     ): void {
         $this->setApi($mollieApiClient);
         $stateMachine->can(SubscriptionTransitions::TRANSITION_ACTIVATE)->willReturn();
         $customerSubscription->status = \Mollie_API_Object_Customer_Subscription::STATUS_ACTIVE;
         $subscriptionSateMachineFactory->get($subscription, SubscriptionTransitions::GRAPH)->willReturn($stateMachine);
         $subscription->getSubscriptionId()->willReturn('id_1');
-        $subscriptions->get('id_1')->willReturn($customerSubscription);
+        $subscription->getCustomerId()->willReturn('id_1');
+        $resourceBase->get('id_1')->willReturn($customerSubscription);
+        $subscriptions->withParentId('id_1')->willReturn($resourceBase);
         $mollieApiClient->customers_subscriptions = $subscriptions;
         $request->getModel()->willReturn($subscription);
 

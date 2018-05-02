@@ -86,7 +86,7 @@ final class OrderContext implements Context
                 $model['metadata'] = $metadata;
 
                 $model['amount'] = $payment->getAmount() / 100;
-                $model['mollie_id'] = 'test';
+                $model['payment_mollie_id'] = 'test';
 
                 $payment->setDetails($model);
             }

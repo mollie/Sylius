@@ -1,0 +1,17 @@
+{% import '@SyliusUi/Macro/buttons.html.twig' as buttons %}
+
+{% set path = options.link.url|default(path(options.link.route|default(grid.requestConfiguration.getRouteName('show')), options.link.parameters|default({'id': data.id}))) %}
+
+{% set factoryName = constant('BitBag\\SyliusMolliePlugin\\MollieSubscriptionGatewayFactory::FACTORY_NAME') %}
+
+{% set subscriptionMollie = subscription_mollie_repository.findOneByOrderId(data.id) %}
+
+{% if subscriptionMollie is not null and sm_can(subscriptionMollie, 'cancel', 'mollie_subscription') %}
+    <form action="{{ path }}" method="post" novalidate>
+        <input type="hidden" name="_method" value="PUT">
+        <button class="ui yellow labeled icon loadable button" type="submit">
+            <i class="icon ban"></i>
+            {{ action.label|trans }}
+        </button>
+    </form>
+{% endif %}

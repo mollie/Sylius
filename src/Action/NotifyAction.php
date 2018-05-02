@@ -12,24 +12,23 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Action;
 
+use BitBag\SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
+use BitBag\SyliusMolliePlugin\Entity\SubscriptionInterface;
+use BitBag\SyliusMolliePlugin\Repository\SubscriptionRepositoryInterface;
+use BitBag\SyliusMolliePlugin\Request\StateMachine\StatusRecurringSubscription;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
-use Payum\Core\Exception\UnsupportedApiException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
+use Payum\Core\Reply\HttpResponse;
 use Payum\Core\Request\GetHttpRequest;
 use Payum\Core\Request\Notify;
 
-final class NotifyAction implements ActionInterface, ApiAwareInterface, GatewayAwareInterface
+final class NotifyAction extends BaseApiAwareAction implements ActionInterface, ApiAwareInterface, GatewayAwareInterface
 {
     use GatewayAwareTrait;
-
-    /**
-     * @var \Mollie_API_Client
-     */
-    private $mollieApiClient;
 
     /**
      * @var GetHttpRequest
@@ -37,23 +36,18 @@ final class NotifyAction implements ActionInterface, ApiAwareInterface, GatewayA
     private $getHttpRequest;
 
     /**
-     * @param GetHttpRequest $getHttpRequest
+     * @var SubscriptionRepositoryInterface
      */
-    public function __construct(GetHttpRequest $getHttpRequest)
-    {
-        $this->getHttpRequest = $getHttpRequest;
-    }
+    private $subscriptionRepository;
 
     /**
-     * {@inheritdoc}
+     * @param GetHttpRequest $getHttpRequest
+     * @param SubscriptionRepositoryInterface $subscriptionRepository
      */
-    public function setApi($mollieApiClient): void
+    public function __construct(GetHttpRequest $getHttpRequest, SubscriptionRepositoryInterface $subscriptionRepository)
     {
-        if (false === $mollieApiClient instanceof \Mollie_API_Client) {
-            throw new UnsupportedApiException('Not supported.Expected an instance of ' . \Mollie_API_Client::class);
-        }
-
-        $this->mollieApiClient = $mollieApiClient;
+        $this->getHttpRequest = $getHttpRequest;
+        $this->subscriptionRepository = $subscriptionRepository;
     }
 
     /**
@@ -69,10 +63,23 @@ final class NotifyAction implements ActionInterface, ApiAwareInterface, GatewayA
 
         $this->gateway->execute($this->getHttpRequest);
 
-        $payment = $this->mollieApiClient->payments->get($this->getHttpRequest->request['id']);
+        if (true === isset($details['payment_mollie_id'])) {
+            $payment = $this->mollieApiClient->payments->get($this->getHttpRequest->request['id']);
 
-        if ($details['metadata']['order_id'] === filter_var($payment->metadata->order_id, FILTER_VALIDATE_INT)) {
-            $details['mollie_id'] = $this->getHttpRequest->request['id'];
+            if ($details['metadata']['order_id'] === filter_var($payment->metadata->order_id, FILTER_VALIDATE_INT)) {
+                $details['payment_mollie_id'] = $this->getHttpRequest->request['id'];
+            }
+
+            throw new HttpResponse('OK', 200);
+        }
+
+        if (true === isset($details['subscription_id'])) {
+            /** @var SubscriptionInterface $subscription */
+            $subscription = $this->subscriptionRepository->findOneByOrderId($details['metadata']['order_id']);
+
+            $this->gateway->execute(new StatusRecurringSubscription($subscription));
+
+            throw new HttpResponse('OK', 200);
         }
     }
 

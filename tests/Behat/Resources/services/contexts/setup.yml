@@ -18,3 +18,11 @@ services:
             - "@__symfony__.payum"
         tags:
             - { name: fob.context_service }
+
+    bitbag_sylius_mollie_plugin.context.setup.subscription:
+        class: Tests\BitBag\SyliusMolliePlugin\Behat\Context\Setup\SubscriptionContext
+        arguments:
+            - "@__symfony__.bitbag_sylius_mollie_plugin.manager.subscription"
+            - "@__symfony__.bitbag_sylius_mollie_plugin.factory.subscription"
+        tags:
+            - { name: fob.context_service }

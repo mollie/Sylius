@@ -1,0 +1,3 @@
+imports:
+    - { resource: "shop/checkout.yml" }
+    - { resource: "shop/account.yml" }

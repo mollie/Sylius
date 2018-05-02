@@ -8,6 +8,8 @@ imports:
     - { resource: "@SyliusShopBundle/Resources/config/app/config.yml" }
     - { resource: "@SyliusAdminApiBundle/Resources/config/app/config.yml" }
 
+    - { resource: "@BitBagSyliusMolliePlugin/Resources/config/config.yml" }
+
     - { resource: "../../../../vendor/sylius/sylius/app/config/security.yml" }
 
 framework:
@@ -46,7 +48,6 @@ swiftmailer:
 doctrine:
     dbal:
         driver: "pdo_sqlite"
-        path: "%kernel.root_dir%/../var/db.sql"
         charset: UTF8
 
 fos_rest:
@@ -64,3 +65,17 @@ fos_rest:
 sylius_theme:
     sources:
         test: ~
+
+sylius_grid:
+    grids:
+        sylius_shop_account_order:
+            actions:
+                item:
+                    cancel_subscription_mollie:
+                        type: cancel_subscription_mollie
+                        label: bitbag_sylius_mollie_plugin.ui.cancel_subscription
+                        options:
+                            link:
+                                route: bitbag_sylius_mollie_plugin_cancel_subscription_mollie
+                                parameters:
+                                    orderId: resource.id

@@ -1,0 +1,13 @@
+imports:
+    - { resource: "@BitBagSyliusMolliePlugin/Resources/config/services.yml" }
+    - { resource: "@BitBagSyliusMolliePlugin/Resources/config/resources.yml" }
+    - { resource: "@BitBagSyliusMolliePlugin/Resources/config/state_machine.yml" }
+
+twig:
+    globals:
+        subscription_mollie_repository: "@bitbag_sylius_mollie_plugin.repository.subscription"
+
+sylius_grid:
+    templates:
+        action:
+            cancel_subscription_mollie: "@BitBagSyliusMolliePlugin/Grid/Action/cancelSubscriptionMollie.html.twig"

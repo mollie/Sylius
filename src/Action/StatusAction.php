@@ -12,35 +12,18 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Action;
 
+use BitBag\SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Exception\RequestNotSupportedException;
-use Payum\Core\Exception\UnsupportedApiException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\GetStatusInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
 
-final class StatusAction implements ActionInterface, GatewayAwareInterface, ApiAwareInterface
+final class StatusAction extends BaseApiAwareAction implements ActionInterface, GatewayAwareInterface, ApiAwareInterface
 {
     use GatewayAwareTrait;
-
-    /**
-     * @var \Mollie_API_Client
-     */
-    private $mollieApiClient;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setApi($mollieApiClient): void
-    {
-        if (false === $mollieApiClient instanceof \Mollie_API_Client) {
-            throw new UnsupportedApiException('Not supported.Expected an instance of ' . \Mollie_API_Client::class);
-        }
-
-        $this->mollieApiClient = $mollieApiClient;
-    }
 
     /**
      * {@inheritdoc}
@@ -56,51 +39,64 @@ final class StatusAction implements ActionInterface, GatewayAwareInterface, ApiA
 
         $details = $payment->getDetails();
 
-        if (false === isset($details['mollie_id'])) {
+        if (!isset($details['payment_mollie_id']) && !isset($details['subscription_mollie_id'])) {
             $request->markNew();
 
             return;
         }
 
-        $paymentData = $this->mollieApiClient->payments->get($details['mollie_id']);
+        if (true === isset($details['subscription_mollie_id'])) {
+            $subscription = $this->mollieApiClient->customers_subscriptions->withParentId($details['customer_mollie_id'])->get($details['subscription_mollie_id']);
 
-        if (true === $paymentData->isPaid() || true === $paymentData->isPaidOut()) {
-            $request->markCaptured();
-
-            return;
-        }
-
-        if (true === $paymentData->isPending()) {
-            $request->markPending();
-
-            return;
-        }
-
-        if (true === $paymentData->isCancelled()) {
-            $request->markCanceled();
-
-            return;
-        }
-
-        if (true === $paymentData->isFailed()) {
-            $request->markFailed();
+            switch ($subscription->status) {
+                case \Mollie_API_Object_Customer_Subscription::STATUS_CANCELLED:
+                    $request->markCanceled();
+                    break;
+                case \Mollie_API_Object_Customer_Subscription::STATUS_ACTIVE:
+                case \Mollie_API_Object_Customer_Subscription::STATUS_PENDING:
+                case \Mollie_API_Object_Customer_Subscription::STATUS_COMPLETED:
+                case \Mollie_API_Object_Customer_Subscription::STATUS_SUSPENDED:
+                    $request->markCaptured();
+                    break;
+                default:
+                    $request->markUnknown();
+                    break;
+            }
 
             return;
         }
 
-        if (true === $paymentData->isExpired()) {
-            $request->markExpired();
+        $paymentData = $this->mollieApiClient->payments->get($details['payment_mollie_id']);
 
-            return;
+        switch ($paymentData->status) {
+            case \Mollie_API_Object_Payment::STATUS_OPEN:
+                $request->markNew();
+                break;
+            case \Mollie_API_Object_Payment::STATUS_PAID:
+                $request->markCaptured();
+                break;
+            case \Mollie_API_Object_Payment::STATUS_CANCELLED:
+                $request->markCanceled();
+                break;
+            case \Mollie_API_Object_Payment::STATUS_PENDING:
+                $request->markPending();
+                break;
+            case \Mollie_API_Object_Payment::STATUS_FAILED:
+                $request->markFailed();
+                break;
+            case \Mollie_API_Object_Payment::STATUS_PAIDOUT:
+                $request->markPayedout();
+                break;
+            case \Mollie_API_Object_Payment::STATUS_EXPIRED:
+                $request->markExpired();
+                break;
+            case \Mollie_API_Object_Payment::STATUS_REFUNDED:
+                $request->markRefunded();
+                break;
+            default:
+                $request->markUnknown();
+                break;
         }
-
-        if (true === $paymentData->isChargedBack() || true === $paymentData->isRefunded()) {
-            $request->markRefunded();
-
-            return;
-        }
-
-        $request->markUnknown();
     }
 
     /**

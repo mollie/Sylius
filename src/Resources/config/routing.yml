@@ -7,3 +7,20 @@ sylius_admin_order_payment_refund:
 bitbag_sylius_mollie_plugin_payum_refund:
     resource: "@PayumBundle/Resources/config/routing/refund.xml"
     prefix: /admin
+
+bitbag_sylius_mollie_plugin_cancel_subscription_mollie:
+    path: /account/order/{orderId}/subscription-mollie/cancel
+    methods: [PUT]
+    defaults:
+        _controller: bitbag_sylius_mollie_plugin.controller.subscription:applyStateMachineTransitionAction
+        _sylius:
+            permission: true
+            repository:
+                method: findOneByOrderId
+                arguments:
+                    - $orderId
+            state_machine:
+                graph: mollie_subscription
+                transition: cancel
+            redirect: referer
+            flash: bitbag_sylius_mollie_plugin.subscription.cancelled

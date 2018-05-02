@@ -1,0 +1,7 @@
+sylius_resource:
+    resources:
+        bitbag_sylius_mollie_plugin.subscription:
+            driver: doctrine/orm
+            classes:
+                model: BitBag\SyliusMolliePlugin\Entity\Subscription
+                repository: BitBag\SyliusMolliePlugin\Repository\SubscriptionRepository

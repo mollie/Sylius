@@ -52,7 +52,7 @@ final class RefundActionSpec extends ObjectBehavior
 
         $this->setApi($mollieApiClient);
 
-        $arrayObject = new ArrayObject(['mollie_id' => 1]);
+        $arrayObject = new ArrayObject(['payment_mollie_id' => 1]);
 
         $request->getModel()->willReturn($arrayObject);
 

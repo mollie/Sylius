@@ -12,36 +12,19 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Action;
 
+use BitBag\SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
-use Payum\Core\Exception\UnsupportedApiException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Refund;
 use Sylius\Component\Resource\Exception\UpdateHandlingException;
 
-final class RefundAction implements ActionInterface, ApiAwareInterface, GatewayAwareInterface
+final class RefundAction extends BaseApiAwareAction implements ActionInterface, ApiAwareInterface, GatewayAwareInterface
 {
     use GatewayAwareTrait;
-
-    /**
-     * @var \Mollie_API_Client
-     */
-    private $mollieApiClient;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setApi($mollieApiClient): void
-    {
-        if (false === $mollieApiClient instanceof \Mollie_API_Client) {
-            throw new UnsupportedApiException('Not supported.Expected an instance of ' . \Mollie_API_Client::class);
-        }
-
-        $this->mollieApiClient = $mollieApiClient;
-    }
 
     /**
      * {@inheritdoc}
@@ -55,7 +38,7 @@ final class RefundAction implements ActionInterface, ApiAwareInterface, GatewayA
         $details = ArrayObject::ensureArrayObject($request->getModel());
 
         try {
-            $payment = $this->mollieApiClient->payments->get($details['mollie_id']);
+            $payment = $this->mollieApiClient->payments->get($details['payment_mollie_id']);
 
             if (true === $payment->canBeRefunded()) {
                 $this->mollieApiClient->payments->refund($payment, $details['amount']);

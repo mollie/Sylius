@@ -13,10 +13,10 @@ declare(strict_types=1);
 namespace Tests\BitBag\SyliusMolliePlugin\Behat\Context\Ui\Shop;
 
 use Behat\Behat\Context\Context;
-use Sylius\Behat\Page\Shop\Checkout\CompletePageInterface;
 use Sylius\Behat\Page\Shop\Order\ShowPageInterface;
 use Tests\BitBag\SyliusMolliePlugin\Behat\Mocker\MollieApiMocker;
 use Tests\BitBag\SyliusMolliePlugin\Behat\Page\External\PaymentPageInterface;
+use Tests\BitBag\SyliusMolliePlugin\Behat\Page\Shop\Checkout\CompletePageInterface;
 
 final class CheckoutContext implements Context
 {
@@ -99,6 +99,24 @@ final class CheckoutContext implements Context
     {
         $this->mollieApiMocker->mockApiCreatePayment(function () {
             $this->orderDetails->pay();
+        });
+    }
+
+    /**
+     * @Given I specify the direct debit for :consumerName, :iban
+     */
+    public function iSpecifyTheDirectDebitFor(string $consumerName, string $iban): void
+    {
+        $this->summaryPage->specifyDirectDebit($consumerName, $iban);
+    }
+
+    /**
+     * @When I confirm my order with Mollie Subscription
+     */
+    public function iConfirmMyOrderWithMollieSubscription(): void
+    {
+        $this->mollieApiMocker->mockApiCreateRecurringSubscription(function () {
+            $this->summaryPage->confirmOrder();
         });
     }
 }

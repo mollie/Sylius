@@ -108,7 +108,7 @@ final class Refund
             return $this->redirectToReferer($request);
         }
 
-        if (!isset($payment->getDetails()['mollie_id']) || !isset($payment->getDetails()['metadata']['refund_token'])) {
+        if (!isset($payment->getDetails()['payment_mollie_id']) || !isset($payment->getDetails()['metadata']['refund_token'])) {
             $this->applyStateMachineTransition($payment);
 
             $this->session->getFlashBag()->add('info', 'bitbag_sylius_mollie_plugin.ui.refunded_only_locally');

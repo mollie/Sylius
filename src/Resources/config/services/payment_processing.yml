@@ -1,0 +1,6 @@
+services:
+    bitbag_sylius_mollie_plugin.payment_processing.cancel_recurring_subscription:
+        class: BitBag\SyliusMolliePlugin\PaymentProcessing\CancelRecurringSubscriptionProcessor
+        arguments:
+            - "@payum"
+            - "@session"

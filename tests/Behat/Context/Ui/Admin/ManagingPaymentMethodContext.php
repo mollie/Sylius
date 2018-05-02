@@ -69,4 +69,28 @@ final class ManagingPaymentMethodContext implements Context
     {
         Assert::true($this->createPage->containsErrorWithMessage($message));
     }
+
+    /**
+     * @Given I want to create a new Mollie recurring subscription
+     */
+    public function iWantToCreateANewMollieRecurringSubscription(): void
+    {
+        $this->createPage->open(['factory' => 'mollie_subscription']);
+    }
+
+    /**
+     * @When I fill the times with :times
+     */
+    public function iFillTheTimesWith(int $times): void
+    {
+        $this->createPage->setTimes($times);
+    }
+
+    /**
+     * @When I fill the interval with :interval
+     */
+    public function iFillTheIntervalWith(string $interval): void
+    {
+        $this->createPage->setInterval($interval);
+    }
 }

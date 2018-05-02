@@ -73,7 +73,7 @@ final class NotifyAction extends BaseApiAwareAction implements ActionInterface, 
             throw new HttpResponse('OK', 200);
         }
 
-        if (true === isset($details['subscription_id'])) {
+        if (true === isset($details['subscription_mollie_id'])) {
             /** @var SubscriptionInterface $subscription */
             $subscription = $this->subscriptionRepository->findOneByOrderId($details['metadata']['order_id']);
 

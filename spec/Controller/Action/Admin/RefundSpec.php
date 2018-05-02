@@ -64,24 +64,16 @@ final class RefundSpec extends ObjectBehavior
         HeaderBag $headerBag
     ): void {
         $request->get('id')->willReturn(1);
-
         $headerBag->get('referer', null, true)->willReturn('wwww.example.com');
-
         $request->headers = $headerBag;
-
         $paymentMethod->getGatewayConfig()->willReturn($gatewayConfig);
-
         $payment->getMethod()->willReturn($paymentMethod);
-
         $paymentRepository->find(1)->willReturn($payment);
-
         $stateMachine->can(PaymentTransitions::TRANSITION_REFUND)->willReturn(true);
+        $session->getFlashBag()->willReturn($flashBag);
+        $stateMachineFactory->get($payment, PaymentTransitions::GRAPH)->willReturn($stateMachine);
 
         $stateMachine->apply(PaymentTransitions::TRANSITION_REFUND)->shouldBeCalled();
-
-        $session->getFlashBag()->willReturn($flashBag);
-
-        $stateMachineFactory->get($payment, PaymentTransitions::GRAPH)->willReturn($stateMachine);
 
         $this->__invoke($request);
     }

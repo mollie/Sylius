@@ -51,9 +51,7 @@ final class StatusActionSpec extends ObjectBehavior
     ): void {
         $this->setApi($mollieApiClient);
         $this->setGateway($gateway);
-
         $payment->getDetails()->willReturn([]);
-
         $request->getModel()->willReturn($payment);
 
         $request->markNew()->shouldBeCalled();

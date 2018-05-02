@@ -13,10 +13,13 @@ declare(strict_types=1);
 namespace spec\BitBag\SyliusMolliePlugin\Action;
 
 use BitBag\SyliusMolliePlugin\Action\ConvertPaymentAction;
+use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
 use Payum\Core\Action\ActionInterface;
+use Payum\Core\GatewayInterface;
 use Payum\Core\Request\Convert;
 use PhpSpec\ObjectBehavior;
 use Sylius\Bundle\PayumBundle\Provider\PaymentDescriptionProviderInterface;
+use Sylius\Component\Core\Model\CustomerInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
 
@@ -41,23 +44,37 @@ final class ConvertPaymentActionSpec extends ObjectBehavior
         Convert $request,
         PaymentInterface $payment,
         OrderInterface $order,
+        CustomerInterface $customer,
+        GatewayInterface $gateway,
+        MollieApiClient $mollieApiClient,
         PaymentDescriptionProviderInterface $paymentDescriptionProvider
     ): void {
+        $mollieApiClient->isRecurringSubscription()->willReturn(false);
+        $this->setApi($mollieApiClient);
+        $this->setGateway($gateway);
+        $customer->getFullName()->willReturn('Jan Kowalski');
+        $customer->getEmail()->willReturn('shop@example.com');
+        $customer->getId()->willReturn(1);
         $order->getId()->willReturn(1);
         $order->getLocaleCode()->willReturn('pl_PL');
-
+        $order->getCustomer()->willReturn($customer);
         $payment->getOrder()->willReturn($order);
         $payment->getAmount()->willReturn(445535);
-
+        $payment->getCurrencyCode()->willReturn('EUR');
         $paymentDescriptionProvider->getPaymentDescription($payment)->willReturn('description');
-
         $request->getSource()->willReturn($payment);
         $request->getTo()->willReturn('array');
+
         $request->setResult([
-            'amount' => 4455.35,
+            'amount' => 445535,
             'description' => 'description',
             'locale' => 'en_US',
-            'metadata' => ['order_id' => 1],
+            'metadata' => [
+                'order_id' => 1,
+                'customer_id' => 1,
+            ],
+            'full_name' => 'Jan Kowalski',
+            'email' => 'shop@example.com',
         ])->shouldBeCalled();
 
         $this->execute($request);

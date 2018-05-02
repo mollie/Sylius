@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace spec\BitBag\SyliusMolliePlugin\Action;
 
 use BitBag\SyliusMolliePlugin\Action\NotifyAction;
+use BitBag\SyliusMolliePlugin\Repository\SubscriptionRepositoryInterface;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayAwareInterface;
@@ -23,9 +24,9 @@ use PhpSpec\ObjectBehavior;
 
 final class NotifyActionSpec extends ObjectBehavior
 {
-    function let(GetHttpRequest $getHttpRequest): void
+    function let(GetHttpRequest $getHttpRequest, SubscriptionRepositoryInterface $subscriptionRepository): void
     {
-        $this->beConstructedWith($getHttpRequest);
+        $this->beConstructedWith($getHttpRequest, $subscriptionRepository);
     }
 
     function it_is_initializable(): void
@@ -59,22 +60,15 @@ final class NotifyActionSpec extends ObjectBehavior
         $this->setGateway($gateway);
 
         $this->setApi($mollieApiClient);
-
         $getHttpRequest->request = ['id' => 1];
-
         $request->getModel()->willReturn($arrayObject);
-
         $payment = \Mockery::mock('payment');
-
         $payment->id = 1;
         $payment->metadata = (object) [
             'order_id' => 1,
         ];
-
         $payment->shouldReceive('getPaymentUrl')->andReturn('');
-
         $mollieApiResourceBase->get(1)->willReturn($payment);
-
         $mollieApiClient->payments = $mollieApiResourceBase;
 
         $this->execute($request);

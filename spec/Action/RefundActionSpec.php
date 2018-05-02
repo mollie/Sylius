@@ -49,15 +49,10 @@ final class RefundActionSpec extends ObjectBehavior
         \Mollie_API_Client $mollieApiClient
     ): void {
         $this->setGateway($gateway);
-
         $this->setApi($mollieApiClient);
-
         $arrayObject = new ArrayObject(['payment_mollie_id' => 1]);
-
         $request->getModel()->willReturn($arrayObject);
-
         $payment = \Mockery::mock('payment');
-
         $payment->shouldReceive('canBeRefunded')->andReturn(true);
         $payment->shouldReceive('refund')->andReturn(true);
         $payment->shouldReceive('get')->andReturn($payment);

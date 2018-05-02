@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace spec\BitBag\SyliusMolliePlugin\Action;
 
 use BitBag\SyliusMolliePlugin\Action\RefundAction;
+use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
@@ -46,7 +47,7 @@ final class RefundActionSpec extends ObjectBehavior
     function it_executes(
         Refund $request,
         GatewayInterface $gateway,
-        \Mollie_API_Client $mollieApiClient
+        MollieApiClient $mollieApiClient
     ): void {
         $this->setGateway($gateway);
         $this->setApi($mollieApiClient);

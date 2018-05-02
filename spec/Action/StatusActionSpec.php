@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace spec\BitBag\SyliusMolliePlugin\Action;
 
 use BitBag\SyliusMolliePlugin\Action\StatusAction;
+use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayAwareInterface;
@@ -47,7 +48,7 @@ final class StatusActionSpec extends ObjectBehavior
         GetStatusInterface $request,
         PaymentInterface $payment,
         GatewayInterface $gateway,
-        \Mollie_API_Client $mollieApiClient
+        MollieApiClient $mollieApiClient
     ): void {
         $this->setApi($mollieApiClient);
         $this->setGateway($gateway);

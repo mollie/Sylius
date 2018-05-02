@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace spec\BitBag\SyliusMolliePlugin\Action;
 
 use BitBag\SyliusMolliePlugin\Action\NotifyAction;
+use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
 use BitBag\SyliusMolliePlugin\Repository\SubscriptionRepositoryInterface;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
@@ -54,7 +55,7 @@ final class NotifyActionSpec extends ObjectBehavior
         \ArrayObject $arrayObject,
         GatewayInterface $gateway,
         GetHttpRequest $getHttpRequest,
-        \Mollie_API_Client $mollieApiClient,
+        MollieApiClient $mollieApiClient,
         \Mollie_API_Resource_Base $mollieApiResourceBase
     ): void {
         $this->setGateway($gateway);

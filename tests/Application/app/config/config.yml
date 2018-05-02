@@ -65,17 +65,3 @@ fos_rest:
 sylius_theme:
     sources:
         test: ~
-
-sylius_grid:
-    grids:
-        sylius_shop_account_order:
-            actions:
-                item:
-                    cancel_subscription_mollie:
-                        type: cancel_subscription_mollie
-                        label: bitbag_sylius_mollie_plugin.ui.cancel_subscription
-                        options:
-                            link:
-                                route: bitbag_sylius_mollie_plugin_cancel_subscription_mollie
-                                parameters:
-                                    orderId: resource.id

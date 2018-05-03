@@ -1,7 +1,7 @@
 {
     "name": "sylius/plugin-skeleton",
     "type": "sylius-plugin",
-    "description": "Acme example plugin for Sylius.",
+    "description": "Mollie payment plugin for Sylius applications.",
     "license": "MIT",
     "require": {
         "php": "^7.1",

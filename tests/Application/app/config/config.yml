@@ -8,6 +8,8 @@ imports:
     - { resource: "@SyliusShopBundle/Resources/config/app/config.yml" }
     - { resource: "@SyliusAdminApiBundle/Resources/config/app/config.yml" }
 
+    - { resource: "@BitBagSyliusMolliePlugin/Resources/config/config.yml" }
+
     - { resource: "../../../../vendor/sylius/sylius/app/config/security.yml" }
 
 framework:
@@ -46,7 +48,6 @@ swiftmailer:
 doctrine:
     dbal:
         driver: "pdo_sqlite"
-        path: "%kernel.root_dir%/../var/db.sql"
         charset: UTF8
 
 fos_rest:

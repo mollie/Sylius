@@ -18,8 +18,6 @@ use Payum\Core\GatewayFactory;
 final class MollieGatewayFactory extends GatewayFactory
 {
     const FACTORY_NAME = 'mollie';
-    const LOCALES_AVAILABLE = ['en_US', 'de_AT', 'de_CH', 'de_DE', 'es_ES', 'fr_BE', 'fr_FR', 'nl_BE', 'nl_NL'];
-    const CURRENCIES_AVAILABLE = ['EUR'];
 
     /**
      * {@inheritdoc}
@@ -29,6 +27,7 @@ final class MollieGatewayFactory extends GatewayFactory
         $config->defaults([
             'payum.factory_name' => self::FACTORY_NAME,
             'payum.factory_title' => 'Mollie',
+            'payum.http_client' => '@bitbag_sylius_mollie_plugin.mollie_api_client',
         ]);
 
         if (false === (bool) $config['payum.api']) {

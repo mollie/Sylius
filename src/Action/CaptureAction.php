@@ -12,11 +12,14 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Action;
 
+use BitBag\SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
+use BitBag\SyliusMolliePlugin\Request\Api\CreateRecurringSubscription;
+use BitBag\SyliusMolliePlugin\Request\Api\CreateSepaMandate;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
-use Payum\Core\Exception\UnsupportedApiException;
+use Payum\Core\Exception\RuntimeException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Reply\HttpPostRedirect;
@@ -25,31 +28,14 @@ use Payum\Core\Security\GenericTokenFactoryAwareInterface;
 use Payum\Core\Security\GenericTokenFactoryInterface;
 use Payum\Core\Security\TokenInterface;
 
-final class CaptureAction implements ActionInterface, ApiAwareInterface, GenericTokenFactoryAwareInterface, GatewayAwareInterface
+final class CaptureAction extends BaseApiAwareAction implements ActionInterface, ApiAwareInterface, GenericTokenFactoryAwareInterface, GatewayAwareInterface
 {
     use GatewayAwareTrait;
-
-    /**
-     * @var \Mollie_API_Client
-     */
-    private $mollieApiClient;
 
     /**
      * @var GenericTokenFactoryInterface|null
      */
     private $tokenFactory;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setApi($mollieApiClient): void
-    {
-        if (false === $mollieApiClient instanceof \Mollie_API_Client) {
-            throw new UnsupportedApiException('Not supported.Expected an instance of ' . \Mollie_API_Client::class);
-        }
-
-        $this->mollieApiClient = $mollieApiClient;
-    }
 
     /**
      * @param GenericTokenFactoryInterface $genericTokenFactory
@@ -68,29 +54,57 @@ final class CaptureAction implements ActionInterface, ApiAwareInterface, Generic
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
-        /** @var ArrayObject $details */
-        $details = $request->getModel();
+        $details = ArrayObject::ensureArrayObject($request->getModel());
 
-        if (true === isset($details['id'])) {
+        if (true === isset($details['payment_mollie_id']) || true === isset($details['subscription_mollie_id'])) {
             return;
         }
 
         /** @var TokenInterface $token */
         $token = $request->getToken();
 
-        if (null !== $this->tokenFactory) {
-            $notifyToken = $this->tokenFactory->createNotifyToken($token->getGatewayName(), $token->getDetails());
-
-            $details['webhookUrl'] = $notifyToken->getTargetUrl();
+        if (null === $this->tokenFactory) {
+            throw new RuntimeException();
         }
 
-        $details['redirectUrl'] = $token->getTargetUrl();
+        $notifyToken = $this->tokenFactory->createNotifyToken($token->getGatewayName(), $token->getDetails());
+        $refundToken = $this->tokenFactory->createRefundToken($token->getGatewayName(), $token->getDetails());
 
-        $payment = $this->mollieApiClient->payments->create($details->toUnsafeArray());
+        $details['webhookUrl'] = $notifyToken->getTargetUrl();
 
-        $details['id'] = $payment->id;
+        if (true === $this->mollieApiClient->isRecurringSubscription()) {
+            $cancelToken = $this->tokenFactory->createToken(
+                $token->getGatewayName(),
+                $token->getDetails(),
+                'bitbag_sylius_mollie_plugin_cancel_subscription_mollie',
+                ['orderId' => $details['metadata']['order_id']]
+            );
 
-        throw new HttpPostRedirect($payment->getPaymentUrl());
+            $details['cancel_token'] = $cancelToken->getHash();
+
+            $this->gateway->execute(new CreateSepaMandate($details));
+            $this->gateway->execute(new CreateRecurringSubscription($details));
+        }
+
+        if (false === $this->mollieApiClient->isRecurringSubscription()) {
+            $metadata = $details['metadata'];
+
+            $metadata['refund_token'] = $refundToken->getHash();
+
+            $details['metadata'] = $metadata;
+
+            $payment = $this->mollieApiClient->payments->create([
+                'amount' => $details['amount'],
+                'description' => $details['description'],
+                'redirectUrl' => $token->getTargetUrl(),
+                'webhookUrl' => $details['webhookUrl'],
+                'metadata' => $details['metadata'],
+            ]);
+
+            $details['payment_mollie_id'] = $payment->id;
+
+            throw new HttpPostRedirect($payment->getPaymentUrl());
+        }
     }
 
     /**

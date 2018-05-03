@@ -3,10 +3,12 @@ imports:
     - { resource: "services/gateway_factory.yml" }
     - { resource: "services/action.yml" }
     - { resource: "services/validators.yml" }
+    - { resource: "services/controller.yml" }
+    - { resource: "services/payment_processing.yml" }
 
 services:
     bitbag_sylius_mollie_plugin.mollie_api_client:
-        class: \Mollie_API_Client
+        class: BitBag\SyliusMolliePlugin\Client\MollieApiClient
 
     bitbag_sylius_mollie_plugin.get_http_request:
         class: Payum\Core\Request\GetHttpRequest

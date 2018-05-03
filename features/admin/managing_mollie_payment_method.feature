@@ -5,7 +5,7 @@ Feature: Adding a new mollie payment method
     I want to add a new payment method to the registry
 
     Background:
-        Given the store operates on a channel named "Web-EUR" in "eur" currency
+        Given the store operates on a channel named "Web-EUR" in "EUR" currency
         And I am logged in as an administrator
 
     @ui

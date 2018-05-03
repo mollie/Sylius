@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Validator\Constraints;
 
 use BitBag\SyliusMolliePlugin\MollieGatewayFactory;
+use BitBag\SyliusMolliePlugin\MollieGatewayFactoryInterface;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\PaymentMethodInterface;
 use Symfony\Component\Validator\Constraint;
@@ -43,7 +44,7 @@ final class CurrencyValidator extends ConstraintValidator
         foreach ($paymentMethod->getChannels() as $channel) {
             if (
                 null === $channel->getBaseCurrency() ||
-                false === in_array(strtoupper($channel->getBaseCurrency()->getCode()), MollieGatewayFactory::CURRENCIES_AVAILABLE)
+                false === in_array(strtoupper($channel->getBaseCurrency()->getCode()), MollieGatewayFactoryInterface::CURRENCIES_AVAILABLE)
             ) {
                 $message = isset($constraint->message) ? $constraint->message : null;
 

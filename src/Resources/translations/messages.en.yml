@@ -2,3 +2,12 @@ bitbag_sylius_mollie_plugin:
     ui:
         api_key: API Key
         mollie_gateway_label: Mollie
+        refunded_only_locally: The payment refund was made only locally
+        times: Times
+        interval: Interval
+        mollie_subscription_gateway_label: Mollie subscription
+        consumer_name: Consumer name
+        iban: IBAN
+        cancel_subscription: Cancel subscription
+    subscription:
+        cancel: Subscription has been successfully canceled.

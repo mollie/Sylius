@@ -28,6 +28,22 @@ final class CreatePage extends BaseCreatePage implements CreatePageInterface
     /**
      * {@inheritdoc}
      */
+    public function setTimes(int $times): void
+    {
+        $this->getDocument()->fillField('Times', $times);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setInterval(string $interval): void
+    {
+        $this->getDocument()->fillField('Interval', $interval);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function containsErrorWithMessage(string $message, bool $strict = true): bool
     {
         $validationMessageElements = $this->getDocument()->findAll('css', '.sylius-validation-error');

@@ -44,11 +44,8 @@ final class CurrencyValidatorSpec extends ObjectBehavior
         GatewayConfigInterface $gatewayConfig
     ): void {
         $currencyConstraint = new Currency();
-
         $gatewayConfig->getFactoryName()->willReturn(MollieGatewayFactory::FACTORY_NAME);
-
         $paymentMethod->getGatewayConfig()->willReturn($gatewayConfig);
-
         $paymentMethod->getChannels()->willReturn(new ArrayCollection([]));
 
         $this->validate($paymentMethod, $currencyConstraint);

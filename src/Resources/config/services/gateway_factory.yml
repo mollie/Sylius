@@ -5,3 +5,10 @@ services:
             -  BitBag\SyliusMolliePlugin\MollieGatewayFactory
         tags:
             - { name: payum.gateway_factory_builder, factory: mollie }
+
+    bitbag_sylius_mollie_plugin.gateway_factory.mollie_subscription:
+        class: Payum\Core\Bridge\Symfony\Builder\GatewayFactoryBuilder
+        arguments:
+            -  BitBag\SyliusMolliePlugin\MollieSubscriptionGatewayFactory
+        tags:
+            - { name: payum.gateway_factory_builder, factory: mollie_subscription }

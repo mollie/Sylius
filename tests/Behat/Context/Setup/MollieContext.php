@@ -14,6 +14,7 @@ namespace Tests\BitBag\SyliusMolliePlugin\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use BitBag\SyliusMolliePlugin\MollieGatewayFactory;
+use BitBag\SyliusMolliePlugin\MollieSubscriptionGatewayFactory;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sylius\Behat\Service\SharedStorageInterface;
 use Sylius\Bundle\CoreBundle\Fixture\Factory\ExampleFactoryInterface;
@@ -74,7 +75,12 @@ final class MollieContext implements Context
      */
     public function theStoreHasAPaymentMethodWithACodeAndMolliePaymentGateway(string $paymentMethodName, string $paymentMethodCode): void
     {
-        $paymentMethod = $this->createPaymentMethodMollie($paymentMethodName, $paymentMethodCode, 'Mollie');
+        $paymentMethod = $this->createPaymentMethodMollie(
+            $paymentMethodName,
+            $paymentMethodCode,
+            MollieGatewayFactory::FACTORY_NAME,
+            'Mollie'
+        );
 
         $paymentMethod->getGatewayConfig()->setConfig([
             'api_key' => 'test',
@@ -85,8 +91,31 @@ final class MollieContext implements Context
     }
 
     /**
+     * @Given the store has a payment method :paymentMethodName with a code :paymentMethodCode and Mollie Subscription payment gateway
+     */
+    public function theStoreHasAPaymentMethodWithACodeAndMollieSubscriptionPaymentGateway(string $paymentMethodName, string $paymentMethodCode): void
+    {
+        $paymentMethod = $this->createPaymentMethodMollie(
+            $paymentMethodName,
+            $paymentMethodCode,
+            MollieSubscriptionGatewayFactory::FACTORY_NAME,
+            'Mollie Subscription'
+        );
+
+        $paymentMethod->getGatewayConfig()->setConfig([
+            'api_key' => 'test',
+            'payum.http_client' => '@bitbag_sylius_mollie_plugin.mollie_api_client',
+            'times' => 1,
+            'interval' => '1 months',
+        ]);
+
+        $this->paymentMethodManager->flush();
+    }
+
+    /**
      * @param string $name
      * @param string $code
+     * @param string $factoryName
      * @param string $description
      * @param bool $addForCurrentChannel
      * @param int|null $position
@@ -96,6 +125,7 @@ final class MollieContext implements Context
     private function createPaymentMethodMollie(
         string $name,
         string $code,
+        string $factoryName,
         string $description = '',
         bool $addForCurrentChannel = true,
         int $position = null
@@ -105,8 +135,8 @@ final class MollieContext implements Context
             'name' => ucfirst($name),
             'code' => $code,
             'description' => $description,
-            'gatewayName' => MollieGatewayFactory::FACTORY_NAME,
-            'gatewayFactory' => 'mollie',
+            'gatewayName' => $factoryName,
+            'gatewayFactory' => $factoryName,
             'enabled' => true,
             'channels' => ($addForCurrentChannel && $this->sharedStorage->has('channel')) ? [$this->sharedStorage->get('channel')] : [],
         ]);

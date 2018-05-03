@@ -5,3 +5,13 @@ bitbag_sylius_mollie_plugin:
         min_length: API key must be at least {{ limit }} characters long.
     channel:
         required_currency: The base currency of the channel must be EUR.
+    times:
+        min_range: Times cannot be lower than {{ limit }}.
+    interval:
+        not_blank: Interval cannot be blank.
+        invalid: "Invalid interval format. Possible values: … months … weeks … days"
+    consumer_name:
+        not_blank: Consumer name cannot be blank.
+    iban:
+        not_blank: IBAN cannot be blank.
+        incorrect: Incorrect IBAN number.

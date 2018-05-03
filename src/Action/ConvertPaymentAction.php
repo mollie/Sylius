@@ -12,16 +12,20 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Action;
 
-use BitBag\SyliusMolliePlugin\MollieGatewayFactory;
+use BitBag\SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
+use BitBag\SyliusMolliePlugin\MollieGatewayFactoryInterface;
 use Payum\Core\Action\ActionInterface;
+use Payum\Core\ApiAwareInterface;
 use Payum\Core\Exception\RequestNotSupportedException;
+use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Convert;
+use Payum\Core\Request\GetCurrency;
 use Sylius\Bundle\PayumBundle\Provider\PaymentDescriptionProviderInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
 
-final class ConvertPaymentAction implements ActionInterface
+final class ConvertPaymentAction extends BaseApiAwareAction implements ActionInterface, GatewayAwareInterface, ApiAwareInterface
 {
     use GatewayAwareTrait;
 
@@ -53,14 +57,33 @@ final class ConvertPaymentAction implements ActionInterface
         /** @var OrderInterface $order */
         $order = $payment->getOrder();
 
+        $customer = $order->getCustomer();
+
+        $this->gateway->execute($currency = new GetCurrency($payment->getCurrencyCode()));
+
+        $divisor = 10 ** $currency->exp;
+
         $details = [
-            'amount' => abs($payment->getAmount() / 100),
+            'amount' => (float) $payment->getAmount() / $divisor,
             'description' => $this->paymentDescriptionProvider->getPaymentDescription($payment),
-            'locale' => true === in_array($order->getLocaleCode(), MollieGatewayFactory::LOCALES_AVAILABLE) ? $order->getLocaleCode() : 'en_US',
             'metadata' => [
                 'order_id' => $order->getId(),
+                'customer_id' => $customer->getId() ?? null,
             ],
+            'full_name' => $customer->getFullName() ?? null,
+            'email' => $customer->getEmail() ?? null,
         ];
+
+        if (true === $this->mollieApiClient->isRecurringSubscription()) {
+            $config = $this->mollieApiClient->getConfig();
+
+            $details['times'] = $config['times'];
+            $details['interval'] = $config['interval'];
+        }
+
+        if (false === $this->mollieApiClient->isRecurringSubscription()) {
+            $details['locale'] = true === in_array($order->getLocaleCode(), MollieGatewayFactoryInterface::LOCALES_AVAILABLE) ? $order->getLocaleCode() : 'en_US';
+        }
 
         $request->setResult($details);
     }

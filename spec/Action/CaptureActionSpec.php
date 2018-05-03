@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace spec\BitBag\SyliusMolliePlugin\Action;
 
 use BitBag\SyliusMolliePlugin\Action\CaptureAction;
+use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
@@ -63,47 +64,49 @@ final class CaptureActionSpec extends ObjectBehavior
         Payum $payum,
         GenericTokenFactory $genericTokenFactory,
         GatewayInterface $gateway,
-        \Mollie_API_Client $mollieApiClient,
+        MollieApiClient $mollieApiClient,
         \Mollie_API_Resource_Base $mollieApiResourceBase
     ): void {
         $this->setGateway($gateway);
-
+        $mollieApiClient->isRecurringSubscription()->willReturn(false);
         $this->setApi($mollieApiClient);
-
         $notifyToken->getTargetUrl()->willReturn('url');
         $notifyToken->getHash()->willReturn('test');
-
         $token->getTargetUrl()->willReturn('url');
         $token->getAfterUrl()->willReturn('url');
         $token->getGatewayName()->willReturn('test');
         $token->getDetails()->willReturn([]);
         $token->getHash()->willReturn('test');
-
         $genericTokenFactory->createNotifyToken('test', [])->willReturn($notifyToken);
-
+        $genericTokenFactory->createRefundToken('test', [])->willReturn($notifyToken);
         $this->setGenericTokenFactory($genericTokenFactory);
-
         $payum->getTokenFactory()->willReturn($genericTokenFactory);
-
         $arrayObject->toUnsafeArray()->willReturn([]);
-        $arrayObject->offsetExists('id')->shouldBeCalled();
-        $arrayObject->offsetSet('redirectUrl', 'url')->shouldBeCalled();
-        $arrayObject->offsetSet('webhookUrl', 'url')->shouldBeCalled();
-        $arrayObject->offsetSet('id', 1)->shouldBeCalled();
-
         $request->getModel()->willReturn($arrayObject);
         $request->getFirstModel()->willReturn($payment);
         $request->getToken()->willReturn($token);
-
         $payment = \Mockery::mock('payment');
-
         $payment->id = 1;
-
         $payment->shouldReceive('getPaymentUrl')->andReturn('');
-
-        $mollieApiResourceBase->create([])->willReturn($payment);
-
+        $mollieApiResourceBase->create([
+            'amount' => null,
+            'description' => null,
+            'redirectUrl' => 'url',
+            'webhookUrl' => null,
+            'metadata' => null,
+        ])->willReturn($payment);
         $mollieApiClient->payments = $mollieApiResourceBase;
+
+        $arrayObject->offsetGet('description')->shouldBeCalled();
+        $arrayObject->offsetGet('webhookUrl')->shouldBeCalled();
+        $arrayObject->offsetGet('amount')->shouldBeCalled();
+        $arrayObject->offsetExists('subscription_mollie_id')->shouldBeCalled();
+        $arrayObject->offsetExists('payment_mollie_id')->shouldBeCalled();
+        $arrayObject->offsetExists('payment_mollie_id')->shouldBeCalled();
+        $arrayObject->offsetGet('metadata')->shouldBeCalled();
+        $arrayObject->offsetSet('metadata', ['refund_token' => 'test'])->shouldBeCalled();
+        $arrayObject->offsetSet('payment_mollie_id', 1)->shouldBeCalled();
+        $arrayObject->offsetSet('webhookUrl', 'url')->shouldBeCalled();
 
         $this
             ->shouldThrow(HttpPostRedirect::class)

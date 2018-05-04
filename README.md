@@ -85,10 +85,6 @@ $ bin/console doctrine:migrations:migrate
 
 ### Rendering Mollie credit card form
 
-<div align="center">
-    <img src="doc/index.jpg" />
-</div>
-
 You can  use `BitBagSyliusMolliePlugin:DirectDebit:_form.html.twig` templates for adding the form to supplementing the direct debit card data from the Twig UI.  
 
 For an example on how to do that, take a look at [these source files](https://github.com/BitBagCommerce/SyliusMolliePlugin/tree/master/tests/Application/app/Resources/SyliusShopBundle/views).

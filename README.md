@@ -83,7 +83,7 @@ $ bin/console doctrine:migrations:migrate
 
 ## Usage
 
-### Rendering the mollie
+### Rendering Mollie credit card form
 
 <div align="center">
     <img src="doc/index.jpg" />
@@ -103,15 +103,15 @@ Run the below command to see what Symfony services are shared with this plugin:
 $ bin/console debug:container bitbag_sylius_mollie_plugin
 ```
 
-## Recurring Subscription Mollie
+## Recurring subscription
 
 ### State Machine
 
-For better integration with Mollie's recurring subscription, [you can use state machine callback](http://docs.sylius.com/en/1.1/customization/state_machine.html#how-to-add-a-new-callback)
+For a better integration with Mollie’s recurring subscription, [you can use state machine callback.](http://docs.sylius.com/en/1.1/customization/state_machine.html#how-to-add-a-new-callback)
 
 Available states:
 
-- Processing: Subscription created but not active yet (because startdate is in the future)
+- Processing: Subscription created but not active yet (startdate higher than “now”)
 - Active: Subscription is in progress. Not all payments are done, but we wait until the next payment date
 - Cancelled: The merchant cancelled the subscription
 - Suspended: Mandates became invalid, so the subscription is suspended

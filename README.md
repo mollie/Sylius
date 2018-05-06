@@ -22,7 +22,7 @@
 
 ## Overview
 
-This plugin allows you to integrate Mollie payment with Sylius platform app.
+This plugin allows you to integrate Mollie payment with Sylius platform app. It includes all Sylius and Mollie payment features, including recurring payment and refunding orders.
 
 ## Support
 

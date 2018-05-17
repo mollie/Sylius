@@ -36,7 +36,7 @@ The admin can be accessed under [demo.bitbag.shop/admin](https://demo.bitbag.sho
 
 ## Installation
 ```bash
-$ composer require bitbag/mollie-plugin
+$ composer require bitbag/mollie-plugin 
 ```
     
 Add plugin dependencies to your AppKernel.php file:

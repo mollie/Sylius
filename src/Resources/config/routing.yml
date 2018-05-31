@@ -14,7 +14,6 @@ bitbag_sylius_mollie_plugin_cancel_subscription_mollie:
     defaults:
         _controller: bitbag_sylius_mollie_plugin.controller.subscription:applyStateMachineTransitionAction
         _sylius:
-            permission: true
             repository:
                 method: findOneByOrderId
                 arguments:

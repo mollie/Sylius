@@ -19,6 +19,7 @@ use BitBag\SyliusMolliePlugin\Request\StateMachine\StatusRecurringSubscription;
 use BitBag\SyliusMolliePlugin\Transitions\SubscriptionTransitions;
 use Doctrine\ORM\EntityManagerInterface;
 use Mollie\Api\Resources\Customer;
+use Mollie\Api\Resources\Subscription;
 use Mollie\Api\Types\SubscriptionStatus;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
@@ -64,6 +65,7 @@ final class StatusRecurringSubscriptionAction extends BaseApiAwareAction impleme
         /** @var Customer $customer */
         $customer = $this->mollieApiClient->customers->get($subscription->getCustomerId());
 
+        /** @var Subscription $subscriptionApiResult */
         $subscriptionApiResult = $customer->getSubscription($subscription->getSubscriptionId());
 
         switch ($subscriptionApiResult->status) {

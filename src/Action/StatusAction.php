@@ -14,6 +14,7 @@ namespace BitBag\SyliusMolliePlugin\Action;
 
 use BitBag\SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
 use Mollie\Api\Resources\Customer;
+use Mollie\Api\Resources\Subscription;
 use Mollie\Api\Types\PaymentStatus;
 use Mollie\Api\Types\SubscriptionStatus;
 use Payum\Core\Action\ActionInterface;
@@ -52,6 +53,7 @@ final class StatusAction extends BaseApiAwareAction implements ActionInterface, 
             /** @var Customer $customer */
             $customer = $this->mollieApiClient->customers->get($details['customer_mollie_id']);
 
+            /** @var Subscription $subscription */
             $subscription = $customer->getSubscription($details['subscription_mollie_id']);
 
             switch ($subscription->status) {

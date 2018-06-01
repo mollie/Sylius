@@ -17,6 +17,7 @@ use BitBag\SyliusMolliePlugin\Request\Api\CreateRecurringSubscription;
 use BitBag\SyliusMolliePlugin\Request\StateMachine\StatusRecurringSubscription;
 use Doctrine\ORM\EntityManagerInterface;
 use Mollie\Api\Resources\Customer;
+use Mollie\Api\Resources\Subscription;
 use Mollie\Api\Types\MandateMethod;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
@@ -89,6 +90,7 @@ final class CreateRecurringSubscriptionAction extends BaseApiAwareAction impleme
         /** @var Customer $customer */
         $customer = $this->mollieApiClient->customers->get($model['customer_mollie_id']);
 
+        /** @var Subscription $subscriptionApiResult */
         $subscriptionApiResult = $customer->createSubscription([
             'amount' => $model['amount'],
             'interval' => $model['interval'],

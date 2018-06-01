@@ -15,6 +15,7 @@ namespace BitBag\SyliusMolliePlugin\Action;
 use BitBag\SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
 use BitBag\SyliusMolliePlugin\Request\Api\CreateRecurringSubscription;
 use BitBag\SyliusMolliePlugin\Request\Api\CreateSepaMandate;
+use Mollie\Api\Resources\Payment;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
@@ -93,6 +94,7 @@ final class CaptureAction extends BaseApiAwareAction implements ActionInterface,
 
             $details['metadata'] = $metadata;
 
+            /** @var Payment $payment */
             $payment = $this->mollieApiClient->payments->create([
                 'amount' => $details['amount'],
                 'description' => $details['description'],

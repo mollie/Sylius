@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin;
 
+use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\GatewayFactory;
 
@@ -44,7 +45,7 @@ final class MollieGatewayFactory extends GatewayFactory
             $config['payum.api'] = function (ArrayObject $config) {
                 $config->validateNotEmpty($config['payum.required_options']);
 
-                /** @var \Mollie_API_Client $mollieApiClient */
+                /** @var MollieApiClient $mollieApiClient */
                 $mollieApiClient = $config['payum.http_client'];
 
                 $mollieApiClient->setApiKey($config['api_key']);

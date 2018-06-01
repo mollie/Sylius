@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Action\Api;
 
 use BitBag\SyliusMolliePlugin\Request\Api\CreateCustomer;
+use Mollie\Api\Resources\Customer;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
@@ -36,6 +37,7 @@ final class CreateCustomerAction extends BaseApiAwareAction implements ActionInt
             'email' => $model['email'],
         ];
 
+        /** @var Customer $customerMollie */
         $customerMollie = $this->mollieApiClient->customers->create($data);
 
         $model['customer_mollie_id'] = $customerMollie->id;

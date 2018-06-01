@@ -14,6 +14,8 @@ namespace BitBag\SyliusMolliePlugin\Action\Api;
 
 use BitBag\SyliusMolliePlugin\Request\Api\CreateCustomer;
 use BitBag\SyliusMolliePlugin\Request\Api\CreateSepaMandate;
+use Mollie\Api\Resources\Customer;
+use Mollie\Api\Types\MandateMethod;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
@@ -56,10 +58,13 @@ final class CreateSepaMandateAction extends BaseApiAwareAction implements Action
 
         $this->gateway->execute(new CreateCustomer($model));
 
-        $mandate = $this->mollieApiClient->customers_mandates->withParentId($model['customer_mollie_id'])->create([
+        /** @var Customer $customer */
+        $customer = $this->mollieApiClient->customers->get($model['customer_mollie_id']);
+
+        $mandate = $customer->createMandate([
             'consumerAccount' => $directDebitData['iban'] ?? null,
             'consumerName' => $directDebitData['consumerName'] ?? null,
-            'method' => \Mollie_API_Object_Method::DIRECTDEBIT,
+            'method' => MandateMethod::DIRECTDEBIT,
         ]);
 
         $model['mandate_mollie_id'] = $mandate->id;

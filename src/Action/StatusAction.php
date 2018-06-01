@@ -13,6 +13,9 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Action;
 
 use BitBag\SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
+use Mollie\Api\Resources\Customer;
+use Mollie\Api\Types\PaymentStatus;
+use Mollie\Api\Types\SubscriptionStatus;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Exception\RequestNotSupportedException;
@@ -46,17 +49,20 @@ final class StatusAction extends BaseApiAwareAction implements ActionInterface, 
         }
 
         if (true === isset($details['subscription_mollie_id'])) {
-            $subscription = $this->mollieApiClient->customers_subscriptions->withParentId($details['customer_mollie_id'])->get($details['subscription_mollie_id']);
+            /** @var Customer $customer */
+            $customer = $this->mollieApiClient->customers->get($details['customer_mollie_id']);
+
+            $subscription = $customer->getSubscription($details['subscription_mollie_id']);
 
             switch ($subscription->status) {
-                case \Mollie_API_Object_Customer_Subscription::STATUS_CANCELLED:
+                case SubscriptionStatus::STATUS_CANCELED:
                     $request->markCanceled();
 
                     break;
-                case \Mollie_API_Object_Customer_Subscription::STATUS_ACTIVE:
-                case \Mollie_API_Object_Customer_Subscription::STATUS_PENDING:
-                case \Mollie_API_Object_Customer_Subscription::STATUS_COMPLETED:
-                case \Mollie_API_Object_Customer_Subscription::STATUS_SUSPENDED:
+                case SubscriptionStatus::STATUS_ACTIVE:
+                case SubscriptionStatus::STATUS_PENDING:
+                case SubscriptionStatus::STATUS_COMPLETED:
+                case SubscriptionStatus::STATUS_SUSPENDED:
                     $request->markCaptured();
 
                     break;
@@ -72,36 +78,28 @@ final class StatusAction extends BaseApiAwareAction implements ActionInterface, 
         $paymentData = $this->mollieApiClient->payments->get($details['payment_mollie_id']);
 
         switch ($paymentData->status) {
-            case \Mollie_API_Object_Payment::STATUS_OPEN:
+            case PaymentStatus::STATUS_OPEN:
                 $request->markNew();
 
                 break;
-            case \Mollie_API_Object_Payment::STATUS_PAID:
+            case PaymentStatus::STATUS_PAID:
                 $request->markCaptured();
 
                 break;
-            case \Mollie_API_Object_Payment::STATUS_CANCELLED:
+            case PaymentStatus::STATUS_CANCELED:
                 $request->markCanceled();
 
                 break;
-            case \Mollie_API_Object_Payment::STATUS_PENDING:
+            case PaymentStatus::STATUS_PENDING:
                 $request->markPending();
 
                 break;
-            case \Mollie_API_Object_Payment::STATUS_FAILED:
+            case PaymentStatus::STATUS_FAILED:
                 $request->markFailed();
 
                 break;
-            case \Mollie_API_Object_Payment::STATUS_PAIDOUT:
-                $request->markPayedout();
-
-                break;
-            case \Mollie_API_Object_Payment::STATUS_EXPIRED:
+            case PaymentStatus::STATUS_EXPIRED:
                 $request->markExpired();
-
-                break;
-            case \Mollie_API_Object_Payment::STATUS_REFUNDED:
-                $request->markRefunded();
 
                 break;
             default:

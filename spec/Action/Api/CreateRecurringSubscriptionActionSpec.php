@@ -18,6 +18,9 @@ use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
 use BitBag\SyliusMolliePlugin\Entity\SubscriptionInterface;
 use BitBag\SyliusMolliePlugin\Request\Api\CreateRecurringSubscription;
 use Doctrine\ORM\EntityManagerInterface;
+use Mollie\Api\Endpoints\CustomerEndpoint;
+use Mollie\Api\Resources\Customer;
+use Mollie\Api\Resources\Subscription;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
@@ -74,9 +77,9 @@ final class CreateRecurringSubscriptionActionSpec extends ObjectBehavior
         CreateRecurringSubscription $request,
         MollieApiClient $mollieApiClient,
         ArrayObject $arrayObject,
-        \Mollie_API_Resource_Customers_Subscriptions $subscriptions,
-        \Mollie_API_Object_Customer_Subscription $customerSubscription,
-        \Mollie_API_Resource_Base $resourceBase,
+        CustomerEndpoint $customerEndpoint,
+        Customer $customer,
+        Subscription $subscriptionApi,
         FactoryInterface $subscriptionFactory,
         SubscriptionInterface $subscription,
         OrderInterface $order,
@@ -85,7 +88,9 @@ final class CreateRecurringSubscriptionActionSpec extends ObjectBehavior
     ): void {
         $this->setApi($mollieApiClient);
         $this->setGateway($gateway);
-        $mollieApiClient->customers_subscriptions = $subscriptions;
+        $mollieApiClient->customers = $customerEndpoint;
+        $subscriptionApi->id = 'subscription_mollie_id';
+        $customerEndpoint->get('id_1')->willReturn($customer);
         $orderRepository->find(1)->willReturn($order);
         $subscriptionFactory->createNew()->willReturn($subscription);
         $arrayObject->offsetGet('customer_mollie_id')->willReturn('id_1');
@@ -94,19 +99,17 @@ final class CreateRecurringSubscriptionActionSpec extends ObjectBehavior
         $arrayObject->offsetGet('webhookUrl')->willReturn('www.example.com/webhookUrl');
         $arrayObject->offsetGet('metadata')->willReturn(['order_id' => 1]);
         $arrayObject->offsetGet('amount')->willReturn(100);
-        $resourceBase->create([
+        $customer->createSubscription([
             'amount' => 100,
             'interval' => '3 days',
             'description' => '',
             'method' => 'directdebit',
             'webhookUrl' => 'www.example.com/webhookUrl',
-            'metadata' => ['order_id' => 1],
-        ])->willReturn($customerSubscription);
-        $subscriptions->withParentId('id_1')->willReturn($resourceBase);
+        ])->willReturn($subscriptionApi);
         $request->getModel()->willReturn($arrayObject);
 
         $arrayObject->offsetExists('subscription_id')->shouldBeCalled();
-        $arrayObject->offsetSet('subscription_mollie_id', null)->shouldBeCalled();
+        $arrayObject->offsetSet('subscription_mollie_id', 'subscription_mollie_id')->shouldBeCalled();
 
         $this->execute($request);
     }

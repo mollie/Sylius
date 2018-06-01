@@ -15,5 +15,5 @@ namespace BitBag\SyliusMolliePlugin;
 interface MollieGatewayFactoryInterface
 {
     public const LOCALES_AVAILABLE = ['en_US', 'de_AT', 'de_CH', 'de_DE', 'es_ES', 'fr_BE', 'fr_FR', 'nl_BE', 'nl_NL'];
-    public const CURRENCIES_AVAILABLE = ['EUR'];
+    public const CURRENCIES_AVAILABLE = ['EUR', 'BGN', 'CAD', 'HRK', 'CZK', 'DKK', 'HKD', 'HUF', 'ISK', 'ILS', 'NOK', 'PLN', 'GBP', 'RON', 'SEK', 'CHF', 'USD'];
 }

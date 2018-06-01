@@ -18,6 +18,8 @@ use BitBag\SyliusMolliePlugin\Request\Api\CancelRecurringSubscription;
 use BitBag\SyliusMolliePlugin\Request\StateMachine\StatusRecurringSubscription;
 use BitBag\SyliusMolliePlugin\Transitions\SubscriptionTransitions;
 use Doctrine\ORM\EntityManagerInterface;
+use Mollie\Api\Resources\Customer;
+use Mollie\Api\Types\SubscriptionStatus;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Exception\RequestNotSupportedException;
@@ -59,30 +61,29 @@ final class StatusRecurringSubscriptionAction extends BaseApiAwareAction impleme
         /** @var SubscriptionInterface $subscription */
         $subscription = $request->getModel();
 
-        $subscriptionApiResult = $this->mollieApiClient
-            ->customers_subscriptions
-            ->withParentId($subscription->getCustomerId())
-            ->get($subscription->getSubscriptionId())
-        ;
+        /** @var Customer $customer */
+        $customer = $this->mollieApiClient->customers->get($subscription->getCustomerId());
+
+        $subscriptionApiResult = $customer->getSubscription($subscription->getSubscriptionId());
 
         switch ($subscriptionApiResult->status) {
-            case \Mollie_API_Object_Customer_Subscription::STATUS_ACTIVE:
+            case SubscriptionStatus::STATUS_ACTIVE:
                 $this->applyStateMachineTransition($subscription, SubscriptionTransitions::TRANSITION_ACTIVATE);
 
                 break;
-            case \Mollie_API_Object_Customer_Subscription::STATUS_PENDING:
+            case SubscriptionStatus::STATUS_PENDING:
                 $this->applyStateMachineTransition($subscription, SubscriptionTransitions::TRANSITION_PROCESS);
 
                 break;
-            case \Mollie_API_Object_Customer_Subscription::STATUS_CANCELLED:
+            case SubscriptionStatus::STATUS_CANCELED:
                 $this->applyStateMachineTransition($subscription, SubscriptionTransitions::TRANSITION_CANCEL);
 
                 break;
-            case \Mollie_API_Object_Customer_Subscription::STATUS_COMPLETED:
+            case SubscriptionStatus::STATUS_COMPLETED:
                 $this->applyStateMachineTransition($subscription, SubscriptionTransitions::TRANSITION_COMPLETE);
 
                 break;
-            case \Mollie_API_Object_Customer_Subscription::STATUS_SUSPENDED:
+            case SubscriptionStatus::STATUS_SUSPENDED:
                 $this->applyStateMachineTransition($subscription, SubscriptionTransitions::TRANSITION_SUSPEND);
 
                 break;

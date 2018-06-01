@@ -17,6 +17,8 @@ use BitBag\SyliusMolliePlugin\Action\Api\CancelRecurringSubscriptionAction;
 use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
 use BitBag\SyliusMolliePlugin\Entity\SubscriptionInterface;
 use BitBag\SyliusMolliePlugin\Request\Api\CancelRecurringSubscription;
+use Mollie\Api\Endpoints\CustomerEndpoint;
+use Mollie\Api\Resources\Customer;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use PhpSpec\ObjectBehavior;
@@ -47,17 +49,17 @@ final class CancelRecurringSubscriptionActionSpec extends ObjectBehavior
         CancelRecurringSubscription $request,
         MollieApiClient $mollieApiClient,
         SubscriptionInterface $subscription,
-        \Mollie_API_Resource_Base $mollieApiResourceBase,
-        \Mollie_API_Resource_Customers_Subscriptions $subscriptions
+        CustomerEndpoint $customerEndpoint,
+        Customer $customer
     ): void {
-        $mollieApiClient->customers_subscriptions = $mollieApiResourceBase;
+        $mollieApiClient->customers = $customerEndpoint;
         $this->setApi($mollieApiClient);
-        $mollieApiResourceBase->withParentId('id_1')->willReturn($subscriptions);
+        $customerEndpoint->get('id_1')->willReturn($customer);
         $subscription->getSubscriptionId()->willReturn('id_1');
         $subscription->getCustomerId()->willReturn('id_1');
         $request->getModel()->willReturn($subscription);
 
-        $subscriptions->cancel('id_1')->shouldBeCalled();
+        $customer->cancelSubscription('id_1')->shouldBeCalled();
 
         $this->execute($request);
     }

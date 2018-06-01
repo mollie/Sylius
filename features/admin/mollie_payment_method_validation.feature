@@ -5,7 +5,7 @@ Feature: Mollie payment method validation
     I want to be prevented from adding it without specifying required fields
 
     Background:
-        Given the store operates on a single channel in "United States"
+        Given the store operates on a channel named "Web-RUB" in "RUB" currency
         And the store has a payment method "Offline" with a code "offline"
         And I am logged in as an administrator
 
@@ -20,9 +20,9 @@ Feature: Mollie payment method validation
     Scenario: Trying to add a new mollie payment method without required currency
         Given I want to create a new Mollie payment method
         When I name it "Mollie" in "English (United States)"
-        And make it available in channel "United States"
+        And make it available in channel "Web-RUB"
         And I add it
-        Then I should be notified that "The base currency of the channel must be EUR."
+        Then I should be notified that "The base currency of the channel must be EUR, BGN, CAD, HRK, CZK, DKK, HKD, HUF, ISK, ILS, NOK, PLN, GBP, RON, SEK, CHF, USD."
 
     @ui
     Scenario: Trying to add a new mollie payment method without the correct api key

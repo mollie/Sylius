@@ -14,6 +14,7 @@ namespace BitBag\SyliusMolliePlugin\Action\Api;
 
 use BitBag\SyliusMolliePlugin\Entity\SubscriptionInterface;
 use BitBag\SyliusMolliePlugin\Request\Api\CancelRecurringSubscription;
+use Mollie\Api\Resources\Customer;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Exception\RequestNotSupportedException;
@@ -36,10 +37,10 @@ final class CancelRecurringSubscriptionAction extends BaseApiAwareAction impleme
         /** @var SubscriptionInterface $subscription */
         $subscription = $request->getModel();
 
-        $this->mollieApiClient
-            ->customers_subscriptions->withParentId($subscription->getCustomerId())
-            ->cancel($subscription->getSubscriptionId())
-        ;
+        /** @var Customer $customer */
+        $customer = $this->mollieApiClient->customers->get($subscription->getCustomerId());
+
+        $customer->cancelSubscription($subscription->getSubscriptionId());
     }
 
     /**

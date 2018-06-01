@@ -15,6 +15,7 @@ namespace spec\BitBag\SyliusMolliePlugin\Action;
 use BitBag\SyliusMolliePlugin\Action\NotifyAction;
 use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
 use BitBag\SyliusMolliePlugin\Repository\SubscriptionRepositoryInterface;
+use Mollie\Api\Endpoints\PaymentEndpoint;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayAwareInterface;
@@ -56,7 +57,7 @@ final class NotifyActionSpec extends ObjectBehavior
         GatewayInterface $gateway,
         GetHttpRequest $getHttpRequest,
         MollieApiClient $mollieApiClient,
-        \Mollie_API_Resource_Base $mollieApiResourceBase
+        PaymentEndpoint $paymentEndpoint
     ): void {
         $this->setGateway($gateway);
 
@@ -68,9 +69,9 @@ final class NotifyActionSpec extends ObjectBehavior
         $payment->metadata = (object) [
             'order_id' => 1,
         ];
-        $payment->shouldReceive('getPaymentUrl')->andReturn('');
-        $mollieApiResourceBase->get(1)->willReturn($payment);
-        $mollieApiClient->payments = $mollieApiResourceBase;
+        $payment->shouldReceive('getCheckoutUrl')->andReturn('');
+        $paymentEndpoint->get(1)->willReturn($payment);
+        $mollieApiClient->payments = $paymentEndpoint;
 
         $this->execute($request);
     }

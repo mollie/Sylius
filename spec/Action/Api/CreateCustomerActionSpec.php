@@ -16,6 +16,8 @@ use BitBag\SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
 use BitBag\SyliusMolliePlugin\Action\Api\CreateCustomerAction;
 use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
 use BitBag\SyliusMolliePlugin\Request\Api\CreateCustomer;
+use Mollie\Api\Endpoints\CustomerEndpoint;
+use Mollie\Api\Resources\Customer;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
@@ -46,17 +48,17 @@ final class CreateCustomerActionSpec extends ObjectBehavior
     function it_executes(
         CreateCustomer $request,
         MollieApiClient $mollieApiClient,
-        \Mollie_API_Resource_Customers $customers,
-        \Mollie_API_Object_Customer $customer,
+        CustomerEndpoint $customerEndpoint,
+        Customer $customer,
         ArrayObject $arrayObject
     ): void {
-        $mollieApiClient->customers = $customers;
+        $mollieApiClient->customers = $customerEndpoint;
         $this->setApi($mollieApiClient);
         $customer->id = 'id_1';
         $arrayObject->offsetGet('fullName')->willReturn('Jan Kowalski');
         $arrayObject->offsetGet('email')->willReturn('shop@example.com');
         $request->getModel()->willReturn($arrayObject);
-        $customers->create(['name' => 'Jan Kowalski', 'email' => 'shop@example.com'])->willReturn($customer);
+        $customerEndpoint->create(['name' => 'Jan Kowalski', 'email' => 'shop@example.com'])->willReturn($customer);
 
         $arrayObject->offsetSet('customer_mollie_id', 'id_1')->shouldBeCalled();
 

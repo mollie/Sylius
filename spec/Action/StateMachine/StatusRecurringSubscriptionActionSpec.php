@@ -19,6 +19,10 @@ use BitBag\SyliusMolliePlugin\Entity\SubscriptionInterface;
 use BitBag\SyliusMolliePlugin\Request\StateMachine\StatusRecurringSubscription;
 use BitBag\SyliusMolliePlugin\Transitions\SubscriptionTransitions;
 use Doctrine\ORM\EntityManagerInterface;
+use Mollie\Api\Endpoints\CustomerEndpoint;
+use Mollie\Api\Resources\Customer;
+use Mollie\Api\Resources\Subscription;
+use Mollie\Api\Types\SubscriptionStatus;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use PhpSpec\ObjectBehavior;
@@ -61,21 +65,21 @@ final class StatusRecurringSubscriptionActionSpec extends ObjectBehavior
         StatusRecurringSubscription $request,
         MollieApiClient $mollieApiClient,
         SubscriptionInterface $subscription,
-        \Mollie_API_Resource_Customers_Subscriptions $subscriptions,
-        \Mollie_API_Object_Customer_Subscription $customerSubscription,
+        CustomerEndpoint $customerEndpoint,
+        Customer $customer,
         FactoryInterface $subscriptionSateMachineFactory,
         StateMachineInterface $stateMachine,
-        \Mollie_API_Resource_Base $resourceBase
+        Subscription $subscriptionApi
     ): void {
         $this->setApi($mollieApiClient);
         $stateMachine->can(SubscriptionTransitions::TRANSITION_ACTIVATE)->willReturn();
-        $customerSubscription->status = \Mollie_API_Object_Customer_Subscription::STATUS_ACTIVE;
+        $subscriptionApi->status = SubscriptionStatus::STATUS_ACTIVE;
         $subscriptionSateMachineFactory->get($subscription, SubscriptionTransitions::GRAPH)->willReturn($stateMachine);
         $subscription->getSubscriptionId()->willReturn('id_1');
         $subscription->getCustomerId()->willReturn('id_1');
-        $resourceBase->get('id_1')->willReturn($customerSubscription);
-        $subscriptions->withParentId('id_1')->willReturn($resourceBase);
-        $mollieApiClient->customers_subscriptions = $subscriptions;
+        $customer->getSubscription('id_1')->willReturn($subscriptionApi);
+        $customerEndpoint->get('id_1')->willReturn($customer);
+        $mollieApiClient->customers = $customerEndpoint;
         $request->getModel()->willReturn($subscription);
 
         $this->execute($request);

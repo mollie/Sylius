@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Client;
 
-class MollieApiClient extends \Mollie_API_Client
+class MollieApiClient extends \Mollie\Api\MollieApiClient
 {
     /**
      * @var array

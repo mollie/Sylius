@@ -63,8 +63,13 @@ final class ConvertPaymentAction extends BaseApiAwareAction implements ActionInt
 
         $divisor = 10 ** $currency->exp;
 
+        $amount = $payment->getAmount() / $divisor;
+
         $details = [
-            'amount' => (float) $payment->getAmount() / $divisor,
+            'amount' => [
+                'value' => "$amount",
+                'currency' => $currency->code,
+            ],
             'description' => $this->paymentDescriptionProvider->getPaymentDescription($payment),
             'metadata' => [
                 'order_id' => $order->getId(),

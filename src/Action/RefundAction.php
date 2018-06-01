@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Action;
 
 use BitBag\SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
+use Mollie\Api\Exceptions\ApiException;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
@@ -41,11 +42,11 @@ final class RefundAction extends BaseApiAwareAction implements ActionInterface, 
             $payment = $this->mollieApiClient->payments->get($details['payment_mollie_id']);
 
             if (true === $payment->canBeRefunded()) {
-                $this->mollieApiClient->payments->refund($payment, $details['amount']);
+                $payment->refund(['amount' => $details['amount']]);
             } else {
                 throw new UpdateHandlingException(sprintf('Payment %s can not be refunded.', $payment->id));
             }
-        } catch (\Mollie_API_Exception $e) {
+        } catch (ApiException $e) {
             throw new UpdateHandlingException(sprintf('API call failed: %s', htmlspecialchars($e->getMessage())));
         }
     }

@@ -66,7 +66,10 @@ final class ConvertPaymentActionSpec extends ObjectBehavior
         $request->getTo()->willReturn('array');
 
         $request->setResult([
-            'amount' => 445535,
+            'amount' => [
+                'value' => '445535',
+                'currency' => 'EUR',
+            ],
             'description' => 'description',
             'locale' => 'en_US',
             'metadata' => [

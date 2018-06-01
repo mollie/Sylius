@@ -16,6 +16,8 @@ use BitBag\SyliusMolliePlugin\Entity\SubscriptionInterface;
 use BitBag\SyliusMolliePlugin\Request\Api\CreateRecurringSubscription;
 use BitBag\SyliusMolliePlugin\Request\StateMachine\StatusRecurringSubscription;
 use Doctrine\ORM\EntityManagerInterface;
+use Mollie\Api\Resources\Customer;
+use Mollie\Api\Types\MandateMethod;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
@@ -84,13 +86,15 @@ final class CreateRecurringSubscriptionAction extends BaseApiAwareAction impleme
             return;
         }
 
-        $subscriptionApiResult = $this->mollieApiClient->customers_subscriptions->withParentId($model['customer_mollie_id'])->create([
+        /** @var Customer $customer */
+        $customer = $this->mollieApiClient->customers->get($model['customer_mollie_id']);
+
+        $subscriptionApiResult = $customer->createSubscription([
             'amount' => $model['amount'],
             'interval' => $model['interval'],
             'description' => $model['description'],
-            'method' => \Mollie_API_Object_Method::DIRECTDEBIT,
+            'method' => MandateMethod::DIRECTDEBIT,
             'webhookUrl' => $model['webhookUrl'],
-            'metadata' => $model['metadata'],
         ]);
 
         /** @var SubscriptionInterface $subscription */

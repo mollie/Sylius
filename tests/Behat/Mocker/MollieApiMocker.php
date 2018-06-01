@@ -13,6 +13,8 @@ declare(strict_types=1);
 namespace Tests\BitBag\SyliusMolliePlugin\Behat\Mocker;
 
 use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
+use Mollie\Api\Types\PaymentStatus;
+use Mollie\Api\Types\SubscriptionStatus;
 use Sylius\Behat\Service\Mocker\MockerInterface;
 
 final class MollieApiMocker
@@ -40,7 +42,7 @@ final class MollieApiMocker
         $payment->id = 1;
 
         $payment
-            ->shouldReceive('getPaymentUrl')
+            ->shouldReceive('getCheckoutUrl')
             ->andReturn('')
         ;
 
@@ -80,7 +82,7 @@ final class MollieApiMocker
             'order_id' => 1,
         ];
 
-        $payment->status = \Mollie_API_Object_Payment::STATUS_PAID;
+        $payment->status = PaymentStatus::STATUS_PAID;
 
         $payments = \Mockery::mock('payments');
 
@@ -118,7 +120,7 @@ final class MollieApiMocker
             'order_id' => 1,
         ];
 
-        $payment->status = \Mollie_API_Object_Payment::STATUS_CANCELLED;
+        $payment->status = PaymentStatus::STATUS_CANCELED;
 
         $payments = \Mockery::mock('payments');
 
@@ -152,11 +154,15 @@ final class MollieApiMocker
     {
         $payment = \Mockery::mock('payment');
 
-        $payment->status = \Mollie_API_Object_Payment::STATUS_REFUNDED;
+        $payment->status = 'refund';
 
         $payment
             ->shouldReceive('canBeRefunded')
             ->andReturn(true)
+        ;
+
+        $payment
+            ->shouldReceive('refund')
         ;
 
         $payments = \Mockery::mock('payments');
@@ -196,15 +202,30 @@ final class MollieApiMocker
         $payment = \Mockery::mock('payment');
 
         $payment->id = 'id_1';
-        $payment->status = \Mollie_API_Object_Customer_Subscription::STATUS_ACTIVE;
+        $payment->status = SubscriptionStatus::STATUS_ACTIVE;
 
         $payment
-            ->shouldReceive('getPaymentUrl')
+            ->shouldReceive('getCheckoutUrl')
             ->andReturn('')
         ;
 
         $payment
             ->shouldReceive('create')
+            ->andReturn($payment)
+        ;
+
+        $payment
+            ->shouldReceive('createMandate')
+            ->andReturn($payment)
+        ;
+
+        $payment
+            ->shouldReceive('createSubscription')
+            ->andReturn($payment)
+        ;
+
+        $payment
+            ->shouldReceive('getSubscription')
             ->andReturn($payment)
         ;
 
@@ -266,17 +287,17 @@ final class MollieApiMocker
     {
         $payment = \Mockery::mock('payment');
 
-        $payment->status = \Mollie_API_Object_Customer_Subscription::STATUS_CANCELLED;
+        $payment->status = SubscriptionStatus::STATUS_CANCELED;
 
         $payment
-            ->shouldReceive('cancel')
+            ->shouldReceive('cancelSubscription')
             ->andReturn($payment)
         ;
 
         $payments = \Mockery::mock('payments');
 
         $payments
-            ->shouldReceive('withParentId')
+            ->shouldReceive('get')
             ->andReturn($payment)
         ;
 
@@ -292,6 +313,7 @@ final class MollieApiMocker
         ;
 
         $mock->customers_subscriptions = $payments;
+        $mock->customers = $payments;
 
         $action();
 

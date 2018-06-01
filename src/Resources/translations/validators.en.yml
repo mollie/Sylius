@@ -4,7 +4,7 @@ bitbag_sylius_mollie_plugin:
         invalid: Invalid API key. An API key must start with 'test_' or 'live_'.
         min_length: API key must be at least {{ limit }} characters long.
     channel:
-        required_currency: The base currency of the channel must be EUR.
+        required_currency: The base currency of the channel must be {{ currencies }}.
     times:
         min_range: Times cannot be lower than {{ limit }}.
     interval:

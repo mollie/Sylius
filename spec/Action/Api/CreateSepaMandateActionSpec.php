@@ -16,6 +16,9 @@ use BitBag\SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
 use BitBag\SyliusMolliePlugin\Action\Api\CreateSepaMandateAction;
 use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
 use BitBag\SyliusMolliePlugin\Request\Api\CreateSepaMandate;
+use Mollie\Api\Endpoints\CustomerEndpoint;
+use Mollie\Api\Resources\Customer;
+use Mollie\Api\Resources\Mandate;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
@@ -64,20 +67,20 @@ final class CreateSepaMandateActionSpec extends ObjectBehavior
         ArrayObject $arrayObject,
         GatewayInterface $gateway,
         SessionInterface $session,
-        \Mollie_API_Resource_Customers_Mandates $customersMandates,
-        \Mollie_API_Resource_Base $resourceBase,
-        \Mollie_API_Object_Customer_Mandate $customerMandate
+        CustomerEndpoint $customerEndpoint,
+        Customer $customer,
+        Mandate $mandate
     ): void {
         $this->setApi($mollieApiClient);
         $this->setGateway($gateway);
-        $mollieApiClient->customers_mandates = $customersMandates;
-        $customerMandate->id = 'id_1';
-        $resourceBase->create([
+        $mollieApiClient->customers = $customerEndpoint;
+        $mandate->id = 'id_1';
+        $customer->createMandate([
             'consumerAccount' => '57357086404',
             'consumerName' => 'Example',
             'method' => 'directdebit',
-        ])->willReturn($customerMandate);
-        $customersMandates->withParentId('id_1')->willReturn($resourceBase);
+        ])->willReturn($mandate);
+        $customerEndpoint->get('id_1')->willReturn($customer);
         $session->get('mollie_direct_debit_data', null)->willReturn([
             'iban' => '57357086404',
             'consumerName' => 'Example',

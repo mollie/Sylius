@@ -14,6 +14,7 @@ namespace spec\BitBag\SyliusMolliePlugin\Action;
 
 use BitBag\SyliusMolliePlugin\Action\CaptureAction;
 use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
+use Mollie\Api\Endpoints\PaymentEndpoint;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
@@ -65,7 +66,7 @@ final class CaptureActionSpec extends ObjectBehavior
         GenericTokenFactory $genericTokenFactory,
         GatewayInterface $gateway,
         MollieApiClient $mollieApiClient,
-        \Mollie_API_Resource_Base $mollieApiResourceBase
+        PaymentEndpoint $paymentEndpoint
     ): void {
         $this->setGateway($gateway);
         $mollieApiClient->isRecurringSubscription()->willReturn(false);
@@ -87,15 +88,15 @@ final class CaptureActionSpec extends ObjectBehavior
         $request->getToken()->willReturn($token);
         $payment = \Mockery::mock('payment');
         $payment->id = 1;
-        $payment->shouldReceive('getPaymentUrl')->andReturn('');
-        $mollieApiResourceBase->create([
+        $payment->shouldReceive('getCheckoutUrl')->andReturn('');
+        $paymentEndpoint->create([
             'amount' => null,
             'description' => null,
             'redirectUrl' => 'url',
             'webhookUrl' => null,
             'metadata' => null,
         ])->willReturn($payment);
-        $mollieApiClient->payments = $mollieApiResourceBase;
+        $mollieApiClient->payments = $paymentEndpoint;
 
         $arrayObject->offsetGet('description')->shouldBeCalled();
         $arrayObject->offsetGet('webhookUrl')->shouldBeCalled();

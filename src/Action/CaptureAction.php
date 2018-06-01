@@ -103,7 +103,7 @@ final class CaptureAction extends BaseApiAwareAction implements ActionInterface,
 
             $details['payment_mollie_id'] = $payment->id;
 
-            throw new HttpPostRedirect($payment->getPaymentUrl());
+            throw new HttpPostRedirect($payment->getCheckoutUrl());
         }
     }
 

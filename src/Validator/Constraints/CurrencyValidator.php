@@ -40,7 +40,6 @@ final class CurrencyValidator extends ConstraintValidator
         if (
             null === $gatewayConfig ||
             (
-                $gatewayConfig->getFactoryName() !== MollieGatewayFactory::FACTORY_NAME &&
                 $gatewayConfig->getFactoryName() !== MollieSubscriptionGatewayFactory::FACTORY_NAME
             )
         ) {
@@ -51,12 +50,12 @@ final class CurrencyValidator extends ConstraintValidator
         foreach ($paymentMethod->getChannels() as $channel) {
             if (
                 null === $channel->getBaseCurrency() ||
-                false === in_array(strtoupper($channel->getBaseCurrency()->getCode()), MollieGatewayFactoryInterface::CURRENCIES_AVAILABLE)
+                false === in_array(strtoupper($channel->getBaseCurrency()->getCode()), MollieSubscriptionGatewayFactory::CURRENCIES_AVAILABLE)
             ) {
                 $message = isset($constraint->message) ? $constraint->message : null;
 
                 $this->context->buildViolation($message, [
-                    '{{ currencies }}' => implode(', ', MollieGatewayFactoryInterface::CURRENCIES_AVAILABLE),
+                    '{{ currencies }}' => implode(', ', MollieSubscriptionGatewayFactory::CURRENCIES_AVAILABLE),
                 ])->atPath('channels')->addViolation();
 
                 return;

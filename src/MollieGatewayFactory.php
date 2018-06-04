@@ -18,7 +18,7 @@ use Payum\Core\GatewayFactory;
 
 final class MollieGatewayFactory extends GatewayFactory
 {
-    const FACTORY_NAME = 'mollie';
+    public const FACTORY_NAME = 'mollie';
 
     /**
      * {@inheritdoc}

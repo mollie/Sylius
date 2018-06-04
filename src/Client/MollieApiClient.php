@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Client;
 
+use Mollie\Api\Resources\Payment;
+
 class MollieApiClient extends \Mollie\Api\MollieApiClient
 {
     /**
@@ -54,5 +56,19 @@ class MollieApiClient extends \Mollie\Api\MollieApiClient
     public function isRecurringSubscription(): bool
     {
         return $this->isRecurringSubscription;
+    }
+
+    /**
+     * @param Payment $payment
+     *
+     * @return bool
+     */
+    public function isRefunded(Payment $payment): bool
+    {
+        if (null === $payment->amount || null === $payment->amountRefunded) {
+            return false;
+        }
+
+        return $payment->amount->value === $payment->amountRefunded->value;
     }
 }

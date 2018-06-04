@@ -18,7 +18,8 @@ use Payum\Core\GatewayFactory;
 
 final class MollieSubscriptionGatewayFactory extends GatewayFactory
 {
-    const FACTORY_NAME = 'mollie_subscription';
+    public const FACTORY_NAME = 'mollie_subscription';
+    public const CURRENCIES_AVAILABLE = ['EUR'];
 
     /**
      * {@inheritdoc}

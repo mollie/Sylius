@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Tests\BitBag\SyliusMolliePlugin\Behat\Mocker;
 
 use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
+use Mollie\Api\Resources\Payment;
 use Mollie\Api\Types\PaymentStatus;
 use Mollie\Api\Types\SubscriptionStatus;
 use Sylius\Behat\Service\Mocker\MockerInterface;
@@ -37,7 +38,7 @@ final class MollieApiMocker
      */
     public function mockApiCreatePayment(callable $action): void
     {
-        $payment = \Mockery::mock('payment');
+        $payment = \Mockery::mock('payment', Payment::class);
 
         $payment->id = 1;
 
@@ -64,6 +65,11 @@ final class MollieApiMocker
             ->andReturn(false)
         ;
 
+        $mock
+            ->shouldReceive('isRefunded')
+            ->andReturn(false)
+        ;
+
         $mock->payments = $payments;
 
         $action();
@@ -76,7 +82,7 @@ final class MollieApiMocker
      */
     public function mockApiSuccessfulPayment(callable $action): void
     {
-        $payment = \Mockery::mock('payment');
+        $payment = \Mockery::mock('payment', Payment::class);
 
         $payment->metadata = (object) [
             'order_id' => 1,
@@ -102,6 +108,11 @@ final class MollieApiMocker
             ->andReturn(false)
         ;
 
+        $mock
+            ->shouldReceive('isRefunded')
+            ->andReturn(false)
+        ;
+
         $mock->payments = $payments;
 
         $action();
@@ -114,7 +125,7 @@ final class MollieApiMocker
      */
     public function mockApiCancelledPayment(callable $action): void
     {
-        $payment = \Mockery::mock('payment');
+        $payment =\Mockery::mock('payment', Payment::class);
 
         $payment->metadata = (object) [
             'order_id' => 1,
@@ -140,6 +151,11 @@ final class MollieApiMocker
             ->andReturn(false)
         ;
 
+        $mock
+            ->shouldReceive('isRefunded')
+            ->andReturn(false)
+        ;
+
         $mock->payments = $payments;
 
         $action();
@@ -152,7 +168,7 @@ final class MollieApiMocker
      */
     public function mockApiRefundedPayment(callable $action): void
     {
-        $payment = \Mockery::mock('payment');
+        $payment = \Mockery::mock('payment', Payment::class);
 
         $payment->status = 'refund';
 
@@ -187,6 +203,10 @@ final class MollieApiMocker
             ->andReturn(false)
         ;
 
+        $mock
+            ->shouldReceive('isRefunded')
+            ->andReturn(true);
+
         $mock->payments = $payments;
 
         $action();
@@ -199,7 +219,7 @@ final class MollieApiMocker
      */
     public function mockApiCreateRecurringSubscription(callable $action): void
     {
-        $payment = \Mockery::mock('payment');
+        $payment = \Mockery::mock('payment', Payment::class);
 
         $payment->id = 'id_1';
         $payment->status = SubscriptionStatus::STATUS_ACTIVE;
@@ -263,6 +283,11 @@ final class MollieApiMocker
         ;
 
         $mock
+            ->shouldReceive('isRefunded')
+            ->andReturn(false)
+        ;
+
+        $mock
             ->shouldReceive('getConfig')
             ->andReturn([
                 'times' => 12,
@@ -285,7 +310,7 @@ final class MollieApiMocker
      */
     public function mockApiCancelledRecurringSubscription(callable $action): void
     {
-        $payment = \Mockery::mock('payment');
+        $payment = \Mockery::mock('payment', Payment::class);
 
         $payment->status = SubscriptionStatus::STATUS_CANCELED;
 
@@ -310,6 +335,11 @@ final class MollieApiMocker
         $mock
             ->shouldReceive('isRecurringSubscription')
             ->andReturn(true)
+        ;
+
+        $mock
+            ->shouldReceive('isRefunded')
+            ->andReturn(false)
         ;
 
         $mock->customers_subscriptions = $payments;

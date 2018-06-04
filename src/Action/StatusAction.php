@@ -79,6 +79,12 @@ final class StatusAction extends BaseApiAwareAction implements ActionInterface, 
 
         $paymentData = $this->mollieApiClient->payments->get($details['payment_mollie_id']);
 
+        if (true === $this->mollieApiClient->isRefunded($paymentData)) {
+            $request->markRefunded();
+
+            return;
+        }
+
         switch ($paymentData->status) {
             case PaymentStatus::STATUS_OPEN:
                 $request->markNew();

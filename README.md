@@ -1,6 +1,6 @@
 <h1 align="center">
     <a href="http://www.mollie.com" target="_blank">
-        <img src="doc/mollie-logo.png" />
+        <img src="https://www.mollie.nl/files/Mollie-Logo-Style-Small.png" />
     </a>
     <br />
     <a href="https://packagist.org/packages/bitbag/mollie-plugin" title="License" target="_blank">

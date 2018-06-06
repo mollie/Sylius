@@ -87,7 +87,7 @@ final class StatusAction extends BaseApiAwareAction implements ActionInterface, 
 
         switch ($paymentData->status) {
             case PaymentStatus::STATUS_OPEN:
-                $request->markNew();
+                $request->markPending();
 
                 break;
             case PaymentStatus::STATUS_PAID:

@@ -17,6 +17,7 @@
             novalidate
     >
         <input type="hidden" name="_method" value="PUT">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token(subscriptionMollie.id) }}" />
         <button class="ui yellow labeled icon loadable button" type="submit">
             <i class="icon ban"></i>
             {{ action.label|default('bitbag_sylius_mollie_plugin.ui.cancel_subscription')|trans }}

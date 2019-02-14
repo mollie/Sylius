@@ -18,6 +18,9 @@
     <a href="https://packagist.org/packages/bitbag/mollie-plugin" title="Total Downloads" target="_blank">
         <img src="https://poser.pugx.org/bitbag/mollie-plugin/downloads" />
     </a>
+    <p>
+        <img src="https://sylius.com/assets/badge-approved-by-sylius.png" width="85">
+    </p>
 </h1>
 
 ## Overview
@@ -26,8 +29,11 @@ This plugin allows you to integrate Mollie payment with Sylius platform app. It 
 
 ## Support
 
-We work on amazing eCommerce projects on top of Sylius and Pimcore. Need some help or additional resources for a project?
-Write us an email on mikolaj.krol@bitbag.pl or visit [our website](https://bitbag.shop/)! :rocket:
+You can order our support on [this page](https://bitbag.shop/products/sylius-mailchimp).
+
+We work on amazing eCommerce projects on top of Sylius and other great Symfony based solutions, like eZ Platform, Akeneo or Pimcore.
+Need some help or additional resources for a project? Write us an email on mikolaj.krol@bitbag.pl or visit
+[our website](https://bitbag.shop/)! :rocket:
 
 ## Demo
 

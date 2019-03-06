@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     bitbag_sylius_mollie_plugin.gateway_factory.mollie:
         class: Payum\Core\Bridge\Symfony\Builder\GatewayFactoryBuilder
         arguments:

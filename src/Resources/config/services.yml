@@ -7,6 +7,9 @@ imports:
     - { resource: "services/payment_processing.yml" }
 
 services:
+    _defaults:
+        public: true
+
     bitbag_sylius_mollie_plugin.mollie_api_client:
         class: BitBag\SyliusMolliePlugin\Client\MollieApiClient
 

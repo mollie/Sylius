@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     bitbag_sylius_mollie_plugin.controller.action.admin.refund:
         class: BitBag\SyliusMolliePlugin\Controller\Action\Admin\Refund
         arguments:

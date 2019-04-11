@@ -23,7 +23,7 @@ use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\Exception\RuntimeException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
-use Payum\Core\Reply\HttpPostRedirect;
+use Payum\Core\Reply\HttpRedirect;
 use Payum\Core\Request\Capture;
 use Payum\Core\Security\GenericTokenFactoryAwareInterface;
 use Payum\Core\Security\GenericTokenFactoryInterface;
@@ -105,7 +105,7 @@ final class CaptureAction extends BaseApiAwareAction implements ActionInterface,
 
             $details['payment_mollie_id'] = $payment->id;
 
-            throw new HttpPostRedirect($payment->getCheckoutUrl());
+            throw new HttpRedirect($payment->getCheckoutUrl());
         }
     }
 

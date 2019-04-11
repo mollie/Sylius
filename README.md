@@ -38,7 +38,6 @@ Need some help or additional resources for a project? Write us an email on mikol
 ## Demo
 
 We created a demo app with some useful use-cases of the plugin! Visit [demo.bitbag.shop](https://demo.bitbag.shop) to take a look at it. 
-The admin can be accessed under [demo.bitbag.shop/admin](https://demo.bitbag.shop/admin) link and `sylius: sylius` credentials.
 
 ```bash
 $ composer require bitbag/mollie-plugin
@@ -86,7 +85,7 @@ $ bin/console doctrine:migrations:migrate
 
 You can  use `BitBagSyliusMolliePlugin:DirectDebit:_form.html.twig` and `@BitBagSyliusMolliePlugin/Grid/Action/cancelSubscriptionMollie.html.twig` templates for adding the form to supplementing the direct debit card data from and cancel the subscription form the Twig UI.  
 
-For an example on how to do that, take a look at [these source files](https://github.com/BitBagCommerce/SyliusMolliePlugin/tree/master/tests/Application/app/Resources/SyliusShopBundle/views).
+For an example on how to do that, take a look at [these source files](tests/Application/templates/bundles/SyliusShopBundle).
 
 ## Customization
 

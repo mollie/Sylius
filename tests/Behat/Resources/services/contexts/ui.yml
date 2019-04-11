@@ -1,34 +1,30 @@
 services:
     bitbag_sylius_mollie_plugin.behat.context.ui.admin.managing_payment_method_mollie:
         class: Tests\BitBag\SyliusMolliePlugin\Behat\Context\Ui\Admin\ManagingPaymentMethodContext
+        public: true
         arguments:
             - "@bitbag_sylius_mollie_plugin.page.admin.payment_method.create"
-        tags:
-            - { name: fob.context_service }
 
     bitbag_sylius_mollie_plugin.behat.context.ui.shop.checkout:
         class: Tests\BitBag\SyliusMolliePlugin\Behat\Context\Ui\Shop\CheckoutContext
+        public: true
         arguments:
             - "@bitbag_sylius_mollie_plugin.page.shop.checkout.complete"
             - "@sylius.behat.page.shop.order.show"
             - "@bitbag_sylius_mollie_plugin.behat.mollie_api_mocker"
             - "@bitbag_sylius_mollie_plugin.page.external.payment"
-        tags:
-            - { name: fob.context_service }
 
     bitbag_sylius_mollie_plugin.behat.context.ui.admin.refund:
         class: Tests\BitBag\SyliusMolliePlugin\Behat\Context\Ui\Admin\RefundContext
+        public: true
         arguments:
             - "@bitbag_sylius_mollie_plugin.behat.mollie_api_mocker"
             - "@sylius.behat.context.ui.admin.managing_orders"
-        tags:
-            - { name: fob.context_service }
 
     bitbag_sylius_mollie_plugin.behat.context.ui.shop.account:
         class: Tests\BitBag\SyliusMolliePlugin\Behat\Context\Ui\Shop\AccountContext
+        public: true
         arguments:
             - "@bitbag_sylius_mollie_plugin.page.shop.account.order.index"
             - "@sylius.behat.notification_checker"
             - "@bitbag_sylius_mollie_plugin.behat.mollie_api_mocker"
-        tags:
-            - { name: fob.context_service }

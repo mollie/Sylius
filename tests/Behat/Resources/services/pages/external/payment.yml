@@ -4,5 +4,5 @@ services:
         parent: "sylius.behat.page"
         public: "false"
         arguments:
-            - "@__symfony__.sylius.repository.payment_security_token"
-            - "@__symfony__.test.client"
+            - "@sylius.repository.payment_security_token"
+            - "@test.client"

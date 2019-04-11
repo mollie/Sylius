@@ -1,8 +1,8 @@
 services:
     bitbag_sylius_mollie_plugin.page.external.payment:
         class: Tests\BitBag\SyliusMolliePlugin\Behat\Page\External\PaymentPage
-        parent: "sylius.behat.page"
-        public: "false"
+        parent: sylius.behat.page
+        public: false
         arguments:
             - "@sylius.repository.payment_security_token"
             - "@test.client"

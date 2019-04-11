@@ -13,8 +13,9 @@ declare(strict_types=1);
 namespace Tests\BitBag\SyliusMolliePlugin\Behat\Page\External;
 
 use Behat\Mink\Session;
+use FriendsOfBehat\PageObjectExtension\Page\Page;
+use FriendsOfBehat\SymfonyExtension\Mink\MinkParameters;
 use Payum\Core\Security\TokenInterface;
-use Sylius\Behat\Page\Page;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\BrowserKit\Client;
 
@@ -32,13 +33,13 @@ final class PaymentPage extends Page implements PaymentPageInterface
 
     /**
      * @param Session $session
-     * @param array $parameters
+     * @param MinkParameters $parameters
      * @param RepositoryInterface $securityTokenRepository
      * @param Client $client
      */
     public function __construct(
         Session $session,
-        array $parameters,
+        MinkParameters $parameters,
         RepositoryInterface $securityTokenRepository,
         Client $client
     ) {
@@ -73,7 +74,7 @@ final class PaymentPage extends Page implements PaymentPageInterface
      *
      * @return string
      */
-    protected function getUrl(array $urlParameters = [])
+    protected function getUrl(array $urlParameters = []): string
     {
         return 'https://api.mollie.nl';
     }

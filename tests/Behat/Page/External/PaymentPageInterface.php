@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Tests\BitBag\SyliusMolliePlugin\Behat\Page\External;
 
-use Sylius\Behat\Page\PageInterface;
+use FriendsOfBehat\PageObjectExtension\Page\PageInterface;
 
 interface PaymentPageInterface extends PageInterface
 {

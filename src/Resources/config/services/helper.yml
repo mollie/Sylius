@@ -1,0 +1,6 @@
+services:
+  _defaults:
+    public: true
+
+  bitbag_sylius_mollie_plugin.helper.int_to_string:
+    class: BitBag\SyliusMolliePlugin\Helper\IntToStringConverter

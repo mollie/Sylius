@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Action;
 
 use BitBag\SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
+use BitBag\SyliusMolliePlugin\Action\StateMachine\SetStatusOrderAction;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareTrait;
@@ -27,9 +28,13 @@ final class NotifyOrderAction extends BaseApiAwareAction implements NotifyOrderA
     /** @var GetHttpRequest */
     private $getHttpRequest;
 
-    public function __construct(GetHttpRequest $getHttpRequest)
+    /** @var SetStatusOrderAction */
+    private $setStatusOrderAction;
+
+    public function __construct(GetHttpRequest $getHttpRequest, SetStatusOrderAction $setStatusOrderAction)
     {
         $this->getHttpRequest = $getHttpRequest;
+        $this->setStatusOrderAction = $setStatusOrderAction;
     }
 
     public function execute($request): void
@@ -46,6 +51,8 @@ final class NotifyOrderAction extends BaseApiAwareAction implements NotifyOrderA
             if ($details['metadata']['order_id'] === filter_var($order->metadata->order_id, FILTER_VALIDATE_INT)) {
                 $details['order_mollie_id'] = $this->getHttpRequest->request['id'];
             }
+
+            $this->setStatusOrderAction->execute($order);
 
             throw new HttpResponse('OK', 200);
         }

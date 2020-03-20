@@ -57,7 +57,11 @@ final class MethodsAction extends BaseApiAwareAction implements ActionInterface,
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
-        $allMollieMethods = $this->mollieApiClient->methods->allActive();
+        $parameters = [
+            'include' => 'issuers',
+        ];
+
+        $allMollieMethods = $this->mollieApiClient->methods->allActive($parameters);
 
         /** @var GatewayConfigInterface $gateway */
         $gateway = $this->gatewayConfigRepository->findOneBy(['factoryName' => MollieGatewayFactory::FACTORY_NAME]);

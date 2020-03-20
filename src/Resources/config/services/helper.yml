@@ -4,3 +4,10 @@ services:
 
   bitbag_sylius_mollie_plugin.helper.int_to_string:
     class: BitBag\SyliusMolliePlugin\Helper\IntToStringConverter
+
+  bitbag_sylius_mollie_plugin.payments.order_converter:
+    class: BitBag\SyliusMolliePlugin\Helper\ConvertOrder
+    arguments:
+      - '@bitbag_sylius_mollie_plugin.helper.int_to_string'
+      - '@bitbag_sylius_mollie_plugin.calculator.calculate'
+

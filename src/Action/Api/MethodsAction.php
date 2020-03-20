@@ -25,7 +25,7 @@ use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 
-final class MethodsAction extends BaseApiAwareAction implements ActionInterface, GatewayAwareInterface, ApiAwareInterface
+final class MethodsAction extends BaseApiAwareAction implements ActionInterface, ApiAwareInterface, GatewayAwareInterface
 {
     use GatewayAwareTrait;
 

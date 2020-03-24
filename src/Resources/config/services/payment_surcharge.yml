@@ -1,0 +1,20 @@
+services:
+  _defaults:
+    public: true
+
+  bitbag_sylius_mollie_plugin.payment_surcharge.types.fix_amount:
+    class: BitBag\SyliusMolliePlugin\PaymentSurcharge\Types\FixedAmount
+
+  bitbag_sylius_mollie_plugin.payment_surcharge.types.fix_amount_and_percentage:
+    class: BitBag\SyliusMolliePlugin\PaymentSurcharge\Types\FixedAmountAndPercentage
+
+  bitbag_sylius_mollie_plugin.payment_surcharge.types.percentage:
+    class: BitBag\SyliusMolliePlugin\PaymentSurcharge\Types\Percentage
+
+
+  bitbag_sylius_mollie_plugin.payment_processing.cancel_recurring_subscription:
+    class: BitBag\SyliusMolliePlugin\PaymentSurcharge\Calculate
+    arguments:
+      - "@bitbag_sylius_mollie_plugin.payment_surcharge.types.fix_amount"
+      - "@bitbag_sylius_mollie_plugin.payment_surcharge.types.percentage"
+      - "@bitbag_sylius_mollie_plugin.payment_surcharge.types.fix_amount_and_percentage"

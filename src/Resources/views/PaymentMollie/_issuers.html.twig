@@ -1,12 +1,19 @@
-<div class="ui basic segment grouped fields" id="issuers_data">
-{% for keyChoice, choice in method.vars.choices %}
-    <div class="item">
-        <div class="field">
-            <div class="ui radio checkbox middle aligned content">
-                <input type="radio" value="{{ choice.value }}" id="{{ keyChoice }}" name="{{ method.vars.full_name }}">
-                <label class="header" for="{{ keyChoice }}"> <img class="ui mini avatar image" src="{{ choice.attr['image'] }}"> {{ choice.label }}</label>
-            </div>
+<div class="online-payment__issuers" id="issuers_data">
+    {% for keyChoice, choice in method.vars.choices %}
+        <div class="online-payment__item">
+            <input
+                    type="radio"
+                    value="{{ choice.value }}"
+                    id="choice-issuer-{{ keyChoice }}"
+                    name="{{ method.vars.full_name }}"
+                    class="online-payment__input"
+            >
+            <label class="online-payment__label" for="choice-issuer-{{ keyChoice }}">
+                <img class="online-payment__image" src="{{ choice.attr['image'] }}">
+                {{ choice.label }}
+            </label>
         </div>
-    </div>
-{% endfor %}
+    {% endfor %}
 </div>
+
+

@@ -1,91 +1,41 @@
-{#TODO move style to assets#}
-<style>
-    .form-fields {
-        display: grid;
-        grid-template-columns: 1fr;
-        grid-gap: 20px;
-    }
+{% block stylesheets %}
+    {% include 'SyliusUiBundle::_stylesheets.html.twig' with {'path': 'bundles/bitbagsyliusmollieplugin/css/style.css'} %}
+{% endblock %}
 
-    .label {
-        display: inline-block;
-        margin-bottom: 8px;
-        font-weight: 600;
-    }
-
-    .form-error,
-    .field-error {
-        margin-top: 8px;
-        margin-bottom: 0;
-        color: #f00;
-        font-size: 13px;
-        font-weight: 500;
-    }
-
-    .mollie-component {
-        width: 100%;
-        padding: 10px 15px;
-        color: #222;
-
-        border: 2px solid transparent;
-        border-radius: 6px;
-        background-color: #fff;
-        box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.1), 0px 1px 3px 0px rgba(0, 0, 0, 0.1),
-        0px 0px 0px 1px rgba(0, 0, 0, 0.05);
-
-        transition: all 0.05s ease;
-    }
-
-    .mollie-component.has-focus {
-        border-color: #07f;
-        box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.1), 0px 2px 6px 0px rgba(0, 0, 0, 0.1),
-        0px 0px 0px 1px rgba(0, 0, 0, 0.05);
-    }
-
-    .mollie-component.is-invalid {
-        border-color: #f00;
-        background-color: #fff0f0;
-    }
-
-    @media (min-width: 321px) {
-        .form-fields {
-            grid-template-columns: 1fr 1fr;
-        }
-
-        .form-group--card-number {
-            grid-column: span 2;
-        }
-    }
-</style>
-
-{% for key, method in form.mollie_payment_options %}
+{% for key, method in mollie_payment_options %}
     {% if key == 'molliePaymentMethods' and method.vars.choices|length > 0 %}
-        <div class="ui fluid selection dropdown">
-            <input value="{{ method.vars.choices[0].value }}" type="hidden" id="{{ method.vars.id }}"
-                   name="{{ method.vars.full_name }}">
-            <i class="dropdown icon"></i>
-            <div class="default text">
-                <img class="ui mini avatar image" src="{{ method.vars.choices[0].attr['image'] }}">
-                {{ method.vars.choices[0].label }}
-            </div>
-            <div class="menu">
-                {% for choice in method.vars.choices %}
-                    <div class="item" data-value="{{ choice.value }}">
-                        <img class="ui mini avatar image" src="{{ choice.attr['image'] }}">
+        <div class="ui stackable grid online-online-payment__container">
+            {% for keyChoice, choice in method.vars.choices %}
+                <div class="online-payment__item online-payment__item--{{ choice.value }}">
+
+                    <input
+                            type="radio"
+                            value="{{ choice.value }}"
+                            id="choice-{{ keyChoice }}"
+                            name="{{ method.vars.full_name }}"
+                            class="online-payment__input"
+                    >
+                    <label for="choice-{{ keyChoice }}" class="online-payment__label">
+                        <img class="online-payment__image" src="{{ choice.attr['image'] }}">
                         {{ choice.label }}
-                    </div>
-                {% endfor %}
-            </div>
+                    </label>
+
+                    {% if choice.value == 'creditcard' %}
+                        {% include 'BitBagSyliusMolliePlugin:PaymentMollie:_creditCardForm.html.twig' %}
+                    {% elseif choice.value == 'ideal' %}
+                        {% for key, method in mollie_payment_options %}
+                            {% if key == 'issuers' and method.vars.choices|length > 0 %}
+                                {% include 'BitBagSyliusMolliePlugin:PaymentMollie:_issuers.html.twig' %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+
+                </div>
+            {% endfor %}
         </div>
     {% endif %}
 {% endfor %}
 
 
-{{ form_row(form.mollie_payment_options.cartToken) }}
-{% include 'BitBagSyliusMolliePlugin:PaymentMollie:_creditCardForm.html.twig' %}
+{{ form_row(mollie_payment_options.cartToken) }}
 {% include 'BitBagSyliusMolliePlugin:PaymentMollie:_molliePaymentsJS.html.twig' %}
-
-{% for key, method in form.mollie_payment_options %}
-    {% if key == 'issuers' and method.vars.choices|length > 0 %}
-        {% include 'BitBagSyliusMolliePlugin:PaymentMollie:_issuers.html.twig' %}
-    {% endif %}
-{% endfor %}

@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Payments\Methods;
 
+use BitBag\SyliusMolliePlugin\Entity\MollieMethodImageInterface;
+
 abstract class AbstractMethod implements MethodInterface
 {
     use ConfigTrait;
@@ -27,6 +29,9 @@ abstract class AbstractMethod implements MethodInterface
 
     /** @var boolean */
     protected $enabled = false;
+
+    /** @var MollieMethodImageInterface */
+    protected $customizeMethodImage;
 
     public function getName(): ?string
     {
@@ -46,5 +51,15 @@ abstract class AbstractMethod implements MethodInterface
     public function setEnabled(bool $enabled): void
     {
         $this->enabled = $enabled;
+    }
+
+    public function getCustomizeMethodImage(): ?MollieMethodImageInterface
+    {
+        return $this->customizeMethodImage;
+    }
+
+    public function setCustomizeMethodImage(?MollieMethodImageInterface $customizeMethodImage): void
+    {
+        $this->customizeMethodImage = $customizeMethodImage;
     }
 }

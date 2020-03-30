@@ -51,4 +51,8 @@ interface MethodInterface
     public function getIssuers(): array;
 
     public function setIssuers(array $issuers): void;
+
+    public function getCustomizeMethodImage(): ?MollieMethodImageInterface;
+
+    public function setCustomizeMethodImage(?MollieMethodImageInterface $customizeMethodImage): void;
 }

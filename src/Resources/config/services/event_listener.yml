@@ -8,3 +8,24 @@ services:
       - { name: kernel.event_listener, event: sylius.shipment.post_ship,  method: shipToMollie }
     arguments:
       ['@bitbag_sylius_mollie_plugin.mollie_api_client']
+
+  bitbag_sylius_mollie_plugin.block_event_listener.admin.layout.javascripts:
+    class: Sylius\Bundle\UiBundle\Block\BlockEventListener
+    arguments:
+      - '@@BitBagSyliusMolliePlugin/Admin/_javascripts.html.twig'
+    tags:
+      - { name: kernel.event_listener, event: sonata.block.event.sylius.admin.layout.javascripts, method: onBlockEvent }
+
+  bitbag_sylius_mollie_plugin.block_event_listener.shop.layout.javascripts:
+    class: Sylius\Bundle\UiBundle\Block\BlockEventListener
+    arguments:
+      - '@@BitBagSyliusMolliePlugin/Shop/_javascripts.html.twig'
+    tags:
+      - { name: kernel.event_listener, event: sonata.block.event.sylius.shop.layout.javascripts, method: onBlockEvent }
+
+  bitbag_sylius_mollie_plugin.block_event_listener.shop.layout.stylesheets:
+    class: Sylius\Bundle\UiBundle\Block\BlockEventListener
+    arguments:
+      - '@@BitBagSyliusMolliePlugin/Shop/_stylesheets.html.twig'
+    tags:
+      - { name: kernel.event_listener, event: sonata.block.event.sylius.shop.layout.stylesheets, method: onBlockEvent }

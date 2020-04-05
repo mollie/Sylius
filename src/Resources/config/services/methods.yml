@@ -1,6 +1,0 @@
-services:
-  _defaults:
-    public: true
-
-  bitbag_sylius_mollie_plugin.payments.methods:
-    class: BitBag\SyliusMolliePlugin\Payments\Methods

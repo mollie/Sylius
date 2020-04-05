@@ -1,9 +1,0 @@
-services:
-  _defaults:
-    public: true
-
-  bitbag_sylius_mollie_plugin_calculate_surcharge.processor.payment_surcharge:
-    class: BitBag\SyliusMolliePlugin\Processor\PaymentSurchargeProcessor
-    arguments:
-      - "@bitbag_sylius_mollie_plugin.payment_surcharge.calculate"
-      - "@session"

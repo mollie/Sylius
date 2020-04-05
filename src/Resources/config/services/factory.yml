@@ -1,7 +1,0 @@
-services:
-  bitbag_sylius_mollie_plugin.custom_factory.mollie_gateway_config:
-    class: BitBag\SyliusMolliePlugin\Factory\MollieGatewayConfigFactory
-    decorates: "bitbag_sylius_mollie_plugin.factory.mollie_gateway_config"
-    arguments:
-      - "@bitbag_sylius_mollie_plugin.custom_factory.mollie_gateway_config.inner"
-      - "@bitbag_sylius_mollie_plugin.repository.mollie_gateway_config"

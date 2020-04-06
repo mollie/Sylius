@@ -83,6 +83,13 @@ final class MollieGatewayConfigType extends AbstractResourceType
                     range(1, 100, 1),
                     range(1, 100, 1)
                 ),
+            ])
+            ->add('loggerEnabled', CheckboxType::class, [
+                'label' => 'bitbag_sylius_mollie_plugin.ui.debug_level_enabled',
+            ])
+            ->add('loggerLevel', ChoiceType::class, [
+                'label' => 'bitbag_sylius_mollie_plugin.ui.debug_level_log',
+                'choices' => Options::getDebugLevels(),
             ]);
     }
 

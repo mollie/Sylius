@@ -41,6 +41,12 @@ class MollieGatewayConfig extends AbstractMethod implements ResourceInterface, M
     /** @var string */
     private $paymentDescription;
 
+    /** @var boolean */
+    private $loggerEnabled;
+
+    /** @var int */
+    private $loggerLevel;
+
     public function getId(): int
     {
         return $this->id;
@@ -114,5 +120,25 @@ class MollieGatewayConfig extends AbstractMethod implements ResourceInterface, M
     public function setPaymentDescription(?string $paymentDescription): void
     {
         $this->paymentDescription = $paymentDescription;
+    }
+
+    public function isLoggerEnabled(): ?bool
+    {
+        return $this->loggerEnabled;
+    }
+
+    public function setLoggerEnabled(?bool $loggerEnabled): void
+    {
+        $this->loggerEnabled = $loggerEnabled;
+    }
+
+    public function getLoggerLevel(): ?int
+    {
+        return $this->loggerLevel;
+    }
+
+    public function setLoggerLevel(?int $loggerLevel): void
+    {
+        $this->loggerLevel = $loggerLevel;
     }
 }

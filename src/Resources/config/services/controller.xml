@@ -41,6 +41,7 @@
             <argument type="service" id="bitbag_sylius_mollie_plugin.repository.mollie_gateway_config"/>
             <argument type="service" id="sylius.adjustments_aggregator" />
             <argument type="service" id="bitbag_sylius_mollie_plugin.sylius_mollie_plugin.helper.convert_price_to_amount" />
+            <argument type="service" id="twig"/>
         </service>
     </services>
 </container>

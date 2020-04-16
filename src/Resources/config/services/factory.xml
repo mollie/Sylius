@@ -18,5 +18,8 @@
         <service id="bitbag_sylius_mollie_plugin.factory.shipment_factory" class="BitBag\SyliusMolliePlugin\Factory\PartialShip\ShipmentFactory" public="true">
             <argument type="service" id="sylius.factory.shipment" />
         </service>
+        <service id="bit_bag.sylius_mollie_plugin.factory.shipment_factory" class="BitBag\SyliusMolliePlugin\Factory\PartialShip\ShipmentFactory" public="true">
+            <argument type="service" id="sylius.factory.shipment" />
+        </service>
     </services>
 </container>

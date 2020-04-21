@@ -61,7 +61,7 @@ final class CaptureAction extends BaseApiAwareAction implements CaptureActionInt
         $notifyToken = $this->tokenFactory->createNotifyToken($token->getGatewayName(), $token->getDetails());
         $refundToken = $this->tokenFactory->createRefundToken($token->getGatewayName(), $token->getDetails());
 
-        $details['webhookUrl'] = $notifyToken->getTargetUrl();
+        $details['webhookUrl'] = str_replace('127.0.0.1:8000', 'de0d94b8.ngrok.io', $notifyToken->getTargetUrl());
         $details['backurl'] = $token->getTargetUrl();
 
         if (true === $this->mollieApiClient->isRecurringSubscription()) {

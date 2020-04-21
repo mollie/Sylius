@@ -43,8 +43,7 @@ final class PaymentRefund implements PaymentRefundInterface
     public function refund(Payment $payment): void
     {
         try {
-            $refundUnits = $this->commandCreator->fromPayment($payment);
-            $this->commandBus->dispatch($refundUnits);
+            $this->commandCreator->fromPayment($payment);
         } catch (InvalidRefundAmountException $e) {
             $this->loggerAction->addNegativeLog($e->getMessage());
         } catch (HandlerFailedException $e) {

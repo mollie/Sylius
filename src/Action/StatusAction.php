@@ -48,6 +48,7 @@ final class StatusAction extends BaseApiAwareAction implements StatusActionInter
         $this->paymentRefund = $paymentRefund;
         $this->orderRefund = $orderRefund;
         $this->loggerAction = $loggerAction;
+        $this->orderRefund = $orderRefund;
     }
 
     /** @param GetStatusInterface $request */

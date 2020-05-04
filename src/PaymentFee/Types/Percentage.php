@@ -34,6 +34,9 @@ final class Percentage implements SurchargeTypeInterface
         $percentage = $paymentMethod->getPaymentSurchargeFee()->getPercentage();
         $amount = ($order->getItemsTotal() / 100) * $percentage;
 
+        $order->removeAdjustments(AdjustmentInterface::FIXED_AMOUNT_ADJUSTMENT);
+        $order->removeAdjustments(AdjustmentInterface::PERCENTAGE_AND_AMOUNT_ADJUSTMENT);
+
         if ($order->getAdjustments(AdjustmentInterface::PERCENTAGE_ADJUSTMENT)) {
             $order->removeAdjustments(AdjustmentInterface::PERCENTAGE_ADJUSTMENT);
         }

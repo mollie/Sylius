@@ -13,9 +13,11 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Action\Api;
 
 use BitBag\SyliusMolliePlugin\Entity\SubscriptionInterface;
+use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use BitBag\SyliusMolliePlugin\Request\Api\CreateRecurringSubscription;
 use BitBag\SyliusMolliePlugin\Request\StateMachine\StatusRecurringSubscription;
 use Doctrine\ORM\EntityManagerInterface;
+use Mollie\Api\Exceptions\ApiException;
 use Mollie\Api\Resources\Customer;
 use Mollie\Api\Resources\Subscription;
 use Mollie\Api\Types\MandateMethod;
@@ -34,49 +36,36 @@ final class CreateRecurringSubscriptionAction extends BaseApiAwareAction impleme
 {
     use GatewayAwareTrait;
 
-    /**
-     * @var FactoryInterface
-     */
+    /** @var FactoryInterface */
     private $subscriptionFactory;
 
-    /**
-     * @var EntityManagerInterface
-     */
+    /** @var EntityManagerInterface */
     private $subscriptionManager;
 
-    /**
-     * @var SateMachineFactoryInterface
-     */
+    /** @var SateMachineFactoryInterface */
     private $subscriptionSateMachineFactory;
 
-    /**
-     * @var OrderRepositoryInterface
-     */
+    /** @var OrderRepositoryInterface */
     private $orderRepository;
 
-    /**
-     * @param FactoryInterface $subscriptionFactory
-     * @param EntityManagerInterface $subscriptionManager
-     * @param SateMachineFactoryInterface $subscriptionSateMachineFactory
-     * @param OrderRepositoryInterface $orderRepository
-     */
+    /** @var MollieLoggerActionInterface */
+    private $loggerAction;
+
     public function __construct(
         FactoryInterface $subscriptionFactory,
         EntityManagerInterface $subscriptionManager,
         SateMachineFactoryInterface $subscriptionSateMachineFactory,
-        OrderRepositoryInterface $orderRepository
+        OrderRepositoryInterface $orderRepository,
+        MollieLoggerActionInterface $loggerAction
     ) {
         $this->subscriptionFactory = $subscriptionFactory;
         $this->subscriptionManager = $subscriptionManager;
         $this->subscriptionSateMachineFactory = $subscriptionSateMachineFactory;
         $this->orderRepository = $orderRepository;
+        $this->loggerAction = $loggerAction;
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @param CreateRecurringSubscription $request
-     */
+    /** @param CreateRecurringSubscription $request */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
@@ -87,8 +76,14 @@ final class CreateRecurringSubscriptionAction extends BaseApiAwareAction impleme
             return;
         }
 
-        /** @var Customer $customer */
-        $customer = $this->mollieApiClient->customers->get($model['customer_mollie_id']);
+        try {
+            /** @var Customer $customer */
+            $customer = $this->mollieApiClient->customers->get($model['customer_mollie_id']);
+        } catch (\Exception $e) {
+            $this->loggerAction->addNegativeLog(sprintf('Error with get customer from mollie with: %s', $e->getMessage()));
+
+            throw new ApiException(sprintf('Error with get customer from mollie with: %s', $e->getMessage()));
+        }
 
         /** @var Subscription $subscriptionApiResult */
         $subscriptionApiResult = $customer->createSubscription([
@@ -113,17 +108,16 @@ final class CreateRecurringSubscriptionAction extends BaseApiAwareAction impleme
 
         $model['subscription_mollie_id'] = $subscriptionApiResult->id;
 
+        $this->loggerAction->addLog(sprintf('Create requrring subscription with id: %s', $subscriptionApiResult->id));
+
         $this->gateway->execute(new StatusRecurringSubscription($subscription));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports($request): bool
     {
         return
             $request instanceof CreateRecurringSubscription &&
             $request->getModel() instanceof \ArrayAccess
-        ;
+            ;
     }
 }

@@ -12,8 +12,10 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Action\Api;
 
+use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use BitBag\SyliusMolliePlugin\Request\Api\CreateCustomer;
 use BitBag\SyliusMolliePlugin\Request\Api\CreateSepaMandate;
+use Mollie\Api\Exceptions\ApiException;
 use Mollie\Api\Resources\Customer;
 use Mollie\Api\Resources\Mandate;
 use Mollie\Api\Types\MandateMethod;
@@ -29,24 +31,19 @@ final class CreateSepaMandateAction extends BaseApiAwareAction implements Action
 {
     use GatewayAwareTrait;
 
-    /**
-     * @var SessionInterface
-     */
+    /** @var SessionInterface */
     private $session;
 
-    /**
-     * @param SessionInterface $session
-     */
-    public function __construct(SessionInterface $session)
+    /** @var MollieLoggerActionInterface */
+    private $loggerAction;
+
+    public function __construct(SessionInterface $session, MollieLoggerActionInterface $loggerAction)
     {
         $this->session = $session;
+        $this->loggerAction = $loggerAction;
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @param CreateSepaMandate $request
-     */
+    /** @param CreateSepaMandate $request */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
@@ -59,8 +56,14 @@ final class CreateSepaMandateAction extends BaseApiAwareAction implements Action
 
         $this->gateway->execute(new CreateCustomer($model));
 
-        /** @var Customer $customer */
-        $customer = $this->mollieApiClient->customers->get($model['customer_mollie_id']);
+        try {
+            /** @var Customer $customer */
+            $customer = $this->mollieApiClient->customers->get($model['customer_mollie_id']);
+        } catch (\Exception $e) {
+            $this->loggerAction->addNegativeLog(sprintf('Error with get customer from mollie with: %s', $e->getMessage()));
+
+            throw new ApiException(sprintf('Error with get customer from mollie with: %s', $e->getMessage()));
+        }
 
         /** @var Mandate $mandate */
         $mandate = $customer->createMandate([
@@ -69,17 +72,15 @@ final class CreateSepaMandateAction extends BaseApiAwareAction implements Action
             'method' => MandateMethod::DIRECTDEBIT,
         ]);
 
+        $this->loggerAction->addLog(sprintf('Create mandate with id %s', $mandate->id));
+
         $model['mandate_mollie_id'] = $mandate->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports($request): bool
     {
         return
             $request instanceof CreateSepaMandate &&
-            $request->getModel() instanceof \ArrayAccess
-        ;
+            $request->getModel() instanceof \ArrayAccess;
     }
 }

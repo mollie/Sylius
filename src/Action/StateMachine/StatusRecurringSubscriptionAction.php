@@ -28,20 +28,12 @@ use SM\Factory\FactoryInterface;
 
 final class StatusRecurringSubscriptionAction extends BaseApiAwareAction implements ActionInterface, ApiAwareInterface
 {
-    /**
-     * @var EntityManagerInterface
-     */
+    /** @var EntityManagerInterface */
     private $subscriptionManager;
 
-    /**
-     * @var FactoryInterface
-     */
+    /** @var FactoryInterface */
     private $subscriptionSateMachineFactory;
 
-    /**
-     * @param EntityManagerInterface $subscriptionManager
-     * @param FactoryInterface $subscriptionSateMachineFactory
-     */
     public function __construct(
         EntityManagerInterface $subscriptionManager,
         FactoryInterface $subscriptionSateMachineFactory
@@ -50,11 +42,7 @@ final class StatusRecurringSubscriptionAction extends BaseApiAwareAction impleme
         $this->subscriptionSateMachineFactory = $subscriptionSateMachineFactory;
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @param CancelRecurringSubscription $request
-     */
+    /** @param CancelRecurringSubscription $request */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
@@ -96,9 +84,6 @@ final class StatusRecurringSubscriptionAction extends BaseApiAwareAction impleme
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports($request): bool
     {
         return
@@ -107,12 +92,6 @@ final class StatusRecurringSubscriptionAction extends BaseApiAwareAction impleme
         ;
     }
 
-    /**
-     * @param SubscriptionInterface $subscription
-     * @param string $transitions
-     *
-     * @throws \SM\SMException
-     */
     private function applyStateMachineTransition(SubscriptionInterface $subscription, string $transitions): void
     {
         $stateMachine = $this->subscriptionSateMachineFactory->get($subscription, SubscriptionTransitions::GRAPH);

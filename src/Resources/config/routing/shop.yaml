@@ -1,0 +1,4 @@
+bitbag_mollie_subscription:
+  resource: "shop/subscription_mollie.yaml"
+bitbag_mollie_payment_fee_ajax:
+  resource: "shop/paymentFee.yaml"

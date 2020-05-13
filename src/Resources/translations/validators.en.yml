@@ -1,8 +1,11 @@
 bitbag_sylius_mollie_plugin:
     api_key:
         not_blank: API key cannot be blank.
-        invalid: Invalid API key. An API key must start with 'test_' or 'live_'.
+        invalid_test: Invalid API key. An API key must start with 'test_'.
+        invalid_live: Invalid API key. An API key must start with 'live_'.
         min_length: API key must be at least {{ limit }} characters long.
+    profile_id:
+        not_blank: Profile ID cannot be blank
     channel:
         required_currency: The base currency of the channel must be {{ currencies }}.
     times:
@@ -15,3 +18,9 @@ bitbag_sylius_mollie_plugin:
     iban:
         not_blank: IBAN cannot be blank.
         incorrect: Incorrect IBAN number.
+    payment_method:
+        not_blank: Value cannot be blank
+    form:
+        error:
+            payment_surcharge_not_empty: Value cannot be blank
+            greater_than: The value should be greater than zero

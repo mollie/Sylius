@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <defaults public="true" />
+        <service id="bitbag_sylius_mollie_plugin.event_listener.shipment_ship_event_listener" class="BitBag\SyliusMolliePlugin\EventListener\ShipmentShipEventListener">
+            <argument type="service" id="bitbag_sylius_mollie_plugin.mollie_api_client"/>
+            <tag name="kernel.event_listener" event="sylius.shipment.post_ship" method="shipAll"/>
+        </service>
+        <service id="bitbag_sylius_mollie_plugin.event_listener.payment_method_logo_upload_listener" class="BitBag\SyliusMolliePlugin\EventListener\PaymentMethodUploadLogoListener">
+            <argument type="service" id="sylius.manager.gateway_config"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.uploader.payment_method_logo_uploader"/>
+            <tag name="kernel.event_listener" event="sylius.payment_method.pre_create" method="uploadLogo"/>
+            <tag name="kernel.event_listener" event="sylius.payment_method.pre_update" method="uploadLogo"/>
+        </service>
+
+        <service id="bitbag_sylius_mollie_plugin.block_event_listener.admin.layout.javascripts" class="Sylius\Bundle\UiBundle\Block\BlockEventListener">
+            <argument>@BitBagSyliusMolliePlugin\Admin\_javascripts.html.twig</argument>
+            <tag name="kernel.event_listener" event="sonata.block.event.sylius.admin.layout.javascripts" method="onBlockEvent"/>
+        </service>
+        <service id="bitbag_sylius_mollie_plugin.block_event_listener.shop.layout.javascripts" class="Sylius\Bundle\UiBundle\Block\BlockEventListener">
+            <argument>@BitBagSyliusMolliePlugin/Shop/_javascripts.html.twig</argument>
+            <tag name="kernel.event_listener" event="sonata.block.event.sylius.shop.layout.javascripts" method="onBlockEvent"/>
+        </service>
+        <service id="bitbag_sylius_mollie_plugin.block_event_listener.shop.layout.stylesheets" class="Sylius\Bundle\UiBundle\Block\BlockEventListener">
+            <argument>@BitBagSyliusMolliePlugin/Shop/_stylesheets.html.twig</argument>
+            <tag name="kernel.event_listener" event="sonata.block.event.sylius.shop.layout.stylesheets" method="onBlockEvent"/>
+        </service>
+        <service id="BitBag\SyliusMolliePlugin\EventListener\PaymentPartialEventListener">
+            <argument type="service" id="bit_bag.sylius_mollie_plugin.order.order_payment_refund"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
+            <tag name="messenger.message_handler" />
+        </service>
+    </services>
+</container>

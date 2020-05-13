@@ -1,0 +1,8 @@
+imports:
+    - { resource: "@BitBagSyliusMolliePlugin/Resources/config/resources/subscription.yaml" }
+    - { resource: "@BitBagSyliusMolliePlugin/Resources/config/resources/mollie_methods.yaml" }
+    - { resource: "@BitBagSyliusMolliePlugin/Resources/config/resources/gateway_config.yaml" }
+    - { resource: "@BitBagSyliusMolliePlugin/Resources/config/resources/payment_surcharge_fee.yaml" }
+    - { resource: "@BitBagSyliusMolliePlugin/Resources/config/resources/mollie_method_image.yaml" }
+    - { resource: "@BitBagSyliusMolliePlugin/Resources/config/resources/mollie_logger.yaml" }
+    - { resource: "@SyliusRefundPlugin/Resources/config/app/config.yml" }

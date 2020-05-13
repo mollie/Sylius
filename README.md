@@ -23,10 +23,38 @@
     </p>
 </h1>
 
+![Screenshot showing payment methods show in shop](doc/payment_methods_shop.png)
+
+![Screenshot showing payment methods show in admin](doc/payment_methods_admin.png)
+
+![Screenshot showing payment method config in admin](doc/payment_method_config.png)
+
 ## Overview
 
-This plugin allows you to integrate Mollie payment with Sylius platform app. It includes all Sylius and Mollie payment features, including recurring payment and refunding orders.
+Mollie is the most popular (installed over 6000 times) and advanced payment gateway integration with Sylius. Officially certified by Mollie’s team. The integration currently supports the following payment methods:
+1. Credit Cards (Master Card, VISA, American Express)
+2. PayPal
+3. ApplePay
+4. Klarna
+5. iDEAL
+6. SEPA
+7. SOFORT
+8. EPS
+9. Giropay
+10. KBC/CBC Payment Button
+11. Przelewy24
+12. ING Home’Pay
+13. Belfius Pay Button
+14. Gift cards
 
+Few words from Mollie:
+Our mission is to create a greater playing field for everyone. By offering convenient, safe world-wide payment solutions we remove barriers so you could focus on growing your business.
+
+Being authentic is our baseline.
+
+Mollie is one of Europe’s fastest-growing fin-tech companies. We provide a simple payment API, that enables webshop and app builders to implement more than twenty different payment methods in one go. Our packages and plugins are completely open-source, freely available, and easy to integrate into your current project.
+
+Mollie thrives on innovation. When we started we spearheaded the payments industry by introducing effortless payment products that were easier, cheaper, and more flexible than what the rigid, cumbersome banks could do. Now, more than a decade later, trusted by 70.000+ businesses, Mollie is still building innovative products and working hard to make payments better.
 ## Support
 
 You can order our support on [this page](https://bitbag.io/contact).
@@ -35,51 +63,83 @@ We work on amazing eCommerce projects on top of Sylius and other great Symfony b
 Need some help or additional resources for a project? Write us an email on mikolaj.krol@bitbag.pl or visit
 [our website](https://bitbag.shop/)! :rocket:
 
-## Demo
-
-We created a demo app with some useful use-cases of the plugin! Visit [demo.bitbag.shop](https://demo.bitbag.shop) to take a look at it. 
+## Installation
+1.Require with composer
 
 ```bash
 $ composer require bitbag/mollie-plugin
 ```
 
+2.Add plugin dependencies to your `config/bundles.php` file:
 
-Add plugin dependencies to your `config/bundles.php` file:
 ```php
 return [
     ...
-
     BitBag\SyliusMolliePlugin\BitBagSyliusMolliePlugin::class => ['all' => true],
 ];
 ```
 
-Import required config in your `config/packages/_sylius.yaml` file:
+3.Import required config in your `config/packages/_sylius.yaml` file:
+
 ```yaml
 # config/packages/_sylius.yaml
 
 imports:
     ...
-
-    - { resource: "@BitBagSyliusMolliePlugin/Resources/config/config.yml" }
+    - { resource: "@BitBagSyliusMolliePlugin/Resources/config/config.yaml" }
 ```
 
-Import the routing in your `config/routes.yaml` file:
+4.Import the routing in your `config/routes.yaml` file:
+
 ```yaml
 # config/routes.yaml
 
 bitbag_sylius_mollie_plugin:
-    resource: "@BitBagSyliusMolliePlugin/Resources/config/routing.yml"
+    resource: "@BitBagSyliusMolliePlugin/Resources/config/routing.yaml"
 ```
 
-Update your database
+5.Add image dir parameter in _sylius.yaml
+
+```yaml
+   parameters:
+       images_dir: "/media/image/"
+``` 
+
+6.Update your database
+
 ```
-$ bin/console doctrine:migrations:diff
-$ bin/console doctrine:migrations:migrate
+cp -R vendor/bitbag/mollie-plugin/migrations/* src/Migrations
+bin/console doctrine:migrations:migrate
+```
+
+7.Copy Sylius templates overridden in plugin to your templates directory (e.g templates/bundles/):
+
+```
+mkdir -p templates/bundles/SyliusAdminBundle/
+mkdir -p templates/bundles/SyliusShopBundle/
+
+cp -R vendor/bitbag/mollie-plugin/src/Resources/views/SyliusAdminBundle/* templates/bundles/SyliusAdminBundle/
+cp -R vendor/bitbag/mollie-plugin/src/Resources/views/SyliusShopBundle/* templates/bundles/SyliusShopBundle/
+```
+
+8.Install assets
+
+```
+bin/console assets:install
+```
+
+9.(optional) if you don't use `symfony/messenger` component yet, it is required to configure default message bus:
+
+```yaml
+    framework:
+        messenger:
+            default_bus: sylius_refund_plugin.command_bus
 ```
 
 **Note:** If you are running it on production, add the `-e prod` flag to this command.
 
 ## Usage
+During configuration first, save the keys to the database and then click "Load methods"
 
 ### Rendering Mollie credit card form
 

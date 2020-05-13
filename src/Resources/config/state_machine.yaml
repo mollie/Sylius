@@ -1,0 +1,3 @@
+imports:
+    - { resource: "@BitBagSyliusMolliePlugin/Resources/config/state_machine/mollie_subscription.yaml" }
+    - { resource: "@BitBagSyliusMolliePlugin/Resources/config/state_machine/checkout.yaml" }

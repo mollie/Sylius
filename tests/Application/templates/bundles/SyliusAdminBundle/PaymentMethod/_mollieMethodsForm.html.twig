@@ -1,0 +1,66 @@
+<div class="ui segment">
+    <h4 class="ui header">
+        <div class="ui two column stackable grid">
+            <div class="middle aligned column">
+                {{ 'bitbag_sylius_mollie_plugin.ui.payment_mathod_conf_title'|trans }}
+            </div>
+            <div class="right aligned column">
+                <div class="ui buttons">
+                    <a href="#" id="get_methods" data-url="{{ path('bitbag_admin_methods') }}"
+                       class="ui button primary">{{ 'bitbag_sylius_mollie_plugin.ui.load_methods_button'|trans }}</a>
+                </div>
+            </div>
+        </div>
+    </h4>
+    <div class="ui styled fluid accordion" id="payment_methods">
+        {% for name, methodForm in form.gatewayConfig.mollieGatewayConfig %}
+            {% set methodImage = methodForm.vars.value.image.svg %}
+            {% if methodForm.vars.value.customizeMethodImage != null and methodForm.vars.value.customizeMethodImage.path != null %}
+                {% set methodImage = image_dir_global ~ methodForm.vars.value.customizeMethodImage.path %}
+            {% endif %}
+            <div class="title{% if 0 == loop.index0 %} active{% endif %}">
+                <i class="dropdown icon"></i>
+                <img class="ui mini avatar image" src="{{ methodImage }}">
+                {{ methodForm.vars.value.name }}
+            </div>
+            <div class="content{% if 0 == loop.index0 %} active{% endif %}">
+                {{ form_row(methodForm.enabled) }}
+                {{ form_row(methodForm.name) }}
+                <div class="ui bottom aligned grid">
+                    <div class="twelve wide column">
+                        {{ form_row(methodForm.customizeMethodImage) }}
+                    </div>
+                    {% if methodForm.vars.value.customizeMethodImage != null and methodForm.vars.value.customizeMethodImage.path != null %}
+                        <div class="four wide column">
+                            <div id={{ name }}
+                                 data-value="{{ methodForm.vars.value.name }}"
+                                 data-url="{{ path('bitbag_admin_delete_logo') }}"
+                                 class="ui button red form_button--delete-img">{{'sylius.ui.delete'|trans}}</div>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="field">
+                    {{ form_row(methodForm.countryLevel, { 'attr': {'class': 'fluid search'} }) }}
+                </div>
+                <div class="field">
+                    <div class="fields">
+                        <div class="twelve wide field">
+                            {{ form_row(methodForm.paymentType) }}
+                        </div>
+                        <div class="four wide field">
+                            {{ form_row(methodForm.orderExpiration) }}
+                        </div>
+                    </div>
+                </div>
+                <h4 class="ui horizontal divider header">
+                    {{ 'bitbag_sylius_mollie_plugin.ui.payment_fee'|trans }}
+                </h4>
+                {{ form_row(methodForm.paymentSurchargeFee) }}
+            </div>
+        {% else %}
+            <div class="ui mini message center float">
+                {{ 'bitbag_sylius_mollie_plugin.ui.no_methods_found_message'|trans }}
+            </div>
+        {% endfor %}
+    </div>
+</div>

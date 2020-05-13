@@ -19,14 +19,9 @@ use Payum\Core\Exception\UnsupportedApiException;
 
 abstract class BaseApiAwareAction implements ActionInterface, ApiAwareInterface
 {
-    /**
-     * @var MollieApiClient
-     */
+    /** @var MollieApiClient */
     protected $mollieApiClient;
 
-    /**
-     * {@inheritdoc}
-     */
     public function setApi($mollieApiClient): void
     {
         if (false === $mollieApiClient instanceof MollieApiClient) {

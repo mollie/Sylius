@@ -1,2 +1,2 @@
 bitbag_sylius_mollie_plugin:
-    resource: "@BitBagSyliusMolliePlugin/Resources/config/routing.yml"
+    resource: "@BitBagSyliusMolliePlugin/Resources/config/routing.yaml"

@@ -13,7 +13,9 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Action\Api;
 
 use BitBag\SyliusMolliePlugin\Entity\SubscriptionInterface;
+use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use BitBag\SyliusMolliePlugin\Request\Api\CancelRecurringSubscription;
+use Mollie\Api\Exceptions\ApiException;
 use Mollie\Api\Resources\Customer;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
@@ -25,11 +27,15 @@ final class CancelRecurringSubscriptionAction extends BaseApiAwareAction impleme
 {
     use GatewayAwareTrait;
 
-    /**
-     * {@inheritdoc}
-     *
-     * @param CancelRecurringSubscription $request
-     */
+    /** @var MollieLoggerActionInterface */
+    private $loggerAction;
+
+    public function __construct(MollieLoggerActionInterface $loggerAction)
+    {
+        $this->loggerAction = $loggerAction;
+    }
+
+    /** @param CancelRecurringSubscription $request */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
@@ -37,20 +43,25 @@ final class CancelRecurringSubscriptionAction extends BaseApiAwareAction impleme
         /** @var SubscriptionInterface $subscription */
         $subscription = $request->getModel();
 
-        /** @var Customer $customer */
-        $customer = $this->mollieApiClient->customers->get($subscription->getCustomerId());
+        try {
+            /** @var Customer $customer */
+            $customer = $this->mollieApiClient->customers->get($subscription->getCustomerId());
+        } catch (\Exception $e) {
+            $this->loggerAction->addNegativeLog(sprintf('Error with get customer in recurring subscription with: %s', $e->getMessage()));
+
+            throw new ApiException('Error with get customer in recurring subscription with ' . $e->getMessage());
+        }
+
+        $this->loggerAction->addLog(sprintf('Cancel recurring subscription with id:  %s', $subscription->getSubscriptionId()));
 
         $customer->cancelSubscription($subscription->getSubscriptionId());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports($request): bool
     {
         return
             $request instanceof CancelRecurringSubscription &&
             $request->getModel() instanceof SubscriptionInterface
-        ;
+            ;
     }
 }

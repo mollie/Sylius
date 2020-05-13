@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Form\Extension;
 
+use BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
 use BitBag\SyliusMolliePlugin\Form\Type\DirectDebitType;
-use BitBag\SyliusMolliePlugin\MollieSubscriptionGatewayFactory;
 use Sylius\Bundle\CoreBundle\Form\Type\Checkout\CompleteType;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\PaymentMethodInterface;
@@ -23,9 +23,6 @@ use Symfony\Component\Validator\Constraints\Valid;
 
 final class CompleteTypeExtension extends AbstractTypeExtension
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         /** @var OrderInterface $order */
@@ -51,11 +48,8 @@ final class CompleteTypeExtension extends AbstractTypeExtension
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getExtendedType(): string
+    public function getExtendedTypes(): iterable
     {
-        return CompleteType::class;
+        return [CompleteType::class];
     }
 }

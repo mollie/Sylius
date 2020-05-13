@@ -13,6 +13,8 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Action;
 
 use BitBag\SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
+use BitBag\SyliusMolliePlugin\Helper\ConvertRefundDataInterface;
+use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use Mollie\Api\Exceptions\ApiException;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
@@ -21,44 +23,62 @@ use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Refund;
+use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Resource\Exception\UpdateHandlingException;
 
 final class RefundAction extends BaseApiAwareAction implements ActionInterface, ApiAwareInterface, GatewayAwareInterface
 {
     use GatewayAwareTrait;
 
-    /**
-     * {@inheritdoc}
-     *
-     * @param Refund $request
-     */
+    /** @var MollieLoggerActionInterface */
+    private $loggerAction;
+
+    /** @var ConvertRefundDataInterface */
+    private $convertOrderRefundData;
+
+    public function __construct
+    (
+        MollieLoggerActionInterface $loggerAction,
+        ConvertRefundDataInterface $convertOrderRefundData
+    ) {
+        $this->loggerAction = $loggerAction;
+        $this->convertOrderRefundData = $convertOrderRefundData;
+    }
+
+    /** @param Refund $request */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
         $details = ArrayObject::ensureArrayObject($request->getModel());
+        /** @var PaymentInterface $payment */
+        $payment = $request->getFirstModel();
 
         try {
-            $payment = $this->mollieApiClient->payments->get($details['payment_mollie_id']);
+            $molliePayment = $this->mollieApiClient->payments->get($details['payment_mollie_id']);
+            $refundData = $this->convertOrderRefundData->convert($details['metadata']['refund'], $payment->getCurrencyCode());
 
-            if (true === $payment->canBeRefunded()) {
-                $payment->refund(['amount' => $details['amount']]);
+            if (true === $molliePayment->canBeRefunded()) {
+                $molliePayment->refund(['amount' => $refundData]);
+
+                $this->loggerAction->addLog(sprintf('Refund action with payment id %s', $molliePayment->id));
             } else {
-                throw new UpdateHandlingException(sprintf('Payment %s can not be refunded.', $payment->id));
+                $this->loggerAction->addNegativeLog(sprintf('Payment %s can not be refunded.', $molliePayment->id));
+
+                throw new UpdateHandlingException(sprintf('Payment %s can not be refunded.', $molliePayment->id));
             }
         } catch (ApiException $e) {
+            $this->loggerAction->addNegativeLog(sprintf('API call failed: %s', htmlspecialchars($e->getMessage())));
+
             throw new UpdateHandlingException(sprintf('API call failed: %s', htmlspecialchars($e->getMessage())));
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports($request): bool
     {
         return
             $request instanceof Refund &&
             $request->getModel() instanceof \ArrayAccess
-        ;
+            ;
     }
 }

@@ -13,9 +13,12 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Action;
 
 use BitBag\SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
+use BitBag\SyliusMolliePlugin\Action\StateMachine\SetStatusOrderAction;
 use BitBag\SyliusMolliePlugin\Entity\SubscriptionInterface;
+use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use BitBag\SyliusMolliePlugin\Repository\SubscriptionRepositoryInterface;
 use BitBag\SyliusMolliePlugin\Request\StateMachine\StatusRecurringSubscription;
+use Mollie\Api\Exceptions\ApiException;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
@@ -25,36 +28,37 @@ use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Reply\HttpResponse;
 use Payum\Core\Request\GetHttpRequest;
 use Payum\Core\Request\Notify;
+use Symfony\Component\HttpFoundation\Response;
 
 final class NotifyAction extends BaseApiAwareAction implements ActionInterface, ApiAwareInterface, GatewayAwareInterface
 {
     use GatewayAwareTrait;
 
-    /**
-     * @var GetHttpRequest
-     */
+    /** @var GetHttpRequest */
     private $getHttpRequest;
 
-    /**
-     * @var SubscriptionRepositoryInterface
-     */
+    /** @var SubscriptionRepositoryInterface */
     private $subscriptionRepository;
 
-    /**
-     * @param GetHttpRequest $getHttpRequest
-     * @param SubscriptionRepositoryInterface $subscriptionRepository
-     */
-    public function __construct(GetHttpRequest $getHttpRequest, SubscriptionRepositoryInterface $subscriptionRepository)
-    {
+    /** @var SetStatusOrderAction */
+    private $setStatusOrderAction;
+
+    /** @var MollieLoggerActionInterface */
+    private $loggerAction;
+
+    public function __construct(
+        GetHttpRequest $getHttpRequest,
+        SubscriptionRepositoryInterface $subscriptionRepository,
+        SetStatusOrderAction $setStatusOrderAction,
+        MollieLoggerActionInterface $loggerAction
+    ) {
         $this->getHttpRequest = $getHttpRequest;
         $this->subscriptionRepository = $subscriptionRepository;
+        $this->setStatusOrderAction = $setStatusOrderAction;
+        $this->loggerAction = $loggerAction;
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @param Notify $request
-     */
+    /** @param Notify $request */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
@@ -64,13 +68,21 @@ final class NotifyAction extends BaseApiAwareAction implements ActionInterface, 
         $this->gateway->execute($this->getHttpRequest);
 
         if (true === isset($details['payment_mollie_id'])) {
-            $payment = $this->mollieApiClient->payments->get($this->getHttpRequest->request['id']);
+            try {
+                $payment = $this->mollieApiClient->payments->get($this->getHttpRequest->request['id']);
+            } catch (\Exception $e) {
+                $this->loggerAction->addNegativeLog(sprintf('Error with get customer from mollie with: %s', $e->getMessage()));
+
+                throw new ApiException(sprintf('Error with get customer from mollie with: %s', $e->getMessage()));
+            }
 
             if ($details['metadata']['order_id'] === filter_var($payment->metadata->order_id, FILTER_VALIDATE_INT)) {
                 $details['payment_mollie_id'] = $this->getHttpRequest->request['id'];
             }
 
-            throw new HttpResponse('OK', 200);
+            $this->loggerAction->addLog(sprintf('Notify payment with id: %s', $payment->id));
+
+            throw new HttpResponse('OK', Response::HTTP_OK);
         }
 
         if (true === isset($details['subscription_mollie_id'])) {
@@ -79,18 +91,37 @@ final class NotifyAction extends BaseApiAwareAction implements ActionInterface, 
 
             $this->gateway->execute(new StatusRecurringSubscription($subscription));
 
-            throw new HttpResponse('OK', 200);
+            $this->loggerAction->addLog(sprintf('Notify subscription with id: %s', $details['subscription_mollie_id']));
+
+            throw new HttpResponse('OK', Response::HTTP_OK);
+        }
+
+        if (true === isset($details['order_mollie_id'])) {
+            try {
+                $order = $this->mollieApiClient->orders->get($this->getHttpRequest->request['id']);
+            } catch (\Exception $e) {
+                $this->loggerAction->addNegativeLog(sprintf('Error with get order from mollie with: %s', $e->getMessage()));
+
+                throw new ApiException('Error to get order with ' . $e->getMessage());
+            }
+
+            if ($details['metadata']['order_id'] === filter_var($order->metadata->order_id, FILTER_VALIDATE_INT)) {
+                $details['order_mollie_id'] = $this->getHttpRequest->request['id'];
+            }
+
+            $this->setStatusOrderAction->execute($order);
+
+            $this->loggerAction->addLog(sprintf('Notify order with id: %s', $order->id));
+
+            throw new HttpResponse('OK', Response::HTTP_OK);
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports($request): bool
     {
         return
             $request instanceof Notify &&
             $request->getModel() instanceof \ArrayAccess
-        ;
+            ;
     }
 }

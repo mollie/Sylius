@@ -1,3 +1,6 @@
 bitbag_sylius_mollie_plugin:
     subscription:
         cancelled: 'Subscription has been cancelled.'
+    admin:
+        shipment:
+            successfuly_split_and_sent: 'Shipment has been successfully split and sent'

@@ -9,16 +9,11 @@
         <id name="id" column="id" type="integer">
             <generator strategy="AUTO" />
         </id>
-
         <field name="subscriptionId" column="subscription_id" type="string" unique="true" nullable="true" />
         <field name="customerId" column="customer_id" type="string" unique="true" nullable="true" />
-
         <field name="state" column="state" type="string" />
-
         <one-to-one field="order" target-entity="Sylius\Component\Core\Model\Order">
             <join-column name="order_id" referenced-column-name="id" nullable="true" />
         </one-to-one>
-
     </mapped-superclass>
-
 </doctrine-mapping>

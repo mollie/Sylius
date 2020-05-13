@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <defaults public="true" />
+        <service id="bitbag_sylius_mollie_plugin.action.create_payment" class="BitBag\SyliusMolliePlugin\Action\Api\CreatePaymentAction">
+            <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
+            <tag name="payum.action" factory="mollie" alias="payum.action.create_payment"/>
+        </service>
+        <service id="bitbag_sylius_mollie_plugin.action.create_order" class="BitBag\SyliusMolliePlugin\Action\Api\CreateOrderAction">
+            <argument type="service" id="bitbag_sylius_mollie_plugin.resolver.payment_config"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
+            <tag name="payum.action" factory="mollie" alias="payum.action.create_order"/>
+        </service>
+        <service id="bitbag_sylius_mollie_plugin.payum_action.refund" class="BitBag\SyliusMolliePlugin\Action\RefundAction">
+            <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.helper.convert_refund_data"/>
+            <tag name="payum.action" factory="mollie" alias="payum.action.refund"/>
+        </service>
+        <service id="bitbag_sylius_mollie_plugin.payum_action.refund_order" class="BitBag\SyliusMolliePlugin\Action\RefundOrderAction">
+            <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.helper.convert_refund_data"/>
+            <tag name="payum.action" factory="mollie" alias="payum.action.refund_order"/>
+        </service>
+        <service id="bitbag_sylius_mollie_plugin.action.capture" class="BitBag\SyliusMolliePlugin\Action\CaptureAction">
+            <tag name="payum.action" factory="mollie" alias="payum.action.capture"/>
+            <tag name="payum.action" factory="mollie_subscription" alias="payum.action.capture"/>
+        </service>
+        <service id="bitbag_sylius_mollie_plugin.action.notify" class="BitBag\SyliusMolliePlugin\Action\NotifyAction">
+            <argument type="service" id="bitbag_sylius_mollie_plugin.get_http_request"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.repository.subscription"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.payum_action.order_set_status"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
+            <tag name="payum.action" factory="mollie" alias="payum.action.notify"/>
+            <tag name="payum.action" factory="mollie_subscription" alias="payum.action.notify"/>
+        </service>
+        <service id="bitbag_sylius_mollie_plugin.action.status" class="BitBag\SyliusMolliePlugin\Action\StatusAction">
+            <argument type="service" id="bit_bag.sylius_mollie_plugin.refund.payment_refund"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.refund.order_refund"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
+            <tag name="payum.action" factory="mollie" alias="payum.action.status"/>
+            <tag name="payum.action" factory="mollie_subscription" alias="payum.action.status"/>
+        </service>
+        <service id="bitbag_sylius_mollie_plugin.action.convert_payment" class="BitBag\SyliusMolliePlugin\Action\ConvertPaymentAction">
+            <argument type="service" id="sylius.payment_description_provider"/>
+            <argument type="service" id="session"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.repository.mollie_gateway_config"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.payments.order_converter"/>
+            <tag name="payum.action" factory="mollie" alias="payum.action.convert_payment"/>
+            <tag name="payum.action" factory="mollie_subscription" alias="payum.action.convert_payment"/>
+        </service>
+        <service id="bitbag_sylius_mollie_plugin.payum_action.api.create_customer" class="BitBag\SyliusMolliePlugin\Action\Api\CreateCustomerAction">
+            <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
+            <tag name="payum.action" factory="mollie_subscription" alias="payum.action.api.create_customer"/>
+        </service>
+        <service id="bitbag_sylius_mollie_plugin.payum_action.api.create_sepa_mandate" class="BitBag\SyliusMolliePlugin\Action\Api\CreateSepaMandateAction">
+            <argument type="service" id="session"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
+            <tag name="payum.action" factory="mollie_subscription" alias="payum.action.api.create_sepa_mandate"/>
+        </service>
+        <service id="bitbag_sylius_mollie_plugin.payum_action.api.create_recurring_subscription" class="BitBag\SyliusMolliePlugin\Action\Api\CreateRecurringSubscriptionAction">
+            <argument type="service" id="bitbag_sylius_mollie_plugin.factory.subscription"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.manager.subscription"/>
+            <argument type="service" id="sm.factory"/>
+            <argument type="service" id="sylius.repository.order"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
+            <tag name="payum.action" factory="mollie_subscription" alias="payum.action.api.create_recurring_subscription"/>
+        </service>
+        <service id="bitbag_sylius_mollie_plugin.payum_action.state_machine.status_recurring_subscription" class="BitBag\SyliusMolliePlugin\Action\StateMachine\StatusRecurringSubscriptionAction">
+            <argument type="service" id="bitbag_sylius_mollie_plugin.manager.subscription"/>
+            <argument type="service" id="sm.factory"/>
+            <tag name="payum.action" factory="mollie_subscription" alias="payum.action.state_machine.status_recurring_subscription"/>
+        </service>
+        <service id="bitbag_sylius_mollie_plugin.payum_action.state_machine.cancel_recurring_subscription" class="BitBag\SyliusMolliePlugin\Action\Api\CancelRecurringSubscriptionAction">
+            <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
+            <tag name="payum.action" factory="mollie_subscription" alias="payum.action.state_machine.cancel_recurring_subscription"/>
+        </service>
+        <service id="bitbag_sylius_mollie_plugin.payum_action.order_set_status" class="BitBag\SyliusMolliePlugin\Action\StateMachine\SetStatusOrderAction">
+            <argument type="service" id="sm.factory"/>
+            <argument type="service" id="sylius.repository.order"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.partial_ship.create_partial_ship_from_mollie"/>
+        </service>
+    </services>
+</container>

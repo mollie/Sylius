@@ -12,9 +12,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Validator\Constraints;
 
-use BitBag\SyliusMolliePlugin\MollieGatewayFactory;
-use BitBag\SyliusMolliePlugin\MollieGatewayFactoryInterface;
-use BitBag\SyliusMolliePlugin\MollieSubscriptionGatewayFactory;
+use BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\PaymentMethodInterface;
 use Symfony\Component\Validator\Constraint;

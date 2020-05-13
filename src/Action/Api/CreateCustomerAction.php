@@ -12,7 +12,9 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Action\Api;
 
+use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use BitBag\SyliusMolliePlugin\Request\Api\CreateCustomer;
+use Mollie\Api\Exceptions\ApiException;
 use Mollie\Api\Resources\Customer;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
@@ -21,11 +23,15 @@ use Payum\Core\Exception\RequestNotSupportedException;
 
 final class CreateCustomerAction extends BaseApiAwareAction implements ActionInterface, ApiAwareInterface
 {
-    /**
-     * {@inheritdoc}
-     *
-     * @param CreateCustomer $request
-     */
+    /** @var MollieLoggerActionInterface */
+    private $loggerAction;
+
+    public function __construct(MollieLoggerActionInterface $loggerAction)
+    {
+        $this->loggerAction = $loggerAction;
+    }
+
+    /** @param CreateCustomer $request */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
@@ -37,20 +43,25 @@ final class CreateCustomerAction extends BaseApiAwareAction implements ActionInt
             'email' => $model['email'],
         ];
 
-        /** @var Customer $customerMollie */
-        $customerMollie = $this->mollieApiClient->customers->create($data);
+        try {
+            /** @var Customer $customerMollie */
+            $customerMollie = $this->mollieApiClient->customers->create($data);
+        } catch (\Exception $e) {
+            $this->loggerAction->addNegativeLog(sprintf('Error with create customer:  %s', $e->getMessage()));
+
+            throw new ApiException('Error with create customer with' . $e->getMessage());
+        }
+
+        $this->loggerAction->addLog(sprintf('Create customer action with id:  %s', $customerMollie->id));
 
         $model['customer_mollie_id'] = $customerMollie->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports($request): bool
     {
         return
             $request instanceof CreateCustomer &&
             $request->getModel() instanceof \ArrayAccess
-        ;
+            ;
     }
 }

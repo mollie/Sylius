@@ -6,10 +6,11 @@ imports:
 
     - { resource: "@SyliusShopBundle/Resources/config/app/config.yml" }
 
-    - { resource: "@BitBagSyliusMolliePlugin/Resources/config/config.yml" }
+    - { resource: "@BitBagSyliusMolliePlugin/Resources/config/config.yaml" }
 
 parameters:
     sylius_core.public_dir: '%kernel.project_dir%/public'
+    images_dir: "/media/image/"
 
 sylius_shop:
     product_grid:

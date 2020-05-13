@@ -1,0 +1,128 @@
+.form-fields {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 20px;
+}
+
+.label {
+    display: inline-block;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.form-error,
+.field-error {
+    margin-top: 8px;
+    margin-bottom: 0;
+    color: #f00;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.mollie-component {
+    width: 100%;
+    padding: 10px 15px;
+    color: #222;
+
+    border: 2px solid transparent;
+    border-radius: 6px;
+    background-color: #fff;
+    box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.1), 0px 1px 3px 0px rgba(0, 0, 0, 0.1),
+    0px 0px 0px 1px rgba(0, 0, 0, 0.05);
+
+    transition: all 0.05s ease;
+}
+
+.mollie-component.has-focus {
+    border-color: #07f;
+    box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.1), 0px 2px 6px 0px rgba(0, 0, 0, 0.1),
+    0px 0px 0px 1px rgba(0, 0, 0, 0.05);
+}
+
+.mollie-component.is-invalid {
+    border-color: #f00;
+    background-color: #fff0f0;
+}
+
+@media (min-width: 321px) {
+    .form-fields {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .form-group--card-number {
+        grid-column: span 2;
+    }
+}
+
+.online-payment__input {
+    display: none;
+}
+
+.online-payment__label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #dedede;
+    padding: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.online-payment__item {
+    min-width: 25%;
+    box-sizing: border-box;
+    padding: 1rem;
+}
+
+.online-payment__input:checked~.online-payment__label {
+    border-color: #21ba45;
+    box-shadow: 0 0 0 2px #21ba45 inset;
+}
+
+.online-payment__image {
+    width: 50px;
+    margin-bottom: 0.5rem;
+}
+
+.online-payment__credit-card,
+.online-payment__issuers {
+    display: none;
+}
+
+.online-payment__item--active.online-payment__item--creditcard
+.online-payment__item--active.online-payment__item--ideal {
+    width: 100%
+}
+
+.online-payment__item--active .online-payment__credit-card,
+.online-payment__item--active .online-payment__issuers {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.online-online-payment__container {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+.online-payment__issuers:after {
+    content: '';
+    display: block;
+    width: calc(100% - 2rem);
+    margin: 1rem 1rem 0;
+    border-bottom: 1px solid #d9d9da;
+}
+
+.online-payment__issuers {
+    margin: 1rem -1rem;
+}
+
+.online-payment__credit-card {
+    padding: 1rem;
+    border-bottom: 1px solid #d9d9da
+}
+
+#applepay {
+    display: none;
+}

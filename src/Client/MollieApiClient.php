@@ -12,63 +12,43 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Client;
 
-use Mollie\Api\Resources\Payment;
+use BitBag\SyliusMolliePlugin\BitBagSyliusMolliePlugin;
+use Mollie\Api\MollieApiClient as BaseMollieApiClient;
 
-class MollieApiClient extends \Mollie\Api\MollieApiClient
+class MollieApiClient extends BaseMollieApiClient
 {
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $config = [];
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     protected $isRecurringSubscription = false;
 
-    /**
-     * @param array $config
-     */
+    /** @var string */
+    protected $version;
+
+    public function getVersion(): string
+    {
+        return BitBagSyliusMolliePlugin::VERSION;
+    }
+
+    /** @param array $config */
     public function setConfig(array $config): void
     {
         $this->config = $config;
     }
 
-    /**
-     * @return array
-     */
     public function getConfig(): array
     {
         return $this->config;
     }
 
-    /**
-     * @param bool $isRecurringSubscription
-     */
     public function setIsRecurringSubscription(bool $isRecurringSubscription): void
     {
         $this->isRecurringSubscription = $isRecurringSubscription;
     }
 
-    /**
-     * @return bool
-     */
     public function isRecurringSubscription(): bool
     {
         return $this->isRecurringSubscription;
-    }
-
-    /**
-     * @param Payment $payment
-     *
-     * @return bool
-     */
-    public function isRefunded(Payment $payment): bool
-    {
-        if (null === $payment->amount || null === $payment->amountRefunded) {
-            return false;
-        }
-
-        return $payment->amount->value === $payment->amountRefunded->value;
     }
 }

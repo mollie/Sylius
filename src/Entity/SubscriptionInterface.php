@@ -24,43 +24,19 @@ interface SubscriptionInterface extends ResourceInterface
     const STATE_SUSPENDED = 'suspended';
     const STATE_COMPLETED = 'completed';
 
-    /**
-     * @return OrderInterface
-     */
     public function getOrder(): OrderInterface;
 
-    /**
-     * @param OrderInterface $order
-     */
     public function setOrder(OrderInterface $order): void;
 
-    /**
-     * @return string|null
-     */
     public function getSubscriptionId(): ?string;
 
-    /**
-     * @param string|null $subscriptionId
-     */
     public function setSubscriptionId(?string $subscriptionId): void;
 
-    /**
-     * @return string|null
-     */
     public function getCustomerId(): ?string;
 
-    /**
-     * @param string|null $customerId
-     */
     public function setCustomerId(?string $customerId): void;
 
-    /**
-     * @return string
-     */
     public function getState(): string;
 
-    /**
-     * @param string $state
-     */
     public function setState(string $state): void;
 }

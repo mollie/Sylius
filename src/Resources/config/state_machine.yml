@@ -1,2 +1,0 @@
-imports:
-    - { resource: "@BitBagSyliusMolliePlugin/Resources/config/state_machine/mollie_subscription.yml" }

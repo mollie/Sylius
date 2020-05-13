@@ -13,51 +13,41 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Action;
 
 use BitBag\SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
+use BitBag\SyliusMolliePlugin\Payments\PaymentTerms\Options;
+use BitBag\SyliusMolliePlugin\Request\Api\CreateOrder;
+use BitBag\SyliusMolliePlugin\Request\Api\CreatePayment;
 use BitBag\SyliusMolliePlugin\Request\Api\CreateRecurringSubscription;
 use BitBag\SyliusMolliePlugin\Request\Api\CreateSepaMandate;
-use Mollie\Api\Resources\Payment;
-use Payum\Core\Action\ActionInterface;
-use Payum\Core\ApiAwareInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\Exception\RuntimeException;
-use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
-use Payum\Core\Reply\HttpRedirect;
 use Payum\Core\Request\Capture;
-use Payum\Core\Security\GenericTokenFactoryAwareInterface;
 use Payum\Core\Security\GenericTokenFactoryInterface;
 use Payum\Core\Security\TokenInterface;
 
-final class CaptureAction extends BaseApiAwareAction implements ActionInterface, ApiAwareInterface, GenericTokenFactoryAwareInterface, GatewayAwareInterface
+final class CaptureAction extends BaseApiAwareAction implements CaptureActionInterface
 {
     use GatewayAwareTrait;
 
-    /**
-     * @var GenericTokenFactoryInterface|null
-     */
+    /** @var GenericTokenFactoryInterface|null */
     private $tokenFactory;
 
-    /**
-     * @param GenericTokenFactoryInterface $genericTokenFactory
-     */
     public function setGenericTokenFactory(GenericTokenFactoryInterface $genericTokenFactory = null): void
     {
         $this->tokenFactory = $genericTokenFactory;
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @param Capture $request
-     */
+    /** @param Capture $request */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
         $details = ArrayObject::ensureArrayObject($request->getModel());
 
-        if (true === isset($details['payment_mollie_id']) || true === isset($details['subscription_mollie_id'])) {
+        if (true === isset($details['payment_mollie_id']) ||
+            true === isset($details['subscription_mollie_id']) ||
+            true === isset($details['order_mollie_id'])) {
             return;
         }
 
@@ -72,6 +62,7 @@ final class CaptureAction extends BaseApiAwareAction implements ActionInterface,
         $refundToken = $this->tokenFactory->createRefundToken($token->getGatewayName(), $token->getDetails());
 
         $details['webhookUrl'] = $notifyToken->getTargetUrl();
+        $details['backurl'] = $token->getTargetUrl();
 
         if (true === $this->mollieApiClient->isRecurringSubscription()) {
             $cancelToken = $this->tokenFactory->createToken(
@@ -89,34 +80,24 @@ final class CaptureAction extends BaseApiAwareAction implements ActionInterface,
 
         if (false === $this->mollieApiClient->isRecurringSubscription()) {
             $metadata = $details['metadata'];
-
             $metadata['refund_token'] = $refundToken->getHash();
-
             $details['metadata'] = $metadata;
 
-            /** @var Payment $payment */
-            $payment = $this->mollieApiClient->payments->create([
-                'amount' => $details['amount'],
-                'description' => $details['description'],
-                'redirectUrl' => $token->getTargetUrl(),
-                'webhookUrl' => $details['webhookUrl'],
-                'metadata' => $details['metadata'],
-            ]);
+            if (isset($details['metadata']['methodType']) && $details['metadata']['methodType'] === Options::PAYMENT_API) {
+                $this->gateway->execute(new CreatePayment($details));
+            }
 
-            $details['payment_mollie_id'] = $payment->id;
-
-            throw new HttpRedirect($payment->getCheckoutUrl());
+            if (isset($details['metadata']['methodType']) && $details['metadata']['methodType'] === Options::ORDER_API) {
+                $this->gateway->execute(new CreateOrder($details));
+            }
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports($request): bool
     {
         return
             $request instanceof Capture &&
             $request->getModel() instanceof \ArrayAccess
-        ;
+            ;
     }
 }

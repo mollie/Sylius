@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <defaults public="true" />
+        <service id="bitbag_sylius_mollie_plugin.mollie_api_client" class="BitBag\SyliusMolliePlugin\Client\MollieApiClient">
+        </service>
+        <service id="bitbag_sylius_mollie_plugin.get_http_request" class="Payum\Core\Request\GetHttpRequest">
+        </service>
+        <service id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action" class="BitBag\SyliusMolliePlugin\Logger\MollieLoggerAction">
+            <argument type="service" id="bitbag_sylius_mollie_plugin.factory.mollie_logger_factory"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.repository.mollie_logger"/>
+            <argument type="service" id="sylius.repository.gateway_config"/>
+        </service>
+    </services>
+</container>

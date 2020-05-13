@@ -12,7 +12,9 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Controller\Action\Admin;
 
-use BitBag\SyliusMolliePlugin\MollieGatewayFactory;
+use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
+use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
+use BitBag\SyliusMolliePlugin\Request\Api\RefundOrder;
 use Doctrine\ORM\EntityManagerInterface;
 use Payum\Core\Payum;
 use Payum\Core\Request\Refund as RefundAction;
@@ -32,66 +34,48 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 final class Refund
 {
-    /**
-     * @var PaymentRepositoryInterface
-     */
+    /** @var PaymentRepositoryInterface */
     private $paymentRepository;
 
-    /**
-     * @var Payum
-     */
+    /** @var Payum */
     private $payum;
 
-    /**
-     * @var Session
-     */
+    /** @var Session */
     private $session;
 
-    /**
-     * @var FactoryInterface
-     */
+    /** @var FactoryInterface */
     private $stateMachineFactory;
 
-    /**
-     * @var EntityManagerInterface
-     */
+    /** @var EntityManagerInterface */
     private $paymentEntityManager;
 
-    /**
-     * @param PaymentRepositoryInterface $paymentRepository
-     * @param Payum $payum
-     * @param Session $session
-     * @param FactoryInterface $stateMachineFactory
-     * @param EntityManagerInterface $paymentEntityManager
-     */
+    /** @var MollieLoggerActionInterface */
+    private $loggerAction;
+
     public function __construct(
         PaymentRepositoryInterface $paymentRepository,
         Payum $payum,
         Session $session,
         FactoryInterface $stateMachineFactory,
-        EntityManagerInterface $paymentEntityManager
+        EntityManagerInterface $paymentEntityManager,
+        MollieLoggerActionInterface $loggerAction
     ) {
         $this->paymentRepository = $paymentRepository;
         $this->payum = $payum;
         $this->session = $session;
         $this->stateMachineFactory = $stateMachineFactory;
         $this->paymentEntityManager = $paymentEntityManager;
+        $this->loggerAction = $loggerAction;
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     *
-     * @throws \Payum\Core\Reply\ReplyInterface
-     * @throws \SM\SMException
-     */
     public function __invoke(Request $request): Response
     {
         /** @var PaymentInterface|null $payment */
         $payment = $this->paymentRepository->find($request->get('id'));
 
         if (null === $payment) {
+            $this->loggerAction->addNegativeLog(sprintf('Not fount payment in refund'));
+
             throw new NotFoundHttpException();
         }
 
@@ -104,14 +88,18 @@ final class Refund
             $this->applyStateMachineTransition($payment);
 
             $this->session->getFlashBag()->add('success', 'sylius.payment.refunded');
+            $this->loggerAction->addLog(sprintf('Refunded successfully'));
 
             return $this->redirectToReferer($request);
         }
-
-        if (!isset($payment->getDetails()['payment_mollie_id']) || !isset($payment->getDetails()['metadata']['refund_token'])) {
+        if (
+            (!isset($payment->getDetails()['payment_mollie_id']) || !isset($payment->getDetails()['metadata']['refund_token'])) &&
+            !isset($payment->getDetails()['order_mollie_id'])
+        ) {
             $this->applyStateMachineTransition($payment);
 
             $this->session->getFlashBag()->add('info', 'bitbag_sylius_mollie_plugin.ui.refunded_only_locally');
+            $this->loggerAction->addLog(sprintf('Refunded only locally'));
 
             return $this->redirectToReferer($request);
         }
@@ -122,29 +110,31 @@ final class Refund
         $token = $this->payum->getTokenStorage()->find($hash);
 
         if (null === $token || !$token instanceof TokenInterface) {
+            $this->loggerAction->addNegativeLog(sprintf('A token with hash `%s` could not be found.', $hash));
+
             throw new BadRequestHttpException(sprintf('A token with hash `%s` could not be found.', $hash));
         }
 
         $gateway = $this->payum->getGateway($token->getGatewayName());
 
         try {
-            $gateway->execute(new RefundAction($token));
+            if (isset($payment->getDetails()['order_mollie_id'])) {
+                $gateway->execute(new RefundOrder($token));
+            } else {
+                $gateway->execute(new RefundAction($token));
+            }
 
             $this->applyStateMachineTransition($payment);
 
             $this->session->getFlashBag()->add('success', 'sylius.payment.refunded');
         } catch (UpdateHandlingException $e) {
+            $this->loggerAction->addNegativeLog(sprintf('Error with refund: %s', $e->getMessage()));
             $this->session->getFlashBag()->add('error', $e->getMessage());
         }
 
         return $this->redirectToReferer($request);
     }
 
-    /**
-     * @param PaymentInterface $payment
-     *
-     * @throws \SM\SMException
-     */
     private function applyStateMachineTransition(PaymentInterface $payment): void
     {
         $stateMachine = $this->stateMachineFactory->get($payment, PaymentTransitions::GRAPH);
@@ -158,11 +148,6 @@ final class Refund
         $this->paymentEntityManager->flush();
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     */
     private function redirectToReferer(Request $request): Response
     {
         /** @var string $url */

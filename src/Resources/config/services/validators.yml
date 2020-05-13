@@ -1,5 +1,0 @@
-services:
-    bitbag_sylius_mollie_plugin.validator.mollie:
-        class: BitBag\SyliusMolliePlugin\Validator\Constraints\CurrencyValidator
-        tags:
-            - { name: validator.constraint_validator, alias: bitbag_sylius_mollie_plugin_currency }

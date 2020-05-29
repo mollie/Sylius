@@ -12,20 +12,12 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Sylius\Bundle\PayumBundle\Model\GatewayConfig as BaseGatewayConfig;
 
-class GatewayConfig extends BaseGatewayConfig implements GatewayConfigInterface
+trait GatewayConfigTrait
 {
-    /** @var MollieGatewayConfigInterface[] */
-    private $mollieGatewayConfig;
-
-    public function __construct()
-    {
-        parent::__construct();
-        $this->mollieGatewayConfig = new ArrayCollection();
-    }
+    /** @var Collection|MollieGatewayConfigInterface[] */
+    protected $mollieGatewayConfig;
 
     public function getMollieGatewayConfig(): ?Collection
     {

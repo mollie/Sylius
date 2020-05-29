@@ -55,11 +55,10 @@ bitbag_sylius_mollie_plugin:
         splitting_shipment_for_order: 'Splitting shipment for Order no. #%number%'
         split_shipment: 'Split shipment'
         partially_ship: 'Partial ship'
+        no_methods_found_message: No methods found. Click the button "Load methods", but first insert You profile Id and API key.
     form:
         shipment:
             units: 'Units'
             tracking_code: 'Tracking Code'
-
-        no_methods_found_message: No methods found. Click the button "Load methods", but first insert You profile Id and API key.
     subscription:
         cancel: Subscription has been successfully canceled.

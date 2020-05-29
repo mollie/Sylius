@@ -24,7 +24,7 @@ final class PaymentTypeExtension extends AbstractTypeExtension
             ]);
     }
 
-    public function getExtendedTypes()
+    public static function getExtendedTypes(): array
     {
         return [PaymentType::class];
     }

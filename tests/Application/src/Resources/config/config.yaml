@@ -1,0 +1,5 @@
+sylius_payum:
+    resources:
+        gateway_config:
+          classes:
+              model: Tests\BitBag\SyliusMolliePlugin\Entity\GatewayConfig

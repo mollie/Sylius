@@ -18,9 +18,9 @@ interface MollieGatewayConfigInterface extends MethodInterface
 {
     public function setMethodId(string $methodId): void;
 
-    public function getGateway(): GatewayConfig;
+    public function getGateway(): GatewayConfigInterface;
 
-    public function setGateway(GatewayConfig $gateway): void;
+    public function setGateway(GatewayConfigInterface $gateway): void;
 
     public function getPaymentSurchargeFee(): ?PaymentSurchargeFeeInterface;
 

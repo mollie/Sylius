@@ -8,6 +8,9 @@ $(function () {
             url: $(this).data('url'),
             success: function (data) {
                 location.reload();
+            },
+            error: function () {
+                location.reload();
             }
         });
     });

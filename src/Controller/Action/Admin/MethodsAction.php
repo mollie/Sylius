@@ -24,6 +24,7 @@ use Sylius\Component\Resource\Exception\UpdateHandlingException;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 final class MethodsAction
 {
@@ -45,13 +46,17 @@ final class MethodsAction
     /** @var MollieLoggerActionInterface */
     private $loggerAction;
 
+    /** @var Session */
+    private $session;
+
     public function __construct(
         MollieApiClient $mollieApiClient,
         RepositoryInterface $gatewayConfigRepository,
         Methods $methods,
         EntityManagerInterface $entityManager,
         MollieGatewayConfigFactoryInterface $factory,
-        MollieLoggerActionInterface $loggerAction
+        MollieLoggerActionInterface $loggerAction,
+        Session $session
     ) {
         $this->gatewayConfigRepository = $gatewayConfigRepository;
         $this->mollieApiClient = $mollieApiClient;
@@ -59,6 +64,7 @@ final class MethodsAction
         $this->entityManager = $entityManager;
         $this->factory = $factory;
         $this->loggerAction = $loggerAction;
+        $this->session = $session;
     }
 
     public function __invoke(Request $request): Response
@@ -80,6 +86,8 @@ final class MethodsAction
         } catch (ApiException $e) {
             $this->loggerAction->addNegativeLog(sprintf('API call failed: %s', $e->getMessage()));
 
+            $this->session->getFlashBag()->add('error', $e->getMessage());
+
             throw new UpdateHandlingException(sprintf('API call failed: %s', htmlspecialchars($e->getMessage())));
         }
 
@@ -95,6 +103,8 @@ final class MethodsAction
         }
 
         $this->loggerAction->addLog(sprintf('Downloaded all methods from mollie API'));
+
+        $this->session->getFlashBag()->add('success', 'bitbag_sylius_mollie_plugin.admin.success_got_methods');
 
         return new Response('OK', Response::HTTP_OK);
     }

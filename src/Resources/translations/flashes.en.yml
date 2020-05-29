@@ -4,3 +4,4 @@ bitbag_sylius_mollie_plugin:
     admin:
         shipment:
             successfuly_split_and_sent: 'Shipment has been successfully split and sent'
+        success_got_methods: "Methods was successfully updated"

@@ -48,7 +48,7 @@ final class CompleteTypeExtension extends AbstractTypeExtension
         }
     }
 
-    public function getExtendedTypes(): iterable
+    public static function getExtendedTypes(): array
     {
         return [CompleteType::class];
     }

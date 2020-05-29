@@ -19,6 +19,7 @@
             <argument type="service" id="doctrine.orm.default_entity_manager"/>
             <argument type="service" id="bitbag_sylius_mollie_plugin.custom_factory.mollie_gateway_config"/>
             <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
+            <argument type="service" id="session" />
         </service>
         <service id="bitbag_sylius_mollie_plugin.controller.action.admin.delete_payment_method_image" class="BitBag\SyliusMolliePlugin\Controller\Action\Admin\DeletePaymentMethodImage">
             <argument type="service" id="bitbag_sylius_mollie_plugin.uploader.payment_method_logo_uploader"/>

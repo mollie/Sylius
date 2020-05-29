@@ -42,7 +42,7 @@
     "autoload": {
         "psr-4": {
             "BitBag\\SyliusMolliePlugin\\": "src/",
-            "Tests\\BitBag\\SyliusMolliePlugin\\": "tests/"
+            "Tests\\BitBag\\SyliusMolliePlugin\\": ["tests/", "tests/Application/src"]
         }
     },
     "autoload-dev": {

@@ -15,7 +15,7 @@ namespace BitBag\SyliusMolliePlugin\Entity;
 use BitBag\SyliusMolliePlugin\Payments\Methods\AbstractMethod;
 use Sylius\Component\Resource\Model\ResourceInterface;
 
-final class MollieGatewayConfig extends AbstractMethod implements ResourceInterface, MollieGatewayConfigInterface
+class MollieGatewayConfig extends AbstractMethod implements ResourceInterface, MollieGatewayConfigInterface
 {
     /** @var int */
     private $id;
@@ -23,7 +23,7 @@ final class MollieGatewayConfig extends AbstractMethod implements ResourceInterf
     /** @var string */
     private $methodId;
 
-    /** @var GatewayConfig */
+    /** @var GatewayConfigInterface */
     private $gateway;
 
     /** @var PaymentSurchargeFeeInterface */
@@ -36,7 +36,7 @@ final class MollieGatewayConfig extends AbstractMethod implements ResourceInterf
     private $countryLevel;
 
     /** @var int */
-    private $orderExpiration;
+    private $orderExpiration = 28;
 
     public function getId(): int
     {
@@ -53,12 +53,12 @@ final class MollieGatewayConfig extends AbstractMethod implements ResourceInterf
         $this->methodId = $methodId;
     }
 
-    public function getGateway(): GatewayConfig
+    public function getGateway(): GatewayConfigInterface
     {
         return $this->gateway;
     }
 
-    public function setGateway(GatewayConfig $gateway): void
+    public function setGateway(GatewayConfigInterface $gateway): void
     {
         $this->gateway = $gateway;
     }

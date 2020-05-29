@@ -18,9 +18,6 @@
     <a href="https://packagist.org/packages/bitbag/mollie-plugin" title="Total Downloads" target="_blank">
         <img src="https://poser.pugx.org/bitbag/mollie-plugin/downloads" />
     </a>
-    <p>
-        <img src="https://sylius.com/assets/badge-approved-by-sylius.png" width="85">
-    </p>
 </h1>
 
 ![Screenshot showing payment methods show in shop](doc/payment_methods_shop.png)
@@ -70,7 +67,67 @@ Need some help or additional resources for a project? Write us an email on mikol
 $ composer require bitbag/mollie-plugin
 ```
 
-2.Add plugin dependencies to your `config/bundles.php` file:
+2.Add traits to your GatewayConfig entity class.
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Entity;
+
+use Doctrine\Common\Collections\ArrayCollection;
+use Sylius\Bundle\PayumBundle\Model\GatewayConfig as BaseGatewayConfig;
+
+class GatewayConfig extends BaseGatewayConfig implements GatewayConfigInterface
+{
+    use GatewayConfigTrait;
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->mollieGatewayConfig = new ArrayCollection();
+    }
+}
+```
+You can find an example under the [tests/Application/src/Entity/*](/tests/Application/src/Entity/) path for an example.
+
+Next, define new Entity mapping insidde your `src/Resources/config/doctrine` directory (If you don't use annotations).
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd"
+>
+    <mapped-superclass name="App\Entity\GatewayConfig" table="sylius_gateway_config">
+        <one-to-many field="mollieGatewayConfig" target-entity="BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfig" mapped-by="gateway" orphan-removal="true">
+            <cascade>
+                <cascade-all />
+            </cascade>
+        </one-to-many>
+    </mapped-superclass>
+</doctrine-mapping>
+```
+For an exmaple, check [tests/Application/src/Resources/config/doctrine/AdminUser.orm.xml](/tests/Application/src/Resources/config/doctrine/AdminUser.orm.xml) file
+
+Override AdminUser resource:
+
+```yaml
+# config/packages/_sylius.yaml
+...
+
+sylius_payum:
+    resources:
+        gateway_config:
+          classes:
+              model: App\Entity\GatewayConfig
+```
+
+3.Add plugin dependencies to your `config/bundles.php` file:
 
 ```php
 return [
@@ -79,7 +136,7 @@ return [
 ];
 ```
 
-3.Import required config in your `config/packages/_sylius.yaml` file:
+4.Import required config in your `config/packages/_sylius.yaml` file:
 
 ```yaml
 # config/packages/_sylius.yaml
@@ -89,7 +146,7 @@ imports:
     - { resource: "@BitBagSyliusMolliePlugin/Resources/config/config.yaml" }
 ```
 
-4.Import the routing in your `config/routes.yaml` file:
+5.Import the routing in your `config/routes.yaml` file:
 
 ```yaml
 # config/routes.yaml
@@ -98,21 +155,21 @@ bitbag_sylius_mollie_plugin:
     resource: "@BitBagSyliusMolliePlugin/Resources/config/routing.yaml"
 ```
 
-5.Add image dir parameter in _sylius.yaml
+6.Add image dir parameter in _sylius.yaml
 
 ```yaml
    parameters:
        images_dir: "/media/image/"
 ``` 
 
-6.Update your database
+7.Update your database
 
 ```
 cp -R vendor/bitbag/mollie-plugin/migrations/* src/Migrations
 bin/console doctrine:migrations:migrate
 ```
 
-7.Copy Sylius templates overridden in plugin to your templates directory (e.g templates/bundles/):
+8.Copy Sylius templates overridden in plugin to your templates directory (e.g templates/bundles/):
 
 ```
 mkdir -p templates/bundles/SyliusAdminBundle/
@@ -122,13 +179,13 @@ cp -R vendor/bitbag/mollie-plugin/src/Resources/views/SyliusAdminBundle/* templa
 cp -R vendor/bitbag/mollie-plugin/src/Resources/views/SyliusShopBundle/* templates/bundles/SyliusShopBundle/
 ```
 
-8.Install assets
+9.Install assets
 
 ```
 bin/console assets:install
 ```
 
-9.(optional) if you don't use `symfony/messenger` component yet, it is required to configure default message bus:
+10.(optional) if you don't use `symfony/messenger` component yet, it is required to configure default message bus:
 
 ```yaml
     framework:

@@ -15,7 +15,7 @@ namespace BitBag\SyliusMolliePlugin\Repository;
 use BitBag\SyliusMolliePlugin\Entity\GatewayConfigInterface;
 use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 
-final class MollieGatewayConfigRepository extends EntityRepository implements MollieGatewayConfigRepositoryInterface
+class MollieGatewayConfigRepository extends EntityRepository implements MollieGatewayConfigRepositoryInterface
 {
     public function findAllEnabledByGateway(GatewayConfigInterface $gateway): array
     {

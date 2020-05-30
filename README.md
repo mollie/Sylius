@@ -61,13 +61,13 @@ Need some help or additional resources for a project? Write us an email on mikol
 [our website](https://bitbag.shop/)! :rocket:
 
 ## Installation
-1.Require with composer
+1.Require with composer.
 
 ```bash
 $ composer require bitbag/mollie-plugin
 ```
 
-2.Add traits to your GatewayConfig entity class.
+2.Add traits to your GatewayConfig entity class, when You don't use annotation.
 
 ```php
 <?php
@@ -76,6 +76,8 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use BitBag\SyliusMolliePlugin\Entity\GatewayConfigInterface;
+use BitBag\SyliusMolliePlugin\Entity\GatewayConfigTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Sylius\Bundle\PayumBundle\Model\GatewayConfig as BaseGatewayConfig;
 
@@ -91,10 +93,50 @@ class GatewayConfig extends BaseGatewayConfig implements GatewayConfigInterface
     }
 }
 ```
-You can find an example under the [tests/Application/src/Entity/*](/tests/Application/src/Entity/) path for an example.
 
-Next, define new Entity mapping insidde your `src/Resources/config/doctrine` directory (If you don't use annotations).
+Or this way if you use annotations:
+```php
+<?php
 
+declare(strict_types=1);
+
+namespace App\Entity;
+
+use BitBag\SyliusMolliePlugin\Entity\GatewayConfigInterface;
+use BitBag\SyliusMolliePlugin\Entity\GatewayConfigTrait;
+use Doctrine\Common\Collections\ArrayCollection;
+use Sylius\Bundle\PayumBundle\Model\GatewayConfig as BaseGatewayConfig;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="sylius_gateway_config")
+ */
+class GatewayConfig extends BaseGatewayConfig implements GatewayConfigInterface
+{
+    use GatewayConfigTrait;
+
+    /**
+     * @var ArrayCollection
+     * @ORM\OneToMany(
+     *     targetEntity="BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfig",
+     *     mappedBy="gateway",
+     *     orphanRemoval=true,
+     *     cascade={"all"}
+     * )
+     */
+    protected $mollieGatewayConfig;
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->mollieGatewayConfig = new ArrayCollection();
+    }
+}
+````
+You can find an example under the [tests/Application/src/Entity/*](/tests/Application/src/Entity/) path.
+
+If you don't use annotations, define new Entity mapping inside your `src/Resources/config/doctrine` directory.
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 
@@ -112,9 +154,9 @@ Next, define new Entity mapping insidde your `src/Resources/config/doctrine` dir
     </mapped-superclass>
 </doctrine-mapping>
 ```
-For an exmaple, check [tests/Application/src/Resources/config/doctrine/AdminUser.orm.xml](/tests/Application/src/Resources/config/doctrine/AdminUser.orm.xml) file
+For an exmaple, check [tests/Application/src/Resources/config/doctrine/GatewayConfig.orm.xml](/tests/Application/src/Resources/config/doctrine/GatewayConfig.orm.xml) file.
 
-Override AdminUser resource:
+Override GatewayConfig resource:
 
 ```yaml
 # config/packages/_sylius.yaml
@@ -155,9 +197,11 @@ bitbag_sylius_mollie_plugin:
     resource: "@BitBagSyliusMolliePlugin/Resources/config/routing.yaml"
 ```
 
-6.Add image dir parameter in _sylius.yaml
+6.Add image dir parameter in `config/pacakges/_sylius.yaml`
 
 ```yaml
+# config/pacakges/_sylius.yaml
+
    parameters:
        images_dir: "/media/image/"
 ``` 

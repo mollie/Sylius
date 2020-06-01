@@ -32,9 +32,6 @@ final class FixedAmount implements SurchargeTypeInterface
     {
         $fixedAmount = $paymentMethod->getPaymentSurchargeFee()->getFixedAmount();
 
-        $order->removeAdjustments(AdjustmentInterface::PERCENTAGE_ADJUSTMENT);
-        $order->removeAdjustments(AdjustmentInterface::PERCENTAGE_AND_AMOUNT_ADJUSTMENT);
-
         if ($order->getAdjustments(AdjustmentInterface::FIXED_AMOUNT_ADJUSTMENT)) {
             $order->removeAdjustments(AdjustmentInterface::FIXED_AMOUNT_ADJUSTMENT);
         }

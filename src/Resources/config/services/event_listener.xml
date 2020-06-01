@@ -32,9 +32,5 @@
             <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
             <tag name="messenger.message_handler" />
         </service>
-        <service id="bitbag_sylius_mollie_plugin.event_listener.order_event_listener" class="BitBag\SyliusMolliePlugin\EventListener\OrderEventListener">
-            <argument type="service" id="bitbag_sylius_mollie_plugin.processor.payment_surcharge_processor"/>
-            <tag name="kernel.event_listener" event="sylius.order.pre_update" method="updateOrder"/>
-        </service>
     </services>
 </container>

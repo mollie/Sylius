@@ -82,7 +82,7 @@ final class ConvertPaymentAction extends BaseApiAwareAction implements ActionInt
 
         $divisor = 10 ** $currency->exp;
 
-        $amount = number_format(abs($order->getTotal() / $divisor), 2, '.', '');
+        $amount = number_format(abs($payment->getAmount() / $divisor), 2, '.', '');
         $paymentOptions = $this->session->get('mollie_payment_options');
 
         /** @var MollieGatewayConfigInterface $method */

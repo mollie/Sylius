@@ -15,7 +15,6 @@ namespace BitBag\SyliusMolliePlugin\Form\Type;
 use Sylius\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints\Image;
 
 final class CustomizeMethodImageType extends AbstractResourceType
 {
@@ -24,9 +23,6 @@ final class CustomizeMethodImageType extends AbstractResourceType
         $builder->add('file', FileType::class, [
             'label' => 'bitbag_sylius_mollie_plugin.ui.customize_image',
             'required' => false,
-            'constraints' => [
-                new Image(['groups' => ['sylius']]),
-            ],
         ]);
     }
 }

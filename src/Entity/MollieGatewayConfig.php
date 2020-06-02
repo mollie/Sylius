@@ -141,4 +141,9 @@ class MollieGatewayConfig extends AbstractMethod implements ResourceInterface, M
     {
         $this->loggerLevel = $loggerLevel;
     }
+
+    public function __toString(): string
+    {
+        return \sprintf("%s", $this->name);
+    }
 }

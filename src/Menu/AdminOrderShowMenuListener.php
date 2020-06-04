@@ -12,8 +12,10 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Menu;
 
-use Mollie\Api\Types\OrderStatus;
+use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
 use Sylius\Bundle\AdminBundle\Event\OrderShowMenuBuilderEvent;
+use Sylius\Component\Core\Model\PaymentInterface;
+use Sylius\Component\Core\Model\PaymentMethodInterface;
 
 final class AdminOrderShowMenuListener
 {
@@ -22,7 +24,18 @@ final class AdminOrderShowMenuListener
         $menu = $event->getMenu();
         $order = $event->getOrder();
 
-        if (OrderStatus::STATUS_PAID !== $order->getPaymentState()) {
+        /** @var PaymentInterface $payment */
+        $payment = $order->getPayments()->last();
+
+        /** @var PaymentMethodInterface $paymentMethod */
+        $paymentMethod = $payment->getMethod();
+
+        if (
+            PaymentInterface::STATE_NEW === $payment->getState() ||
+            PaymentInterface::STATE_CANCELLED === $payment->getState() ||
+            PaymentInterface::STATE_FAILED === $payment->getState() &&
+            MollieGatewayFactory::FACTORY_NAME === $paymentMethod->getGatewayConfig()->getFactoryName()
+        ) {
         $menu
             ->addChild('paymentlink', [
                 'route' => 'bitbag_sylius_mollie_plugin_paymentlink',

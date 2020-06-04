@@ -10,6 +10,9 @@ imports:
 
     - { resource: "../../src/Resources/config/config.yaml" }
 
+    - { resource: "../../src/Resources/config/services.xml" }
+
+    - { resource: "@SyliusAdminOrderCreationPlugin/Resources/config/app/config.yml" }
 parameters:
     sylius_core.public_dir: '%kernel.project_dir%/public'
     images_dir: "/media/image/"

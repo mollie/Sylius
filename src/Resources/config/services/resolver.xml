@@ -36,6 +36,8 @@
         </service>
         <service id="bitbag_sylius_mollie_plugin.resolver.paymentlink_resolver" class="BitBag\SyliusMolliePlugin\Resolver\PaymentlinkResolver">
             <argument type="service" id="bitbag_sylius_mollie_plugin.mollie_api_client"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.helper.int_to_string"/>
+            <argument type="service" id="sylius.repository.order"/>
         </service>
     </services>
 </container>

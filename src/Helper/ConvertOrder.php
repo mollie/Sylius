@@ -100,6 +100,7 @@ final class ConvertOrder implements ConvertOrderInterface
         $this->order->getChannel()->getDefaultTaxZone();
         foreach ($this->order->getItems() as $item) {
             $details[] = [
+                "type" => "physical",
                 'name' => $item->getProductName(),
                 'quantity' => $item->getQuantity(),
                 'vatRate' => (string) ($this->getTaxRatesUnitItem($item->getVariant()) * 100),

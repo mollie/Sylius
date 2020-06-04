@@ -19,9 +19,6 @@
         <div class="field">
             {{ form_row(form.methods) }}
         </div>
-        <div class="field">
-            {{ form_row(form.expiredDateTime) }}
-        </div>
         <button class="ui button" type="submit">{{ 'bitbag_sylius_mollie_plugin.ui.generate'|trans }}</button>
         {{ form_row(form._token) }}
         {{ form_end(form, {'render_rest': false}) }}

@@ -1,0 +1,11 @@
+{% block subject %}
+    {{ 'bitbag_sylius_mollie_plugin.emails.payment_link.subject'|trans }} {{ order.number }}
+{% endblock %}
+
+{% block body %}
+    {% embed '@SyliusAdmin/Email/emailLayout.html.twig' %}
+        {% block content %}
+
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

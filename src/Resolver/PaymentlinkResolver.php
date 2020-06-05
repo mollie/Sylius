@@ -94,6 +94,7 @@ final class PaymentlinkResolver implements PaymentlinkResolverInterface
 
         $details['payment_mollie_id'] = $payment->id;
         $details['metadata']['refund_token'] = $details['refund_token'];
+        $details['payment_mollie_link'] = $payment->_links->checkout->href;
 
         $syliusPayment->setDetails($details);
 

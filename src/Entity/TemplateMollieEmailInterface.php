@@ -13,8 +13,9 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Entity;
 
 use Sylius\Component\Resource\Model\ResourceInterface;
+use Sylius\Component\Resource\Model\TranslatableInterface;
 
-interface TemplateMollieEmailInterface extends ResourceInterface
+interface TemplateMollieEmailInterface extends ResourceInterface, TranslatableInterface
 {
     public const PAYMENT_LINK = 'payment_link';
 

@@ -2,4 +2,4 @@ sylius_mailer:
   emails:
     payment_link:
       subject: bitbag_sylius_mollie_plugin.emails.payment_link.subject
-      template: "@SyliusAdmin/Email/pickupConfirmation.html.twig"
+      template: "@BitBagSyliusMolliePlugin/Admin/Email/paymentLinkConfirmation.html.twig"

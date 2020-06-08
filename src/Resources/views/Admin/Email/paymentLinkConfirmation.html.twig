@@ -3,9 +3,7 @@
 {% endblock %}
 
 {% block body %}
-    {% embed '@SyliusAdmin/Email/emailLayout.html.twig' %}
         {% block content %}
-
+            {{ template|raw }}
         {% endblock %}
-    {% endembed %}
 {% endblock %}

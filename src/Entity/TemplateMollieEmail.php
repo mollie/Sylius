@@ -12,56 +12,29 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Entity;
 
+use Sylius\Component\Resource\Model\TranslatableTrait;
+use Sylius\Component\Resource\Model\TranslationInterface;
+
 class TemplateMollieEmail implements TemplateMollieEmailInterface
 {
+    use TranslatableTrait {
+        __construct as private initializeTranslationsCollection;
+    }
+
+    public function __construct()
+    {
+        $this->initializeTranslationsCollection();
+    }
+
     /** @var int */
-    private $id;
+    protected $id;
 
     /** @var string */
-    private $name;
-
-    /** @var string */
-    private $subject;
-
-    /** @var string */
-    private $content;
-
-    /** @var string */
-    private $type;
+    protected $type;
 
     public function getId(): int
     {
         return $this->id;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(?string $name): void
-    {
-        $this->name = $name;
-    }
-
-    public function getSubject(): ?string
-    {
-        return $this->subject;
-    }
-
-    public function setSubject(?string $subject): void
-    {
-        $this->subject = $subject;
-    }
-
-    public function getContent(): ?string
-    {
-        return $this->content;
-    }
-
-    public function setContent(?string $content): void
-    {
-        $this->content = $content;
     }
 
     public function getType(): ?string
@@ -72,5 +45,46 @@ class TemplateMollieEmail implements TemplateMollieEmailInterface
     public function setType(?string $type): void
     {
         $this->type = $type;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->getBlockTranslation()->getName();
+    }
+
+    public function setName(?string $name): void
+    {
+        $this->getBlockTranslation()->setName($name);
+    }
+
+    public function getSubject(): ?string
+    {
+        return $this->getBlockTranslation()->getSubject();
+    }
+
+    public function setSubject(?string $subject): void
+    {
+        $this->getBlockTranslation()->setSubject($subject);
+    }
+
+    public function getContent(): ?string
+    {
+        return $this->getBlockTranslation()->getContent();
+    }
+
+    public function setContent(?string $content): void
+    {
+        $this->getBlockTranslation()->setContent($content);
+    }
+
+    /** @return TemplateMollieEmailTranslationInterface|TranslationInterface|null */
+    protected function getBlockTranslation(): TranslationInterface
+    {
+        return $this->getTranslation();
+    }
+
+    protected function createTranslation(): TemplateMollieEmailTranslation
+    {
+        return new TemplateMollieEmailTranslation();
     }
 }

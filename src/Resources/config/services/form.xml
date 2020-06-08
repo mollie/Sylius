@@ -65,5 +65,9 @@
             <argument>%bitbag_sylius_mollie_plugin.form.type.partial_shipment.validation_groups%</argument>
             <tag name="form.type" />
         </service>
+        <service id="bitbag_sylius_mollie_plugin.form.type.translation.block_translation_type" class="BitBag\SyliusMolliePlugin\Form\Type\Translation\TemplateMollieEmailTranslationType">
+            <argument>%bitbag_sylius_mollie_plugin.model.template_mollie_email.class%</argument>
+            <tag name="form.type" />
+        </service>
     </services>
 </container>

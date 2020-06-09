@@ -50,12 +50,12 @@ class TemplateMollieEmail implements TemplateMollieEmailInterface
         $this->type = $type;
     }
 
-    public function getStyleCss(): string
+    public function getStyleCss(): ?string
     {
         return $this->styleCss;
     }
 
-    public function setStyleCss(string $styleCss): void
+    public function setStyleCss(?string $styleCss): void
     {
         $this->styleCss = $styleCss;
     }

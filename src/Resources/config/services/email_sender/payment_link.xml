@@ -4,7 +4,7 @@
     <services>
         <service id="app.email_sender.order_pickup" class="BitBag\SyliusMolliePlugin\EmailSender\PaymentLinkEmailSender">
             <argument type="service" id="sylius.email_sender"/>
-            <argument type="service" id="bitbag_sylius_mollie_plugin.repository.template_mollie_email"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.repository.template_mollie_email_translation"/>
             <argument type="service" id="bitbag_sylius_mollie_plugin.twig.parser.content_parser"/>
         </service>
     </services>

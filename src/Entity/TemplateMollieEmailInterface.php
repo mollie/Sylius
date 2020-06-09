@@ -36,4 +36,8 @@ interface TemplateMollieEmailInterface extends ResourceInterface, TranslatableIn
     public function getType(): ?string;
 
     public function setType(?string $type): void;
+
+    public function getStyleCss(): string;
+
+    public function setStyleCss(string $styleCss): void;
 }

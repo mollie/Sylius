@@ -29,8 +29,7 @@ final class ContentParser implements ContentParserInterface
         \Twig_Environment $twigEnvironment,
         array $enabledFunctions,
         TranslatorInterface $translator
-    )
-    {
+    ) {
         $this->twigEnvironment = $twigEnvironment;
         $this->enabledFunctions = $enabledFunctions;
         $this->translator = $translator;

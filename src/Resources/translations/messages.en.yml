@@ -79,6 +79,9 @@ bitbag_sylius_mollie_plugin:
         payment_methods_doc: 'to read more about the differences between the Payment and Orders API'
         click: 'Click'
         no_fee: 'No fee'
+        style_css: Style CSS
+        emails:
+            payment_link: This is Your payment link with order number
     form:
         payment_methods:
             payment_description: 'Description'

@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\EmailSender;
 
 use BitBag\SyliusMolliePlugin\Entity\TemplateMollieEmailInterface;
+use BitBag\SyliusMolliePlugin\Entity\TemplateMollieEmailTranslationInterface;
 use BitBag\SyliusMolliePlugin\Mailer\Emails;
 use BitBag\SyliusMolliePlugin\Twig\Parser\ContentParserInterface;
 use Liip\ImagineBundle\Exception\Config\Filter\NotFoundException;
@@ -44,22 +45,28 @@ final class PaymentLinkEmailSender implements PaymentLinkEmailSenderInterface
 
     public function sendConfirmationEmail(OrderInterface $order): void
     {
-        /** @var TemplateMollieEmailInterface $template */
-        $template = $this->templateRepository->findOneBy(['type' => TemplateMollieEmailInterface::PAYMENT_LINK]);
+        $locale = $order->getLocaleCode();
+
+        /** @var TemplateMollieEmailTranslationInterface $template */
+        $template = $this->templateRepository->findOneByLocaleCodeAdnType(
+            $locale,
+            TemplateMollieEmailInterface::PAYMENT_LINK
+        );
 
         if (null === $template) {
-            throw new NotFoundException(\sprintf('Not payment link template found'));
+            throw new NotFoundException(\sprintf('Not payment link template found, or not translation added'));
         }
 
         /** @var PaymentInterface $payment */
         $payment = $order->getPayments()->last();
         $paymentLink = $payment->getDetails()['payment_mollie_link'];
 
-        $templateToTwig = $this->contentParser->parse($template->getContent(), $paymentLink);
+        $content = $this->contentParser->parse($template->getContent(), $paymentLink);
 
         $this->emailSender->send(Emails::PAYMENT_LINK, [$order->getCustomer()->getEmail()], [
             'order' => $order,
-            'template' => $templateToTwig,
+            'template' => $template,
+            'content' => $content,
         ]);
     }
 }

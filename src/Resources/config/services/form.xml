@@ -66,7 +66,7 @@
             <tag name="form.type" />
         </service>
         <service id="bitbag_sylius_mollie_plugin.form.type.translation.block_translation_type" class="BitBag\SyliusMolliePlugin\Form\Type\Translation\TemplateMollieEmailTranslationType">
-            <argument>%bitbag_sylius_mollie_plugin.model.template_mollie_email.class%</argument>
+            <argument>%bitbag_sylius_mollie_plugin.model.template_mollie_email_translation.class%</argument>
             <tag name="form.type" />
         </service>
     </services>

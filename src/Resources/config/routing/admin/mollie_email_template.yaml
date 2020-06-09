@@ -9,6 +9,8 @@ bitbag_sylius_mollie_plugin_mollie_logger:
     vars:
         all:
             subheader: bitbag_sylius_mollie_plugin.ui.mollie_email_template
+            templates:
+                form: "@BitBagSyliusMolliePlugin/Admin/TemplateMollieEmail/Crud/_form.html.twig"
         index:
             icon: 'email'
   type: sylius.resource

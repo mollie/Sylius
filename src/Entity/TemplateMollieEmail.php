@@ -27,10 +27,13 @@ class TemplateMollieEmail implements TemplateMollieEmailInterface
     }
 
     /** @var int */
-    protected $id;
+    private $id;
 
     /** @var string */
-    protected $type;
+    private $type;
+
+    /** @var string */
+    private $styleCss;
 
     public function getId(): int
     {
@@ -45,6 +48,16 @@ class TemplateMollieEmail implements TemplateMollieEmailInterface
     public function setType(?string $type): void
     {
         $this->type = $type;
+    }
+
+    public function getStyleCss(): string
+    {
+        return $this->styleCss;
+    }
+
+    public function setStyleCss(string $styleCss): void
+    {
+        $this->styleCss = $styleCss;
     }
 
     public function getName(): ?string

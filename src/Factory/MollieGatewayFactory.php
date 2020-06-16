@@ -15,6 +15,7 @@ namespace BitBag\SyliusMolliePlugin\Factory;
 use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\GatewayFactory;
+use Sylius\Bundle\CoreBundle\Application\Kernel;
 
 final class MollieGatewayFactory extends GatewayFactory
 {
@@ -48,7 +49,8 @@ final class MollieGatewayFactory extends GatewayFactory
                 $mollieApiClient = $config['payum.http_client'];
                 $mollieApiClient->setApiKey($config[$environment]);
                 $mollieApiClient->setConfig($config->toUnsafeArray());
-                $mollieApiClient->addVersionString($mollieApiClient->getVersion());
+                $mollieApiClient->addVersionString('Sylius/' .  Kernel::VERSION);
+                $mollieApiClient->addVersionString('BitBagSyliusMolliePlugin/' . $mollieApiClient->getVersion());
 
                 return $mollieApiClient;
             };

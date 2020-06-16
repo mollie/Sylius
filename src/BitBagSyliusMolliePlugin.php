@@ -17,7 +17,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 final class BitBagSyliusMolliePlugin extends Bundle
 {
-    public const VERSION = '3.1.0';
+    public const VERSION = '3.2.0';
 
     use SyliusPluginTrait;
 }

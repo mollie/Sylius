@@ -22,7 +22,7 @@
         <field name="issuers" column="issuers" type="array" nullable="true" />
         <field name="countryLevel" column="country_level" type="array" nullable="true" />
         <field name="orderExpiration" column="order_expiration" type="integer" nullable="true" />
-        <many-to-one field="gateway" target-entity="Sylius\Bundle\PayumBundle\Model\GatewayConfig">
+        <many-to-one field="gateway" target-entity="Sylius\Bundle\PayumBundle\Model\GatewayConfigInterface">
             <join-column name="gateway_id" referenced-column-name="id" nullable="true"/>
         </many-to-one>
         <one-to-one field="paymentSurchargeFee" target-entity="BitBag\SyliusMolliePlugin\Entity\PaymentSurchargeFee" inversed-by="mollieGatewayConfig">

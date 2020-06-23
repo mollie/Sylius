@@ -57,11 +57,18 @@ $(function () {
     }
 
     function initializeCreditCartFields() {
+        const environment = mollieData.data('environment');
+        let testmode = true;
+
+        if (environment === 1) {
+            testmode = false;
+        }
+
         const mollie = Mollie(
             mollieData.data('profile_id'),
             {
                 locale: mollieData.data('locale'),
-                testmode: true
+                testmode: testmode
             }
         );
 

@@ -1,6 +1,7 @@
 <div class="ui stackable grid online-online-payment__container"
      data-locale="{{ app.request.locale }}"
      data-profile_id="{{ gatewayConfig.config['profile_id'] }}"
+     data-environment="{{ gatewayConfig.config['environment'] }}"
 >
     {% for keyChoice, choice in methodMollie.vars.choices %}
         <div class="online-payment__item online-payment__item--{{ choice.value }}" id="{{ choice.value }}"

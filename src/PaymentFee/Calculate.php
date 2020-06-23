@@ -67,6 +67,6 @@ final class Calculate
             return $this->fixedAmountAndPercentage->calculate($order, $paymentMethod);
         }
 
-        throw new UnknownPaymentSurchargeTye(sprintf('Unknown paymeny type %s', $paymentType));
+        throw new UnknownPaymentSurchargeTye(sprintf('Unknown payment type %s', $paymentType));
     }
 }

@@ -85,7 +85,9 @@ $(function () {
 
         const cardNumber = mollie.createComponent("cardNumber");
         cardNumber.mount("#card-number");
+
         const cardNumberError = document.getElementById("card-number-error");
+
         cardNumber.addEventListener("change", event => {
             if (event.error && event.touched) {
                 cardNumberError.textContent = event.error;
@@ -111,6 +113,7 @@ $(function () {
         verificationCode.mount("#verification-code");
 
         const verificationCodeError = document.getElementById("verification-code-error");
+
         verificationCode.addEventListener("change", event => {
             if (event.error && event.touched) {
                 verificationCodeError.textContent = event.error;
@@ -152,8 +155,10 @@ $(function () {
                 tokenInput.setAttribute("name", "token");
                 tokenInput.setAttribute("type", "hidden");
                 tokenInput.setAttribute("value", token);
+
                 form.appendChild(tokenInput);
                 tokenField.value = token;
+
                 form.submit();
             }
         });

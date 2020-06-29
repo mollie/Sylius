@@ -56,6 +56,14 @@ $(function () {
         initializeCreditCartFields(selectedValue);
     }
 
+    function initializeCreditCartFields() {
+        const environment = mollieData.data('environment');
+        let testmode = true;
+
+        if (environment === 1) {
+            testmode = false;
+        }
+
     function initializeCreditCartFields(selectedValue) {
         const mollie = Mollie(
             mollieData.data('profile_id'),
@@ -72,6 +80,7 @@ $(function () {
         const tokenField = document.getElementById("sylius_checkout_select_payment_payments_0_mollie_payment_options_cartToken");
 
         const cardHolder = mollie.createComponent("cardHolder");
+
         cardHolder.mount("#card-holder");
 
         const cardHolderError = document.getElementById("card-holder-error");

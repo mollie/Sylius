@@ -51,7 +51,7 @@ $(function () {
             mollieData.data('profile_id'),
             {
                 locale: mollieData.data('locale'),
-                testmode: true
+                testmode: testmode
             }
         );
         const form = document.getElementsByName("sylius_checkout_select_payment")[0];

@@ -56,7 +56,7 @@ $(function () {
         initializeCreditCartFields(selectedValue);
     }
 
-    function initializeCreditCartFields() {
+    function initializeCreditCartFields(selectedValue) {
         const environment = mollieData.data('environment');
         let testmode = true;
 
@@ -64,7 +64,6 @@ $(function () {
             testmode = false;
         }
 
-    function initializeCreditCartFields(selectedValue) {
         const mollie = Mollie(
             mollieData.data('profile_id'),
             {

@@ -8,7 +8,7 @@
 
         "sylius/sylius": "^1.4.0",
         "mollie/mollie-api-php": "^2.0",
-        "sylius/refund-plugin": "^0.10.1"
+        "sylius/refund-plugin": "^1.0.0-RC.3"
     },
     "require-dev": {
         "behat/behat": "^3.4",

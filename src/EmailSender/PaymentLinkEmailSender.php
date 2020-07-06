@@ -12,51 +12,31 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\EmailSender;
 
-use BitBag\SyliusMolliePlugin\Entity\TemplateMollieEmailInterface;
 use BitBag\SyliusMolliePlugin\Entity\TemplateMollieEmailTranslationInterface;
 use BitBag\SyliusMolliePlugin\Mailer\Emails;
 use BitBag\SyliusMolliePlugin\Twig\Parser\ContentParserInterface;
-use Liip\ImagineBundle\Exception\Config\Filter\NotFoundException;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Mailer\Sender\SenderInterface;
-use Sylius\Component\Resource\Repository\RepositoryInterface;
 
 final class PaymentLinkEmailSender implements PaymentLinkEmailSenderInterface
 {
     /** @var SenderInterface */
     private $emailSender;
 
-    /** @var RepositoryInterface */
-    private $templateRepository;
-
     /** @var ContentParserInterface */
     private $contentParser;
 
     public function __construct(
         SenderInterface $emailSender,
-        RepositoryInterface $templateRepository,
         ContentParserInterface $contentParser
     ) {
         $this->emailSender = $emailSender;
-        $this->templateRepository = $templateRepository;
         $this->contentParser = $contentParser;
     }
 
-    public function sendConfirmationEmail(OrderInterface $order): void
+    public function sendConfirmationEmail(OrderInterface $order, TemplateMollieEmailTranslationInterface $template): void
     {
-        $locale = $order->getLocaleCode();
-
-        /** @var TemplateMollieEmailTranslationInterface $template */
-        $template = $this->templateRepository->findOneByLocaleCodeAdnType(
-            $locale,
-            TemplateMollieEmailInterface::PAYMENT_LINK
-        );
-
-        if (null === $template) {
-            throw new NotFoundException(\sprintf('Not payment link template found, or not translation added'));
-        }
-
         /** @var PaymentInterface $payment */
         $payment = $order->getPayments()->last();
         $paymentLink = $payment->getDetails()['payment_mollie_link'];

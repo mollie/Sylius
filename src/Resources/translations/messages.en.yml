@@ -59,6 +59,7 @@ bitbag_sylius_mollie_plugin:
         paymentlink_generate: Generate payment link
         paymentlink_generate_subtitle: Generate payment link and send it to customer
         paymentlink: Payment link
+        paymentlinkAbandoned: Payment link abandoned
         generate: Generate
         mollie_email_template: Create new email template
         template_mollie_emails: Email template
@@ -80,6 +81,7 @@ bitbag_sylius_mollie_plugin:
         click: 'Click'
         no_fee: 'No fee'
         style_css: Style CSS
+        abandoned_hours: Number of hour (after this hour, abandoned email will sended)
         emails:
             payment_link: This is Your payment link with order number
     form:

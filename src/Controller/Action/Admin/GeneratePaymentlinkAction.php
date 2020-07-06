@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Controller\Action\Admin;
 
 use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
+use BitBag\SyliusMolliePlugin\Entity\TemplateMollieEmailInterface;
 use BitBag\SyliusMolliePlugin\Form\Type\PaymentlinkType;
 use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use BitBag\SyliusMolliePlugin\Resolver\PaymentlinkResolverInterface;
@@ -82,7 +83,7 @@ final class GeneratePaymentlinkAction
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                $paymentlink = $this->paymentlinkResolver->resolve($order, $form->getData());
+                $paymentlink = $this->paymentlinkResolver->resolve($order, $form->getData(), TemplateMollieEmailInterface::PAYMENT_LINK);
 
                 $this->session->getFlashBag()->add('success', $paymentlink);
 

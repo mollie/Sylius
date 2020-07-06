@@ -10,11 +10,11 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Resolver;
+namespace BitBag\SyliusMolliePlugin\Repository;
 
-use Sylius\Component\Core\Model\OrderInterface;
+use Sylius\Component\Core\Repository\OrderRepositoryInterface as BaseOrderRepositoryInterface;
 
-interface PaymentlinkResolverInterface
+interface OrderRepositoryInterface extends BaseOrderRepositoryInterface
 {
-    public function resolve(OrderInterface $order, array $data, string $templateName): string;
+    public function findAbandonedByDateTime(\DateTime $dateTime): array;
 }

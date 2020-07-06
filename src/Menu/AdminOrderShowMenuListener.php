@@ -32,6 +32,7 @@ final class AdminOrderShowMenuListener
 
         if (
             PaymentInterface::STATE_NEW === $payment->getState() ||
+            PaymentInterface::STATE_PROCESSING === $payment->getState() ||
             PaymentInterface::STATE_CANCELLED === $payment->getState() ||
             PaymentInterface::STATE_FAILED === $payment->getState() &&
             MollieGatewayFactory::FACTORY_NAME === $paymentMethod->getGatewayConfig()->getFactoryName()

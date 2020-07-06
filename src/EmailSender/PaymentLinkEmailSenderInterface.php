@@ -12,9 +12,10 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\EmailSender;
 
+use BitBag\SyliusMolliePlugin\Entity\TemplateMollieEmailTranslationInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 
 interface PaymentLinkEmailSenderInterface
 {
-    public function sendConfirmationEmail(OrderInterface $order): void;
+    public function sendConfirmationEmail(OrderInterface $order, TemplateMollieEmailTranslationInterface $template): void;
 }

@@ -10,11 +10,11 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Resolver;
+namespace BitBag\SyliusMolliePlugin\Preparer;
 
 use Sylius\Component\Core\Model\OrderInterface;
 
-interface PaymentlinkResolverInterface
+interface PaymentLinkEmailPreparerInterface
 {
-    public function resolve(OrderInterface $order, array $data, string $templateName): string;
+    public function prepare(OrderInterface $order, string $templateName): void;
 }

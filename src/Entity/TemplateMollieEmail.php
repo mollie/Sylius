@@ -35,7 +35,7 @@ class TemplateMollieEmail implements TemplateMollieEmailInterface
     /** @var string */
     private $styleCss;
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }

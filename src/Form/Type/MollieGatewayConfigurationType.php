@@ -96,6 +96,13 @@ final class MollieGatewayConfigurationType extends AbstractType
                     ]),
                 ],
             ])
+            ->add('abandoned_hours', ChoiceType::class, [
+                'label' => 'bitbag_sylius_mollie_plugin.ui.abandoned_hours',
+                'choices' => array_combine(
+                    range(1, 200, 1),
+                    range(1, 200, 1)
+                ),
+            ])
             ->add('loggerLevel', ChoiceType::class, [
                 'label' => 'bitbag_sylius_mollie_plugin.ui.debug_level_log',
                 'choices' => Options::getDebugLevels(),

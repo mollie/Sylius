@@ -28,7 +28,7 @@ class TemplateMollieEmailTranslation extends AbstractTranslation implements Temp
     /** @var string */
     protected $content;
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }

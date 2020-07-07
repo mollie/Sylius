@@ -44,8 +44,8 @@ final class CreateOrderAction extends BaseApiAwareAction
         $details = ArrayObject::ensureArrayObject($request->getModel());
 
         $issuer = $details['metadata']['selected_issuer'] ?? null;
-        $method = $details['metadata']['molliePaymentMethods'] ? $details['metadata']['molliePaymentMethods'] : '';
         $customerId = $details['metadata']['customer_mollie_id'] ?? null;
+        $method = $details['metadata']['molliePaymentMethods'] ?: '';
 
         if (null !== $method) {
             /** @var MollieGatewayConfigInterface $paymentMethod */

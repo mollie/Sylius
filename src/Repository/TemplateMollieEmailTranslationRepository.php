@@ -17,7 +17,7 @@ use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 
 class TemplateMollieEmailTranslationRepository extends EntityRepository implements TemplateMollieEmailTranslationRepositoryInterface
 {
-    public function findOneByLocaleCodeAdnType(string $localeCode, string $type): TemplateMollieEmailTranslationInterface
+    public function findOneByLocaleCodeAdnType(string $localeCode, string $type): ?TemplateMollieEmailTranslationInterface
     {
         return $this->createQueryBuilder('tt')
             ->innerJoin('tt.translatable', 'templateEmail')

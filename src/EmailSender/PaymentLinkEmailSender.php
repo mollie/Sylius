@@ -39,8 +39,12 @@ final class PaymentLinkEmailSender implements PaymentLinkEmailSenderInterface
     {
         /** @var PaymentInterface $payment */
         $payment = $order->getPayments()->last();
-        $paymentLink = $payment->getDetails()['payment_mollie_link'];
 
+        if (empty($payment->getDetails())) {
+            return;
+        }
+
+        $paymentLink = $payment->getDetails()['payment_mollie_link'];
         $content = $this->contentParser->parse($template->getContent(), $paymentLink);
 
         $this->emailSender->send(Emails::PAYMENT_LINK, [$order->getCustomer()->getEmail()], [

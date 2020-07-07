@@ -10,11 +10,13 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Repository;
+namespace BitBag\SyliusMolliePlugin\Entity;
 
-use BitBag\SyliusMolliePlugin\Entity\TemplateMollieEmailTranslationInterface;
+use Sylius\Component\Core\Model\OrderInterface as BaseOrderInterface;
 
-interface TemplateMollieEmailTranslationRepositoryInterface
+interface OrderInterface extends BaseOrderInterface
 {
-    public function findOneByLocaleCodeAdnType(string $localeCode, string $type): ?TemplateMollieEmailTranslationInterface;
+    public function isAbandonedEmail(): bool;
+
+    public function setAbandonedEmail(bool $abandonedEmail): void;
 }

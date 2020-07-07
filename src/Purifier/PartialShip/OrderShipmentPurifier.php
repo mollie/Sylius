@@ -15,7 +15,6 @@ namespace BitBag\SyliusMolliePlugin\Purifier\PartialShip;
 use Doctrine\Common\Collections\Collection;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\ShipmentInterface;
-use Sylius\RefundPlugin\Exception\InvalidRefundAmountException;
 
 final class OrderShipmentPurifier implements OrderShipmentPurifierInterface
 {

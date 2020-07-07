@@ -23,10 +23,11 @@ final class OrderRepository extends BaseOrderRepository implements OrderReposito
         return $this->createQueryBuilder('o')
             ->where('o.paymentState = :paymentState')
             ->andWhere('o.state = :state')
-            ->andWhere('o.createdAt >= :createdAt')
+            ->andWhere('o.createdAt <= :createdAt')
             ->setParameter('state', OrderInterface::STATE_NEW)
             ->setParameter('paymentState', OrderPaymentStates::STATE_AWAITING_PAYMENT)
             ->setParameter('createdAt', $dateTime)
+            ->setMaxResults(20)
             ->getQuery()
             ->getResult()
             ;

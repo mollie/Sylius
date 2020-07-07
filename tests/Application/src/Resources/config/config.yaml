@@ -3,3 +3,9 @@ sylius_payum:
         gateway_config:
           classes:
               model: Tests\BitBag\SyliusMolliePlugin\Entity\GatewayConfig
+
+sylius_order:
+  resources:
+    order:
+      classes:
+        model: Tests\BitBag\SyliusMolliePlugin\Entity\Order

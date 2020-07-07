@@ -10,11 +10,13 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Repository;
+namespace Tests\BitBag\SyliusMolliePlugin\Entity;
 
-use BitBag\SyliusMolliePlugin\Entity\TemplateMollieEmailTranslationInterface;
+use BitBag\SyliusMolliePlugin\Entity\OrderInterface;
+use BitBag\SyliusMolliePlugin\Entity\OrderTrait;
+use Sylius\Component\Core\Model\Order as BaseOrder;
 
-interface TemplateMollieEmailTranslationRepositoryInterface
+class Order extends BaseOrder implements OrderInterface
 {
-    public function findOneByLocaleCodeAdnType(string $localeCode, string $type): ?TemplateMollieEmailTranslationInterface;
+    use OrderTrait;
 }

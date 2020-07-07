@@ -70,7 +70,7 @@ final class PaymentRefundCommandCreator implements PaymentRefundCommandCreatorIn
         $allRefunded = $this->refundUnitsRepository->findBy(['orderNumber' => $order->getNumber()]);
 
         $refunded = $this->getSumOfAmountExistingRefunds($allRefunded);
-        $mollieRefund = (float) ($payment->amountRefunded->value) * 100;
+        $mollieRefund = (float) $payment->amountRefunded->value * 100;
         $toRefund = (int) $mollieRefund - $refunded;
 
         $refundMethods = $this->refundPaymentMethodProvider->findForChannel($order->getChannel());

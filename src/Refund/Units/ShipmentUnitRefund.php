@@ -31,7 +31,7 @@ final class ShipmentUnitRefund implements ShipmentUnitRefundInterface
                 $totalRefunded += $item->total();
             }
 
-            $totalToRefund = $totalToRefund - $totalRefunded;
+            $totalToRefund -= $totalRefunded;
         }
 
         if ($totalToRefund <= 0) {

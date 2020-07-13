@@ -1,4 +1,8 @@
 $(function () {
+    const mollieFormIncluded = document.getElementById("sylius_payment_method_gatewayConfig_mollieGatewayConfig_0_enabled");
+    if (!mollieFormIncluded) {
+        return;
+    }
     $("#get_methods").on('click', function () {
         let form = $(".ui.form");
         form.addClass('loading');

@@ -33,8 +33,7 @@ final class SetStatusOrderAction
     /** @var CreatePartialShipFromMollieInterface */
     private $createPartialShipFromMollie;
 
-    public function __construct
-    (
+    public function __construct(
         FactoryInterface $factory,
         OrderRepositoryInterface $orderRepository,
         CreatePartialShipFromMollieInterface $createPartialShipFromMollie

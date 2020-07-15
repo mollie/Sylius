@@ -23,8 +23,7 @@ final class MollieGatewayFactory extends GatewayFactory
 
     protected function populateConfig(ArrayObject $config): void
     {
-
-        $environment = true === $config['environment'] ? "api_key_live": "api_key_test";
+        $environment = true === $config['environment'] ? 'api_key_live' : 'api_key_test';
         $config->defaults([
             'payum.factory_name' => self::FACTORY_NAME,
             'payum.factory_title' => 'Mollie',

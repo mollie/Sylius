@@ -37,7 +37,7 @@ final class AdminOrderShowMenuListener
             PaymentInterface::STATE_FAILED === $payment->getState() &&
             MollieGatewayFactory::FACTORY_NAME === $paymentMethod->getGatewayConfig()->getFactoryName()
         ) {
-        $menu
+            $menu
             ->addChild('paymentlink', [
                 'route' => 'bitbag_sylius_mollie_plugin_paymentlink',
                 'routeParameters' => ['orderNumber' => $order->getNumber()],

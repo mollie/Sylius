@@ -53,7 +53,7 @@ final class PaymentMollieType extends AbstractType
                 'choice_attr' => function ($value) use ($images, $paymentFee) {
                     return [
                         'image' => $images[$value],
-                        'paymentFee' => $paymentFee[$value]
+                        'paymentFee' => $paymentFee[$value],
                     ];
                 },
             ])

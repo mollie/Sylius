@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BitBag\SyliusMolliePlugin\EventListener;
 
 use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
@@ -16,8 +18,7 @@ final class PaymentPartialEventListener
     /** @var MollieLoggerActionInterface */
     private $loggerAction;
 
-    public function __construct
-    (
+    public function __construct(
         OrderPaymentRefundInterface $orderPaymentRefund,
         MollieLoggerActionInterface $loggerAction
     ) {

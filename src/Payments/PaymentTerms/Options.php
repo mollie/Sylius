@@ -32,7 +32,7 @@ final class Options
     {
         return [
             self::PAYMENT_API => 'PAYMENT_API',
-            self::ORDER_API =>'ORDER_API',
+            self::ORDER_API => 'ORDER_API',
         ];
     }
 
@@ -62,4 +62,3 @@ final class Options
         ];
     }
 }
-

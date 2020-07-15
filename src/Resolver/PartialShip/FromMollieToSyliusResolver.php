@@ -28,8 +28,7 @@ final class FromMollieToSyliusResolver implements FromMollieToSyliusResolverInte
     /** @var OldShipmentItemsRemoverInterface */
     private $shipmentItemsRemover;
 
-    public function __construct
-    (
+    public function __construct(
         RepositoryInterface $unitsItemRepository,
         OldShipmentItemsRemoverInterface $shipmentItemsRemover
     ) {
@@ -69,5 +68,4 @@ final class FromMollieToSyliusResolver implements FromMollieToSyliusResolverInte
 
         return count($refundedUnits);
     }
-
 }

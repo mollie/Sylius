@@ -14,7 +14,7 @@ namespace BitBag\SyliusMolliePlugin\Entity;
 
 trait OrderTrait
 {
-    /** @var boolean */
+    /** @var bool */
     protected $abandonedEmail = false;
 
     public function isAbandonedEmail(): bool

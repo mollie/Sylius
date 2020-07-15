@@ -53,7 +53,6 @@ class SendAbandonedPaymentLink extends Command
 
         $this->io->title('Mollie - send link');
 
-
         try {
             $this->io->writeln('Exporting...');
 

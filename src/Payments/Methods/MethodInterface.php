@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Payments\Methods;
 
-
 interface MethodInterface
 {
     public function getName(): ?string;

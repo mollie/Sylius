@@ -90,7 +90,7 @@ final class GeneratePaymentlinkAction
                 $this->loggerAction->addLog(sprintf('Created payment link to order with id = %s', $order->getId()));
 
                 return new RedirectResponse($this->router->generate('sylius_admin_order_show', ['id' => $order->getId()]));
-            } catch (\ Exception $e){
+            } catch (\ Exception $e) {
                 $this->loggerAction->addNegativeLog(sprintf('Error with generate payment link with : %s', $e->getMessage()));
 
                 $this->session->getFlashBag()->add('error', $e->getMessage());

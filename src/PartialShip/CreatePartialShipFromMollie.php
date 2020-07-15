@@ -31,8 +31,7 @@ final class CreatePartialShipFromMollie implements CreatePartialShipFromMollieIn
     /** @var FromMollieToSyliusResolverInterface */
     private $fromMollieToSyliusResolver;
 
-    public function __construct
-    (
+    public function __construct(
         ShipmentFactoryInterface $shipmentFactory,
         RepositoryInterface $orderRepository,
         FromMollieToSyliusResolverInterface $fromMollieToSyliusResolver

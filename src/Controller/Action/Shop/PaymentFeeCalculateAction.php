@@ -87,7 +87,7 @@ final class PaymentFeeCalculateAction implements PaymentFeeCalculateActionInterf
             'view' => $this->twig->render(
                 'BitBagSyliusMolliePlugin:Shop/PaymentMollie:_paymentFeeTableTr.html.twig',
                 [
-                    'paymentFee' =>  $this->convertPriceToAmount->convert(reset($paymentFee)),
+                    'paymentFee' => $this->convertPriceToAmount->convert(reset($paymentFee)),
                 ]
             ),
             'orderTotal' => $this->convertPriceToAmount->convert($calculatedOrder->getTotal()),

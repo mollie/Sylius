@@ -29,7 +29,7 @@ trait ConfigTrait
     /** @var array */
     protected $country;
 
-    /** @var boolean */
+    /** @var bool */
     protected $canRefunded = true;
 
     /** @var array */

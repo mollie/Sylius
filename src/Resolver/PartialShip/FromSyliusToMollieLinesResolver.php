@@ -43,7 +43,7 @@ final class FromSyliusToMollieLinesResolver implements FromSyliusToMollieLinesRe
     {
         foreach ($mollieOrder->lines as $line) {
             if ($itemId === $line->metadata->item_id) {
-                return (string)$line->id;
+                return (string) $line->id;
             }
         }
 

@@ -106,13 +106,12 @@ final class MolliePaymentsMethodResolver implements MolliePaymentsMethodResolver
 
         /** @var MollieGatewayConfigInterface $paymentMethod */
         foreach ($paymentConfigs as $paymentMethod) {
-
             if (in_array($countryCode, $paymentMethod->getCountryLevel()) || empty($paymentMethod->getCountryLevel())) {
                 $methods['data'][$paymentMethod->getName()] = $paymentMethod->getMethodId();
                 $methods['image'][$paymentMethod->getMethodId()] = $this->imageResolver->resolve($paymentMethod);
                 $methods['issuers'][$paymentMethod->getMethodId()] = $paymentMethod->getIssuers();
                 $methods['paymentFee'][$paymentMethod->getMethodId()] = $paymentMethod->getPaymentSurchargeFee()->getType()
-                    ? $paymentMethod->getPaymentSurchargeFee(): [];
+                    ? $paymentMethod->getPaymentSurchargeFee() : [];
             }
         }
 

@@ -47,6 +47,11 @@ final class PaymentSurchargeProcessor implements PaymentSurchargeProcessorInterf
         }
 
         $data = $this->session->get('mollie_payment_options', null);
+
+        if (null === $data) {
+            return;
+        }
+
         $molliePaymentMethod = $data['molliePaymentMethods'];
 
         $paymentSurcharge = $this->getMolliePaymentSurcharge($paymentMethod, $molliePaymentMethod);

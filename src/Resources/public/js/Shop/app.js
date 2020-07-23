@@ -5,6 +5,7 @@ $(function () {
     const initialOrderTotal = $('#sylius-summary-grand-total').text();
     const cardActiveClass = "online-payment__item--active";
     const orderTotalRow = $('#sylius-summary-grand-total');
+    const components = Boolean(mollieData.data('components'));
 
     $('input[id*="sylius_checkout_select_payment_"][type=radio]').on('change', ({currentTarget}) => {
         if (!currentTarget.classList.contains('mollie-payments')) {
@@ -52,7 +53,7 @@ $(function () {
         orderTotalRow.text(initialOrderTotal)
     }
 
-    if (mollieData.length > 0) {
+    if (mollieData.length > 0 && true === components) {
         initializeCreditCartFields(selectedValue);
     }
 

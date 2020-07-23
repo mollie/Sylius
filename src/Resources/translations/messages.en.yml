@@ -56,6 +56,7 @@ bitbag_sylius_mollie_plugin:
         split_shipment: 'Split shipment'
         partially_ship: 'Partial ship'
         no_methods_found_message: No methods found. Click the button "Load methods", but first insert You profile Id and API key.
+        enable_components: 'Mollie components (enabled/disabled mollie components on payment methods in checkout)'
     form:
         shipment:
             units: 'Units'

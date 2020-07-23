@@ -14,6 +14,7 @@ namespace BitBag\SyliusMolliePlugin\Form\Type;
 
 use BitBag\SyliusMolliePlugin\Payments\PaymentTerms\Options;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -85,6 +86,9 @@ final class MollieGatewayConfigurationType extends AbstractType
             ->add('loggerLevel', ChoiceType::class, [
                 'label' => 'bitbag_sylius_mollie_plugin.ui.debug_level_log',
                 'choices' => Options::getDebugLevels(),
+            ])
+            ->add('components', CheckboxType::class, [
+                'label' => 'bitbag_sylius_mollie_plugin.ui.enable_components',
             ])
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
                 $data = $event->getData();

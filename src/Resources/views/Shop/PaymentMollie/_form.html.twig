@@ -2,6 +2,7 @@
      data-locale="{{ app.request.locale }}"
      data-profile_id="{{ gatewayConfig.config['profile_id'] }}"
      data-environment="{{ gatewayConfig.config['environment'] }}"
+     data-components="{{ gatewayConfig.config['components'] }}"
 >
     {% for keyChoice, choice in methodMollie.vars.choices %}
         <div class="online-payment__item online-payment__item--{{ choice.value }}" id="{{ choice.value }}"
@@ -19,7 +20,7 @@
                 {{ choice.label }}
             </label>
 
-            {% if choice.value == 'creditcard' %}
+            {% if choice.value == 'creditcard' and true == gatewayConfig.config['components'] %}
                 {% include 'BitBagSyliusMolliePlugin:Shop/PaymentMollie:_creditCardForm.html.twig' %}
             {% elseif choice.value == 'ideal' %}
                 {% for key, method in mollie_payment_options %}

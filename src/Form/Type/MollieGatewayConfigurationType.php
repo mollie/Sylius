@@ -31,11 +31,11 @@ use function Clue\StreamFilter\fun;
 final class MollieGatewayConfigurationType extends AbstractType
 {
     /** @var RepositoryInterface */
-    private $repository;
+    private $gatewayConfigRepository;
 
-    public function __construct(RepositoryInterface $repository)
+    public function __construct(RepositoryInterface $gatewayConfigRepository)
     {
-        $this->repository = $repository;
+        $this->gatewayConfigRepository = $gatewayConfigRepository;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -107,11 +107,13 @@ final class MollieGatewayConfigurationType extends AbstractType
                 $event->setData($data);
             })
             ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+                $parentData = $event->getForm()->getParent()->getData();
                 $data = $event->getData();
 
-                if (empty($data['api_key_live'])) {
+                if (empty($data['api_key_live']) && !$parentData->getMollieGatewayConfig()->isEmpty()) {
+                    $mollieGateway = $this->gatewayConfigRepository->findOneBy(['gatewayName' => $parentData->getFactoryName()]);
+
                     /** @var GatewayConfigInterface $mollieGateway */
-                    $mollieGateway = $this->repository->findOneBy(['factoryName' => 'mollie']);
                     $config = $mollieGateway->getConfig();
                     $data['api_key_live'] = $config['api_key_live'];
 

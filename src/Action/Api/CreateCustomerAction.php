@@ -12,30 +12,34 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Action\Api;
 
+use BitBag\SyliusMolliePlugin\Entity\MollieCustomer;
 use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use BitBag\SyliusMolliePlugin\Request\Api\CreateCustomer;
 use Mollie\Api\Exceptions\ApiException;
-use Mollie\Api\Resources\Customer;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
+use Sylius\Component\Resource\Repository\RepositoryInterface;
 
 final class CreateCustomerAction extends BaseApiAwareAction implements ActionInterface, ApiAwareInterface
 {
     /** @var MollieLoggerActionInterface */
     private $loggerAction;
 
-    public function __construct(MollieLoggerActionInterface $loggerAction)
+    /** @var RepositoryInterface */
+    private $mollieCustomerRepository;
+
+    public function __construct(MollieLoggerActionInterface $loggerAction, RepositoryInterface $mollieCustomerRepository)
     {
         $this->loggerAction = $loggerAction;
+        $this->mollieCustomerRepository = $mollieCustomerRepository;
     }
 
     /** @param CreateCustomer $request */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
-
         $model = ArrayObject::ensureArrayObject($request->getModel());
 
         $data = [
@@ -43,18 +47,30 @@ final class CreateCustomerAction extends BaseApiAwareAction implements ActionInt
             'email' => $model['email'],
         ];
 
+        $customer = $this->mollieCustomerRepository->findOneBy(['email' => $model['email']]);
+
+        if (null === $customer) {
+            $customer = new MollieCustomer();
+            $customer->setEmail($model['email']);
+        }
+
         try {
-            /** @var Customer $customerMollie */
-            $customerMollie = $this->mollieApiClient->customers->create($data);
+            if (empty($customer->getProfileId())) {
+                $customerMollie = $this->mollieApiClient->customers->create($data);
+                $customer->setProfileId($customerMollie->id);
+
+                $this->mollieCustomerRepository->add($customer);
+            }
+
         } catch (\Exception $e) {
             $this->loggerAction->addNegativeLog(sprintf('Error with create customer:  %s', $e->getMessage()));
 
             throw new ApiException('Error with create customer with' . $e->getMessage());
         }
 
-        $this->loggerAction->addLog(sprintf('Create customer action with id:  %s', $customerMollie->id));
+        $this->loggerAction->addLog(sprintf('Create customer action with id:  %s', $customer->getProfileId()));
 
-        $model['customer_mollie_id'] = $customerMollie->id;
+        $model['customer_mollie_id'] = $customer->getProfileId();
     }
 
     public function supports($request): bool

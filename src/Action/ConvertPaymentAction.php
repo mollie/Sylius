@@ -17,6 +17,7 @@ use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
 use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactoryInterface;
 use BitBag\SyliusMolliePlugin\Helper\ConvertOrderInterface;
 use BitBag\SyliusMolliePlugin\Payments\PaymentTerms\Options;
+use BitBag\SyliusMolliePlugin\Request\Api\CreateCustomer;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Exception\RequestNotSupportedException;
@@ -80,7 +81,6 @@ final class ConvertPaymentAction extends BaseApiAwareAction implements ActionInt
 
         /** @var MollieGatewayConfigInterface $method */
         $method = $this->mollieMethodsRepository->findOneBy(['methodId' => $paymentOptions['molliePaymentMethods']]);
-
         $details = [
             'amount' => [
                 'value' => "$amount",
@@ -98,6 +98,11 @@ final class ConvertPaymentAction extends BaseApiAwareAction implements ActionInt
             'email' => $customer->getEmail() ?? null,
         ];
 
+        $this->gateway->execute($mollieCustomer = new CreateCustomer($details));
+        $model = $mollieCustomer->getModel();
+
+        $details['metadata']['customer_mollie_id'] = $model['customer_mollie_id'];
+
         if (true === $this->mollieApiClient->isRecurringSubscription()) {
             $config = $this->mollieApiClient->getConfig();
 
@@ -106,10 +111,13 @@ final class ConvertPaymentAction extends BaseApiAwareAction implements ActionInt
         }
 
         if (false === $this->mollieApiClient->isRecurringSubscription()) {
+            $details['customerId'] = $model['customer_mollie_id'];
             $details['metadata']['methodType'] = Options::PAYMENT_API;
             $details['locale'] = true === in_array($order->getLocaleCode(), MollieGatewayFactoryInterface::LOCALES_AVAILABLE) ? $order->getLocaleCode() : 'en_US';
 
             if (array_search($method->getPaymentType(), Options::getAvailablePaymentType()) === Options::ORDER_API) {
+                unset($details['customerId']);
+
                 $details['metadata']['methodType'] = Options::ORDER_API;
                 $details = $this->orderConverter->convert($order, $details, $divisor);
             }

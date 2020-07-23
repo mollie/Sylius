@@ -42,6 +42,12 @@
             <tag name="payum.action" factory="mollie" alias="payum.action.status"/>
             <tag name="payum.action" factory="mollie_subscription" alias="payum.action.status"/>
         </service>
+        <service id="bitbag_sylius_mollie_plugin.payum_action.api.create_customer" class="BitBag\SyliusMolliePlugin\Action\Api\CreateCustomerAction">
+            <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.repository.mollie_customer"/>
+            <tag name="payum.action" factory="mollie" alias="payum.action.api.create_customer"/>
+            <tag name="payum.action" factory="mollie_subscription" alias="payum.action.api.create_customer"/>
+        </service>
         <service id="bitbag_sylius_mollie_plugin.action.convert_payment" class="BitBag\SyliusMolliePlugin\Action\ConvertPaymentAction">
             <argument type="service" id="sylius.payment_description_provider"/>
             <argument type="service" id="session"/>
@@ -49,10 +55,6 @@
             <argument type="service" id="bitbag_sylius_mollie_plugin.payments.order_converter"/>
             <tag name="payum.action" factory="mollie" alias="payum.action.convert_payment"/>
             <tag name="payum.action" factory="mollie_subscription" alias="payum.action.convert_payment"/>
-        </service>
-        <service id="bitbag_sylius_mollie_plugin.payum_action.api.create_customer" class="BitBag\SyliusMolliePlugin\Action\Api\CreateCustomerAction">
-            <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
-            <tag name="payum.action" factory="mollie_subscription" alias="payum.action.api.create_customer"/>
         </service>
         <service id="bitbag_sylius_mollie_plugin.payum_action.api.create_sepa_mandate" class="BitBag\SyliusMolliePlugin\Action\Api\CreateSepaMandateAction">
             <argument type="service" id="session"/>

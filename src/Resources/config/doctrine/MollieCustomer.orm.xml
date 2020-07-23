@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd"
+>
+    <mapped-superclass name="BitBag\SyliusMolliePlugin\Entity\MollieCustomer" table="bitbag_mollie_customer">
+        <id name="id" column="id" type="integer">
+            <generator strategy="AUTO"/>
+        </id>
+        <field name="profileId" column="profile_id" type="string" unique="true"/>
+        <field name="email" column="email" type="string" unique="true"/>
+    </mapped-superclass>
+</doctrine-mapping>

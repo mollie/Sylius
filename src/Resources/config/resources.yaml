@@ -4,4 +4,5 @@ imports:
     - { resource: "@BitBagSyliusMolliePlugin/Resources/config/resources/payment_surcharge_fee.yaml" }
     - { resource: "@BitBagSyliusMolliePlugin/Resources/config/resources/mollie_method_image.yaml" }
     - { resource: "@BitBagSyliusMolliePlugin/Resources/config/resources/mollie_logger.yaml" }
+    - { resource: "@BitBagSyliusMolliePlugin/Resources/config/resources/mollie_customer.yaml" }
     - { resource: "@SyliusRefundPlugin/Resources/config/app/config.yml" }

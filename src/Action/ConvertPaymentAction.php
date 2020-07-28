@@ -25,6 +25,7 @@ use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Convert;
 use Payum\Core\Request\GetCurrency;
+use Sylius\Bundle\CoreBundle\Context\CustomerContext;
 use Sylius\Bundle\PayumBundle\Provider\PaymentDescriptionProviderInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
@@ -47,16 +48,21 @@ final class ConvertPaymentAction extends BaseApiAwareAction implements ActionInt
     /** @var ConvertOrderInterface */
     private $orderConverter;
 
+    /** @var CustomerContext */
+    private $customerContext;
+
     public function __construct(
         PaymentDescriptionProviderInterface $paymentDescriptionProvider,
         SessionInterface $session,
         RepositoryInterface $mollieMethodsRepository,
-        ConvertOrderInterface $orderConverter
+        ConvertOrderInterface $orderConverter,
+        CustomerContext $customerContext
     ) {
         $this->paymentDescriptionProvider = $paymentDescriptionProvider;
         $this->session = $session;
         $this->mollieMethodsRepository = $mollieMethodsRepository;
         $this->orderConverter = $orderConverter;
+        $this->customerContext = $customerContext;
     }
 
     /** @param Convert $request */
@@ -81,6 +87,8 @@ final class ConvertPaymentAction extends BaseApiAwareAction implements ActionInt
 
         /** @var MollieGatewayConfigInterface $method */
         $method = $this->mollieMethodsRepository->findOneBy(['methodId' => $paymentOptions['molliePaymentMethods']]);
+        $gatewayConfig = $method->getGateway()->getConfig();
+
         $details = [
             'amount' => [
                 'value' => "$amount",
@@ -98,10 +106,11 @@ final class ConvertPaymentAction extends BaseApiAwareAction implements ActionInt
             'email' => $customer->getEmail() ?? null,
         ];
 
-        $this->gateway->execute($mollieCustomer = new CreateCustomer($details));
-        $model = $mollieCustomer->getModel();
-
-        $details['metadata']['customer_mollie_id'] = $model['customer_mollie_id'];
+        if (null !== $this->customerContext->getCustomer() && true === $gatewayConfig['single_click_enabled']) {
+            $this->gateway->execute($mollieCustomer = new CreateCustomer($details));
+            $model = $mollieCustomer->getModel();
+            $details['metadata']['customer_mollie_id'] = $model['customer_mollie_id'];
+        }
 
         if (true === $this->mollieApiClient->isRecurringSubscription()) {
             $config = $this->mollieApiClient->getConfig();
@@ -111,7 +120,7 @@ final class ConvertPaymentAction extends BaseApiAwareAction implements ActionInt
         }
 
         if (false === $this->mollieApiClient->isRecurringSubscription()) {
-            $details['customerId'] = $model['customer_mollie_id'];
+            $details['customerId'] = $model['customer_mollie_id'] ?? null;
             $details['metadata']['methodType'] = Options::PAYMENT_API;
             $details['locale'] = true === in_array($order->getLocaleCode(), MollieGatewayFactoryInterface::LOCALES_AVAILABLE) ? $order->getLocaleCode() : 'en_US';
 

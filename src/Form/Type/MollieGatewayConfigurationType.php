@@ -26,15 +26,24 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
-use function Clue\StreamFilter\fun;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class MollieGatewayConfigurationType extends AbstractType
 {
+    public const DOCUMENTATION_LINKS = [
+        'single_click' => 'https://help.mollie.com/hc/en-us/articles/115000671249-What-are-single-click-payments-and-how-does-it-work-',
+        'mollie_components' => 'https://www.mollie.com/en/news/post/better-checkout-flows-with-mollie-components',
+    ];
+
+    /** @var TranslatorInterface */
+    private $translator;
+
     /** @var RepositoryInterface */
     private $gatewayConfigRepository;
 
-    public function __construct(RepositoryInterface $gatewayConfigRepository)
+    public function __construct(TranslatorInterface $translator, RepositoryInterface $gatewayConfigRepository)
     {
+        $this->translator = $translator;
         $this->gatewayConfigRepository = $gatewayConfigRepository;
     }
 
@@ -98,6 +107,20 @@ final class MollieGatewayConfigurationType extends AbstractType
             ])
             ->add('components', CheckboxType::class, [
                 'label' => 'bitbag_sylius_mollie_plugin.ui.enable_components',
+                'help' =>
+                    $this->translator->trans('bitbag_sylius_mollie_plugin.ui.read_more_enable_components') .
+                    ' <a href="'.self::DOCUMENTATION_LINKS['mollie_components'].'">'.
+                    $this->translator->trans('bitbag_sylius_mollie_plugin.ui.mollie_components').
+                    '</a>',
+                'help_html' => true,
+            ])
+            ->add('single_click_enabled', CheckboxType::class, [
+                'label' => 'bitbag_sylius_mollie_plugin.ui.single_click_enabled',
+                'help' =>  $this->translator->trans('bitbag_sylius_mollie_plugin.ui.read_more_single_click_enabled') .
+                    ' <a href="'.self::DOCUMENTATION_LINKS['single_click'].'">'.
+                    $this->translator->trans('bitbag_sylius_mollie_plugin.ui.mollie_single_click').
+                    '</a>',
+                'help_html' => true,
             ])
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
                 $data = $event->getData();

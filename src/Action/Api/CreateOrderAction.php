@@ -45,6 +45,7 @@ final class CreateOrderAction extends BaseApiAwareAction
 
         $issuer = $details['metadata']['selected_issuer'] ?? null;
         $method = $details['metadata']['molliePaymentMethods'] ? $details['metadata']['molliePaymentMethods'] : '';
+        $customerId = $details['metadata']['customer_mollie_id'] ?? null;
 
         if (null !== $method) {
             /** @var MollieGatewayConfigInterface $paymentMethod */
@@ -62,7 +63,7 @@ final class CreateOrderAction extends BaseApiAwareAction
                 'payment' => [
                     'issuer' => $issuer,
                     'cardToken' => $details['metadata']['cartToken'],
-                    'customerId' => $details['metadata']['customer_mollie_id'],
+                    'customerId' => $customerId,
                 ],
                 'amount' => $details['amount'],
                 'billingAddress' => $details['billingAddress'],

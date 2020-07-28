@@ -19,6 +19,7 @@
         {% for field in form.gatewayConfig.config %}
             {% if loop.index is odd %}<div class="one field">{% endif %}
                 {{ form_row(field) }}
+                {{ form_help(field) }}
             {% if loop.index is even %}</div>{% endif %}
         {% endfor %}
     {% endif %}

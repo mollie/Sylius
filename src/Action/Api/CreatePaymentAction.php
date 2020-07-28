@@ -43,6 +43,7 @@ final class CreatePaymentAction extends BaseApiAwareAction
                 'issuer' => $details['metadata']['selected_issuer'] ?? null,
                 'cardToken' => $details['metadata']['cartToken'],
                 'amount' => $details['amount'],
+                'customerId' => $details['customerId'] ?? null,
                 'description' => $details['description'],
                 'redirectUrl' => $details['backurl'],
                 'webhookUrl' => $details['webhookUrl'],

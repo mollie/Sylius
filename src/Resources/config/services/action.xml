@@ -55,6 +55,7 @@
             <argument type="service" id="bitbag_sylius_mollie_plugin.payments.order_converter"/>
             <tag name="payum.action" factory="mollie" alias="payum.action.convert_payment"/>
             <tag name="payum.action" factory="mollie_subscription" alias="payum.action.convert_payment"/>
+            <argument type="service" id="sylius.context.customer"/>
         </service>
         <service id="bitbag_sylius_mollie_plugin.payum_action.api.create_sepa_mandate" class="BitBag\SyliusMolliePlugin\Action\Api\CreateSepaMandateAction">
             <argument type="service" id="session"/>

@@ -107,6 +107,7 @@ final class MollieGatewayConfigurationType extends AbstractType
             ])
             ->add('components', CheckboxType::class, [
                 'label' => 'bitbag_sylius_mollie_plugin.ui.enable_components',
+                'attr' => ['class' => 'bitbag-mollie-components'],
                 'help' =>
                     $this->translator->trans('bitbag_sylius_mollie_plugin.ui.read_more_enable_components') .
                     ' <a href="'.self::DOCUMENTATION_LINKS['mollie_components'].'">'.
@@ -116,6 +117,7 @@ final class MollieGatewayConfigurationType extends AbstractType
             ])
             ->add('single_click_enabled', CheckboxType::class, [
                 'label' => 'bitbag_sylius_mollie_plugin.ui.single_click_enabled',
+                'attr' => ['class' => 'bitbag-single-click-payment'],
                 'help' =>  $this->translator->trans('bitbag_sylius_mollie_plugin.ui.read_more_single_click_enabled') .
                     ' <a href="'.self::DOCUMENTATION_LINKS['single_click'].'">'.
                     $this->translator->trans('bitbag_sylius_mollie_plugin.ui.mollie_single_click').
@@ -124,6 +126,10 @@ final class MollieGatewayConfigurationType extends AbstractType
             ])
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
                 $data = $event->getData();
+
+                if (true === $data['components']) {
+                    $data['single_click_enabled'] = false;
+                }
 
                 $data['payum.http_client'] = '@bitbag_sylius_mollie_plugin.mollie_api_client';
 

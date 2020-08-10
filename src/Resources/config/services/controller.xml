@@ -40,8 +40,18 @@
             <argument type="service" id="sylius.context.cart"/>
             <argument type="service" id="bitbag_sylius_mollie_plugin.repository.mollie_gateway_config"/>
             <argument type="service" id="sylius.adjustments_aggregator" />
-            <argument type="service" id="bitbag_sylius_mollie_plugin.sylius_mollie_plugin.helper.convert_price_to_amount" />
+            <argument type="service" id="bitbag_sylius_mollie_plugin.helper.convert_price_to_amount" />
             <argument type="service" id="twig"/>
+        </service>
+        <service id="bitbag_sylius_mollie_plugin.controller.action.admin.generate_paymentlink_action" class="BitBag\SyliusMolliePlugin\Controller\Action\Admin\GeneratePaymentlinkAction">
+            <argument type="service" id="sylius.repository.order" />
+            <argument type="service" id="twig" />
+            <argument type="service" id="session" />
+            <argument type="service" id="router" />
+            <argument type="service" id="form.factory"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.mollie_api_client"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.resolver.paymentlink_resolver"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
         </service>
     </services>
 </container>

@@ -1,7 +1,8 @@
 $(function () {
     const mollieFormIncluded = document.getElementById("mollie-payment-form");
+    const paymentLink = document.getElementById("paymentlink");
 
-    if (!mollieFormIncluded) {
+    if (!paymentLink && !mollieFormIncluded) {
         return;
     }
 

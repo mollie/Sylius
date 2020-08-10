@@ -94,5 +94,7 @@ bitbag_sylius_mollie_plugin:
         shipment:
             units: 'Units'
             tracking_code: 'Tracking Code'
+        methods: Choose enabled methods
+        expiration_date_time: Expiration date time
     subscription:
         cancel: Subscription has been successfully canceled.

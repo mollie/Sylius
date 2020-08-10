@@ -30,15 +30,16 @@ class SendAbandonedPaymentLink extends Command
     /** @var AbandonedPaymentLinkCreatorInterface */
     private $abandonedPaymentLinkCreator;
 
-    protected function configure(): void
-    {
-        $this->setDescription('Send payment link to customers');
-    }
-
     public function __construct(AbandonedPaymentLinkCreatorInterface $abandonedPaymentLinkCreator)
     {
         parent::__construct(self::COMMAND_NAME);
+
         $this->abandonedPaymentLinkCreator = $abandonedPaymentLinkCreator;
+    }
+
+    protected function configure(): void
+    {
+        $this->setDescription('Send payment link to customers');
     }
 
     protected function initialize(InputInterface $input, OutputInterface $output): void
@@ -46,7 +47,7 @@ class SendAbandonedPaymentLink extends Command
         $this->io = new SymfonyStyle($input, $output);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $stopwatch = new Stopwatch();
         $stopwatch->start(self::COMMAND_ID);

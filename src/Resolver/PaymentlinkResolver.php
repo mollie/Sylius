@@ -75,8 +75,7 @@ final class PaymentlinkResolver implements PaymentlinkResolverInterface
 
         /** @var MollieGatewayConfig $method */
         foreach ($methods as $method) {
-            if (PaymentMethod::KLARNA_PAY_LATER === $method->getMethodId() ||
-                PaymentMethod::KLARNA_SLICE_IT === $method->getMethodId()) {
+            if (in_array($method->getMethodId(),self::NO_AVAILABLE_METHODS)) {
                 continue;
             }
 
@@ -105,7 +104,7 @@ final class PaymentlinkResolver implements PaymentlinkResolverInterface
             ],
             'description' => $order->getNumber(),
             'redirectUrl' => $redirectURL,
-            'webhookUrl' => str_replace('mollie.localhost.pl', '50dab6c17105.ngrok.io', $details['webhookUrl']),
+            'webhookUrl' => $details['webhookUrl'],
             'metadata' => [
                 'order_id' => $order->getId(),
                 'refund_token' => $details['refund_token'] ?? null,

@@ -4,3 +4,11 @@ twig:
     strict_variables: '%kernel.debug%'
     globals:
         image_dir_global: '%images_dir%'
+
+services:
+    _defaults:
+        public: false
+        autowire: true
+        autoconfigure: true
+
+    Twig\Extra\Intl\IntlExtension: ~

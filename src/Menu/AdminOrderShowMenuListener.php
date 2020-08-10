@@ -19,6 +19,13 @@ use Sylius\Component\Core\Model\PaymentMethodInterface;
 
 final class AdminOrderShowMenuListener
 {
+    const AVAILABLE_PAYMENT_STATE = [
+        PaymentInterface::STATE_NEW,
+        PaymentInterface::STATE_PROCESSING,
+        PaymentInterface::STATE_CANCELLED,
+        PaymentInterface::STATE_FAILED,
+    ];
+
     public function addPaymentlinkButton(OrderShowMenuBuilderEvent $event): void
     {
         $menu = $event->getMenu();
@@ -30,11 +37,7 @@ final class AdminOrderShowMenuListener
         /** @var PaymentMethodInterface $paymentMethod */
         $paymentMethod = $payment->getMethod();
 
-        if (
-            PaymentInterface::STATE_NEW === $payment->getState() ||
-            PaymentInterface::STATE_PROCESSING === $payment->getState() ||
-            PaymentInterface::STATE_CANCELLED === $payment->getState() ||
-            PaymentInterface::STATE_FAILED === $payment->getState() &&
+        if (in_array($payment->getState(), self::AVAILABLE_PAYMENT_STATE) &&
             MollieGatewayFactory::FACTORY_NAME === $paymentMethod->getGatewayConfig()->getFactoryName()
         ) {
             $menu

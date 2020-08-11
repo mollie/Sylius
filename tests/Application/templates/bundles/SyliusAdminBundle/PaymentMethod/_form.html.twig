@@ -1,5 +1,9 @@
 {% import '@SyliusUi/Macro/flags.html.twig' as flags %}
 
+{% if form.vars.value.gatewayConfig.factoryName == 'mollie' %}
+    {% include '@SyliusAdmin/PaymentMethod/_mollieMessage.html.twig' %}
+{% endif %}
+
 <div class="ui segment">
     <h4 class="ui dividing header">{{ 'sylius.ui.details'|trans }}</h4>
     {{ form_errors(form) }}

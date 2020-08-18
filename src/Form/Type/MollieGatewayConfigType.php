@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Form\Type;
 
+use BitBag\SyliusMolliePlugin\Documentation\DocumentationLinksInterface;
 use BitBag\SyliusMolliePlugin\Payments\PaymentTerms\Options;
 use BitBag\SyliusMolliePlugin\Validator\Constraints\PaymentSurchargeType;
 use Sylius\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
@@ -24,6 +25,15 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class MollieGatewayConfigType extends AbstractResourceType
 {
+    /** @var DocumentationLinksInterface */
+    private $documentationLinks;
+
+    public function __construct(string $dataClass, array $validationGroups = [], DocumentationLinksInterface $documentationLinks)
+    {
+        parent::__construct($dataClass, $validationGroups);
+        $this->documentationLinks = $documentationLinks;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -43,6 +53,8 @@ final class MollieGatewayConfigType extends AbstractResourceType
             ->add('paymentType', ChoiceType::class, [
                 'label' => 'bitbag_sylius_mollie_plugin.ui.payment_type',
                 'choices' => Options::getAvailablePaymentType(),
+                'help' => $this->documentationLinks->getPaymentMethodDoc(),
+                'help_html' => true,
             ])
             ->add('paymentDescription', TextType::class, [
                 'label' => 'bitbag_sylius_mollie_plugin.form.payment_methods.payment_description',

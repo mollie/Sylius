@@ -62,6 +62,9 @@ bitbag_sylius_mollie_plugin:
         read_more_enable_components: 'Read more about Mollie Components and how it improves your conversion'
         mollie_components: 'Mollie Components'
         mollie_single_click: 'Single Click Payments'
+        here: 'here'
+        payment_methods_doc: 'to read more about the differences between the Payment and Orders API'
+        click: 'Click'
     form:
         payment_methods:
             payment_description: 'Description'

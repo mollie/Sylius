@@ -15,7 +15,7 @@
     </parameters>
     <services>
         <service id="bitbag_sylius_mollie_plugin.form.type.mollie_gateway_configuration" class="BitBag\SyliusMolliePlugin\Form\Type\MollieGatewayConfigurationType">
-            <argument type="service" id="translator"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.documentation.documentation_links"/>
             <argument type="service" id="sylius.repository.gateway_config" />
             <tag name="sylius.gateway_configuration_type" type="mollie" label="bitbag_sylius_mollie_plugin.ui.mollie_gateway_label"/>
             <tag name="form.type"/>
@@ -45,6 +45,7 @@
         <service id="bitbag_sylius_mollie_plugin.form.extension.mollie_gateway_config" class="BitBag\SyliusMolliePlugin\Form\Type\MollieGatewayConfigType">
             <argument>%bitbag_sylius_mollie_plugin.model.mollie_gateway_config.class%</argument>
             <argument>%bitbag_sylius_mollie_plugin.form.type.payment_methods.validation_groups.transport%</argument>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.documentation.documentation_links"/>
             <tag name="form.type"/>
         </service>
         <service id="bitbag_sylius_mollie_plugin.form.type.payment_surcharge_fee" class="BitBag\SyliusMolliePlugin\Form\Type\PaymentSurchargeFeeType">

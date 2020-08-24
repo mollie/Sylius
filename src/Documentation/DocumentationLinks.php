@@ -32,25 +32,30 @@ final class DocumentationLinks implements DocumentationLinksInterface
 
     public function getSingleClickDoc(): string
     {
-        return $this->translator->trans('bitbag_sylius_mollie_plugin.ui.read_more_single_click_enabled') .
-            '<a target="_blank" href="' . self::DOCUMENTATION_LINKS['single_click'] . '"> ' .
-            $this->translator->trans('bitbag_sylius_mollie_plugin.ui.mollie_single_click') .
-            '</a>';
+        $link = \sprintf('<a target="_blank" href="%s"> %s </a>', self::DOCUMENTATION_LINKS['single_click'],
+            $this->translator->trans('bitbag_sylius_mollie_plugin.ui.mollie_single_click'));
+
+        return $this->translator->trans('bitbag_sylius_mollie_plugin.ui.read_more_single_click_enabled', [
+            '%link%' => $link,
+        ]);
     }
 
     public function getMollieComponentsDoc(): string
     {
-        return $this->translator->trans('bitbag_sylius_mollie_plugin.ui.read_more_enable_components') .
-            '<a target="_blank" href="' . self::DOCUMENTATION_LINKS['mollie_components'] . '"> ' .
-            $this->translator->trans('bitbag_sylius_mollie_plugin.ui.mollie_components') .
-            '</a>';
+        $link = \sprintf('<a target="_blank" href="%s"> %s </a>', self::DOCUMENTATION_LINKS['mollie_components'],
+            $this->translator->trans('bitbag_sylius_mollie_plugin.ui.mollie_components'));
+
+        return $this->translator->trans('bitbag_sylius_mollie_plugin.ui.read_more_enable_components', [
+            '%link%' => $link,
+        ]);
     }
 
     public function getPaymentMethodDoc(): string
     {
-        return $this->translator->trans('bitbag_sylius_mollie_plugin.ui.click') .
-            ' <a target="_blank" href="' . self::DOCUMENTATION_LINKS['payment_methods'] . '">' .
-            $this->translator->trans('bitbag_sylius_mollie_plugin.ui.here') .
-            '</a> ' . $this->translator->trans('bitbag_sylius_mollie_plugin.ui.payment_methods_doc');
+        return \sprintf('%s <a target="_blank" href="%s"> %s </a> %s',
+            $this->translator->trans('bitbag_sylius_mollie_plugin.ui.click'),
+            self::DOCUMENTATION_LINKS['payment_methods'],
+            $this->translator->trans('bitbag_sylius_mollie_plugin.ui.here'),
+            $this->translator->trans('bitbag_sylius_mollie_plugin.ui.payment_methods_doc'));
     }
 }

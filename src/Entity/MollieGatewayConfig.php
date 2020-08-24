@@ -38,6 +38,9 @@ class MollieGatewayConfig extends AbstractMethod implements ResourceInterface, M
     /** @var int */
     private $orderExpiration = 28;
 
+    /** @var string */
+    private $paymentDescription;
+
     public function getId(): int
     {
         return $this->id;
@@ -101,5 +104,15 @@ class MollieGatewayConfig extends AbstractMethod implements ResourceInterface, M
     public function setOrderExpiration(?int $orderExpiration): void
     {
         $this->orderExpiration = $orderExpiration;
+    }
+
+    public function getPaymentDescription(): ?string
+    {
+        return $this->paymentDescription;
+    }
+
+    public function setPaymentDescription(?string $paymentDescription): void
+    {
+        $this->paymentDescription = $paymentDescription;
     }
 }

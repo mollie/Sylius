@@ -16,6 +16,7 @@ use BitBag\SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
 use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
 use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactoryInterface;
 use BitBag\SyliusMolliePlugin\Helper\ConvertOrderInterface;
+use BitBag\SyliusMolliePlugin\Helper\PaymentDescriptionInterface;
 use BitBag\SyliusMolliePlugin\Payments\PaymentTerms\Options;
 use BitBag\SyliusMolliePlugin\Request\Api\CreateCustomer;
 use Payum\Core\Action\ActionInterface;
@@ -26,7 +27,6 @@ use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Convert;
 use Payum\Core\Request\GetCurrency;
 use Sylius\Bundle\CoreBundle\Context\CustomerContext;
-use Sylius\Bundle\PayumBundle\Provider\PaymentDescriptionProviderInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
@@ -36,8 +36,8 @@ final class ConvertPaymentAction extends BaseApiAwareAction implements ActionInt
 {
     use GatewayAwareTrait;
 
-    /** @var PaymentDescriptionProviderInterface */
-    private $paymentDescriptionProvider;
+    /** @var PaymentDescriptionInterface */
+    private $paymentDescription;
 
     /** @var SessionInterface */
     private $session;
@@ -52,13 +52,13 @@ final class ConvertPaymentAction extends BaseApiAwareAction implements ActionInt
     private $customerContext;
 
     public function __construct(
-        PaymentDescriptionProviderInterface $paymentDescriptionProvider,
+        PaymentDescriptionInterface $paymentDescription,
         SessionInterface $session,
         RepositoryInterface $mollieMethodsRepository,
         ConvertOrderInterface $orderConverter,
         CustomerContext $customerContext
     ) {
-        $this->paymentDescriptionProvider = $paymentDescriptionProvider;
+        $this->paymentDescription = $paymentDescription;
         $this->session = $session;
         $this->mollieMethodsRepository = $mollieMethodsRepository;
         $this->orderConverter = $orderConverter;
@@ -94,7 +94,7 @@ final class ConvertPaymentAction extends BaseApiAwareAction implements ActionInt
                 'value' => "$amount",
                 'currency' => $currency->code,
             ],
-            'description' => $this->paymentDescriptionProvider->getPaymentDescription($payment),
+            'description' => $this->paymentDescription->getPaymentDescription($payment, $method, $order),
             'metadata' => [
                 'order_id' => $order->getId(),
                 'customer_id' => $customer->getId() ?? null,

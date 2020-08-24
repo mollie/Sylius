@@ -20,5 +20,8 @@
         <service id="bitbag_sylius_mollie_plugin.helper.convert_refund_data" class="BitBag\SyliusMolliePlugin\Helper\ConvertRefundData">
             <argument type="service" id="bitbag_sylius_mollie_plugin.helper.int_to_string"/>
         </service>
+        <service id="bitbag_sylius_mollie_plugin.helper.payment_description" class="BitBag\SyliusMolliePlugin\Helper\PaymentDescription">
+            <argument type="service" id="sylius.payment_description_provider"/>
+        </service>
     </services>
 </container>

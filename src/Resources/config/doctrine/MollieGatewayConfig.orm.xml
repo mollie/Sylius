@@ -38,5 +38,6 @@
             </cascade>
             <join-column name="method_image_id" nullable="true"/>
         </one-to-one>
+        <field name="paymentDescription" column="payment_description" nullable="true"/>
     </mapped-superclass>
 </doctrine-mapping>

@@ -52,6 +52,12 @@
                         </div>
                     </div>
                 </div>
+                <div class="field">
+                    {{ form_row(methodForm.paymentDescription) }}
+                    <div id="payment_description_{{ name }}">
+                        {{ methodForm.paymentDescription.vars.help|trans|raw|nl2br }}
+                    </div>
+                </div>
                 <h4 class="ui horizontal divider header">
                     {{ 'bitbag_sylius_mollie_plugin.ui.payment_fee'|trans }}
                 </h4>

@@ -44,6 +44,14 @@ final class MollieGatewayConfigType extends AbstractResourceType
                 'label' => 'bitbag_sylius_mollie_plugin.ui.payment_type',
                 'choices' => Options::getAvailablePaymentType(),
             ])
+            ->add('paymentDescription', TextType::class, [
+                'label' => 'bitbag_sylius_mollie_plugin.form.payment_methods.payment_description',
+                'help' => 'bitbag_sylius_mollie_plugin.form.payment_methods.payment_description_help',
+                'empty_data' => '{ordernumber}',
+                'attr' => [
+                    'placeholder' => '{ordernumber}',
+                ],
+            ])
             ->add('paymentSurchargeFee', PaymentSurchargeFeeType::class, [
                 'label' => false,
                 'constraints' => [new PaymentSurchargeType(['groups' => 'sylius'])],

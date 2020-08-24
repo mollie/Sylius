@@ -63,6 +63,12 @@ bitbag_sylius_mollie_plugin:
         mollie_components: 'Mollie Components'
         mollie_single_click: 'Single Click Payments'
     form:
+        payment_methods:
+            payment_description: 'Description'
+            payment_description_help: "The description to be used for the transactions. These variables are available:\n
+                                                      <b>{ordernumber}:</b> The order number for this transaction \n
+                                                       <b>{storename}:</b> The name of the store \n\n
+                                                      (Note: this only works when the method is set to Payments API)"
         shipment:
             units: 'Units'
             tracking_code: 'Tracking Code'

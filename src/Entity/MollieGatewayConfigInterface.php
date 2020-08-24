@@ -37,4 +37,8 @@ interface MollieGatewayConfigInterface extends MethodInterface
     public function getOrderExpiration(): ?int;
 
     public function setOrderExpiration(?int $orderExpiration): void;
+
+    public function getPaymentDescription(): ?string;
+
+    public function setPaymentDescription(?string $paymentDescription): void;
 }

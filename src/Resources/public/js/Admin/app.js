@@ -43,6 +43,29 @@ $(function () {
         })
     });
 
+    $('[id*="_paymentType"]').each(function (index) {
+        const value = $(this).find(":selected").val();
+        setPaymentDescription(value, index);
+
+        $(this).on('change', function () {
+            const value = $(this).val();
+            setPaymentDescription(value, index);
+        })
+    });
+
+    function setPaymentDescription(value, index){
+        const field = 'sylius_payment_method_gatewayConfig_mollieGatewayConfig_'+ index +'_paymentDescription';
+        const description = $("#payment_description_" + index);
+
+        if (value === 'PAYMENT_API') {
+            $('label[for='+field+'], input#'+field).show();
+            description.show();
+        } else {
+            $('label[for='+field+'], input#'+field).hide();
+            description.hide();
+        }
+    }
+
     $(".bitbag-mollie-components").change(function () {
         if ($(this).is(':checked')) {
             $('.bitbag-single-click-payment').prop('checked', !$(this).is(':checked'));

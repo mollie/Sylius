@@ -4,6 +4,12 @@ sylius_payum:
           classes:
               model: Tests\BitBag\SyliusMolliePlugin\Entity\GatewayConfig
 
+sylius_product:
+  resources:
+    product:
+      classes:
+        model: Tests\BitBag\SyliusMolliePlugin\Entity\Product
+
 sylius_order:
   resources:
     order:

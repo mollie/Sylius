@@ -1,0 +1,10 @@
+app_admin_product_type:
+    resource: |
+        alias: bitbag_sylius_mollie_plugin.product_type
+        section: admin
+        templates: SyliusAdminBundle:Crud
+        except: ['show']
+        grid: bitbag_sylius_mollie_plugin_admin_product_type
+        redirect: index
+        permission: true
+    type: sylius.resource

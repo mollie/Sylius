@@ -76,6 +76,8 @@ bitbag_sylius_mollie_plugin:
         read_more_enable_components: 'Read more about %link% and how it improves your conversion'
         mollie_components: 'Mollie Components'
         mollie_single_click: 'Single Click Payments'
+        mollie_product_type: 'Product type'
+        product_types: 'Product types'
         here: 'here'
         payment_methods_doc: 'to read more about the differences between the Payment and Orders API'
         click: 'Click'
@@ -105,6 +107,7 @@ bitbag_sylius_mollie_plugin:
                                                       <b>{ordernumber}:</b> The order number for this transaction \n
                                                        <b>{storename}:</b> The name of the store \n\n
                                                       (Note: this only works when the method is set to Payments API)"
+        product_type: 'Product type (required in meal vouchers)'
         shipment:
             units: 'Units'
             tracking_code: 'Tracking Code'

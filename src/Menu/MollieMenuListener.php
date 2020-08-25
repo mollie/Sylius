@@ -14,7 +14,7 @@ namespace BitBag\SyliusMolliePlugin\Menu;
 
 use Sylius\Bundle\UiBundle\Menu\Event\MenuBuilderEvent;
 
-final class MollieLoggerMenuListener
+final class MollieMenuListener
 {
     public function buildMenu(MenuBuilderEvent $menuBuilderEvent): void
     {
@@ -30,5 +30,12 @@ final class MollieLoggerMenuListener
             ])
             ->setLabel('bitbag_sylius_mollie_plugin.ui.mollie_loggers')
             ->setLabelAttribute('icon', 'tags');
+
+        $cmsRootMenuItem
+            ->addChild('mollie_product_type', [
+                'route' => 'bitbag_sylius_mollie_plugin_admin_product_type_index',
+            ])
+            ->setLabel('bitbag_sylius_mollie_plugin.ui.mollie_product_type')
+            ->setLabelAttribute('icon', 'sitemap');
     }
 }

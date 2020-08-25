@@ -11,5 +11,11 @@
             <generator strategy="AUTO" />
         </id>
         <field name="name" column="name" unique="true" />
+        <one-to-one field="mollieGatewayConfig" target-entity="BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfig" mapped-by="defaultCategory">
+            <cascade>
+                <cascade-persist/>
+                <cascade-remove/>
+            </cascade>
+        </one-to-one>
     </entity>
 </doctrine-mapping>

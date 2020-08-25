@@ -26,6 +26,13 @@
             <div class="content{% if 0 == loop.index0 %} active{% endif %}">
                 {{ form_row(methodForm.enabled) }}
                 {{ form_row(methodForm.name) }}
+                {% if methodForm.vars.value.methodId == 'mealvouchers' %}
+                    <div class="field">
+                        {{ form_row(methodForm.defaultCategory) }}
+                        {{ methodForm.defaultCategory.vars.help|trans }}
+                    </div>
+                {% endif %}
+                <div class="ui bottom aligned grid">
                 <div class="field">
                     <div class="twelve wide column">
                         {{ form_row(methodForm.customizeMethodImage) }}

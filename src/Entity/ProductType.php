@@ -20,6 +20,9 @@ class ProductType implements ProductTypeInterface
     /** @var string|null */
     private $name;
 
+    /** @var MollieGatewayConfigInterface|null */
+    private $mollieGatewayConfig;
+
     public function __toString(): string
     {
         return $this->name;
@@ -38,5 +41,15 @@ class ProductType implements ProductTypeInterface
     public function setName(?string $name): void
     {
         $this->name = $name;
+    }
+
+    public function getMollieGatewayConfig(): ?MollieGatewayConfigInterface
+    {
+        return $this->mollieGatewayConfig;
+    }
+
+    public function setMollieGatewayConfig(?MollieGatewayConfigInterface $mollieGatewayConfig): void
+    {
+        $this->mollieGatewayConfig = $mollieGatewayConfig;
     }
 }

@@ -108,6 +108,8 @@ bitbag_sylius_mollie_plugin:
                                                        <b>{storename}:</b> The name of the store \n\n
                                                       (Note: this only works when the method is set to Payments API)"
         product_type: 'Product type (required in meal vouchers)'
+        product_type_default: 'Choose default product category'
+        product_type_default_help: 'Use this only if You have one category for all your product'
         shipment:
             units: 'Units'
             tracking_code: 'Tracking Code'

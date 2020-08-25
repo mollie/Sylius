@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Payments\Methods;
 
+use BitBag\SyliusMolliePlugin\Entity\ProductTypeInterface;
+
 trait ConfigTrait
 {
     /** @var array */
@@ -34,6 +36,9 @@ trait ConfigTrait
 
     /** @var array */
     protected $issuers = [];
+
+    /** @var ProductTypeInterface|null */
+    protected $defaultCategory = null;
 
     public function getImage(): array
     {
@@ -103,5 +108,15 @@ trait ConfigTrait
     public function setIssuers(array $issuers): void
     {
         $this->issuers = $issuers;
+    }
+
+    public function getDefaultCategory(): ?ProductTypeInterface
+    {
+        return $this->defaultCategory;
+    }
+
+    public function setDefaultCategory(?ProductTypeInterface $defaultCategory): void
+    {
+        $this->defaultCategory = $defaultCategory;
     }
 }

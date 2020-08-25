@@ -21,4 +21,8 @@ interface ProductTypeInterface extends ResourceInterface
     public function getName(): ?string;
 
     public function setName(?string $name): void;
+
+    public function getMollieGatewayConfig(): ?MollieGatewayConfigInterface;
+
+    public function setMollieGatewayConfig(?MollieGatewayConfigInterface $mollieGatewayConfig): void;
 }

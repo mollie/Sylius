@@ -55,7 +55,7 @@ $(function () {
         }
     })
 
-    $('[id*="_paymentType"]').each(function (index) {
+    $('[id$="_paymentType"]').each(function (index) {
         const value = $(this).find(":selected").val();
         setPaymentDescription(value, index);
 
@@ -79,7 +79,7 @@ $(function () {
     }
 
 
-    $('[id*="_paymentSurchargeFee_type"]').each(function (index) {
+    $('[id$="_paymentSurchargeFee_type"]').each(function (index) {
         const value = $(this).find(":selected").val();
         setPaymentFeeFields(value, index);
 

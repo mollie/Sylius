@@ -46,10 +46,17 @@
                     <div class="fields">
                         <div class="twelve wide field">
                             {{ form_row(methodForm.paymentType) }}
+                            {{ form_help(methodForm.paymentType) }}
                         </div>
                         <div class="four wide field">
                             {{ form_row(methodForm.orderExpiration) }}
                         </div>
+                    </div>
+                </div>
+                <div class="field">
+                    {{ form_row(methodForm.paymentDescription) }}
+                    <div id="payment_description_{{ name }}">
+                        {{ methodForm.paymentDescription.vars.help|trans|raw|nl2br }}
                     </div>
                 </div>
                 <h4 class="ui horizontal divider header">

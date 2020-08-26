@@ -115,7 +115,7 @@ final class MollieGatewayConfigurationType extends AbstractType
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
                 $data = $event->getData();
 
-                if (true === $data['components']) {
+                if (isset($data['components']) && true === $data['components']) {
                     $data['single_click_enabled'] = false;
                 }
 

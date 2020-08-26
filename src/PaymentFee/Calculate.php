@@ -66,6 +66,9 @@ final class Calculate
         if ($this->fixedAmountAndPercentage->canCalculate($paymentType)) {
             return $this->fixedAmountAndPercentage->calculate($order, $paymentMethod);
         }
+        if ('no_fee' === $paymentType) {
+            return $order;
+        }
 
         throw new UnknownPaymentSurchargeTye(sprintf('Unknown payment type %s', $paymentType));
     }

@@ -13,7 +13,9 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Helper;
 
 use BitBag\SyliusMolliePlugin\Calculator\CalculateShippingTaxAmountInterface;
+use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
 use BitBag\SyliusMolliePlugin\Payments\PaymentTerms\Options;
+use BitBag\SyliusMolliePlugin\Resolver\MealVoucherResolverInterface;
 use BitBag\SyliusMolliePlugin\Resolver\TaxShipmentResolverInterface;
 use BitBag\SyliusMolliePlugin\Resolver\TaxUnitItemResolverInterface;
 use Sylius\Component\Core\Model\OrderInterface;
@@ -39,19 +41,25 @@ final class ConvertOrder implements ConvertOrderInterface
     /** @var TaxShipmentResolverInterface */
     private $taxShipmentResolver;
 
+    /** @var MealVoucherResolverInterface */
+    private $mealVoucherResolver;
+
     public function __construct(
         IntToStringConverter $intToStringConverter,
         CalculateShippingTaxAmountInterface $calculateShippingTaxAmount,
         TaxUnitItemResolverInterface $taxUnitItemResolver,
-        TaxShipmentResolverInterface $taxShipmentResolver
-    ) {
+        TaxShipmentResolverInterface $taxShipmentResolver,
+        MealVoucherResolverInterface $mealVoucherResolver
+    )
+    {
         $this->intToStringConverter = $intToStringConverter;
         $this->calculateShippingTaxAmount = $calculateShippingTaxAmount;
         $this->taxUnitItemResolver = $taxUnitItemResolver;
         $this->taxShipmentResolver = $taxShipmentResolver;
+        $this->mealVoucherResolver = $mealVoucherResolver;
     }
 
-    public function convert(OrderInterface $order, array $details, int $divisor): array
+    public function convert(OrderInterface $order, array $details, int $divisor, MollieGatewayConfigInterface $method): array
     {
         $this->order = $order;
 
@@ -62,7 +70,7 @@ final class ConvertOrder implements ConvertOrderInterface
         $details['orderNumber'] = (string) $order->getId();
         $details['shippingAddress'] = $this->createShippingAddress($customer);
         $details['billingAddress'] = $this->createBillingAddress($customer);
-        $details['lines'] = $this->createLines($divisor);
+        $details['lines'] = $this->createLines($divisor, $method);
         $details['lines'] = array_merge($details['lines'], $this->createShippingFee($divisor));
 
         return $details;
@@ -94,12 +102,14 @@ final class ConvertOrder implements ConvertOrderInterface
         ];
     }
 
-    private function createLines(int $divisor): array
+    private function createLines(int $divisor, MollieGatewayConfigInterface $method): array
     {
         $details = [];
         $this->order->getChannel()->getDefaultTaxZone();
+
         foreach ($this->order->getItems() as $item) {
             $details[] = [
+                'category' => $this->mealVoucherResolver->resolve($method, $item, $details),
                 'type' => 'physical',
                 'name' => $item->getProductName(),
                 'quantity' => $item->getQuantity(),

@@ -64,6 +64,11 @@
                         <div class="twelve wide field">
                             {{ form_row(methodForm.paymentType) }}
                             {{ form_help(methodForm.paymentType) }}
+                            {% if methodForm.vars.value.methodId == 'mealvouchers' %}
+                                {{ form_row(methodForm.paymentType, {'attr': {'disabled': 'disabled'}}) }}
+                            {% else %}
+                                {{ form_row(methodForm.paymentType) }}
+                            {% endif %}
                         </div>
                         <div class="four wide field">
                             {{ form_row(methodForm.orderExpiration) }}

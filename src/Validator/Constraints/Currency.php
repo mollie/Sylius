@@ -16,22 +16,14 @@ use Symfony\Component\Validator\Constraint;
 
 final class Currency extends Constraint
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     public $message;
 
-    /**
-     * {@inheritdoc}
-     */
     public function validatedBy(): string
     {
         return 'bitbag_sylius_mollie_plugin_currency';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTargets(): string
     {
         return self::CLASS_CONSTRAINT;

@@ -35,6 +35,6 @@ final class GatewayConfigTypeExtension extends AbstractTypeExtension
 
     public static function getExtendedTypes(): array
     {
-        return[GatewayConfigType::class];
+        return [GatewayConfigType::class];
     }
 }

@@ -128,7 +128,7 @@ final class ConvertPaymentAction extends BaseApiAwareAction implements ActionInt
                 unset($details['customerId']);
 
                 $details['metadata']['methodType'] = Options::ORDER_API;
-                $details = $this->orderConverter->convert($order, $details, $divisor);
+                $details = $this->orderConverter->convert($order, $details, $divisor, $method);
             }
         }
 

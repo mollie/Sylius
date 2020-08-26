@@ -21,12 +21,6 @@ use Webmozart\Assert\Assert;
 
 final class CurrencyValidator extends ConstraintValidator
 {
-    /**
-     * @param PaymentMethodInterface $paymentMethod
-     * @param Constraint|Currency $constraint
-     *
-     * {@inheritdoc}
-     */
     public function validate($paymentMethod, Constraint $constraint): void
     {
         Assert::isInstanceOf($paymentMethod, PaymentMethodInterface::class);

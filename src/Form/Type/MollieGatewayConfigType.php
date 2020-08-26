@@ -12,9 +12,11 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Form\Type;
 
+use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
 use BitBag\SyliusMolliePlugin\Documentation\DocumentationLinksInterface;
 use BitBag\SyliusMolliePlugin\Options\Country\Options as CountryOptions;
 use BitBag\SyliusMolliePlugin\Entity\ProductType;
+use BitBag\SyliusMolliePlugin\Payments\Methods\MealVoucher;
 use BitBag\SyliusMolliePlugin\Payments\PaymentTerms\Options;
 use BitBag\SyliusMolliePlugin\Validator\Constraints\PaymentSurchargeType;
 use Sylius\Bundle\ProductBundle\Form\Type\ProductType as ProductFormType;
@@ -25,6 +27,8 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class MollieGatewayConfigType extends AbstractResourceType
@@ -46,9 +50,9 @@ final class MollieGatewayConfigType extends AbstractResourceType
             ])
             ->add('defaultCategory', EntityType::class, [
                 'class' => ProductType::class,
-                'label' => 'bitbag_sylius_mollie_plugin.form.product_type_default',
                 'required' => false,
-                'placeholder' => 'Choose an option',
+                'label' => 'bitbag_sylius_mollie_plugin.form.product_type_default',
+                'placeholder' => 'bitbag_sylius_mollie_plugin.form.no_category',
                 'help' => 'bitbag_sylius_mollie_plugin.form.product_type_default_help'
             ])
             ->add('name', TextType::class, [
@@ -115,7 +119,18 @@ final class MollieGatewayConfigType extends AbstractResourceType
             ->add('loggerLevel', ChoiceType::class, [
                 'label' => 'bitbag_sylius_mollie_plugin.ui.debug_level_log',
                 'choices' => Options::getDebugLevels(),
-            ]);
+            ])
+            ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+                /** @var MollieGatewayConfigInterface $object */
+                $object = $event->getForm()->getData();
+                $data = $event->getData();
+
+                if ($object->getMethodId() === MealVoucher::MEAL_VOUCHERS) {
+                    $data['paymentType'] = 'ORDER_API';
+                }
+
+                $event->setData($data);
+            });
     }
 
     public function getBlockPrefix(): string

@@ -50,10 +50,10 @@ final class MollieGatewayConfigType extends AbstractResourceType
             ])
             ->add('defaultCategory', EntityType::class, [
                 'class' => ProductType::class,
-                'required' => false,
                 'label' => 'bitbag_sylius_mollie_plugin.form.product_type_default',
                 'placeholder' => 'bitbag_sylius_mollie_plugin.form.no_category',
-                'help' => 'bitbag_sylius_mollie_plugin.form.product_type_default_help'
+                'empty_data' => null,
+                'help' => 'bitbag_sylius_mollie_plugin.form.product_type_default_help',
             ])
             ->add('name', TextType::class, [
                 'required' => true,

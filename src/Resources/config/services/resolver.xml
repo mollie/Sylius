@@ -45,7 +45,6 @@
         <service id="bitbag_sylius_mollie_plugin.resolver.mollie_countries_restriction_resolver" class="BitBag\SyliusMolliePlugin\Resolver\MollieCountriesRestrictionResolver">
             <argument type="service" id="bitbag_sylius_mollie_plugin.resolver.payment_methods_image"/>
         </service>
-        <service id="bitbag_sylius_mollie_plugin.resolver.meal_voucher_resolver" class="BitBag\SyliusMolliePlugin\Resolver\MealVoucherResolver">
-        </service>
+        <service id="bitbag_sylius_mollie_plugin.resolver.meal_voucher_resolver" class="BitBag\SyliusMolliePlugin\Resolver\MealVoucherResolver"/>
     </services>
 </container>

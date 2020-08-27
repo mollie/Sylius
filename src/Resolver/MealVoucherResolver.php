@@ -18,20 +18,25 @@ use Sylius\Component\Core\Model\OrderItemInterface;
 
 final class MealVoucherResolver implements MealVoucherResolverInterface
 {
-    public function resolve(MollieGatewayConfigInterface $method, OrderItemInterface $item, array $details): ?string
+    public function resolve(MollieGatewayConfigInterface $method, OrderItemInterface $item): ?string
     {
         if ($method->getMethodId() === MealVoucher::MEAL_VOUCHERS) {
-            if (null === $method->getDefaultCategory()) {
-                return $this->getMealVoucherFromItem($item);
-            } else {
-                return $method->getDefaultCategory()->getName();
-            }
+            return $this->getMealVoucherCategory($method, $item);
         }
 
         return null;
     }
 
-    private function getMealVoucherFromItem(OrderItemInterface $item)
+    private function getMealVoucherCategory(MollieGatewayConfigInterface $method, OrderItemInterface $item): string
+    {
+        if (null === $method->getDefaultCategory()) {
+            return $this->getMealVoucherFromItem($item);
+        } else {
+            return $method->getDefaultCategory()->getName();
+        }
+    }
+
+    private function getMealVoucherFromItem(OrderItemInterface $item): string
     {
         $product = $item->getProduct();
 

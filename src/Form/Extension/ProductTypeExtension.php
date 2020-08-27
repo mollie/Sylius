@@ -18,9 +18,8 @@ final class ProductTypeExtension extends AbstractTypeExtension
             ->add('productType', EntityType::class, [
                 'class' => ProductType::class,
                 'label' => 'bitbag_sylius_mollie_plugin.form.product_type',
-                'required' => false,
-                'placeholder' => 'Choose an option',
-                'empty_data' => 'Choose an option',
+                'placeholder' => 'bitbag_sylius_mollie_plugin.form.product_type_none',
+                'empty_data' => null,
             ]);
     }
 

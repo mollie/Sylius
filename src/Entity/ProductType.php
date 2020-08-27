@@ -15,13 +15,13 @@ namespace BitBag\SyliusMolliePlugin\Entity;
 class ProductType implements ProductTypeInterface
 {
     /** @var int */
-    private $id;
+    protected $id;
 
     /** @var string|null */
-    private $name;
+    protected $name;
 
     /** @var MollieGatewayConfigInterface|null */
-    private $mollieGatewayConfig;
+    protected $mollieGatewayConfig;
 
     public function __toString(): string
     {

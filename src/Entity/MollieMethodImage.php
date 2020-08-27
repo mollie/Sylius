@@ -15,19 +15,19 @@ namespace BitBag\SyliusMolliePlugin\Entity;
 class MollieMethodImage implements MollieMethodImageInterface
 {
     /** @var mixed */
-    private $id;
+    protected $id;
 
     /** @var string */
-    private $name;
+    protected $name;
 
     /** @var \SplFileInfo */
-    private $file;
+    protected $file;
 
     /** @var string */
-    private $path;
+    protected $path;
 
     /** @var MollieGatewayConfigInterface */
-    private $mollieGatewayConfig;
+    protected $mollieGatewayConfig;
 
     public function getId()
     {

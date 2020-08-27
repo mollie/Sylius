@@ -110,7 +110,8 @@ bitbag_sylius_mollie_plugin:
         product_type: 'Product type (required in meal vouchers)'
         product_type_default: 'Choose default product category'
         product_type_default_help: 'Use this only if You have one category for all your product. First add your product category if list is empty'
-        no_category: 'No category'
+        no_category: 'No default category'
+        product_type_none: 'None'
         shipment:
             units: 'Units'
             tracking_code: 'Tracking Code'

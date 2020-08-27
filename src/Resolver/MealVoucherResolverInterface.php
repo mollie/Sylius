@@ -17,5 +17,5 @@ use Sylius\Component\Core\Model\OrderItemInterface;
 
 interface MealVoucherResolverInterface
 {
-    public function resolve(MollieGatewayConfigInterface $method, OrderItemInterface $item, array $details): ?string;
+    public function resolve(MollieGatewayConfigInterface $method, OrderItemInterface $item): ?string;
 }

@@ -15,19 +15,19 @@ namespace BitBag\SyliusMolliePlugin\Entity;
 class MollieLogger implements MollieLoggerInterface
 {
     /** @var int */
-    private $id;
+    protected $id;
 
     /** @var int */
-    private $level;
+    protected $level;
 
     /** @var int */
-    private $errorCode;
+    protected $errorCode;
 
     /** @var string */
-    private $message;
+    protected $message;
 
     /** @var \DateTime */
-    private $dateTime;
+    protected $dateTime;
 
     public function getId(): int
     {

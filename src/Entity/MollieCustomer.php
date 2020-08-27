@@ -17,13 +17,13 @@ use Sylius\Component\Resource\Model\ResourceInterface;
 class MollieCustomer implements ResourceInterface, MollieCustomerInterface
 {
     /** @var int */
-    private $id;
+    protected $id;
 
     /** @var string */
-    private $profileId;
+    protected $profileId;
 
     /** @var string */
-    private $email;
+    protected $email;
 
     public function getId(): int
     {

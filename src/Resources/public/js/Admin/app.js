@@ -43,6 +43,18 @@ $(function () {
         })
     });
 
+    $(".bitbag-mollie-components").change(function () {
+        if ($(this).is(':checked')) {
+            $('.bitbag-single-click-payment').prop('checked', !$(this).is(':checked'));
+        }
+    })
+
+    $(".bitbag-single-click-payment").change(function () {
+        if ($(this).is(':checked')) {
+            $('.bitbag-mollie-components').prop('checked', !$(this).is(':checked'));
+        }
+    })
+
     $('[id*="_paymentType"]').each(function (index) {
         const value = $(this).find(":selected").val();
         setPaymentDescription(value, index);
@@ -66,14 +78,42 @@ $(function () {
         }
     }
 
-    $(".bitbag-mollie-components").change(function () {
-        if ($(this).is(':checked')) {
-            $('.bitbag-single-click-payment').prop('checked', !$(this).is(':checked'));
+
+    $('[id*="_paymentSurchargeFee_type"]').each(function (index) {
+        const value = $(this).find(":selected").val();
+        setPaymentFeeFields(value, index);
+
+        $(this).on('change', function () {
+            const value = $(this).val();
+            setPaymentFeeFields(value, index);
+        })
+    });
+
+    function setPaymentFeeFields(value, index)
+    {
+        const fixedAmount = 'sylius_payment_method_gatewayConfig_mollieGatewayConfig_'+ index +'_paymentSurchargeFee_fixedAmount';
+        const percentage = 'sylius_payment_method_gatewayConfig_mollieGatewayConfig_'+ index +'_paymentSurchargeFee_percentage';
+        const surchargeLimit = 'sylius_payment_method_gatewayConfig_mollieGatewayConfig_'+ index +'_paymentSurchargeFee_surchargeLimit';
+
+        if (value === 'no_fee') {
+            $('label[for='+fixedAmount+'], input#'+fixedAmount+'').hide();
+            $('label[for='+percentage+'], input#'+percentage+'').hide();
+            $('label[for='+surchargeLimit+'], input#'+surchargeLimit+'').hide();
         }
-    })
-    $(".bitbag-single-click-payment").change(function () {
-        if ($(this).is(':checked')) {
-            $('.bitbag-mollie-components').prop('checked', !$(this).is(':checked'));
+        if (value === 'percentage') {
+            $('label[for='+percentage+'], input#'+percentage+'').show();
+            $('label[for='+surchargeLimit+'], input#'+surchargeLimit+'').show();
+            $('label[for='+fixedAmount+'], input#'+fixedAmount+'').hide();
         }
-    })
+        if (value === 'fixed_fee') {
+            $('label[for='+fixedAmount+'], input#'+fixedAmount+'').show();
+            $('label[for='+percentage+'], input#'+percentage+'').hide();
+            $('label[for='+surchargeLimit+'], input#'+surchargeLimit+'').hide();
+        }
+        if (value === 'fixed_fee_and_percentage') {
+            $('label[for='+fixedAmount+'], input#'+fixedAmount+'').show();
+            $('label[for='+percentage+'], input#'+percentage+'').show();
+            $('label[for='+surchargeLimit+'], input#'+surchargeLimit+'').show();
+        }
+    }
 });

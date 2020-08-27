@@ -23,15 +23,16 @@ use Symfony\Component\Validator\Constraints\GreaterThan;
 
 final class PaymentSurchargeFeeType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('type', ChoiceType::class, [
                 'label' => 'bitbag_sylius_mollie_plugin.ui.payment_fee_type',
-                'choices' => ['' => ' '] + Options::getAvailablePaymentSurchargeFeeType(),
+                'choices' => ['bitbag_sylius_mollie_plugin.ui.no_fee' => 'no_fee'] + Options::getAvailablePaymentSurchargeFeeType(),
             ])
             ->add('fixedAmount', NumberType::class, [
                 'label' => 'bitbag_sylius_mollie_plugin.ui.fix_amount_surcharge',
+                'attr' => ['class' => 'bitbag-mollie-payment_fee-fixedAmount'],
                 'constraints' => [
                     new GreaterThan([
                         'value' => 0,

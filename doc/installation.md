@@ -1,10 +1,10 @@
 ## Installation
-1.Require with composer.
+
+1.Require with composer
 
 ```bash
 $ composer require bitbag/mollie-plugin
 ```
-
 2.Add traits to your GatewayConfig entity class, when You don't use annotation.
 
 ```php
@@ -107,7 +107,87 @@ sylius_payum:
               model: App\Entity\GatewayConfig
 ```
 
-3.Add plugin dependencies to your `config/bundles.php` file:
+3.Add traits to your Order entity class, when You don't use annotation.
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Entity\Order;
+
+use BitBag\SyliusMolliePlugin\Entity\OrderInterface;
+use BitBag\SyliusMolliePlugin\Entity\OrderTrait;
+
+use Sylius\Component\Core\Model\Order as BaseOrder;
+
+class Order extends BaseOrder implements OrderInterface
+{
+    use OrderTrait;
+}
+```
+Or this way if you use annotations:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Entity\Order;
+
+use BitBag\SyliusMolliePlugin\Entity\OrderInterface;
+use BitBag\SyliusMolliePlugin\Entity\OrderTrait;
+
+use Sylius\Component\Core\Model\Order as BaseOrder;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="sylius_order")
+ */
+class Order extends BaseOrder implements OrderInterface
+{
+    use OrderTrait;
+
+    /**
+     * @var bool
+     * @ORM\Column(type="boolean")
+     */
+    protected  $abandonedEmail = false;
+}
+```
+
+
+If you don't use annotations, define new Entity mapping inside your src/Resources/config/doctrine directory.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd"
+>
+    <mapped-superclass name="App\Entity\Order\Order" table="sylius_order">
+        <field name="abandonedEmail" type="boolean" column="abandoned_email"/>
+    </mapped-superclass>
+</doctrine-mapping>
+
+```
+Override Order resource:
+
+```yaml
+# config/packages/_sylius.yaml
+...
+
+sylius_order:
+    resources:
+        order:
+            classes:
+                model: App\Entity\Order\Order
+```
+
+
+4.Add plugin dependencies to your `config/bundles.php` file:
 
 ```php
 return [
@@ -116,7 +196,7 @@ return [
 ];
 ```
 
-4.Import required config in your `config/packages/_sylius.yaml` file:
+5.Import required config in your `config/packages/_sylius.yaml` file:
 
 ```yaml
 # config/packages/_sylius.yaml
@@ -126,7 +206,7 @@ imports:
     - { resource: "@BitBagSyliusMolliePlugin/Resources/config/config.yaml" }
 ```
 
-5.Import the routing in your `config/routes.yaml` file:
+6.Import the routing in your `config/routes.yaml` file:
 
 ```yaml
 # config/routes.yaml
@@ -135,7 +215,7 @@ bitbag_sylius_mollie_plugin:
     resource: "@BitBagSyliusMolliePlugin/Resources/config/routing.yaml"
 ```
 
-6.Add image dir parameter in `config/pacakges/_sylius.yaml`
+7.Add image dir parameter in `config/pacakges/_sylius.yaml`
 
 ```yaml
 # config/pacakges/_sylius.yaml
@@ -144,14 +224,14 @@ bitbag_sylius_mollie_plugin:
        images_dir: "/media/image/"
 ``` 
 
-7.Update your database
+8.Update your database
 
 ```
 cp -R vendor/bitbag/mollie-plugin/migrations/* src/Migrations
 bin/console doctrine:migrations:migrate
 ```
 
-8.Copy Sylius templates overridden in plugin to your templates directory (e.g templates/bundles/):
+9.Copy Sylius templates overridden in plugin to your templates directory (e.g templates/bundles/):
 
 ```
 mkdir -p templates/bundles/SyliusAdminBundle/
@@ -161,13 +241,13 @@ cp -R vendor/bitbag/mollie-plugin/src/Resources/views/SyliusAdminBundle/* templa
 cp -R vendor/bitbag/mollie-plugin/src/Resources/views/SyliusShopBundle/* templates/bundles/SyliusShopBundle/
 ```
 
-9.Install assets
+10.Install assets
 
 ```
 bin/console assets:install
 ```
 
-10.(optional) if you don't use `symfony/messenger` component yet, it is required to configure default message bus:
+11.(optional) if you don't use `symfony/messenger` component yet, it is required to configure default message bus:
 
 ```yaml
     framework:
@@ -177,3 +257,11 @@ bin/console assets:install
 
 **Note:** If you are running it on production, add the `-e prod` flag to this command.
 
+
+12.On abandoned payment link to run it on CLI we need to add a script e.g cron. Example here:
+
+```shell script
+* * * * * /var/www/mollie/scripts/payment-link.sh
+
+/usr/bin/php /var/www/mollie/bin/console mollie:send-payment-link
+```

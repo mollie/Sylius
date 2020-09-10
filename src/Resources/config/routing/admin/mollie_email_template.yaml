@@ -5,7 +5,6 @@ bitbag_sylius_mollie_plugin_mollie_logger:
     path: /mollie/email-template
     templates: SyliusAdminBundle:Crud
     redirect: update
-    permission: true
     grid: bitbag_sylius_mollie_plugin_template_mollie_email
     vars:
         all:

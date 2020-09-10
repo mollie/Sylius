@@ -12,15 +12,13 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Creator;
 
-use BitBag\SyliusMolliePlugin\Entity\GatewayConfigInterface;
-use BitBag\SyliusMolliePlugin\Entity\OrderInterface;
 use BitBag\SyliusMolliePlugin\Entity\TemplateMollieEmailInterface;
 use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
 use BitBag\SyliusMolliePlugin\Preparer\PaymentLinkEmailPreparerInterface;
 use BitBag\SyliusMolliePlugin\Repository\OrderRepositoryInterface;
 use BitBag\SyliusMolliePlugin\Resolver\PaymentlinkResolverInterface;
+use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
-use Sylius\Component\Resource\Repository\RepositoryInterface;
 
 final class AbandonedPaymentLinkCreator implements AbandonedPaymentLinkCreatorInterface
 {
@@ -33,35 +31,20 @@ final class AbandonedPaymentLinkCreator implements AbandonedPaymentLinkCreatorIn
     /** @var PaymentLinkEmailPreparerInterface */
     private $emailPreparer;
 
-    /** @var RepositoryInterface */
-    private $gatewayConfigRepository;
-
     public function __construct
     (
         PaymentlinkResolverInterface $paymentlinkResolver,
         OrderRepositoryInterface $orderRepository,
-        PaymentLinkEmailPreparerInterface $emailPreparer,
-        RepositoryInterface $gatewayConfigRepository
+        PaymentLinkEmailPreparerInterface $emailPreparer
     ) {
         $this->paymentlinkResolver = $paymentlinkResolver;
         $this->orderRepository = $orderRepository;
         $this->emailPreparer = $emailPreparer;
-        $this->gatewayConfigRepository = $gatewayConfigRepository;
     }
 
     public function create(): void
     {
-        /** @var GatewayConfigInterface $gateway */
-        $gateway = $this->gatewayConfigRepository->findOneBy(['factoryName' => MollieGatewayFactory::FACTORY_NAME]);
-
-        if (null === $gateway) {
-            return;
-        }
-
-        $abandonedDuration = $gateway->getConfig()['abandoned_hours'] ?? 4;
-        $dateTime = new \DateTime('now');
-        $duration = new \DateInterval(\sprintf('PT%sH', $abandonedDuration));
-        $dateTime->sub($duration);
+        $dateTime = new \DateTime('06-07-2020 16:00:00');
 
         $orders = $this->orderRepository->findAbandonedByDateTime($dateTime);
         /** @var OrderInterface $order */
@@ -69,13 +52,8 @@ final class AbandonedPaymentLinkCreator implements AbandonedPaymentLinkCreatorIn
         foreach ($orders as $order) {
             /** @var PaymentInterface $payment */
             $payment = $order->getPayments()->first();
-            if ($payment->getMethod()->getGatewayConfig()->getFactoryName() === MollieGatewayFactory::FACTORY_NAME &&
-                false === $order->isAbandonedEmail()) {
-                dump($order->getId());
+            if ($payment->getMethod()->getGatewayConfig()->getFactoryName() === MollieGatewayFactory::FACTORY_NAME) {
                 $this->paymentlinkResolver->resolve($order, [], TemplateMollieEmailInterface::PAYMENT_LINK_ABANDONED);
-                $order->setAbandonedEmail(true);
-
-                $this->orderRepository->add($order);
             }
         }
     }

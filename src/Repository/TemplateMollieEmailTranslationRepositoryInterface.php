@@ -16,5 +16,5 @@ use BitBag\SyliusMolliePlugin\Entity\TemplateMollieEmailTranslationInterface;
 
 interface TemplateMollieEmailTranslationRepositoryInterface
 {
-    public function findOneByLocaleCodeAdnType(string $localeCode, string $type): ?TemplateMollieEmailTranslationInterface;
+    public function findOneByLocaleCodeAdnType(string $localeCode, string $type): TemplateMollieEmailTranslationInterface;
 }

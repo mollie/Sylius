@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Action\StateMachine;
 
 use BitBag\SyliusMolliePlugin\PartialShip\CreatePartialShipFromMollieInterface;
-use BitBag\SyliusMolliePlugin\Transitions\PartialShip\ShipmentTransitions as ShipmentTransitionsPartial;
 use Mollie\Api\Resources\Order;
 use SM\Factory\FactoryInterface;
 use Sylius\Component\Core\Model\OrderInterface;
@@ -21,6 +20,7 @@ use Sylius\Component\Core\Model\ShipmentInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Order\OrderTransitions;
 use Sylius\Component\Shipping\ShipmentTransitions;
+use BitBag\SyliusMolliePlugin\Transitions\PartialShip\ShipmentTransitions as ShipmentTransitionsPartial;
 
 final class SetStatusOrderAction
 {
@@ -108,7 +108,7 @@ final class SetStatusOrderAction
         $shippableQuantity = 0;
         foreach ($order->lines as $line) {
             if ($line->type === 'physical') {
-                $shippableQuantity += $line->shippableQuantity;
+                $shippableQuantity = $shippableQuantity+ $line->shippableQuantity;
             }
         }
 

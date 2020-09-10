@@ -59,7 +59,7 @@ final class ConvertOrder implements ConvertOrderInterface
         $amount = $this->intToStringConverter->convertIntToString($order->getTotal(), $divisor);
 
         $details['amount']['value'] = $amount;
-        $details['orderNumber'] = (string) $order->getId();
+        $details['orderNumber'] = (string) ($order->getId());
         $details['shippingAddress'] = $this->createShippingAddress($customer);
         $details['billingAddress'] = $this->createBillingAddress($customer);
         $details['lines'] = $this->createLines($divisor);

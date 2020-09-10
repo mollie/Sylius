@@ -56,7 +56,7 @@ final class PaymentlinkResolver implements PaymentlinkResolverInterface
         $methods = $data['methods'] ?? $data['methods'] = [];
 
         /** @var PaymentInterface $syliusPayment */
-        $syliusPayment = $order->getPayments()->last();
+        $syliusPayment = $order->getPayments()->first();
 
         /** @var PaymentMethodInterface $paymentMethod */
         $paymentMethod = $syliusPayment->getMethod();
@@ -80,10 +80,6 @@ final class PaymentlinkResolver implements PaymentlinkResolverInterface
         $this->mollieApiClient->setApiKey($modusKey);
         $details = $syliusPayment->getDetails();
 
-        if (empty($details) || !isset($details['webhookUrl'])) {
-            return '';
-        }
-
         $data = [
             'method' => $methodsArray,
             'amount' => [
@@ -91,11 +87,11 @@ final class PaymentlinkResolver implements PaymentlinkResolverInterface
                 'value' => $this->intToStringConverter->convertIntToString($syliusPayment->getAmount(), 100),
             ],
             'description' => $order->getNumber(),
-            'redirectUrl' => $details['backurl'] ?? null,
-            'webhookUrl' => $details['webhookUrl'],
+            'redirectUrl' => $details['backurl'],
+            'webhookUrl' => str_replace('127.0.0.1:8001', 'f08bcec9f35a.ngrok.io', $details['webhookUrl']),
             'metadata' => [
                 'order_id' => $order->getId(),
-                'refund_token' => $details['refund_token'] ?? null,
+                'refund_token' => isset($details['refund_token']) ?? null,
                 'customer_id' => $order->getCustomer()->getId(),
             ],
         ];
@@ -103,7 +99,7 @@ final class PaymentlinkResolver implements PaymentlinkResolverInterface
         $payment = $this->mollieApiClient->payments->create($data);
 
         $details['payment_mollie_id'] = $payment->id;
-        $details['metadata']['refund_token'] = $details['refund_token'] ?? null;
+        $details['metadata']['refund_token'] = isset($details['refund_token']) ?? null;
         $details['payment_mollie_link'] = $payment->_links->checkout->href;
 
         $syliusPayment->setDetails($details);

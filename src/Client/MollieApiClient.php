@@ -14,7 +14,6 @@ namespace BitBag\SyliusMolliePlugin\Client;
 
 use BitBag\SyliusMolliePlugin\BitBagSyliusMolliePlugin;
 use Mollie\Api\MollieApiClient as BaseMollieApiClient;
-use function League\Uri\resolve;
 
 class MollieApiClient extends BaseMollieApiClient
 {

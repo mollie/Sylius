@@ -66,7 +66,7 @@ final class RefundUnitsAction
             $refundUnits = $this->commandCreator->fromRequest($request);
 
             $this->commandBus->dispatch($refundUnits);
-            $this->orderPaymentRefund->refund($refundUnits);
+            $this->orderPaymentRefund->sendToMollie($refundUnits);
 
             $this->session->getFlashBag()->add('success', 'sylius_refund.units_successfully_refunded');
         } catch (InvalidRefundAmountException $exception) {

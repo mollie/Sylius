@@ -4,4 +4,3 @@ sylius_resource:
       driver: doctrine/orm
       classes:
         model: BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfig
-        repository: BitBag\SyliusMolliePlugin\Repository\MollieGatewayConfigRepository

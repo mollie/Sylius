@@ -4,15 +4,34 @@
 
     $(document).ready(function () {
         let selectedValue = false;
+        let cartDiv = $("#mollie_cart_data").hide();
+        let issuers = $("#issuers_data").hide();
+        let input = $("#sylius_checkout_select_payment_payments_0_mollie_payment_options_molliePaymentMethods");
 
-        $( ".online-payment__input" ).on('change', (e) => {
-            let currentItem = $(e.currentTarget).parent('.online-payment__item');
-            currentItem.siblings().removeClass('online-payment__item--active');
-            currentItem.addClass('online-payment__item--active');
-            selectedValue = e.currentTarget.value;
-        });
 
         initializeCreditCartFields();
+
+        if (input.val() === 'creditcard') {
+            cartDiv.show();
+        }
+        if (input.val() === 'ideal') {
+            issuers.show();
+        }
+
+        $('.ui.dropdown').dropdown({
+            onChange: function (value) {
+                selectedValue = value;
+                cartDiv.hide();
+                issuers.hide();
+
+                if (value === 'creditcard') {
+                    cartDiv.show();
+                }
+                if (value === 'ideal') {
+                    issuers.show();
+                }
+            }
+        });
 
         function initializeCreditCartFields() {
             const mollie = Mollie(

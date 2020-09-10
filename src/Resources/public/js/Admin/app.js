@@ -13,8 +13,6 @@ $(function () {
             type: "GET",
             url: $(this).data('url'),
             success: function (data) {
-            },
-            error: function () {
                 location.reload();
             },
             error: function () {

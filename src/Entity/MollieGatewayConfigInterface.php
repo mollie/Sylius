@@ -41,12 +41,4 @@ interface MollieGatewayConfigInterface extends MethodInterface
     public function getPaymentDescription(): ?string;
 
     public function setPaymentDescription(?string $paymentDescription): void;
-
-    public function isLoggerEnabled(): ?bool;
-
-    public function setLoggerEnabled(?bool $loggerEnabled): void;
-
-    public function getLoggerLevel(): ?int;
-
-    public function setLoggerLevel(?int $loggerLevel): void;
 }

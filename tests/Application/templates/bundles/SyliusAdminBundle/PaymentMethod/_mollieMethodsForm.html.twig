@@ -63,12 +63,6 @@
                     {{ 'bitbag_sylius_mollie_plugin.ui.payment_fee'|trans }}
                 </h4>
                 {{ form_row(methodForm.paymentSurchargeFee) }}
-                <h4 class="ui horizontal divider header">
-                    {{ 'bitbag_sylius_mollie_plugin.ui.debug_level'|trans }}
-                </h4>
-                {{ form_row(methodForm.loggerEnabled) }}
-                <a href="{{ path('bitbag_sylius_mollie_plugin_admin_mollie_logger_index') }}">{{ 'bitbag_sylius_mollie_plugin.ui.Log_link'|trans }}</a>
-                {{ form_row(methodForm.loggerLevel) }}
             </div>
         {% else %}
             <div class="ui mini message center float">

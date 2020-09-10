@@ -144,6 +144,6 @@ class MollieGatewayConfig extends AbstractMethod implements ResourceInterface, M
 
     public function __toString(): string
     {
-        return \sprintf('%s', $this->name);
+        return \sprintf("%s", $this->name);
     }
 }

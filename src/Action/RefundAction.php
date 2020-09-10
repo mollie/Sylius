@@ -36,7 +36,8 @@ final class RefundAction extends BaseApiAwareAction implements ActionInterface, 
     /** @var ConvertRefundDataInterface */
     private $convertOrderRefundData;
 
-    public function __construct(
+    public function __construct
+    (
         MollieLoggerActionInterface $loggerAction,
         ConvertRefundDataInterface $convertOrderRefundData
     ) {

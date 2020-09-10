@@ -25,7 +25,7 @@ abstract class AbstractMethod implements MethodInterface
     /** @var array */
     protected $config;
 
-    /** @var bool */
+    /** @var boolean */
     protected $enabled = false;
 
     public function getName(): ?string

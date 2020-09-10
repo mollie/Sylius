@@ -39,7 +39,8 @@ final class StatusAction extends BaseApiAwareAction implements StatusActionInter
     /** @var MollieLoggerActionInterface */
     private $loggerAction;
 
-    public function __construct(
+    public function __construct
+    (
         PaymentRefundInterface $paymentRefund,
         OrderRefundInterface $orderRefund,
         MollieLoggerActionInterface $loggerAction

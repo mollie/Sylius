@@ -45,7 +45,7 @@ final class UnitsShipmentOrderRefund implements UnitsShipmentOrderRefundInterfac
                     new ShipmentRefund(
                         $refundedShipment->getId(),
                         $refundedShipment->getAmount()
-                    ),
+                    )
                 ];
             }
         }

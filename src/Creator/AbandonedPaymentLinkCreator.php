@@ -36,7 +36,8 @@ final class AbandonedPaymentLinkCreator implements AbandonedPaymentLinkCreatorIn
     /** @var RepositoryInterface */
     private $gatewayConfigRepository;
 
-    public function __construct(
+    public function __construct
+    (
         PaymentlinkResolverInterface $paymentlinkResolver,
         OrderRepositoryInterface $orderRepository,
         PaymentLinkEmailPreparerInterface $emailPreparer,
@@ -64,11 +65,13 @@ final class AbandonedPaymentLinkCreator implements AbandonedPaymentLinkCreatorIn
 
         $orders = $this->orderRepository->findAbandonedByDateTime($dateTime);
         /** @var OrderInterface $order */
+
         foreach ($orders as $order) {
             /** @var PaymentInterface $payment */
             $payment = $order->getPayments()->first();
             if ($payment->getMethod()->getGatewayConfig()->getFactoryName() === MollieGatewayFactory::FACTORY_NAME &&
                 false === $order->isAbandonedEmail()) {
+
                 $this->paymentlinkResolver->resolve($order, [], TemplateMollieEmailInterface::PAYMENT_LINK_ABANDONED);
                 $order->setAbandonedEmail(true);
 

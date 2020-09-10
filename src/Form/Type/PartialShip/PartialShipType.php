@@ -36,8 +36,8 @@ final class PartialShipType extends AbstractResourceType
                 'label' => 'bitbag_sylius_mollie_plugin.form.shipment.units',
                 'multiple' => true,
                 'constraints' => [
-                    new Count(['min' => 1, 'groups' => ['sylius']]),
-                ],
+                    new Count(['min' => 1, 'groups' => ['sylius']])
+                ]
             ])
         ;
 

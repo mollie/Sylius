@@ -38,7 +38,8 @@ final class OrderRefundCommandCreator implements OrderRefundCommandCreatorInterf
     /** @var RefundPaymentMethodsProviderInterface */
     private $refundPaymentMethodProvider;
 
-    public function __construct(
+    public function __construct
+    (
         RepositoryInterface $orderRepository,
         UnitsItemOrderRefundInterface $unitsItemOrderRefund,
         UnitsShipmentOrderRefundInterface $shipmentOrderRefund,

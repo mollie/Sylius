@@ -16,4 +16,5 @@ use Payum\Core\Request\Generic;
 
 class RefundOrder extends Generic
 {
+
 }

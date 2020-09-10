@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Action;
 
 use BitBag\SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
+use BitBag\SyliusMolliePlugin\Repository\SubscriptionRepositoryInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareTrait;
@@ -27,9 +28,13 @@ final class NotifyOrderAction extends BaseApiAwareAction implements NotifyOrderA
     /** @var GetHttpRequest */
     private $getHttpRequest;
 
-    public function __construct(GetHttpRequest $getHttpRequest)
+    /** @var SubscriptionRepositoryInterface */
+    private $subscriptionRepository;
+
+    public function __construct(GetHttpRequest $getHttpRequest, SubscriptionRepositoryInterface $subscriptionRepository)
     {
         $this->getHttpRequest = $getHttpRequest;
+        $this->subscriptionRepository = $subscriptionRepository;
     }
 
     public function execute($request): void

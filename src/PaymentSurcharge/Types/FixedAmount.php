@@ -19,7 +19,7 @@ final class FixedAmount implements SurchargeTypeInterface
 {
     public function calculate(OrderInterface $order)
     {
-        return 1;
+
     }
 
     public function canCalculate(string $type): bool

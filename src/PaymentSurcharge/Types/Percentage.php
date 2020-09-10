@@ -19,7 +19,6 @@ final class Percentage implements SurchargeTypeInterface
 {
     public function calculate(OrderInterface $order)
     {
-        return 2;
     }
 
     public function canCalculate(string $type): bool

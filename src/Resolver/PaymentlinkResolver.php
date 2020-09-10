@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Resolver;
 
 use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
-use BitBag\SyliusMolliePlugin\EmailSender\PaymentLinkEmailSenderInterface;
 use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfig;
 use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
 use BitBag\SyliusMolliePlugin\Helper\IntToStringConverter;
@@ -35,19 +34,14 @@ final class PaymentlinkResolver implements PaymentlinkResolverInterface
     /** @var RepositoryInterface */
     private $orderRepository;
 
-    /** @var PaymentLinkEmailSenderInterface */
-    private $emailSender;
-
     public function __construct(
         MollieApiClient $mollieApiClient,
         IntToStringConverter $intToStringConverter,
-        RepositoryInterface $orderRepository,
-        PaymentLinkEmailSenderInterface $emailSender
+        RepositoryInterface $orderRepository
     ) {
         $this->mollieApiClient = $mollieApiClient;
         $this->intToStringConverter = $intToStringConverter;
         $this->orderRepository = $orderRepository;
-        $this->emailSender = $emailSender;
     }
 
     public function resolve(OrderInterface $order, array $data): string
@@ -88,7 +82,7 @@ final class PaymentlinkResolver implements PaymentlinkResolverInterface
             ],
             'description' => $order->getNumber(),
             'redirectUrl' => $details['backurl'],
-            'webhookUrl' => str_replace('127.0.0.1:8000', 'c3bf7f80e105.ngrok.io', $details['webhookUrl']),
+            'webhookUrl' => $details['webhookUrl'],
             'metadata' => [
                 'order_id' => $order->getId(),
                 'refund_token' => $details['refund_token'],
@@ -105,8 +99,6 @@ final class PaymentlinkResolver implements PaymentlinkResolverInterface
         $syliusPayment->setDetails($details);
 
         $this->orderRepository->add($order);
-
-        $this->emailSender->sendConfirmationEmail($order);
 
         return $payment->_links->checkout->href;
     }

@@ -12,11 +12,11 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Form\Type;
 
-use BitBag\SyliusMolliePlugin\Form\Type\Translation\TemplateMollieEmailTranslationType;
 use BitBag\SyliusMolliePlugin\TemplateEmailTerms\Options;
-use Sylius\Bundle\ResourceBundle\Form\Type\ResourceTranslationsType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 final class TemplateMollieEmailType extends AbstractType
@@ -28,9 +28,14 @@ final class TemplateMollieEmailType extends AbstractType
                 'label' => 'bitbag_sylius_mollie_plugin.ui.template_type',
                 'choices' => Options::getAvailableEmailTemplate(),
             ])
-            ->add('translations', ResourceTranslationsType::class, [
-                'label' => 'bitbag_sylius_mollie_plugin.ui.template_contents',
-                'entry_type' => TemplateMollieEmailTranslationType::class,
+            ->add('name', TextType::class, [
+                'label' => 'bitbag_sylius_mollie_plugin.ui.template_name',
+            ])
+            ->add('subject', TextType::class, [
+                'label' => 'bitbag_sylius_mollie_plugin.ui.template_subject',
+            ])
+            ->add('content', TextareaType::class, [
+                'label' => 'bitbag_sylius_mollie_plugin.ui.template_content',
             ])
         ;
     }

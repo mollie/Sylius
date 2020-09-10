@@ -3,7 +3,7 @@ winzou_state_machine:
     callbacks:
       after:
         bitbag_sylius_mollie_plugin_payment_surcharge:
-          on: ["select_payment"]
+          on: ["select_payment", "payment_selected", "cart", "completed"]
           do: ["@bitbag_sylius_mollie_plugin.processor.payment_surcharge_processor", "process"]
           args: ["object"]
   sylius_shipment:

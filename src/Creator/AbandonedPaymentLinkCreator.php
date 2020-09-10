@@ -71,7 +71,7 @@ final class AbandonedPaymentLinkCreator implements AbandonedPaymentLinkCreatorIn
             $payment = $order->getPayments()->first();
             if ($payment->getMethod()->getGatewayConfig()->getFactoryName() === MollieGatewayFactory::FACTORY_NAME &&
                 false === $order->isAbandonedEmail()) {
-
+                dump($order->getId());
                 $this->paymentlinkResolver->resolve($order, [], TemplateMollieEmailInterface::PAYMENT_LINK_ABANDONED);
                 $order->setAbandonedEmail(true);
 

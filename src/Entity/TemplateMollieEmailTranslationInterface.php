@@ -16,7 +16,7 @@ use Sylius\Component\Resource\Model\ResourceInterface;
 
 interface TemplateMollieEmailTranslationInterface extends ResourceInterface
 {
-    public function getId(): ?int;
+    public function getId(): int;
 
     public function getName(): ?string;
 

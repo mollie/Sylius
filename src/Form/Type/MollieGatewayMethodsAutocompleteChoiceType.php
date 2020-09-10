@@ -45,4 +45,5 @@ final class MollieGatewayMethodsAutocompleteChoiceType extends AbstractType
     {
         return ResourceAutocompleteChoiceType::class;
     }
+
 }

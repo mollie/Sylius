@@ -20,7 +20,7 @@ interface TemplateMollieEmailInterface extends ResourceInterface, TranslatableIn
     public const PAYMENT_LINK = 'payment_link';
     public const PAYMENT_LINK_ABANDONED = 'payment_link_abandoned';
 
-    public function getId(): ?int;
+    public function getId(): int;
 
     public function getName(): ?string;
 

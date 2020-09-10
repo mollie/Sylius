@@ -29,4 +29,5 @@ final class MollieEmailTemplateMenuListener
             ->setLabel('bitbag_sylius_mollie_plugin.ui.template_mollie_emails')
             ->setLabelAttribute('icon', 'envelope');
     }
+
 }

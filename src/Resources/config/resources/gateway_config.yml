@@ -1,6 +1,0 @@
-sylius_payum:
-  resources:
-    gateway_config:
-      classes:
-        model: BitBag\SyliusMolliePlugin\Entity\GatewayConfig
-        interface: BitBag\SyliusMolliePlugin\Entity\GatewayConfigInterface

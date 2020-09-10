@@ -69,7 +69,7 @@ final class CaptureOrderAction extends BaseApiAwareAction implements CaptureOrde
 
         $details['metadata'] = $metadata;
         $order = $this->mollieApiClient->orders->create([
-            'method' => $metadata['molliePaymentMethods'] ? $metadata['molliePaymentMethods'] : '',
+            'method' => $metadata['molliePaymentMethods'] ? $metadata['molliePaymentMethods']  : '',
             'payment.cardToken' => $metadata['cartToken'],
             'amount' => $details['amount'],
             'billingAddress' => $details['billingAddress'],
@@ -79,6 +79,7 @@ final class CaptureOrderAction extends BaseApiAwareAction implements CaptureOrde
             'orderNumber' => $details['orderNumber'],
             'redirectUrl' => $token->getTargetUrl(),
             'webhookUrl' => $notifyToken->getTargetUrl(),
+
             'lines' => $details['lines'],
         ]);
 

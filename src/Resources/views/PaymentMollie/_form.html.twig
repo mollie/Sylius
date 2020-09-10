@@ -1,4 +1,3 @@
-{#TODO move style to assets#}
 <style>
     .form-fields {
         display: grid;
@@ -57,29 +56,7 @@
     }
 </style>
 
-{% block sylius_checkout_payment_mollie %}
-    {% for key, method in form.mollie_payment_options %}
-        {% if key == 'molliePaymentMethods' and method.vars.choices|length > 0 %}
-            <div class="ui fluid selection dropdown">
-                <input value="{{  method.vars.choices[0].value }}" type="hidden" id="{{ method.vars.id }}" name="{{ method.vars.full_name }}">
-                <i class="dropdown icon"></i>
-                <div class="default text">
-                    <img class="ui mini avatar image" src="{{ method.vars.choices[0].attr['image'] }}">
-                    {{ method.vars.choices[0].label }}
-                </div>
-                <div class="menu">
-                    {% for choice in method.vars.choices %}
-                        <div class="item" data-value="{{ choice.value }}">
-                            <img class="ui mini avatar image" src="{{ choice.attr['image'] }}">
-                            {{ choice.label }}
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
-        {% endif %}
-    {% endfor %}
-{% endblock %}
-
+{{ form_row(form.mollie_payment_options.molliePaymentMethods) }}
 {{ form_row(form.mollie_payment_options.cartToken) }}
 
 <div class="form-fields" id="mollie_cart_data">
@@ -106,134 +83,135 @@
         <div id="verification-code"></div>
         <div id="verification-code-error" class="field-error" role="alert"></div>
     </div>
-    <div id="form-error" class="form-error" role="alert"></div>
 </div>
+<div id="form-error" class="form-error" role="alert"></div>
 
-<script src="https://js.mollie.com/v1/mollie.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-<script type="text/javascript">
+{% block javascripts %}
+    <script src="https://js.mollie.com/v1/mollie.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
 
-$(document).ready(function () {
-    let selectedValue = false;
-    let cartDiv = $("#mollie_cart_data").hide();
-    initializeCreditCartFields();
+        $(document).ready(function () {
+            let selectedValue = false;
+            let cartDiv = $("#mollie_cart_data").hide();
 
-    $('.ui.dropdown')
-        .dropdown({
-            onChange: function(value) {
-                selectedValue = value;
+            initializeCreditCartFields();
+
+            $('#sylius_checkout_select_payment_payments_0_mollie_payment_options_molliePaymentMethods').on('change', function() {
+                selectedValue = this.value;
                 cartDiv.hide();
 
-                if (value === 'creditcard') {
+                if (selectedValue === 'creditcard') {
                     cartDiv.show();
                 }
-            }
-        })
-    ;
+            });
 
-    function initializeCreditCartFields() {
-        const mollie = Mollie(
-            '{{ gatewayConfig.config['profile_id'] }}',
-            {
-                locale: '{{ app.request.locale }}',
-                testmode: true
-            }
-        );
+            function initializeCreditCartFields() {
+                const mollie = Mollie(
+                    '{{ gatewayConfig.config['profile_id'] }}',
+                    {
+                        locale: '{{ app.request.locale }}',
+                        testmode: true
+                    }
+                );
 
-        const form = document.getElementsByName("sylius_checkout_select_payment")[0];
+                const form = document.getElementsByName("sylius_checkout_select_payment")[0];
 
-        const formError = document.getElementById("form-error");
-        const submitButton = document.getElementById("next-step");
-        const tokenField = document.getElementById("sylius_checkout_select_payment_payments_0_mollie_payment_options_cartToken");
+                const formError = document.getElementById("form-error");
+                const submitButton = document.getElementById("next-step");
+                const tokenField = document.getElementById("sylius_checkout_select_payment_payments_0_mollie_payment_options_cartToken");
 
-        const cardHolder = mollie.createComponent("cardHolder");
-        cardHolder.mount("#card-holder");
+                const cardHolder = mollie.createComponent("cardHolder");
+                cardHolder.mount("#card-holder");
 
-        const cardHolderError = document.getElementById("card-holder-error");
+                const cardHolderError = document.getElementById("card-holder-error");
 
-        cardHolder.addEventListener("change", event => {
-            if (event.error && event.touched) {
-                cardHolderError.textContent = event.error;
-            } else {
-                cardHolderError.textContent = "";
-            }
-        });
+                cardHolder.addEventListener("change", event => {
+                    if (event.error && event.touched) {
+                        cardHolderError.textContent = event.error;
+                    } else {
+                        cardHolderError.textContent = "";
+                    }
+                });
 
-        const cardNumber = mollie.createComponent("cardNumber");
-        cardNumber.mount("#card-number");
+                const cardNumber = mollie.createComponent("cardNumber");
+                cardNumber.mount("#card-number");
 
-        const cardNumberError = document.getElementById("card-number-error");
+                const cardNumberError = document.getElementById("card-number-error");
 
-        cardNumber.addEventListener("change", event => {
-            if (event.error && event.touched) {
-                cardNumberError.textContent = event.error;
-            } else {
-                cardNumberError.textContent = "";
-            }
-        });
+                cardNumber.addEventListener("change", event => {
+                    if (event.error && event.touched) {
+                        cardNumberError.textContent = event.error;
+                    } else {
+                        cardNumberError.textContent = "";
+                    }
+                });
 
-        const expiryDate = mollie.createComponent("expiryDate");
-        expiryDate.mount("#expiry-date");
+                const expiryDate = mollie.createComponent("expiryDate");
+                expiryDate.mount("#expiry-date");
 
-        const expiryDateError = document.getElementById("expiry-date-error");
+                const expiryDateError = document.getElementById("expiry-date-error");
 
-        expiryDate.addEventListener("change", event => {
-            if (event.error && event.touched) {
-                expiryDateError.textContent = event.error;
-            } else {
-                expiryDateError.textContent = "";
-            }
-        });
+                expiryDate.addEventListener("change", event => {
+                    if (event.error && event.touched) {
+                        expiryDateError.textContent = event.error;
+                    } else {
+                        expiryDateError.textContent = "";
+                    }
+                });
 
-        const verificationCode = mollie.createComponent("verificationCode");
-        verificationCode.mount("#verification-code");
+                const verificationCode = mollie.createComponent("verificationCode");
+                verificationCode.mount("#verification-code");
 
-        const verificationCodeError = document.getElementById("verification-code-error");
+                const verificationCodeError = document.getElementById("verification-code-error");
 
-        verificationCode.addEventListener("change", event => {
-            if (event.error && event.touched) {
-                verificationCodeError.textContent = event.error;
-            } else {
-                verificationCodeError.textContent = "";
-            }
-        });
+                verificationCode.addEventListener("change", event => {
+                    if (event.error && event.touched) {
+                        verificationCodeError.textContent = event.error;
+                    } else {
+                        verificationCodeError.textContent = "";
+                    }
+                });
 
-        function disableForm() {
-            submitButton.disabled = true;
-        }
-
-        function enableForm() {
-            submitButton.disabled = false;
-        }
-
-        form.addEventListener("submit", async event => {
-            if (selectedValue === 'creditcard') {
-                event.preventDefault();
-                disableForm();
-
-                formError.textContent = "";
-
-                const { token, error } = await mollie.createToken();
-
-                if (error) {
-                    enableForm();
-                    formError.textContent = error.message;
-                    form.classList.remove('loading');
-
-                    return;
+                function disableForm() {
+                    submitButton.disabled = true;
                 }
 
-                const tokenInput = document.createElement("input");
-                tokenInput.setAttribute("name", "token");
-                tokenInput.setAttribute("type", "hidden");
-                tokenInput.setAttribute("value", token);
+                function enableForm() {
+                    submitButton.disabled = false;
+                }
 
-                form.appendChild(tokenInput);
-                tokenField.value = token;
+                form.addEventListener("submit", async event => {
+                    if (selectedValue === 'creditcard') {
+                        event.preventDefault();
+                        disableForm();
 
-                form.submit();
+                        formError.textContent = "";
+
+                        const { token, error } = await mollie.createToken();
+
+                        if (error) {
+                            enableForm();
+                            formError.textContent = error.message;
+                            form.classList.remove('loading');
+
+                            return;
+                        }
+
+                        const tokenInput = document.createElement("input");
+                        tokenInput.setAttribute("name", "token");
+                        tokenInput.setAttribute("type", "hidden");
+                        tokenInput.setAttribute("value", token);
+
+                        form.appendChild(tokenInput);
+                        tokenField.value = token;
+
+                        form.submit();
+                    }
+                });
             }
         });
-    }
-});
-</script>
+
+    </script>
+{% endblock %}
+

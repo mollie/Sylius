@@ -13,8 +13,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Action;
 
 use BitBag\SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
-use Mollie\Api\Resources\PaymentCollection;
-use Mollie\Api\Types\PaymentStatus;
+use Mollie\Api\Types\OrderStatus;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Exception\RequestNotSupportedException;
@@ -22,8 +21,6 @@ use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\GetStatusInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
-use Mollie\Api\Resources\Payment as PaymentMollieInterface;
-
 
 final class StatusOrderAction extends BaseApiAwareAction implements ActionInterface, GatewayAwareInterface, ApiAwareInterface
 {
@@ -46,39 +43,34 @@ final class StatusOrderAction extends BaseApiAwareAction implements ActionInterf
 
             return;
         }
+        $orderData = $this->mollieApiClient->orders->get($details['order_mollie_id']);
 
-        $paymentsMollie = $this->mollieApiClient->payments->page();
-        $paymentMollie = $this->getPaymentMollie($paymentsMollie, $details['order_mollie_id']);
-
-        if (true === $this->mollieApiClient->isRefunded($paymentMollie)) {
+        if (true === $this->mollieApiClient->isRefunded($orderData)) {
             $request->markRefunded();
 
             return;
         }
 
-        switch ($paymentMollie->status) {
-            case PaymentStatus::STATUS_PENDING:
-            case PaymentStatus::STATUS_OPEN:
+        switch ($orderData->status) {
+            case OrderStatus::STATUS_CREATED:
                 $request->markPending();
 
                 break;
-            case PaymentStatus::STATUS_AUTHORIZED:
-                $request->markAuthorized();
-
-                break;
-            case PaymentStatus::STATUS_PAID:
+            case OrderStatus::STATUS_COMPLETED:
+            case OrderStatus::STATUS_SHIPPING:
+            case OrderStatus::STATUS_PAID:
                 $request->markCaptured();
 
                 break;
-            case PaymentStatus::STATUS_CANCELED:
+            case OrderStatus::STATUS_AUTHORIZED:
+                $request->markAuthorized();
+
+                break;
+            case OrderStatus::STATUS_CANCELED:
                 $request->markCanceled();
 
                 break;
-            case PaymentStatus::STATUS_FAILED:
-                $request->markFailed();
-
-                break;
-            case PaymentStatus::STATUS_EXPIRED:
+            case OrderStatus::STATUS_EXPIRED:
                 $request->markExpired();
 
                 break;
@@ -94,14 +86,5 @@ final class StatusOrderAction extends BaseApiAwareAction implements ActionInterf
         return
             $request instanceof GetStatusInterface &&
             $request->getModel() instanceof PaymentInterface;
-    }
-
-    private function getPaymentMollie(PaymentCollection $payments, string $orderId): PaymentMollieInterface
-    {
-        foreach ($payments as $paymentMollie) {
-            return $paymentMollie->orderId === $orderId ? $paymentMollie: null;
-        }
-
-        return null;
     }
 }

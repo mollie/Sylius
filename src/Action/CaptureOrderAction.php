@@ -22,7 +22,7 @@ use Payum\Core\Request\Convert;
 use Payum\Core\Security\GenericTokenFactoryInterface;
 use Payum\Core\Security\TokenInterface;
 
-final class CaptureOrderAction extends BaseApiAwareAction implements CaptureOrderActionInterface
+class CaptureOrderAction extends BaseApiAwareAction implements CaptureOrderActionInterface
 {
     use GatewayAwareTrait;
 

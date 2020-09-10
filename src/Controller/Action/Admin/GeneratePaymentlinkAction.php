@@ -14,7 +14,6 @@ namespace BitBag\SyliusMolliePlugin\Controller\Action\Admin;
 
 use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
 use BitBag\SyliusMolliePlugin\Form\Type\PaymentlinkType;
-use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use BitBag\SyliusMolliePlugin\Resolver\PaymentlinkResolverInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
@@ -49,9 +48,6 @@ final class GeneratePaymentlinkAction
     /** @var PaymentlinkResolverInterface */
     private $paymentlinkResolver;
 
-    /** @var MollieLoggerActionInterface */
-    private $loggerAction;
-
     public function __construct(
         OrderRepositoryInterface $orderRepository,
         Environment $twig,
@@ -59,8 +55,7 @@ final class GeneratePaymentlinkAction
         UrlGeneratorInterface $router,
         FormFactoryInterface $formFactory,
         MollieApiClient $mollieApiClient,
-        PaymentlinkResolverInterface $paymentlinkResolver,
-        MollieLoggerActionInterface $loggerAction
+        PaymentlinkResolverInterface $paymentlinkResolver
     ) {
         $this->twig = $twig;
         $this->session = $session;
@@ -69,7 +64,6 @@ final class GeneratePaymentlinkAction
         $this->formFactory = $formFactory;
         $this->mollieApiClient = $mollieApiClient;
         $this->paymentlinkResolver = $paymentlinkResolver;
-        $this->loggerAction = $loggerAction;
     }
 
     public function __invoke(Request $request): Response
@@ -85,12 +79,8 @@ final class GeneratePaymentlinkAction
                 $paymentlink = $this->paymentlinkResolver->resolve($order, $form->getData());
 
                 $this->session->getFlashBag()->add('success', $paymentlink);
-
-                $this->loggerAction->addLog(sprintf('Created payment link to order with id = %s', $order->getId()));
                 return new RedirectResponse($this->router->generate('sylius_admin_order_show', ['id' => $order->getId()]));
             } catch (\ Exception $e){
-                $this->loggerAction->addNegativeLog(sprintf('Error with generate payment link with : %s', $e->getMessage()));
-
                 $this->session->getFlashBag()->add('error', $e->getMessage());
             }
         }

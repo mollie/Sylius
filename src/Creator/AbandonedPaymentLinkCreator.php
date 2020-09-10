@@ -56,6 +56,7 @@ final class AbandonedPaymentLinkCreator implements AbandonedPaymentLinkCreatorIn
         if (null === $gateway) {
             return;
         }
+
         $abandonedDuration = $gateway->getConfig()['abandoned_hours'] ?? 4;
         $dateTime = new \DateTime('now');
         $duration = new \DateInterval(\sprintf('PT%sH', $abandonedDuration));
@@ -66,7 +67,8 @@ final class AbandonedPaymentLinkCreator implements AbandonedPaymentLinkCreatorIn
         foreach ($orders as $order) {
             /** @var PaymentInterface $payment */
             $payment = $order->getPayments()->first();
-            if ($payment->getMethod()->getGatewayConfig()->getFactoryName() === MollieGatewayFactory::FACTORY_NAME) {
+            if ($payment->getMethod()->getGatewayConfig()->getFactoryName() === MollieGatewayFactory::FACTORY_NAME &&
+                false === $order->isAbandonedEmail()) {
                 $this->paymentlinkResolver->resolve($order, [], TemplateMollieEmailInterface::PAYMENT_LINK_ABANDONED);
                 $order->setAbandonedEmail(true);
 

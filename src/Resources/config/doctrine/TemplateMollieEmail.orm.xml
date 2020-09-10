@@ -11,6 +11,6 @@
             <generator strategy="AUTO"/>
         </id>
         <field name="type" column="type" nullable="false" unique="true"/>
-        <field name="styleCss" column="style" type="text" nullable="true" length="1500"/>
+        <field name="styleCss" column="style" type="text" nullable="false" length="1500"/>
     </entity>
 </doctrine-mapping>

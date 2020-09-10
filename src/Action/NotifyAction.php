@@ -64,11 +64,11 @@ final class NotifyAction extends BaseApiAwareAction implements ActionInterface, 
         RequestNotSupportedException::assertSupports($this, $request);
 
         $details = ArrayObject::ensureArrayObject($request->getModel());
+
         $this->gateway->execute($this->getHttpRequest);
 
         if (true === isset($details['payment_mollie_id'])) {
             try {
-
                 $payment = $this->mollieApiClient->payments->get($this->getHttpRequest->request['id']);
             } catch (\Exception $e) {
                 $this->loggerAction->addNegativeLog(sprintf('Error with get customer from mollie with: %s', $e->getMessage()));

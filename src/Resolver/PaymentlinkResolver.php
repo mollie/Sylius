@@ -19,7 +19,6 @@ use BitBag\SyliusMolliePlugin\Helper\IntToStringConverter;
 use BitBag\SyliusMolliePlugin\Preparer\PaymentLinkEmailPreparerInterface;
 use Liip\ImagineBundle\Exception\Config\Filter\NotFoundException;
 use Mollie\Api\Types\PaymentMethod;
-use Sylius\AdminOrderCreationPlugin\Provider\PaymentTokenProviderInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Core\Model\PaymentMethodInterface;
@@ -39,21 +38,16 @@ final class PaymentlinkResolver implements PaymentlinkResolverInterface
     /** @var PaymentLinkEmailPreparerInterface */
     private $emailPreparer;
 
-    /** @var PaymentTokenProviderInterface */
-    private $paymentTokenProvider;
-
     public function __construct(
         MollieApiClient $mollieApiClient,
         IntToStringConverter $intToStringConverter,
         RepositoryInterface $orderRepository,
-        PaymentLinkEmailPreparerInterface $emailPreparer,
-        PaymentTokenProviderInterface $paymentTokenProvider
+        PaymentLinkEmailPreparerInterface $emailPreparer
     ) {
         $this->mollieApiClient = $mollieApiClient;
         $this->intToStringConverter = $intToStringConverter;
         $this->orderRepository = $orderRepository;
         $this->emailPreparer = $emailPreparer;
-        $this->paymentTokenProvider = $paymentTokenProvider;
     }
 
     public function resolve(OrderInterface $order, array $data, string $templateName): string
@@ -90,13 +84,6 @@ final class PaymentlinkResolver implements PaymentlinkResolverInterface
             return '';
         }
 
-        try {
-            $token = $this->paymentTokenProvider->getPaymentToken($syliusPayment);
-            $redirectURL = $token->getTargetUrl();
-        } catch (\Exception $e) {
-            $redirectURL = $details['backurl'];
-        }
-
         $data = [
             'method' => $methodsArray,
             'amount' => [
@@ -104,8 +91,8 @@ final class PaymentlinkResolver implements PaymentlinkResolverInterface
                 'value' => $this->intToStringConverter->convertIntToString($syliusPayment->getAmount(), 100),
             ],
             'description' => $order->getNumber(),
-            'redirectUrl' => $redirectURL,
-            'webhookUrl' => str_replace('mollie.localhost.pl', '50dab6c17105.ngrok.io', $details['webhookUrl']),
+            'redirectUrl' => $details['backurl'] ?? null,
+            'webhookUrl' => $details['webhookUrl'],
             'metadata' => [
                 'order_id' => $order->getId(),
                 'refund_token' => $details['refund_token'] ?? null,
@@ -114,11 +101,10 @@ final class PaymentlinkResolver implements PaymentlinkResolverInterface
         ];
 
         $payment = $this->mollieApiClient->payments->create($data);
+
         $details['payment_mollie_id'] = $payment->id;
-        $details['order_mollie_id'] = null;
         $details['metadata']['refund_token'] = $details['refund_token'] ?? null;
         $details['payment_mollie_link'] = $payment->_links->checkout->href;
-        $details['backurl'] = $redirectURL;
 
         $syliusPayment->setDetails($details);
 

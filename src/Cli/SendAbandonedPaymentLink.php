@@ -55,6 +55,7 @@ class SendAbandonedPaymentLink extends Command
 
         try {
             $this->io->writeln('Exporting...');
+
             $this->abandonedPaymentLinkCreator->create();
 
             $this->io->success('Successfully send all payment links');

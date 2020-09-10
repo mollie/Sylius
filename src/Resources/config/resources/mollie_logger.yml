@@ -1,6 +1,0 @@
-sylius_resource:
-  resources:
-    bitbag_sylius_mollie_plugin.mollie_logger:
-      driver: doctrine/orm # You can use also different driver here
-      classes:
-        model: BitBag\SyliusMolliePlugin\Entity\MollieLogger

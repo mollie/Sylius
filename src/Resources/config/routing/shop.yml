@@ -1,2 +1,0 @@
-bitbag_mollie_subscription:
-  resource: "shop/subscription_mollie.yml"

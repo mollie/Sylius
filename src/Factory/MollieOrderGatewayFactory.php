@@ -12,44 +12,23 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Factory;
 
-use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
+use BitBag\SyliusMolliePlugin\Payum\MollieApi;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\GatewayFactory;
 
-final class MollieOrderGatewayFactory extends GatewayFactory
+final class SyliusPaymentGatewayFactory extends GatewayFactory
 {
-    public const FACTORY_NAME = 'mollie_order';
+    private const FACTORY_NAME = "mollie_order";
 
     protected function populateConfig(ArrayObject $config): void
     {
-        $environment = true === $config['environment'] ? 'api_key_live' : 'api_key_test';
-
         $config->defaults([
-            'payum.factory_name' => self::FACTORY_NAME,
-            'payum.factory_title' => 'Mollie order',
-            'payum.http_client' => '@bitbag_sylius_mollie_plugin.mollie_api_client',
+            'payum.factory_name' => 'sylius_payment',
+            'payum.factory_title' => 'Sylius Payment',
         ]);
 
-        if (false === (bool) $config['payum.api']) {
-            $config['payum.default_options'] = [
-                'api_key' => null,
-            ];
-
-            $config->defaults($config['payum.default_options']);
-
-            $config['payum.required_options'] = [
-                $environment,
-            ];
-
-            $config['payum.api'] = function (ArrayObject $config) use ($environment) {
-                $config->validateNotEmpty($config['payum.required_options']);
-                /** @var MollieApiClient $mollieApiClient */
-                $mollieApiClient = $config['payum.http_client'];
-                $mollieApiClient->setApiKey($config[$environment]);
-                $mollieApiClient->setConfig($config->toUnsafeArray());
-
-                return $mollieApiClient;
-            };
-        }
+        $config['payum.api'] = function (ArrayObject $config) {
+            return new MollieApi($config['api_key']);
+        };
     }
 }

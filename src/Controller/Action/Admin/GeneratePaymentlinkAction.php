@@ -14,7 +14,6 @@ namespace BitBag\SyliusMolliePlugin\Controller\Action\Admin;
 
 use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
 use BitBag\SyliusMolliePlugin\Form\Type\PaymentlinkType;
-use BitBag\SyliusMolliePlugin\Resolver\PaymentlinkResolverInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -45,17 +44,13 @@ final class GeneratePaymentlinkAction
     /** @var MollieApiClient */
     private $mollieApiClient;
 
-    /** @var PaymentlinkResolverInterface */
-    private $paymentlinkResolver;
-
     public function __construct(
         OrderRepositoryInterface $orderRepository,
         Environment $twig,
         Session $session,
         UrlGeneratorInterface $router,
         FormFactoryInterface $formFactory,
-        MollieApiClient $mollieApiClient,
-        PaymentlinkResolverInterface $paymentlinkResolver
+        MollieApiClient $mollieApiClient
     ) {
         $this->twig = $twig;
         $this->session = $session;
@@ -63,7 +58,6 @@ final class GeneratePaymentlinkAction
         $this->router = $router;
         $this->formFactory = $formFactory;
         $this->mollieApiClient = $mollieApiClient;
-        $this->paymentlinkResolver = $paymentlinkResolver;
     }
 
     public function __invoke(Request $request): Response
@@ -75,14 +69,24 @@ final class GeneratePaymentlinkAction
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            try {
-                $paymentlink = $this->paymentlinkResolver->resolve($order, $form->getData());
+            $this->mollieApiClient->setApiKey('test_pDfT57b3tPmfdybBTd6UR9BCFvQ5Ey');
 
-                $this->session->getFlashBag()->add('success', $paymentlink);
-                return new RedirectResponse($this->router->generate('sylius_admin_order_show', ['id' => $order->getId()]));
-            } catch (\ Exception $e){
-                $this->session->getFlashBag()->add('error', $e->getMessage());
-            }
+            $payment = $this->mollieApiClient->payments->create([
+                    "amount" => [
+                        "currency" => "EUR",
+                        "value" => "10.00"
+                    ],
+                    "description" => "Order #tsest",
+                    "redirectUrl" => "http://90287203a58d.ngrok.io ",
+                    "webhookUrl" => "http://90287203a58d.ngrok.io ",
+                    "metadata" => [
+                        "order_id" => 12,
+                    ],
+                ]
+            );
+
+            $this->session->getFlashBag()->add('success', $payment->_links->checkout->href);
+            return new RedirectResponse($this->router->generate('sylius_admin_order_show', ['id' => $order->getId()]));
         }
 
         return new Response(

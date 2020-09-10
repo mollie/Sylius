@@ -1,0 +1,14 @@
+services:
+  _defaults:
+    public: true
+
+  bitbag_sylius_mollie_plugin.uploader.knp_gaufrette:
+    class: Gaufrette\Filesystem
+    public: false
+    arguments: ['%sylius.uploader.filesystem%']
+    factory: ['@knp_gaufrette.filesystem_map', get]
+
+  bitbag_sylius_mollie_plugin.uploader.payment_method_logo_uploader:
+    class: BitBag\SyliusMolliePlugin\Uploader\PaymentMethodLogoUploader
+    arguments:
+      - "@bitbag_sylius_mollie_plugin.uploader.knp_gaufrette"

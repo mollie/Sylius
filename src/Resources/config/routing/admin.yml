@@ -1,0 +1,8 @@
+bitbag_mollie_methods:
+  resource: "admin/methods.yml"
+bitbag_mollie_logger:
+  resource: "admin/mollie_logger.yml"
+bitbag_mollie_logo:
+  resource: "admin/mollie_logo.yml"
+bitbag_mollie_payment_refund:
+  resource: "admin/payment_refund.yml"

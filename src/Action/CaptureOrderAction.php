@@ -21,7 +21,6 @@ use Payum\Core\Request\Capture;
 use Payum\Core\Request\Convert;
 use Payum\Core\Security\GenericTokenFactoryInterface;
 use Payum\Core\Security\TokenInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 final class CaptureOrderAction extends BaseApiAwareAction implements CaptureOrderActionInterface
 {
@@ -29,14 +28,6 @@ final class CaptureOrderAction extends BaseApiAwareAction implements CaptureOrde
 
     /** @var GenericTokenFactoryInterface|null */
     private $tokenFactory;
-
-    /** @var SessionInterface */
-    private $session;
-
-    public function __construct(SessionInterface $session)
-    {
-        $this->session = $session;
-    }
 
     /** @param GenericTokenFactoryInterface $genericTokenFactory */
     public function setGenericTokenFactory(GenericTokenFactoryInterface $genericTokenFactory = null): void
@@ -64,13 +55,9 @@ final class CaptureOrderAction extends BaseApiAwareAction implements CaptureOrde
         $token = $request->getToken();
         $metadata['refund_token'] = $refundToken->getHash();
         $metadata['order_id'] = $details['metadata']['order_id'];
-        $paymentOptions = $this->session->get('mollie_payment_options');
-        $metadata = array_merge($metadata, $paymentOptions);
 
         $details['metadata'] = $metadata;
         $order = $this->mollieApiClient->orders->create([
-            'method' => $metadata['molliePaymentMethods'] ? $metadata['molliePaymentMethods']  : '',
-            'payment.cardToken' => $metadata['cartToken'],
             'amount' => $details['amount'],
             'billingAddress' => $details['billingAddress'],
             'shippingAddress' => $details['shippingAddress'],
@@ -79,7 +66,7 @@ final class CaptureOrderAction extends BaseApiAwareAction implements CaptureOrde
             'orderNumber' => $details['orderNumber'],
             'redirectUrl' => $token->getTargetUrl(),
             'webhookUrl' => $notifyToken->getTargetUrl(),
-
+            'method' => $details['method'],
             'lines' => $details['lines'],
         ]);
 

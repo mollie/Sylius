@@ -88,7 +88,7 @@ final class PaymentlinkResolver implements PaymentlinkResolverInterface
             ],
             'description' => $order->getNumber(),
             'redirectUrl' => $details['backurl'],
-            'webhookUrl' => $details['webhookUrl'],
+            'webhookUrl' => str_replace('127.0.0.1:8000', 'c3bf7f80e105.ngrok.io', $details['webhookUrl']),
             'metadata' => [
                 'order_id' => $order->getId(),
                 'refund_token' => $details['refund_token'],

@@ -36,6 +36,6 @@ final class TemplateMollieEmailTranslationType extends AbstractResourceType
 
     public function getBlockPrefix(): string
     {
-        return 'bitbag_sylius_mollie_plugin_template_mollie_email_translation';
+        return 'bitbag_sylius_mollie_plugin_text_translation';
     }
 }

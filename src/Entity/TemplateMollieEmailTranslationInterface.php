@@ -13,20 +13,21 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Entity;
 
 use Sylius\Component\Resource\Model\ResourceInterface;
+use Sylius\Component\Resource\Model\TranslationInterface;
 
-interface TemplateMollieEmailTranslationInterface extends ResourceInterface
+interface TemplateMollieEmailTranslationInterface extends ResourceInterface, TranslationInterface
 {
     public function getId(): int;
 
-    public function getName(): ?string;
+    public function getName(): string;
 
-    public function setName(?string $name): void;
+    public function setName(string $name): void;
 
-    public function getSubject(): ?string;
+    public function getSubject(): string;
 
-    public function setSubject(?string $subject): void;
+    public function setSubject(string $subject): void;
 
-    public function getContent(): ?string;
+    public function getContent(): string;
 
-    public function setContent(?string $content): void;
+    public function setContent(string $content): void;
 }

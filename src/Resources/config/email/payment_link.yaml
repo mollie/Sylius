@@ -1,5 +1,5 @@
 sylius_mailer:
   emails:
     payment_link:
-      subject: bitbag_sylius_mollie_plugin.ui.emails.payment_link
+      subject: bitbag_sylius_mollie_plugin.emails.payment_link.subject
       template: "@BitBagSyliusMolliePlugin/Admin/Email/paymentLinkConfirmation.html.twig"

@@ -12,6 +12,6 @@
         </id>
         <field name="name" column="name" nullable="true"/>
         <field name="subject" column="subject" nullable="true"/>
-        <field name="content" column="content" type="text" nullable="true" length="1500"/>
+        <field name="content" column="content" nullable="true" length="500"/>
     </entity>
 </doctrine-mapping>

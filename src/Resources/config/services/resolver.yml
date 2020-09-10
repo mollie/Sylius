@@ -14,22 +14,3 @@ services:
     class: BitBag\SyliusMolliePlugin\Resolver\MolliePaymentMethodImageResolver
     arguments:
       - "%images_dir%"
-
-  bitbag_sylius_mollie_plugin.resolver.payment_config:
-    class: BitBag\SyliusMolliePlugin\Resolver\PaymentMethodConfigResolver
-    arguments:
-      - "@bitbag_sylius_mollie_plugin.repository.mollie_gateway_config"
-
-  bitbag_sylius_mollie_plugin.resolver.tax_unit_item:
-    class: BitBag\SyliusMolliePlugin\Resolver\TaxUnitItemResolver
-    arguments:
-      - '@sylius.provider.channel_based_default_zone_provider'
-      - '@sylius.zone_matcher'
-      - '@sylius.tax_rate_resolver'
-
-  bitbag_sylius_mollie_plugin.resolver.tax_shipment:
-    class: BitBag\SyliusMolliePlugin\Resolver\TaxShipmentResolver
-    arguments:
-      - '@sylius.provider.channel_based_default_zone_provider'
-      - '@sylius.zone_matcher'
-      - '@sylius.tax_rate_resolver'

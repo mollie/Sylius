@@ -18,11 +18,11 @@ use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Reply\HttpRedirect;
 use Payum\Core\Request\Capture;
-use Payum\Core\Request\Convert;
 use Payum\Core\Security\GenericTokenFactoryInterface;
 use Payum\Core\Security\TokenInterface;
 
-class CaptureOrderAction extends BaseApiAwareAction implements CaptureOrderActionInterface
+
+class OrderCaptureAction extends BaseApiAwareAction implements OrderCaptureActionInterface
 {
     use GatewayAwareTrait;
 
@@ -35,17 +35,11 @@ class CaptureOrderAction extends BaseApiAwareAction implements CaptureOrderActio
         $this->tokenFactory = $genericTokenFactory;
     }
 
-    /**
-     * @param Convert $request
-     */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
-        $token = $request->getToken();
 
         $details = ArrayObject::ensureArrayObject($request->getModel());
-        $refundToken = $this->tokenFactory->createRefundToken($token->getGatewayName(), $token->getDetails());
-        $notifyToken = $this->tokenFactory->createNotifyToken($token->getGatewayName(), $token->getDetails());
 
         if (true === isset($details['order_mollie_id'])) {
             return;
@@ -53,19 +47,17 @@ class CaptureOrderAction extends BaseApiAwareAction implements CaptureOrderActio
 
         /** @var TokenInterface $token */
         $token = $request->getToken();
-        $metadata['refund_token'] = $refundToken->getHash();
-        $metadata['order_id'] = $details['metadata']['order_id'];
+        $notifyToken = $this->tokenFactory->createNotifyToken($token->getGatewayName(), $token->getDetails());
 
-        $details['metadata'] = $metadata;
         $order = $this->mollieApiClient->orders->create([
             'amount' => $details['amount'],
             'billingAddress' => $details['billingAddress'],
-            'shippingAddress' => $details['shippingAddress'],
+            'shippingAddress' =>  $details['shippingAddress'],
             'metadata' => $details['metadata'],
-            'locale' => $details['locale'],
+            'locale' => $details ['locale'],
             'orderNumber' => $details['orderNumber'],
             'redirectUrl' => $token->getTargetUrl(),
-            'webhookUrl' => $notifyToken->getTargetUrl(),
+            'webhookUrl' => str_replace('127.0.0.1:8000', 'c3eea3dc.ngrok.io', $notifyToken->getTargetUrl()),
             'method' => $details['method'],
             'lines' => $details['lines'],
         ]);

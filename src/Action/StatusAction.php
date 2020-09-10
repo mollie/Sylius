@@ -39,7 +39,8 @@ final class StatusAction extends BaseApiAwareAction implements StatusActionInter
     /** @var MollieLoggerActionInterface */
     private $loggerAction;
 
-    public function __construct(
+    public function __construct
+    (
         PaymentRefundInterface $paymentRefund,
         OrderRefundInterface $orderRefund,
         MollieLoggerActionInterface $loggerAction
@@ -47,7 +48,6 @@ final class StatusAction extends BaseApiAwareAction implements StatusActionInter
         $this->paymentRefund = $paymentRefund;
         $this->orderRefund = $orderRefund;
         $this->loggerAction = $loggerAction;
-        $this->orderRefund = $orderRefund;
     }
 
     /** @param GetStatusInterface $request */

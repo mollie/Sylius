@@ -18,11 +18,5 @@
             <argument type="service" id="bitbag_sylius_mollie_plugin.refund.units.units_shipment_order_refund" />
             <argument type="service" id="Sylius\RefundPlugin\Provider\RefundPaymentMethodsProviderInterface" />
         </service>
-        <service id="bitbag_sylius_mollie_plugin.creator.abandoned_payment_link_creator" class="BitBag\SyliusMolliePlugin\Creator\AbandonedPaymentLinkCreator">
-            <argument type="service" id="bitbag_sylius_mollie_plugin.resolver.paymentlink_resolver" />
-            <argument type="service" id="sylius.repository.order" />
-            <argument type="service" id="bitbag_sylius_mollie_plugin.preparer.payment_link_email_preparer"/>
-            <argument type="service" id="sylius.repository.gateway_config"/>
-        </service>
     </services>
 </container>

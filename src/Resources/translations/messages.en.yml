@@ -56,20 +56,6 @@ bitbag_sylius_mollie_plugin:
         split_shipment: 'Split shipment'
         partially_ship: 'Partial ship'
         no_methods_found_message: No methods found. Click the button "Load methods", but first insert You profile Id and API key.
-        paymentlink_generate: Generate payment link
-        paymentlink_generate_subtitle: Generate payment link and send it to customer
-        paymentlink: Payment link
-        paymentlinkAbandoned: Payment link abandoned
-        generate: Generate
-        mollie_email_template: Create new email template
-        template_mollie_emails: Email template
-        edit_template_mollie_email: Edit the email template
-        template_name: Name
-        template_subject: Subject
-        new_template_mollie_email: Create new email template
-        template_type: Type
-        template_content: Content
-        template_contents: Contents
         enable_components: 'Use Mollie Components for CreditCards'
         single_click_enabled: 'Use Single Click Payments for CreditCards'
         read_more_single_click_enabled: 'Read more about %link% and how it improves your conversion'
@@ -80,10 +66,6 @@ bitbag_sylius_mollie_plugin:
         payment_methods_doc: 'to read more about the differences between the Payment and Orders API'
         click: 'Click'
         no_fee: 'No fee'
-        style_css: Style CSS
-        abandoned_hours: Number of hour (after this hour, abandoned email will sended)
-        emails:
-            payment_link: This is Your payment link with order number
     form:
         payment_methods:
             payment_description: 'Description'
@@ -94,7 +76,5 @@ bitbag_sylius_mollie_plugin:
         shipment:
             units: 'Units'
             tracking_code: 'Tracking Code'
-        methods: Choose enabled methods
-        expiration_date_time: Expiration date time
     subscription:
         cancel: Subscription has been successfully canceled.

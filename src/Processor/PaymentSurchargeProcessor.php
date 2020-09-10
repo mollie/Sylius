@@ -14,7 +14,6 @@ namespace BitBag\SyliusMolliePlugin\Processor;
 
 use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfig;
 use BitBag\SyliusMolliePlugin\PaymentFee\Calculate;
-use Doctrine\Common\Collections\Collection;
 use Payum\Core\Model\PaymentInterface;
 use Sylius\Component\Order\Model\OrderInterface;
 use Sylius\Component\Payment\Model\PaymentMethodInterface;
@@ -47,11 +46,6 @@ final class PaymentSurchargeProcessor implements PaymentSurchargeProcessorInterf
         }
 
         $data = $this->session->get('mollie_payment_options', null);
-
-        if (null === $data) {
-            return;
-        }
-
         $molliePaymentMethod = $data['molliePaymentMethods'];
 
         $paymentSurcharge = $this->getMolliePaymentSurcharge($paymentMethod, $molliePaymentMethod);
@@ -63,15 +57,9 @@ final class PaymentSurchargeProcessor implements PaymentSurchargeProcessorInterf
         $this->calculate->calculateFromCart($order, $paymentSurcharge);
     }
 
-    private function getMolliePaymentSurcharge(PaymentMethodInterface $paymentMethod, string $molliePaymentMethod = null): ?MollieGatewayConfig
+    private function getMolliePaymentSurcharge(PaymentMethodInterface $paymentMethod, string $molliePaymentMethod): ?MollieGatewayConfig
     {
-        /** @var Collection $configMethods */
         $configMethods = $paymentMethod->getGatewayConfig()->getMollieGatewayConfig();
-
-        if ($molliePaymentMethod === null) {
-            return $configMethods->last();
-        }
-
         foreach ($configMethods as $configMethod) {
             /** @var MollieGatewayConfig $configMethod */
             if ($configMethod->getMethodId() === $molliePaymentMethod) {

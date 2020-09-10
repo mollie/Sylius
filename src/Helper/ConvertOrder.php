@@ -59,7 +59,7 @@ final class ConvertOrder implements ConvertOrderInterface
         $amount = $this->intToStringConverter->convertIntToString($order->getTotal(), $divisor);
 
         $details['amount']['value'] = $amount;
-        $details['orderNumber'] = (string) $order->getId();
+        $details['orderNumber'] = (string) ($order->getId());
         $details['shippingAddress'] = $this->createShippingAddress($customer);
         $details['billingAddress'] = $this->createBillingAddress($customer);
         $details['lines'] = $this->createLines($divisor);
@@ -100,7 +100,6 @@ final class ConvertOrder implements ConvertOrderInterface
         $this->order->getChannel()->getDefaultTaxZone();
         foreach ($this->order->getItems() as $item) {
             $details[] = [
-                'type' => 'physical',
                 'name' => $item->getProductName(),
                 'quantity' => $item->getQuantity(),
                 'vatRate' => (string) ($this->getTaxRatesUnitItem($item->getVariant()) * 100),
@@ -118,7 +117,7 @@ final class ConvertOrder implements ConvertOrderInterface
                 ],
                 'metadata' => [
                     'item_id' => $item->getId(),
-                ],
+                ]
             ];
         }
 

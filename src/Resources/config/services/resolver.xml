@@ -34,12 +34,5 @@
             <argument type="service" id="sylius.repository.order_item_unit"/>
             <argument type="service" id="bitbag_sylius_mollie_plugin.remover.partial_ship.old_shipment_items_remover"/>
         </service>
-        <service id="bitbag_sylius_mollie_plugin.resolver.paymentlink_resolver" class="BitBag\SyliusMolliePlugin\Resolver\PaymentlinkResolver">
-            <argument type="service" id="bitbag_sylius_mollie_plugin.mollie_api_client"/>
-            <argument type="service" id="bitbag_sylius_mollie_plugin.helper.int_to_string"/>
-            <argument type="service" id="sylius.repository.order"/>
-            <argument type="service" id="bitbag_sylius_mollie_plugin.preparer.payment_link_email_preparer"/>
-            <argument type="service" id="Sylius\AdminOrderCreationPlugin\Provider\PaymentTokenProvider" />
-        </service>
     </services>
 </container>

@@ -1,8 +1,7 @@
 $(function () {
     const mollieFormIncluded = document.getElementById("mollie-payment-form");
-    const paymentLink = document.getElementById("paymentlink");
 
-    if (!paymentLink && !mollieFormIncluded) {
+    if (!mollieFormIncluded) {
         return;
     }
 
@@ -18,31 +17,8 @@ $(function () {
             },
             error: function () {
                 location.reload();
-            },
-            error: function () {
-                location.reload();
             }
         });
-    });
-
-    $(".form_button--delete-img").each(function (index, value) {
-        $(this).on('click', function () {
-            let form = $(".ui.form");
-            let value = $(this).data('value');
-            form.addClass('loading');
-
-            $.ajax({
-                data: {method: value},
-                type: "DELETE",
-                url: $(this).data('url'),
-                success: function (data) {
-                    location.reload();
-                },
-                error: function () {
-                    form.removeClass('loading');
-                }
-            });
-        })
     });
 
     $('.ui.dropdown').dropdown();

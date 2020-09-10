@@ -32,7 +32,8 @@ final class OrderMolliePartialShip implements OrderMolliePartialShipInterface
     /** @var FromSyliusToMollieLinesResolverInterface */
     private $mollieUnitsResolver;
 
-    public function __construct(
+    public function __construct
+    (
         MollieApiClient $apiClient,
         MollieLoggerActionInterface $loggerAction,
         FromSyliusToMollieLinesResolverInterface $mollieUnitsResolver

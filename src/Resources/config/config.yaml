@@ -3,7 +3,6 @@ imports:
     - { resource: "@BitBagSyliusMolliePlugin/Resources/config/resources.yaml" }
     - { resource: "@BitBagSyliusMolliePlugin/Resources/config/state_machine.yaml" }
     - { resource: "@BitBagSyliusMolliePlugin/Resources/config/grids.yaml" }
-    - { resource: "@BitBagSyliusMolliePlugin/Resources/config/email.yaml" }
 
 twig:
     globals:

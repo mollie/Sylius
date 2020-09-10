@@ -55,7 +55,7 @@ final class PaymentMethodLogoUploader implements PaymentMethodLogoUploaderInterf
         }
 
         do {
-            $hash = md5(uniqid((string) mt_rand(), true));
+            $hash = md5(uniqid((string)mt_rand(), true));
             $path = $this->expandPath($hash . '.' . $file->guessExtension());
         } while ($this->isAdBlockingProne($path) || $this->filesystem->has($path));
 

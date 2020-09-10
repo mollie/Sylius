@@ -28,7 +28,7 @@ final class MolliePaymentMethodImageResolver implements MolliePaymentMethodImage
     {
         if (null !== $paymentMethod->getCustomizeMethodImage() &&
             null !== $paymentMethod->getCustomizeMethodImage()->getPath()) {
-            return sprintf('%s%s', $this->rootDir, $paymentMethod->getCustomizeMethodImage()->getPath());
+            return sprintf("%s%s", $this->rootDir, $paymentMethod->getCustomizeMethodImage()->getPath());
         }
 
         return $paymentMethod->getImage()['svg'];

@@ -1,5 +1,0 @@
-bitbag_sylius_mollie_plugin_paymentlink:
-  path: /orders/{orderNumber}/paymentlink
-  methods: [GET, PUT]
-  defaults:
-    _controller: bitbag_sylius_mollie_plugin.controller.action.admin.generate_paymentlink_action

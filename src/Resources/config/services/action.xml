@@ -12,7 +12,6 @@
             <argument type="service" id="bitbag_sylius_mollie_plugin.resolver.payment_config"/>
             <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
             <tag name="payum.action" factory="mollie" alias="payum.action.create_order"/>
-            <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
         </service>
         <service id="bitbag_sylius_mollie_plugin.payum_action.refund" class="BitBag\SyliusMolliePlugin\Action\RefundAction">
             <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>

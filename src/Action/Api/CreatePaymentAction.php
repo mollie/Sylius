@@ -39,7 +39,7 @@ final class CreatePaymentAction extends BaseApiAwareAction
         try {
             /** @var Payment $payment */
             $payment = $this->mollieApiClient->payments->create([
-                'method' => $details['metadata']['molliePaymentMethods'] ?: '',
+                'method' => $details['metadata']['molliePaymentMethods'] ? $details['metadata']['molliePaymentMethods'] : '',
                 'issuer' => $details['metadata']['selected_issuer'] ?? null,
                 'cardToken' => $details['metadata']['cartToken'],
                 'amount' => $details['amount'],

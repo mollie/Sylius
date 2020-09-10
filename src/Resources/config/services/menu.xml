@@ -4,13 +4,7 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
         <service id="app.menu.account_menu_listener" class="BitBag\SyliusMolliePlugin\Menu\MollieLoggerMenuListener">
-            <tag name="kernel.event_listener" event="sylius.menu.admin.main" method="buildMenu" />
-        </service>
-        <service id="bitbag_sylius_mollie_plugin.menu.order_show_menu_listener" class="BitBag\SyliusMolliePlugin\Menu\AdminOrderShowMenuListener">
-            <tag name="kernel.event_listener" event="sylius.menu.admin.order.show" method="addPaymentlinkButton" />
-        </service>
-        <service id="bitbag_sylius_mollie_plugin.menu.mollie_email_template_menu_listener" class="BitBag\SyliusMolliePlugin\Menu\MollieEmailTemplateMenuListener">
-            <tag name="kernel.event_listener" event="sylius.menu.admin.main" method="buildMenu" />
+            <tag name="kernel.event_listener" method="buildMenu" event="sylius.menu.admin.main" />
         </service>
     </services>
 </container>

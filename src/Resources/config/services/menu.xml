@@ -6,8 +6,5 @@
         <service id="app.menu.account_menu_listener" class="BitBag\SyliusMolliePlugin\Menu\MollieLoggerMenuListener">
             <tag name="kernel.event_listener" method="buildMenu" event="sylius.menu.admin.main" />
         </service>
-        <service id="bitbag_sylius_mollie_plugin.menu.order_show_menu_listener" class="BitBag\SyliusMolliePlugin\Menu\AdminOrderShowMenuListener">
-            <tag name="kernel.event_listener" event="sylius.menu.admin.order.show" method="addPaymentlinkButton" />
-        </service>
     </services>
 </container>

@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Controller\Action\Admin;
 
-use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use BitBag\SyliusMolliePlugin\Order\OrderPaymentRefundInterface;
+use Psr\Log\LoggerInterface;
 use Sylius\RefundPlugin\Creator\RefundUnitsCommandCreatorInterface;
 use Sylius\RefundPlugin\Exception\InvalidRefundAmountException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -38,26 +38,26 @@ final class RefundUnitsAction
     /** @var RefundUnitsCommandCreatorInterface */
     private $commandCreator;
 
+    /** @var LoggerInterface */
+    private $logger;
+
     /** @var OrderPaymentRefundInterface */
     private $orderPaymentRefund;
-
-    /** @var MollieLoggerActionInterface */
-    private $loggerAction;
 
     public function __construct(
         MessageBusInterface $commandBus,
         Session $session,
         UrlGeneratorInterface $router,
         RefundUnitsCommandCreatorInterface $commandCreator,
-        OrderPaymentRefundInterface $orderPaymentRefund,
-        MollieLoggerActionInterface $loggerAction
+        LoggerInterface $logger,
+        OrderPaymentRefundInterface $orderPaymentRefund
     ) {
         $this->commandBus = $commandBus;
         $this->session = $session;
         $this->router = $router;
         $this->commandCreator = $commandCreator;
+        $this->logger = $logger;
         $this->orderPaymentRefund = $orderPaymentRefund;
-        $this->loggerAction = $loggerAction;
     }
 
     public function __invoke(Request $request): Response
@@ -72,14 +72,14 @@ final class RefundUnitsAction
         } catch (InvalidRefundAmountException $exception) {
             $this->session->getFlashBag()->add('error', $exception->getMessage());
 
-            $this->loggerAction->addNegativeLog($exception->getMessage());
+            $this->logger->error($exception->getMessage());
         } catch (HandlerFailedException $exception) {
             /** @var \Exception $previousException */
             $previousException = $exception->getPrevious();
 
             $this->provideErrorMessage($previousException);
 
-            $this->loggerAction->addNegativeLog($previousException->getMessage());
+            $this->logger->error($previousException->getMessage());
         }
 
         return new RedirectResponse($this->router->generate(

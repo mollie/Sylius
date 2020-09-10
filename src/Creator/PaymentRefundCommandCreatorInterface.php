@@ -13,11 +13,9 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Creator;
 
 use Mollie\Api\Resources\Payment;
-use Sylius\Component\Core\Model\OrderInterface;
+use Sylius\RefundPlugin\Command\RefundUnits;
 
 interface PaymentRefundCommandCreatorInterface
 {
-    public const REFUND_ADJUSTMENT = 'payment_refund';
-
-    public function fromPayment(Payment $payment): OrderInterface;
+    public function fromPayment(Payment $payment): RefundUnits;
 }

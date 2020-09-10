@@ -12,7 +12,7 @@
 			</div>
 		{% endif %}
         {% if method.gatewayConfig.factoryName == 'mollie' %}
-            {% include 'BitBagSyliusMolliePlugin:Shop/PaymentMollie:_form.html.twig' with {'gatewayConfig': method.gatewayConfig} %}
+            {% include 'BitBagSyliusMolliePlugin:PaymentMollie:_form.html.twig' with {'gatewayConfig': method.gatewayConfig} %}
         {% endif %}
 	</div>
 </div>

@@ -1,0 +1,41 @@
+{% block stylesheets %}
+    {% include 'SyliusUiBundle::_stylesheets.html.twig' with {'path': 'bundles/bitbagsyliusmollieplugin/css/style.css'} %}
+{% endblock %}
+
+{% for key, method in mollie_payment_options %}
+    {% if key == 'molliePaymentMethods' and method.vars.choices|length > 0 %}
+        <div class="ui stackable grid online-online-payment__container">
+            {% for keyChoice, choice in method.vars.choices %}
+                <div class="online-payment__item online-payment__item--{{ choice.value }}">
+
+                    <input
+                            type="radio"
+                            value="{{ choice.value }}"
+                            id="choice-{{ keyChoice }}"
+                            name="{{ method.vars.full_name }}"
+                            class="online-payment__input"
+                    >
+                    <label for="choice-{{ keyChoice }}" class="online-payment__label">
+                        <img class="online-payment__image" src="{{ choice.attr['image'] }}">
+                        {{ choice.label }}
+                    </label>
+
+                    {% if choice.value == 'creditcard' %}
+                        {% include 'BitBagSyliusMolliePlugin:PaymentMollie:_creditCardForm.html.twig' %}
+                    {% elseif choice.value == 'ideal' %}
+                        {% for key, method in mollie_payment_options %}
+                            {% if key == 'issuers' and method.vars.choices|length > 0 %}
+                                {% include 'BitBagSyliusMolliePlugin:PaymentMollie:_issuers.html.twig' %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endfor %}
+
+
+{{ form_row(mollie_payment_options.cartToken) }}
+{% include 'BitBagSyliusMolliePlugin:PaymentMollie:_molliePaymentsJS.html.twig' %}

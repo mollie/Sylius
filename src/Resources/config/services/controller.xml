@@ -35,5 +35,15 @@
             <argument type="service" id="bitbag_sylius_mollie_plugin.helper.convert_price_to_amount" />
             <argument type="service" id="twig"/>
         </service>
+        <service id="bitbag_sylius_mollie_plugin.sylius_mollie_plugin.controller.action.admin.refund_units_action"
+                 class="BitBag\SyliusMolliePlugin\Controller\Action\Admin\RefundUnitsAction"
+                 decorates="Sylius\RefundPlugin\Action\Admin\RefundUnitsAction">
+            <argument type="service" id="sylius_refund_plugin.command_bus" />
+            <argument type="service" id="session" />
+            <argument type="service" id="router" />
+            <argument type="service" id="Sylius\RefundPlugin\Creator\RefundUnitsCommandCreator" />
+            <argument type="service" id="bit_bag.sylius_mollie_plugin.order.order_payment_refund" />
+            <argument type="service" id="bitbag.sylius_mollie_plugin.logger.mollie_logger_action"/>
+        </service>
     </services>
 </container>

@@ -1,8 +1,0 @@
-services:
-  _defaults:
-    public: true
-
-  bitbag_sylius_mollie_plugin.calculator.calculate:
-    class: BitBag\SyliusMolliePlugin\Calculator\CalculateShippingTaxAmount
-    arguments:
-      ['@bitbag_sylius_mollie_plugin.helper.int_to_string']

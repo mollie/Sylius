@@ -15,6 +15,7 @@ namespace BitBag\SyliusMolliePlugin\Form\Type;
 use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfig;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 final class PaymentlinkType extends AbstractType
@@ -26,6 +27,11 @@ final class PaymentlinkType extends AbstractType
                 'class' => MollieGatewayConfig::class,
                 'multiple' => true,
                 'label' => 'bitbag_sylius_mollie_plugin.form.methods',
+                'required' => false,
+            ])
+            ->add('expiredDateTime', BirthdayType::class, [
+                'label' => 'bitbag_sylius_mollie_plugin.form.expiration_date_time',
+                'widget' => 'single_text',
                 'required' => false,
             ])
         ;

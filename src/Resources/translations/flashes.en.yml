@@ -1,5 +1,4 @@
 bitbag_sylius_mollie_plugin:
-    refunded_only_locally: The payment refund was made only locally
     subscription:
         cancelled: 'Subscription has been cancelled.'
     admin:

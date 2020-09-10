@@ -1,4 +1,2 @@
 bitbag_sylius_mollie_plugin:
     resource: "@BitBagSyliusMolliePlugin/Resources/config/routing.yaml"
-sylius_admin_order_creation:
-    resource: "@SyliusAdminOrderCreationPlugin/Resources/config/app/routing.yml"

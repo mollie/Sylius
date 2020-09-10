@@ -6,5 +6,4 @@ imports:
     - { resource: "@BitBagSyliusMolliePlugin/Resources/config/resources/mollie_logger.yaml" }
     - { resource: "@BitBagSyliusMolliePlugin/Resources/config/resources/mollie_customer.yaml" }
     - { resource: "@BitBagSyliusMolliePlugin/Resources/config/resources/mollie_email_template.yaml" }
-    - { resource: "@BitBagSyliusMolliePlugin/Resources/config/resources/order.yaml" }
     - { resource: "@SyliusRefundPlugin/Resources/config/app/config.yml" }

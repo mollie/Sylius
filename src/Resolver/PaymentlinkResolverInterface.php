@@ -16,5 +16,5 @@ use Sylius\Component\Core\Model\OrderInterface;
 
 interface PaymentlinkResolverInterface
 {
-    public function resolve(OrderInterface $order, array $data, string $templateName): string;
+    public function resolve(OrderInterface $order, array $data): string;
 }

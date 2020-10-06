@@ -97,6 +97,10 @@ final class MollieGatewayConfigurationType extends AbstractType
                     ]),
                 ],
             ])
+            ->add('abandoned_email_enabled', CheckboxType::class, [
+                'label' => 'bitbag_sylius_mollie_plugin.ui.abandoned_email_enabled',
+                'help' => 'bitbag_sylius_mollie_plugin.ui.abandoned_description'
+            ])
             ->add('abandoned_hours', ChoiceType::class, [
                 'label' => 'bitbag_sylius_mollie_plugin.ui.abandoned_hours',
                 'choices' => array_combine(

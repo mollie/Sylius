@@ -57,7 +57,14 @@ final class AbandonedPaymentLinkCreator implements AbandonedPaymentLinkCreatorIn
             return;
         }
 
+        $abandonedEnabled = $gateway->getConfig()['abandoned_email_enabled'] ?? false;
+
+        if (false === $abandonedEnabled) {
+            return;
+        }
+
         $abandonedDuration = $gateway->getConfig()['abandoned_hours'] ?? 4;
+
         $dateTime = new \DateTime('now');
         $duration = new \DateInterval(\sprintf('PT%sH', $abandonedDuration));
         $dateTime->sub($duration);

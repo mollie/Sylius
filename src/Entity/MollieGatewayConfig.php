@@ -35,6 +35,12 @@ class MollieGatewayConfig extends AbstractMethod implements ResourceInterface, M
     /** @var array */
     private $countryLevel;
 
+    /** @var array */
+    private $countryLevelAllowed;
+
+    /** @var array */
+    private $countryLevelExcluded;
+
     /** @var int */
     private $orderExpiration = 28;
 
@@ -46,6 +52,9 @@ class MollieGatewayConfig extends AbstractMethod implements ResourceInterface, M
 
     /** @var int */
     private $loggerLevel;
+
+    /** @var string|null */
+    private $countryRestriction;
 
     public function getId(): int
     {
@@ -145,5 +154,35 @@ class MollieGatewayConfig extends AbstractMethod implements ResourceInterface, M
     public function __toString(): string
     {
         return \sprintf('%s', $this->name);
+    }
+
+    public function getCountryLevelAllowed(): ?array
+    {
+        return $this->countryLevelAllowed;
+    }
+
+    public function setCountryLevelAllowed(?array $countryLevelAllowed): void
+    {
+        $this->countryLevelAllowed = $countryLevelAllowed;
+    }
+
+    public function getCountryLevelExcluded(): ?array
+    {
+        return $this->countryLevelExcluded;
+    }
+
+    public function setCountryLevelExcluded(?array $countryLevelExcluded): void
+    {
+        $this->countryLevelExcluded = $countryLevelExcluded;
+    }
+
+    public function getCountryRestriction(): ?string
+    {
+        return $this->countryRestriction;
+    }
+
+    public function setCountryRestriction(?string $countryRestriction): void
+    {
+        $this->countryRestriction = $countryRestriction;
     }
 }

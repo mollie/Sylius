@@ -11,6 +11,7 @@
             <argument type="service" id="bitbag_sylius_mollie_plugin.repository.mollie_gateway_config"/>
             <argument type="service" id="session"/>
             <argument type="service" id="sylius.context.cart"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.resolver.mollie_countries_restriction_resolver"/>
         </service>
         <service id="bitbag_sylius_mollie_plugin.resolver.payment_methods_image" class="BitBag\SyliusMolliePlugin\Resolver\MolliePaymentMethodImageResolver">
             <argument>%images_dir%</argument>
@@ -40,6 +41,9 @@
             <argument type="service" id="sylius.repository.order"/>
             <argument type="service" id="bitbag_sylius_mollie_plugin.preparer.payment_link_email_preparer"/>
             <argument type="service" id="Sylius\AdminOrderCreationPlugin\Provider\PaymentTokenProvider" />
+        </service>
+        <service id="bitbag_sylius_mollie_plugin.resolver.mollie_countries_restriction_resolver" class="BitBag\SyliusMolliePlugin\Resolver\MollieCountriesRestrictionResolver">
+            <argument type="service" id="bitbag_sylius_mollie_plugin.resolver.payment_methods_image"/>
         </service>
     </services>
 </container>

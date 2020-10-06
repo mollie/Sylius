@@ -10,17 +10,19 @@
         <id name="id" type="integer">
             <generator strategy="AUTO"/>
         </id>
-        <field name="methodId" column="method_id" type="string"/>
-        <field name="name" column="name" type="string" unique="true"/>
+        <field name="methodId" column="method_id"/>
+        <field name="name" column="name" unique="true"/>
         <field name="enabled" column="enabled" type="boolean" />
         <field name="image" column="image" type="array" />
         <field name="minimumAmount" column="minimum_amount" type="array" />
         <field name="maximumAmount" column="maximum_amount" type="array" />
-        <field name="paymentType" column="payment_type" type="string" />
+        <field name="paymentType" column="payment_type" />
         <field name="country" column="country" type="array" />
         <field name="canRefunded" column="can_refunded" type="boolean" />
         <field name="issuers" column="issuers" type="array" nullable="true" />
-        <field name="countryLevel" column="country_level" type="array" nullable="true" />
+        <field name="countryRestriction" column="country_restriction" nullable="true" />
+        <field name="countryLevelExcluded" column="country_level_excluded" type="array" nullable="true" />
+        <field name="countryLevelAllowed" column="country_level_allowed" type="array" nullable="true" />
         <field name="orderExpiration" column="order_expiration" type="integer" nullable="true" />
         <many-to-one field="gateway" target-entity="Sylius\Bundle\PayumBundle\Model\GatewayConfigInterface">
             <join-column name="gateway_id" referenced-column-name="id" nullable="true"/>

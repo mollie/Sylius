@@ -82,6 +82,11 @@ bitbag_sylius_mollie_plugin:
         no_fee: 'No fee'
         style_css: Style CSS
         abandoned_hours: Number of hour (after this hour, abandoned email will sended)
+        country_restriction: 'Payment allowed from'
+        all_countries: 'All countries'
+        selected_countries: 'Selected countries'
+        country_level_allow: 'Allow payment from specific countries'
+        country_level_exclude: 'Exclude payment from specific countries'
         emails:
             payment_link: This is Your payment link with order number
     form:

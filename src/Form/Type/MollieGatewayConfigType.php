@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Form\Type;
 
 use BitBag\SyliusMolliePlugin\Documentation\DocumentationLinksInterface;
+use BitBag\SyliusMolliePlugin\Options\Country\Options as CountryOptions;
 use BitBag\SyliusMolliePlugin\Payments\PaymentTerms\Options;
 use BitBag\SyliusMolliePlugin\Validator\Constraints\PaymentSurchargeType;
 use Sylius\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
@@ -70,6 +71,20 @@ final class MollieGatewayConfigType extends AbstractResourceType
             ])
             ->add('customizeMethodImage', CustomizeMethodImageType::class, [
                 'label' => false,
+            ])
+            ->add('country_restriction', ChoiceType::class, [
+                'label' => 'bitbag_sylius_mollie_plugin.ui.country_level_restriction',
+                'choices' => CountryOptions::getCountriesConfigOptions(),
+            ])
+            ->add('countryLevel_excluded', CountryType::class, [
+                'label' => 'bitbag_sylius_mollie_plugin.ui.country_level_exclude',
+                'required' => false,
+                'multiple' => true,
+            ])
+            ->add('countryLevel_allowed', CountryType::class, [
+                'label' => 'bitbag_sylius_mollie_plugin.ui.country_level_allow',
+                'required' => false,
+                'multiple' => true,
             ])
             ->add('countryLevel', CountryType::class, [
                 'label' => 'bitbag_sylius_mollie_plugin.ui.country_level_restriction',

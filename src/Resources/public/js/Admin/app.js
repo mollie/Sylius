@@ -1,8 +1,8 @@
+
 $(function () {
     const mollieFormIncluded = document.getElementById("mollie-payment-form");
-    const paymentLink = document.getElementById("paymentlink");
 
-    if (!paymentLink && !mollieFormIncluded) {
+    if (!mollieFormIncluded) {
         return;
     }
 
@@ -18,31 +18,8 @@ $(function () {
             },
             error: function () {
                 location.reload();
-            },
-            error: function () {
-                location.reload();
             }
         });
-    });
-
-    $(".form_button--delete-img").each(function (index, value) {
-        $(this).on('click', function () {
-            let form = $(".ui.form");
-            let value = $(this).data('value');
-            form.addClass('loading');
-
-            $.ajax({
-                data: {method: value},
-                type: "DELETE",
-                url: $(this).data('url'),
-                success: function (data) {
-                    location.reload();
-                },
-                error: function () {
-                    form.removeClass('loading');
-                }
-            });
-        })
     });
 
     $('.ui.dropdown').dropdown();
@@ -89,7 +66,7 @@ $(function () {
         })
     });
 
-    function setPaymentDescription(value, index){
+    function setPaymentDescription(value, index) {
         const field = 'sylius_payment_method_gatewayConfig_mollieGatewayConfig_'+ index +'_paymentDescription';
         const description = $("#payment_description_" + index);
 
@@ -113,8 +90,7 @@ $(function () {
         })
     });
 
-    function setPaymentFeeFields(value, index)
-    {
+    function setPaymentFeeFields(value, index) {
         const fixedAmount = 'sylius_payment_method_gatewayConfig_mollieGatewayConfig_'+ index +'_paymentSurchargeFee_fixedAmount';
         const percentage = 'sylius_payment_method_gatewayConfig_mollieGatewayConfig_'+ index +'_paymentSurchargeFee_percentage';
         const surchargeLimit = 'sylius_payment_method_gatewayConfig_mollieGatewayConfig_'+ index +'_paymentSurchargeFee_surchargeLimit';
@@ -138,6 +114,30 @@ $(function () {
             $('label[for='+fixedAmount+'], input#'+fixedAmount+'').show();
             $('label[for='+percentage+'], input#'+percentage+'').show();
             $('label[for='+surchargeLimit+'], input#'+surchargeLimit+'').show();
+        }
+    }
+
+    $('[id$="_country_restriction"]').each(function (index) {
+        const value = $(this).find(":selected").val();
+        setCountryRestriction(value, index);
+
+        $(this).on('change', function () {
+            const value = $(this).val();
+            setCountryRestriction(value, index);
+        });
+    });
+
+    function setCountryRestriction(value, index) {
+        const excludeCountries = $('#country-excluded_' + index);
+        const allowCountries = $('#country-allowed_' + index);
+
+        if (value === 'ALL_COUNTRIES') {
+            excludeCountries.show();
+            allowCountries.hide();
+        }
+        if (value === 'SELECTED_COUNTRIES') {
+            excludeCountries.hide();
+            allowCountries.show();
         }
     }
 });

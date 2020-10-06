@@ -16,6 +16,9 @@ use BitBag\SyliusMolliePlugin\Payments\Methods\MethodInterface;
 
 interface MollieGatewayConfigInterface extends MethodInterface
 {
+    public const ALL_COUNTRIES = 'ALL_COUNTRIES';
+    public const SELECTED_COUNTRIES = 'SELECTED_COUNTRIES';
+
     public function setMethodId(string $methodId): void;
 
     public function getGateway(): GatewayConfigInterface;
@@ -49,4 +52,16 @@ interface MollieGatewayConfigInterface extends MethodInterface
     public function getLoggerLevel(): ?int;
 
     public function setLoggerLevel(?int $loggerLevel): void;
+
+    public function getCountryLevelAllowed(): ?array;
+
+    public function setCountryLevelAllowed(?array $countryLevelAllowed): void;
+
+    public function getCountryLevelExcluded(): ?array;
+
+    public function setCountryLevelExcluded(?array $countryLevelExcluded): void;
+
+    public function getCountryRestriction(): ?string;
+
+    public function setCountryRestriction(?string $countryRestriction): void;
 }

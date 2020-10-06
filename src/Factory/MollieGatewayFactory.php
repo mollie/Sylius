@@ -48,7 +48,7 @@ final class MollieGatewayFactory extends GatewayFactory
                 $mollieApiClient = $config['payum.http_client'];
                 $mollieApiClient->setApiKey($config[$environment]);
                 $mollieApiClient->setConfig($config->toUnsafeArray());
-                $mollieApiClient->addVersionString('Sylius/' .  Kernel::VERSION);
+                $mollieApiClient->addVersionString('Sylius/' . Kernel::VERSION);
                 $mollieApiClient->addVersionString('BitBagSyliusMolliePlugin/' . $mollieApiClient->getVersion());
 
                 return $mollieApiClient;

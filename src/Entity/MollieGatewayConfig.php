@@ -47,7 +47,7 @@ class MollieGatewayConfig extends AbstractMethod implements ResourceInterface, M
     /** @var string */
     private $paymentDescription;
 
-    /** @var boolean */
+    /** @var bool */
     private $loggerEnabled;
 
     /** @var int */

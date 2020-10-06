@@ -27,7 +27,7 @@ final class PaymentDescription implements PaymentDescriptionInterface
     {
         $this->paymentDescriptionProvider = $paymentDescriptionProvider;
     }
-    
+
     public function getPaymentDescription(
         PaymentInterface $payment,
         MollieGatewayConfigInterface $methodConfig,
@@ -39,7 +39,7 @@ final class PaymentDescription implements PaymentDescriptionInterface
         if ($paymentMethodType === Options::PAYMENT_API && !empty($description)) {
             $replacements = [
                 '{ordernumber}' => $order->getNumber(),
-                '{storename}' => $order->getChannel()->getName()
+                '{storename}' => $order->getChannel()->getName(),
             ];
 
             return str_replace(

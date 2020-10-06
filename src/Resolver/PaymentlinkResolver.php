@@ -18,7 +18,6 @@ use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
 use BitBag\SyliusMolliePlugin\Helper\IntToStringConverter;
 use BitBag\SyliusMolliePlugin\Preparer\PaymentLinkEmailPreparerInterface;
 use Liip\ImagineBundle\Exception\Config\Filter\NotFoundException;
-use Mollie\Api\Types\PaymentMethod;
 use Sylius\AdminOrderCreationPlugin\Provider\PaymentTokenProviderInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
@@ -75,7 +74,7 @@ final class PaymentlinkResolver implements PaymentlinkResolverInterface
 
         /** @var MollieGatewayConfig $method */
         foreach ($methods as $method) {
-            if (in_array($method->getMethodId(),self::NO_AVAILABLE_METHODS)) {
+            if (in_array($method->getMethodId(), self::NO_AVAILABLE_METHODS)) {
                 continue;
             }
 

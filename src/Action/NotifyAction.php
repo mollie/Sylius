@@ -68,7 +68,6 @@ final class NotifyAction extends BaseApiAwareAction implements ActionInterface, 
 
         if (true === isset($details['payment_mollie_id'])) {
             try {
-
                 $payment = $this->mollieApiClient->payments->get($this->getHttpRequest->request['id']);
             } catch (\Exception $e) {
                 $this->loggerAction->addNegativeLog(sprintf('Error with get customer from mollie with: %s', $e->getMessage()));

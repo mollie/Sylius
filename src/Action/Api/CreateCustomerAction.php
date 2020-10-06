@@ -61,7 +61,6 @@ final class CreateCustomerAction extends BaseApiAwareAction implements ActionInt
 
                 $this->mollieCustomerRepository->add($customer);
             }
-
         } catch (\Exception $e) {
             $this->loggerAction->addNegativeLog(sprintf('Error with create customer:  %s', $e->getMessage()));
 

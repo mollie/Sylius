@@ -31,7 +31,7 @@ trait GatewayConfigTrait
 
     public function getMethodByName(string $methodName): ?MollieGatewayConfigInterface
     {
-        $method = $this->mollieGatewayConfig->filter(function (MollieGatewayConfigInterface  $mollieGatewayConfig) use ($methodName) {
+        $method = $this->mollieGatewayConfig->filter(function (MollieGatewayConfigInterface $mollieGatewayConfig) use ($methodName) {
             return $mollieGatewayConfig->getMethodId() === $methodName;
         });
 

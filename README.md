@@ -52,6 +52,8 @@ Being authentic is our baseline.
 Mollie is one of Europe’s fastest-growing fin-tech companies. We provide a simple payment API, that enables webshop and app builders to implement more than twenty different payment methods in one go. Our packages and plugins are completely open-source, freely available, and easy to integrate into your current project.
 
 Mollie thrives on innovation. When we started we spearheaded the payments industry by introducing effortless payment products that were easier, cheaper, and more flexible than what the rigid, cumbersome banks could do. Now, more than a decade later, trusted by 70.000+ businesses, Mollie is still building innovative products and working hard to make payments better.
+## Information
+<b>From the version 3.3.1 SyliusMolliePlugin is only supporting Sylius ^1.7.*</b>
 ## Support
 
 You can order our support on [this page](https://bitbag.io/contact).

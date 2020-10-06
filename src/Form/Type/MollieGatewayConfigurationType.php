@@ -53,7 +53,7 @@ final class MollieGatewayConfigurationType extends AbstractType
                 ],
             ])
             ->add('profile_id', TextType::class, [
-                'label' => 'bitbag_sylius_mollie_plugin.ui.profilie_id',
+                'label' => $this->documentationLinks->getProfileIdDoc(),
                 'constraints' => [
                     new NotBlank([
                         'message' => 'bitbag_sylius_mollie_plugin.profile_id.not_blank',
@@ -62,7 +62,8 @@ final class MollieGatewayConfigurationType extends AbstractType
                 ],
             ])
             ->add('api_key_test', TextType::class, [
-                'label' => 'bitbag_sylius_mollie_plugin.ui.api_key_test',
+                'label' => $this->documentationLinks->getApiKeyDoc(),
+                'help' => ' ',
                 'constraints' => [
                     new NotBlank([
                         'message' => 'bitbag_sylius_mollie_plugin.api_key.not_blank',

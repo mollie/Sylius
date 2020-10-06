@@ -19,4 +19,8 @@ interface DocumentationLinksInterface
     public function getMollieComponentsDoc(): string;
 
     public function getPaymentMethodDoc(): string;
+
+    public function getProfileIdDoc(): string;
+
+    public function getApiKeyDoc(): string;
 }

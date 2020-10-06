@@ -87,6 +87,13 @@ bitbag_sylius_mollie_plugin:
         selected_countries: 'Selected countries'
         country_level_allow: 'Allow payment from specific countries'
         country_level_exclude: 'Exclude payment from specific countries'
+        you_can_find_you_profile_id: "Profile ID * \n
+                                     You can find your Profile ID in your"
+        mollie_profile_id: 'Mollie Profile'
+        find_you_api_key: "API Key Test * \n
+                          You can find your API key in your "
+        mollie_profile: 'Mollie Profile'
+        it_starts_with: 'it starts with test or live.'
         emails:
             payment_link: This is Your payment link with order number
     form:

@@ -226,8 +226,20 @@ bitbag_sylius_mollie_plugin:
 
 8.Update your database
 
+Copy migrations of the RefundPlugin used by this MolliePlugin
+
+```bash
+cp -R vendor/sylius/refund-plugin/migrations/* src/Migrations
+```
+
+Copy migrations of the MolliePlugin
+
 ```
 cp -R vendor/bitbag/mollie-plugin/migrations/* src/Migrations
+```
+
+Run migrations
+```
 bin/console doctrine:migrations:migrate
 ```
 

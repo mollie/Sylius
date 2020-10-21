@@ -82,6 +82,8 @@ bitbag_sylius_mollie_plugin:
         payment_methods_doc: 'to read more about the differences between the Payment and Orders API'
         click: 'Click'
         no_fee: 'No fee'
+        voucher_promotion: 'Voucher'
+        warning_voucher_info: 'This order is (partially) paid using a voucher. You can refund a maximum of: '
         style_css: Style CSS
         abandoned_hours: 'After this amount of hours, the email will be sent to the consumer'
         abandoned_email_enabled: 'Second Chance functionality'
@@ -109,7 +111,7 @@ bitbag_sylius_mollie_plugin:
                                                       (Note: this only works when the method is set to Payments API)"
         product_type: 'Product type (required in meal vouchers)'
         product_type_default: 'Choose default product category'
-        product_type_default_help: 'Use this only if You have one category for all your product. First add your product category if list is empty'
+        product_type_default_help: 'The category selected here will be used for all products in your webshop.'
         no_category: 'No default category'
         product_type_none: 'None'
         shipment:

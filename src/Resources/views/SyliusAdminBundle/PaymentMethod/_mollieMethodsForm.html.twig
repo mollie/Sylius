@@ -1,3 +1,5 @@
+{% set mealvouchersId = constant('BitBag\\SyliusMolliePlugin\\Payments\\Methods\\MealVoucher::MEAL_VOUCHERS') %}
+
 <div class="ui segment" id="mollie-payment-form">
     <h4 class="ui header">
         <div class="ui two column stackable grid">
@@ -26,7 +28,13 @@
             <div class="content{% if 0 == loop.index0 %} active{% endif %}">
                 {{ form_row(methodForm.enabled) }}
                 {{ form_row(methodForm.name) }}
-                <div class="field">
+                {% if methodForm.vars.value.methodId == mealvouchersId %}
+                    <div class="field">
+                        {{ form_widget(methodForm.defaultCategory) }}
+                        {{ methodForm.defaultCategory.vars.help|trans }}
+                    </div>
+                {% endif %}
+                <div class="ui bottom aligned grid">
                     <div class="twelve wide column">
                         {{ form_row(methodForm.customizeMethodImage) }}
                     </div>
@@ -55,8 +63,13 @@
                 <div class="field">
                     <div class="fields">
                         <div class="twelve wide field">
-                            {{ form_row(methodForm.paymentType) }}
-                            {{ form_help(methodForm.paymentType) }}
+                            {% if methodForm.vars.value.methodId == mealvouchersId %}
+                                {{ form_row(methodForm.paymentType, {'attr': {'disabled': 'disabled'}}) }}
+                                {{ form_help(methodForm.paymentType) }}
+                            {% else %}
+                                {{ form_row(methodForm.paymentType) }}
+                                {{ form_help(methodForm.paymentType) }}
+                            {% endif %}
                         </div>
                         <div class="four wide field">
                             {{ form_row(methodForm.orderExpiration) }}

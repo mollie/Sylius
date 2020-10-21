@@ -44,6 +44,7 @@
             <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
             <tag name="payum.action" factory="mollie" alias="payum.action.status"/>
             <tag name="payum.action" factory="mollie_subscription" alias="payum.action.status"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.updater.order.order_voucher_adjustment_updater"/>
         </service>
         <service id="bitbag_sylius_mollie_plugin.payum_action.api.create_customer" class="BitBag\SyliusMolliePlugin\Action\Api\CreateCustomerAction">
             <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>

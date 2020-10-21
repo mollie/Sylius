@@ -50,8 +50,7 @@ final class ConvertOrder implements ConvertOrderInterface
         TaxUnitItemResolverInterface $taxUnitItemResolver,
         TaxShipmentResolverInterface $taxShipmentResolver,
         MealVoucherResolverInterface $mealVoucherResolver
-    )
-    {
+    ) {
         $this->intToStringConverter = $intToStringConverter;
         $this->calculateShippingTaxAmount = $calculateShippingTaxAmount;
         $this->taxUnitItemResolver = $taxUnitItemResolver;

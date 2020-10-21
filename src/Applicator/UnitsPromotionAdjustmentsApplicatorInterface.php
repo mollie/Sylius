@@ -10,14 +10,11 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Payments\Methods;
+namespace BitBag\SyliusMolliePlugin\Applicator;
 
-final class MealVoucher extends AbstractMethod
+use Sylius\Component\Core\Model\OrderInterface;
+
+interface UnitsPromotionAdjustmentsApplicatorInterface
 {
-    public const MEAL_VOUCHERS = 'voucher';
-
-    public function getMethodId(): string
-    {
-        return self::MEAL_VOUCHERS;
-    }
+    public function apply(OrderInterface $order, array $promotionAmount): void;
 }

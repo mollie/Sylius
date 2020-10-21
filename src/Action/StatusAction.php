@@ -14,8 +14,10 @@ namespace BitBag\SyliusMolliePlugin\Action;
 
 use BitBag\SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
 use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
+use BitBag\SyliusMolliePlugin\Payments\Methods\MealVoucher;
 use BitBag\SyliusMolliePlugin\Refund\OrderRefundInterface;
 use BitBag\SyliusMolliePlugin\Refund\PaymentRefundInterface;
+use BitBag\SyliusMolliePlugin\Updater\Order\OrderVoucherAdjustmentUpdaterInterface;
 use Mollie\Api\Exceptions\ApiException;
 use Mollie\Api\Resources\Customer;
 use Mollie\Api\Resources\Subscription;
@@ -40,15 +42,19 @@ final class StatusAction extends BaseApiAwareAction implements StatusActionInter
     /** @var MollieLoggerActionInterface */
     private $loggerAction;
 
+    /** @var OrderVoucherAdjustmentUpdaterInterface */
+    private $orderVoucherAdjustmentUpdater;
+
     public function __construct(
         PaymentRefundInterface $paymentRefund,
         OrderRefundInterface $orderRefund,
-        MollieLoggerActionInterface $loggerAction
+        MollieLoggerActionInterface $loggerAction,
+        OrderVoucherAdjustmentUpdaterInterface $orderVoucherAdjustmentUpdater
     ) {
         $this->paymentRefund = $paymentRefund;
         $this->orderRefund = $orderRefund;
         $this->loggerAction = $loggerAction;
-        $this->orderRefund = $orderRefund;
+        $this->orderVoucherAdjustmentUpdater = $orderVoucherAdjustmentUpdater;
     }
 
     /** @param GetStatusInterface $request */
@@ -130,6 +136,10 @@ final class StatusAction extends BaseApiAwareAction implements StatusActionInter
                 $order = $this->mollieApiClient->orders->get($details['order_mollie_id'], ['embed' => 'payments']);
                 $payments = $order->_embedded->payments;
                 $payment = current($payments);
+
+                if ($payment->method === MealVoucher::MEAL_VOUCHERS) {
+                    $this->orderVoucherAdjustmentUpdater->update($payment, $order->metadata->order_id);
+                }
 
                 $molliePayment = $this->mollieApiClient->payments->get($payment->id);
                 $molliePayment->metadata = $order->metadata;

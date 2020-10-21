@@ -10,14 +10,9 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Payments\Methods;
+namespace BitBag\SyliusMolliePlugin\Updater\Order;
 
-final class MealVoucher extends AbstractMethod
+interface OrderVoucherAdjustmentUpdaterInterface
 {
-    public const MEAL_VOUCHERS = 'voucher';
-
-    public function getMethodId(): string
-    {
-        return self::MEAL_VOUCHERS;
-    }
+    public function update(\stdClass $molliePayment, int $orderId): void;
 }

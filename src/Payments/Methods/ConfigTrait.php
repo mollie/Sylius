@@ -38,7 +38,7 @@ trait ConfigTrait
     protected $issuers = [];
 
     /** @var ProductTypeInterface|null */
-    protected $defaultCategory = null;
+    protected $defaultCategory;
 
     public function getImage(): array
     {

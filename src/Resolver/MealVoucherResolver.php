@@ -29,21 +29,20 @@ final class MealVoucherResolver implements MealVoucherResolverInterface
 
     private function getMealVoucherCategory(MollieGatewayConfigInterface $method, OrderItemInterface $item): string
     {
-        if (null === $method->getDefaultCategory()) {
+        if (null !== $this->getMealVoucherFromItem($item)) {
             return $this->getMealVoucherFromItem($item);
-        } else {
+        }
+        if (null !== $method->getDefaultCategory()) {
             return $method->getDefaultCategory()->getName();
         }
+
+        throw new \LogicException(\sprintf('Voucher need default category, product category found in product name %s', $item->getProduct()->getName()));
     }
 
-    private function getMealVoucherFromItem(OrderItemInterface $item): string
+    private function getMealVoucherFromItem(OrderItemInterface $item): ?string
     {
         $product = $item->getProduct();
 
-        if (null === $product->getProductType()) {
-            throw new \LogicException(\sprintf('No product category found in product name %s', $product->getName()));
-        }
-
-        return $product->getProductType()->getName();
+        return null === $product->getProductType() ? null : $product->getProductType()->getName();
     }
 }

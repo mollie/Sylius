@@ -81,7 +81,7 @@ We work on stable, supported and up-to-date versions of packages. We recommend y
 ----
 
 
-For the full installation guide please go to [https://github.com/BitBagCommerce/SyliusMolliePlugin/blob/master/doc/installation.md](https://github.com/BitBagCommerce/SyliusMolliePlugin/blob/master/doc/installation.md)
+For the full installation guide please go to [https://github.com/BitBagCommerce/SyliusMolliePlugin/blob/master/doc/installation.md](doc/installation.md)
 
 ## Usage
 ----
@@ -121,14 +121,14 @@ Available states:
 ----
 ```
 $ composer install
-$ <span class="hljs-built_in">cd</span> tests/Application
+$ cd tests/Application
 $ yarn install
 $ yarn run gulp
-$ bin/console assets:install <span class="hljs-operator">-e</span> <span class="hljs-built_in">test</span>
-$ bin/console doctrine:database:create <span class="hljs-operator">-e</span> <span class="hljs-built_in">test</span>
-$ bin/console doctrine:schema:create <span class="hljs-operator">-e</span> <span class="hljs-built_in">test</span>
-$ bin/console server:run <span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span>:<span class="hljs-number">8080</span> <span class="hljs-operator">-e</span> <span class="hljs-built_in">test</span>
-$ open http://localhost:<span class="hljs-number">8080</span>
+$ bin/console assets:install -e test
+$ bin/console doctrine:database:create -e test
+$ bin/console doctrine:schema:create -e test
+$ bin/console server:run 127.0.0.1:8080 -e test
+$ open http://localhost:8080
 $ bin/behat
 $ bin/phpspec run
 ```

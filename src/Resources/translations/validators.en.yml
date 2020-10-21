@@ -1,27 +1,27 @@
 bitbag_sylius_mollie_plugin:
     api_key:
-        not_blank: API key cannot be blank.
-        invalid_test: Invalid API key. An API key must start with 'test_'.
-        invalid_live: Invalid API key. An API key must start with 'live_'.
-        min_length: API key must be at least {{ limit }} characters long.
+        not_blank: 'API key cannot be blank.'
+        invalid_test: 'Invalid API key. An API key must start with "test_".'
+        invalid_live: 'Invalid API key. An API key must start with "live_".'
+        min_length: 'API key must be at least {{ limit }} characters long.'
     profile_id:
-        not_blank: Profile ID cannot be blank
+        not_blank: 'Profile ID cannot be blank'
     channel:
-        required_currency: The base currency of the channel must be {{ currencies }}.
+        required_currency: 'The base currency of the channel must be {{ currencies }}.'
     times:
-        min_range: Times cannot be lower than {{ limit }}.
+        min_range: 'Times cannot be lower than {{ limit }}.'
     interval:
-        not_blank: Interval cannot be blank.
+        not_blank: 'Interval cannot be blank.'
         invalid: "Invalid interval format. Possible values: … months … weeks … days"
     consumer_name:
-        not_blank: Consumer name cannot be blank.
+        not_blank: 'Consumer name cannot be blank.'
     iban:
-        not_blank: IBAN cannot be blank.
-        incorrect: Incorrect IBAN number.
+        not_blank: 'IBAN cannot be blank.'
+        incorrect: 'Incorrect IBAN number.'
     payment_method:
-        not_blank: Value cannot be blank
+        not_blank: 'Value cannot be blank'
     form:
         error:
-            payment_surcharge_not_empty: Value cannot be blank
-            greater_than: The value should be greater than zero
-            key_not_empty: Depending on the environment, the mollie key cannot be empty
+            payment_surcharge_not_empty: 'Value cannot be blank'
+            greater_than: 'The value should be greater than zero'
+            key_not_empty: 'Depending on the environment, the mollie key cannot be empty'

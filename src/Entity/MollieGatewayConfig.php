@@ -36,10 +36,10 @@ class MollieGatewayConfig extends AbstractMethod implements ResourceInterface, M
     protected $countryLevel;
 
     /** @var array */
-    private $countryLevelAllowed;
+    protected $countryLevelAllowed;
 
     /** @var array */
-    private $countryLevelExcluded;
+    protected $countryLevelExcluded;
 
     /** @var int */
     protected $orderExpiration = 28;
@@ -48,13 +48,13 @@ class MollieGatewayConfig extends AbstractMethod implements ResourceInterface, M
     protected $paymentDescription;
 
     /** @var bool */
-    private $loggerEnabled;
+    protected $loggerEnabled;
 
     /** @var int */
-    private $loggerLevel;
+    protected $loggerLevel;
 
     /** @var string|null */
-    private $countryRestriction;
+    protected $countryRestriction;
 
     public function getId(): int
     {

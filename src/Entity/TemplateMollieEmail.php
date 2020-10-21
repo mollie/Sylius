@@ -27,13 +27,13 @@ class TemplateMollieEmail implements TemplateMollieEmailInterface
     }
 
     /** @var int */
-    private $id;
+    protected $id;
 
     /** @var string */
-    private $type;
+    protected $type;
 
     /** @var string */
-    private $styleCss;
+    protected $styleCss;
 
     public function getId(): ?int
     {

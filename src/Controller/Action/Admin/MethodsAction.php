@@ -71,6 +71,7 @@ final class MethodsAction
     {
         $parameters = [
             'include' => 'issuers',
+            'includeWallets' => 'applepay',
         ];
 
         /** @var GatewayConfigInterface $gateway */
@@ -81,7 +82,7 @@ final class MethodsAction
 
         try {
             $client = $this->mollieApiClient->setApiKey($config[$environment]);
-            $allMollieMethods = $client->methods->allAvailable($parameters);
+            $allMollieMethods = $client->methods->allActive($parameters);
         } catch (ApiException $e) {
             $this->loggerAction->addNegativeLog(sprintf('API call failed: %s', $e->getMessage()));
 
@@ -91,11 +92,8 @@ final class MethodsAction
         }
 
         foreach ($allMollieMethods as $mollieMethod) {
-            dump($mollieMethod);
             $this->methods->add($mollieMethod);
         }
-
-        dd('end');
 
         foreach ($this->methods->getAllEnabled() as $method) {
             $gatewayConfig = $this->factory->create($method, $gateway);

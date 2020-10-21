@@ -81,7 +81,7 @@ We work on stable, supported and up-to-date versions of packages. We recommend y
 ----
 
 
-For the full installation guide please go to [https://github.com/BitBagCommerce/SyliusMolliePlugin/blob/master/doc/installation.md](doc/installation.md)
+For the full installation guide please go to [installation.md](doc/installation.md)
 
 ## Usage
 ----

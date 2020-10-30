@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Resolver;
 
+use BitBag\SyliusMolliePlugin\Checker\Voucher\ProductVoucherTypeCheckerInterface;
 use BitBag\SyliusMolliePlugin\Entity\GatewayConfigInterface;
 use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
 use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
@@ -43,6 +44,9 @@ final class MolliePaymentsMethodResolver implements MolliePaymentsMethodResolver
     /** @var MollieCountriesRestrictionResolverInterface */
     private $countriesRestrictionResolver;
 
+    /** @var ProductVoucherTypeCheckerInterface */
+    private $productVoucherTypeChecker;
+
     public function __construct(
         RepositoryInterface $orderRepository,
         RepositoryInterface $gatewayConfigRepository,
@@ -50,7 +54,8 @@ final class MolliePaymentsMethodResolver implements MolliePaymentsMethodResolver
         RepositoryInterface $mollieGatewayRepository,
         Session $session,
         CartContextInterface $cartContext,
-        MollieCountriesRestrictionResolverInterface $countriesRestrictionResolver
+        MollieCountriesRestrictionResolverInterface $countriesRestrictionResolver,
+        ProductVoucherTypeCheckerInterface $productVoucherTypeChecker
     ) {
         $this->orderRepository = $orderRepository;
         $this->gatewayConfigRepository = $gatewayConfigRepository;
@@ -59,6 +64,7 @@ final class MolliePaymentsMethodResolver implements MolliePaymentsMethodResolver
         $this->session = $session;
         $this->cartContext = $cartContext;
         $this->countriesRestrictionResolver = $countriesRestrictionResolver;
+        $this->productVoucherTypeChecker = $productVoucherTypeChecker;
     }
 
     public function resolve(): array
@@ -87,10 +93,10 @@ final class MolliePaymentsMethodResolver implements MolliePaymentsMethodResolver
             return $this->getDefaultOptions();
         }
 
-        return $this->getMolliePaymentOptions($address->getCountryCode());
+        return $this->getMolliePaymentOptions($order, $address->getCountryCode());
     }
 
-    private function getMolliePaymentOptions(string $countryCode): array
+    private function getMolliePaymentOptions(OrderInterface $order, string $countryCode): array
     {
         $methods = $this->getDefaultOptions();
 
@@ -113,6 +119,8 @@ final class MolliePaymentsMethodResolver implements MolliePaymentsMethodResolver
         foreach ($paymentConfigs as $paymentMethod) {
             $methods = $this->countriesRestrictionResolver->resolve($paymentMethod, $methods, $countryCode);
         }
+
+        $methods = $this->productVoucherTypeChecker->checkTheProductTypeOnCart($order, $methods);
 
         return $methods;
     }

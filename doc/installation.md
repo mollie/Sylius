@@ -5,14 +5,14 @@
 ```bash
 $ composer require bitbag/mollie-plugin
 ```
-2.Add traits to your GatewayConfig entity class, when You don't use annotation.
+2.Add traits to your GatewayConfig entity class, when You don't use annotation. 
 
 ```php
 <?php
 
 declare(strict_types=1);
 
-namespace App\Entity;
+namespace App\Entity\Payment;
 
 use BitBag\SyliusMolliePlugin\Entity\GatewayConfigInterface;
 use BitBag\SyliusMolliePlugin\Entity\GatewayConfigTrait;
@@ -38,7 +38,7 @@ Or this way if you use annotations:
 
 declare(strict_types=1);
 
-namespace App\Entity;
+namespace App\Entity\Payment;
 
 use Doctrine\ORM\Mapping as ORM;
 use BitBag\SyliusMolliePlugin\Entity\GatewayConfigInterface;
@@ -84,7 +84,7 @@ If you don't use annotations, define new Entity mapping inside your `src/Resourc
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                   http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd"
 >
-    <mapped-superclass name="App\Entity\GatewayConfig" table="sylius_gateway_config">
+    <mapped-superclass name="App\Entity\Payment\GatewayConfig" table="sylius_gateway_config">
         <one-to-many field="mollieGatewayConfig" target-entity="BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfig" mapped-by="gateway" orphan-removal="true">
             <cascade>
                 <cascade-all />
@@ -105,7 +105,7 @@ sylius_payum:
     resources:
         gateway_config:
           classes:
-              model: App\Entity\GatewayConfig
+              model: App\Entity\Payment\GatewayConfig
 ```
 
 3.Add traits to your Order entity class, when You don't use annotation.

@@ -93,7 +93,7 @@ If you don't use annotations, define new Entity mapping inside your `src/Resourc
     </mapped-superclass>
 </doctrine-mapping>
 ```
-For an exmaple, check [tests/Application/src/Resources/config/doctrine/GatewayConfig.orm.xml](/tests/Application/src/Resources/config/doctrine/GatewayConfig.orm.xml) file.
+For an example, check [tests/Application/src/Resources/config/doctrine/GatewayConfig.orm.xml](/tests/Application/src/Resources/config/doctrine/GatewayConfig.orm.xml) file.
 
 Override GatewayConfig resource:
 

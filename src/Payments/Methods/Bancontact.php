@@ -20,4 +20,9 @@ final class Bancontact extends AbstractMethod
     {
         return PaymentMethod::BANCONTACT;
     }
+
+    public function getPaymentType(): string
+    {
+        return self::PAYMENT_API;
+    }
 }

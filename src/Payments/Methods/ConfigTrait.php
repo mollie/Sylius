@@ -26,7 +26,7 @@ trait ConfigTrait
     protected $maximumAmount;
 
     /** @var string */
-    protected $paymentType = 'online';
+    protected $paymentType;
 
     /** @var array */
     protected $country;

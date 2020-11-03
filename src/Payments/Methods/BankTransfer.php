@@ -20,4 +20,9 @@ final class BankTransfer extends AbstractMethod
     {
         return PaymentMethod::BANKTRANSFER;
     }
+
+    public function getPaymentType(): string
+    {
+        return self::PAYMENT_API;
+    }
 }

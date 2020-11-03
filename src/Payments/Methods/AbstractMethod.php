@@ -14,6 +14,9 @@ namespace BitBag\SyliusMolliePlugin\Payments\Methods;
 
 abstract class AbstractMethod implements MethodInterface
 {
+    public const PAYMENT_API = 'PAYMENT_API';
+    public const ORDER_API = 'ORDER_API';
+
     use ConfigTrait;
 
     /** @var string */

@@ -25,4 +25,9 @@ final class GiftCard extends AbstractMethod
     {
         return false;
     }
+
+    public function getPaymentType(): string
+    {
+        return self::PAYMENT_API;
+    }
 }

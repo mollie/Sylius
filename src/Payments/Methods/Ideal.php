@@ -12,4 +12,9 @@ final class Ideal extends AbstractMethod
     {
         return PaymentMethod::IDEAL;
     }
+
+    public function getPaymentType(): string
+    {
+        return self::PAYMENT_API;
+    }
 }

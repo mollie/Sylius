@@ -20,4 +20,9 @@ final class Eps extends AbstractMethod
     {
         return PaymentMethod::EPS;
     }
+
+    public function getPaymentType(): string
+    {
+        return self::PAYMENT_API;
+    }
 }

@@ -20,4 +20,9 @@ final class MealVoucher extends AbstractMethod
     {
         return self::MEAL_VOUCHERS;
     }
+
+    public function getPaymentType(): string
+    {
+        return self::ORDER_API;
+    }
 }

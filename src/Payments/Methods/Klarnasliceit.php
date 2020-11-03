@@ -20,4 +20,14 @@ final class Klarnasliceit extends AbstractMethod
     {
         return PaymentMethod::KLARNA_SLICE_IT;
     }
+
+    public function getPaymentType(): string
+    {
+        return self::ORDER_API;
+    }
+
+    public function setPaymentType(string $paymentType): void
+    {
+        $this->paymentType = self::ORDER_API;
+    }
 }

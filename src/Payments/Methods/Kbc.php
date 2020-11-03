@@ -20,4 +20,9 @@ final class Kbc extends AbstractMethod
     {
         return PaymentMethod::KBC;
     }
+
+    public function getPaymentType(): string
+    {
+        return self::PAYMENT_API;
+    }
 }

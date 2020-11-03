@@ -25,6 +25,7 @@ use BitBag\SyliusMolliePlugin\Payments\Methods\IngHomePay;
 use BitBag\SyliusMolliePlugin\Payments\Methods\Kbc;
 use BitBag\SyliusMolliePlugin\Payments\Methods\Klarnapaylater;
 use BitBag\SyliusMolliePlugin\Payments\Methods\Klarnasliceit;
+use BitBag\SyliusMolliePlugin\Payments\Methods\MealVoucher;
 use BitBag\SyliusMolliePlugin\Payments\Methods\MyBank;
 use BitBag\SyliusMolliePlugin\Payments\Methods\PayPal;
 use BitBag\SyliusMolliePlugin\Payments\Methods\Przelewy24;
@@ -50,5 +51,6 @@ interface MethodsInterface
         PayPal::class,
         Przelewy24::class,
         SofortBanking::class,
+        MealVoucher::class,
     ];
 }

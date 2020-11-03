@@ -27,7 +27,6 @@ use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\GetStatusInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
-use Symfony\Component\HttpFoundation\Session\Session;
 
 final class StatusAction extends BaseApiAwareAction implements StatusActionInterface
 {

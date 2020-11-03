@@ -20,4 +20,9 @@ final class SofortBanking extends AbstractMethod
     {
         return PaymentMethod::SOFORT;
     }
+
+    public function getPaymentType(): string
+    {
+        return self::PAYMENT_API;
+    }
 }

@@ -20,4 +20,9 @@ final class PayPal extends AbstractMethod
     {
         return PaymentMethod::PAYPAL;
     }
+
+    public function getPaymentType(): string
+    {
+        return self::PAYMENT_API;
+    }
 }

@@ -20,4 +20,9 @@ final class Belfius extends AbstractMethod
     {
         return PaymentMethod::BELFIUS;
     }
+
+    public function getPaymentType(): string
+    {
+        return self::PAYMENT_API;
+    }
 }

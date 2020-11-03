@@ -12,4 +12,9 @@ final class Przelewy24 extends AbstractMethod
     {
         return PaymentMethod::PRZELEWY24;
     }
+
+    public function getPaymentType(): string
+    {
+        return self::PAYMENT_API;
+    }
 }

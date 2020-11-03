@@ -44,6 +44,7 @@ final class MollieGatewayConfigFactory implements MollieGatewayConfigFactoryInte
         $mollieGatewayConfig->setImage($method->getImage());
         $mollieGatewayConfig->setGateway($gateway);
         $mollieGatewayConfig->setIssuers($method->getIssuers());
+        $mollieGatewayConfig->setPaymentType($method->getPaymentType());
 
         return $mollieGatewayConfig;
     }

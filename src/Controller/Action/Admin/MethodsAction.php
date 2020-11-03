@@ -72,6 +72,7 @@ final class MethodsAction
         $parameters = [
             'include' => 'issuers',
             'includeWallets' => 'applepay',
+            'resource' => 'orders',
         ];
 
         /** @var GatewayConfigInterface $gateway */
@@ -97,7 +98,6 @@ final class MethodsAction
 
         foreach ($this->methods->getAllEnabled() as $method) {
             $gatewayConfig = $this->factory->create($method, $gateway);
-
             $this->entityManager->persist($gatewayConfig);
             $this->entityManager->flush();
         }

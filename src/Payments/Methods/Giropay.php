@@ -20,4 +20,9 @@ final class Giropay extends AbstractMethod
     {
         return PaymentMethod::GIROPAY;
     }
+
+    public function getPaymentType(): string
+    {
+        return self::PAYMENT_API;
+    }
 }

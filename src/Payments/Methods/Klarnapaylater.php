@@ -20,4 +20,9 @@ final class Klarnapaylater extends AbstractMethod
     {
         return PaymentMethod::KLARNA_PAY_LATER;
     }
+
+    public function getPaymentType(): string
+    {
+        return self::ORDER_API;
+    }
 }

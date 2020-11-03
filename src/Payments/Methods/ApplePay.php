@@ -20,4 +20,9 @@ final class ApplePay extends AbstractMethod
     {
         return PaymentMethod::APPLEPAY;
     }
+
+    public function getPaymentType(): string
+    {
+        return self::PAYMENT_API;
+    }
 }

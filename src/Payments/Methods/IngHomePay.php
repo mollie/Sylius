@@ -20,4 +20,9 @@ final class IngHomePay extends AbstractMethod
     {
         return PaymentMethod::INGHOMEPAY;
     }
+
+    public function getPaymentType(): string
+    {
+        return self::PAYMENT_API;
+    }
 }

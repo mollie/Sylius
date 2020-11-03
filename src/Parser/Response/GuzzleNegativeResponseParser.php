@@ -20,7 +20,7 @@ final class GuzzleNegativeResponseParser implements GuzzleNegativeResponseParser
     {
         if ($exception->hasResponse()) {
             $response = $exception->getResponse();
-            $responseBodyAsString = json_decode((string)$response->getBody(), true);
+            $responseBodyAsString = json_decode((string) $response->getBody(), true);
             if (isset($responseBodyAsString['extra']['failureReason'])) {
                 return $responseBodyAsString['extra']['failureReason'];
             }

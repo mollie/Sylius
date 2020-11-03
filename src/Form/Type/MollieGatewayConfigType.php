@@ -13,9 +13,9 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Form\Type;
 
 use BitBag\SyliusMolliePlugin\Documentation\DocumentationLinksInterface;
-use BitBag\SyliusMolliePlugin\Options\Country\Options as CountryOptions;
 use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
 use BitBag\SyliusMolliePlugin\Entity\ProductType;
+use BitBag\SyliusMolliePlugin\Options\Country\Options as CountryOptions;
 use BitBag\SyliusMolliePlugin\Payments\Methods\MealVoucher;
 use BitBag\SyliusMolliePlugin\Payments\PaymentTerms\Options;
 use BitBag\SyliusMolliePlugin\Validator\Constraints\PaymentSurchargeType;

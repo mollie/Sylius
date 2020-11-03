@@ -12,4 +12,9 @@ final class CreditCard extends AbstractMethod
     {
         return PaymentMethod::CREDITCARD;
     }
+
+    public function getPaymentType(): string
+    {
+        return self::PAYMENT_API;
+    }
 }

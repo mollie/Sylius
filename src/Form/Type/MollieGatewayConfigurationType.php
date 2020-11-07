@@ -140,7 +140,7 @@ final class MollieGatewayConfigurationType extends AbstractType
                 $data = $event->getData();
 
                 if (empty($data['api_key_live']) && !$parentData->getMollieGatewayConfig()->isEmpty()) {
-                    $mollieGateway = $this->gatewayConfigRepository->findOneBy(['gatewayName' => $parentData->getFactoryName()]);
+                    $mollieGateway = $this->gatewayConfigRepository->findOneBy(['gatewayName' => $parentData->getGatewayName()]);
 
                     /** @var GatewayConfigInterface $mollieGateway */
                     $config = $mollieGateway->getConfig();

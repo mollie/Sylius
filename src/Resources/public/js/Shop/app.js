@@ -1,5 +1,4 @@
 $(function () {
-
     let selectedValue = false;
     let mollieData = $(".online-online-payment__container");
     const initialOrderTotal = $('#sylius-summary-grand-total').text();

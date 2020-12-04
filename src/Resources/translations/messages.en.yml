@@ -102,6 +102,7 @@ bitbag_sylius_mollie_plugin:
         it_starts_with: 'it starts with test or live.'
         emails:
             payment_link: 'This is Your payment link with order number'
+        buy_with_apple_pay: 'Buy with'
     form:
         payment_methods:
             payment_description: 'Description'

@@ -53,5 +53,15 @@
             <argument type="service" id="bitbag_sylius_mollie_plugin.resolver.paymentlink_resolver"/>
             <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
         </service>
+        <service id="bitbag_sylius_mollie_plugin.controller.action.shop.apple_pay_validation_action" class="BitBag\SyliusMolliePlugin\Controller\Action\Shop\ApplePayValidationAction">
+            <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.resolver.mollie_api_client_key_resolver"/>
+        </service>
+        <service id="bitbag_sylius_mollie_plugin.controller.action.shop.order_controller"
+                 class="BitBag\SyliusMolliePlugin\Controller\Action\Shop\OrderController"
+                 public="true"
+                 parent="sylius.controller.order"
+        >
+        </service>
     </services>
 </container>

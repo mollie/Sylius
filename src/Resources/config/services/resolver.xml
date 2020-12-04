@@ -47,5 +47,32 @@
             <argument type="service" id="bitbag_sylius_mollie_plugin.resolver.payment_methods_image"/>
         </service>
         <service id="bitbag_sylius_mollie_plugin.resolver.meal_voucher_resolver" class="BitBag\SyliusMolliePlugin\Resolver\MealVoucherResolver"/>
+        <service id="bitbag_sylius_mollie_plugin.resolver.mollie_api_client_key_resolver" class="BitBag\SyliusMolliePlugin\Resolver\MollieApiClientKeyResolver">
+            <argument type="service" id="sylius.repository.gateway_config"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.mollie_api_client"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
+        </service>
+        <service id="bitbag_sylius_mollie_plugin.resolver.address.address_resolver" class="BitBag\SyliusMolliePlugin\Resolver\Address\AddressResolver" >
+            <argument type="service" id="bitbag_sylius_mollie_plugin.validator.apple_pay_direct.apple_pay_address_validator"/>
+            <argument type="service" id="sylius.repository.customer"/>
+        </service>
+        <service id="bitbag_sylius_mollie_plugin.resolver.address.apple_pay_address_resolver" class="BitBag\SyliusMolliePlugin\Resolver\Address\ApplePayAddressResolver">
+            <argument type="service" id="bitbag_sylius_mollie_plugin.resolver.address.address_resolver"/>
+        </service>
+        <service id="bitbag_sylius_mollie_plugin.resolver.apple_pay_direct.apple_pay_direct_api_order_payment_resolver" class="BitBag\SyliusMolliePlugin\Resolver\ApplePayDirect\ApplePayDirectApiOrderPaymentResolver">
+            <argument type="service" id="bitbag_sylius_mollie_plugin.mollie_api_client"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.resolver.mollie_api_client_key_resolver"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.payments.order_converter"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.provider.order.order_payment_apple_pay_direct_provider"/>
+        </service>
+        <service id="bitbag_sylius_mollie_plugin.resolver.apple_pay_direct.apple_pay_direct_api_payment_resolver" class="BitBag\SyliusMolliePlugin\Resolver\ApplePayDirect\ApplePayDirectApiPaymentResolver">
+            <argument type="service" id="bitbag_sylius_mollie_plugin.mollie_api_client"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.resolver.mollie_api_client_key_resolver"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.provider.order.order_payment_apple_pay_direct_provider"/>
+        </service>
+        <service id="bitbag_sylius_mollie_plugin.resolver.apple_pay_direct.apple_pay_direct_payment_type_resolver" class="BitBag\SyliusMolliePlugin\Resolver\ApplePayDirect\ApplePayDirectPaymentTypeResolver">
+            <argument type="service" id="bitbag_sylius_mollie_plugin.resolver.apple_pay_direct.apple_pay_direct_api_payment_resolver"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.resolver.apple_pay_direct.apple_pay_direct_api_order_payment_resolver"/>
+        </service>
     </services>
 </container>

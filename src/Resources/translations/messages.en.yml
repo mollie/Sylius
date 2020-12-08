@@ -87,7 +87,7 @@ bitbag_sylius_mollie_plugin:
         style_css: 'Style CSS'
         abandoned_hours: 'After this amount of hours, the email will be sent to the consumer'
         abandoned_email_enabled: 'Second Chance functionality'
-        abandoned_description: 'The second Chance email allows the consumer to pay un unpaid order through a direct'
+        abandoned_description: 'The second chance email allows the consumer to pay an unpaid order through a direct payment link.'
         country_restriction: 'Payment allowed from'
         all_countries: 'All countries'
         selected_countries: 'Selected countries'

@@ -1,0 +1,21 @@
+bitbag_sylius_mollie_plugin:
+  refunded_only_locally: 'Die Rückzahlung ist nur lokal erfolgt'
+  subscription:
+    cancelled: 'Das Abonnement wurde gekündigt.'
+  admin:
+    shipment:
+      successfuly_split_and_sent: 'Die Sendung wurde erfolgreich aufgeteilt und gesendet'
+    success_got_methods: 'Methoden erfolgreich aktualisiert'
+    paymentlink:
+      successfuly_generated: 'Zahlungslink erfolgreich generiert'
+  credit_cart_error:
+    invalid_card_number: 'Ungültige Kartennummer'
+    invalid_cvv: 'Ungültiger Kartenprüfziffer'
+    invalid_card_holder_name: 'Ungültiger Karteninhaber'
+    card_expired: 'Karte abgelaufen'
+    invalid_card_type: 'Ungültiger Kartentyp'
+    refused_by_issuer: 'Vom Anbieter abgelehnt'
+    insufficient_funds: 'Saldo nicht ausreichend'
+    inactive_card: 'Inaktive Karte'
+    possible_fraud: 'Möglicher Betrug'
+    authentication_failed: 'Authentifizierung fehlgeschlagen'

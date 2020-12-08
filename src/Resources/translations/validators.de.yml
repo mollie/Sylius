@@ -1,0 +1,27 @@
+bitbag_sylius_mollie_plugin:
+  api_key:
+    not_blank: 'API-Schlüssel darf nicht leer sein.'
+    invalid_test: 'Ungültiger API-Schlüssel. Ein API-Schlüssel muss mit „Test_“ beginnen.'
+    invalid_live: 'Ungültiger API-Schlüssel. Ein API-Schlüssel muss mit „Live_“ beginnen.'
+    min_length: 'API-Schlüssel muss mindestens {{ limit }} Zeichen enthalten.'
+  profile_id:
+    not_blank: 'Profil-ID darf nicht leer sein'
+  channel:
+    required_currency: 'Die Basiswährung des Kanals muss {{ currencies }} sein.'
+  times:
+    min_range: 'Zeiten darf nicht geringer sein als {{ limit }}.'
+  interval:
+    not_blank: 'Intervall darf nicht leer sein.'
+    invalid: 'Ungültiges Intervallformat. Zulässige Werte: … Monate … Wochen … Tage'
+  consumer_name:
+    not_blank: 'Kundenname darf nicht leer sein.'
+  iban:
+    not_blank: 'IBAN darf nicht leer sein.'
+    incorrect: 'IBAN-Nummer inkorrekt'
+  payment_method:
+    not_blank: 'Wert darf nicht leer sein'
+  form:
+    error:
+      payment_surcharge_not_empty: 'Wert darf nicht leer sein'
+      greater_than: 'Der Wert muss über Null sein'
+      key_not_empty: 'Je nach Umgebung darf der Mollie-Schlüssel nicht leer sein'

@@ -16,6 +16,7 @@ use BitBag\SyliusMolliePlugin\Validator\ApplePayDirect\ApplePayAddressValidatorI
 use Sylius\Component\Core\Model\Address;
 use Sylius\Component\Core\Model\AddressInterface;
 use Sylius\Component\Core\Model\CustomerInterface;
+use Sylius\Component\Resource\Factory\FactoryInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 
 final class AddressResolver implements AddressResolverInterface
@@ -26,19 +27,31 @@ final class AddressResolver implements AddressResolverInterface
     /** @var RepositoryInterface */
     private $customerRepository;
 
+    /** @var FactoryInterface */
+    private $addressFactory;
+
+    /** @var FactoryInterface */
+    private $customerFactory;
+
     public function __construct(
         ApplePayAddressValidatorInterface $addressValidator,
-        RepositoryInterface $customerRepository
+        RepositoryInterface $customerRepository,
+        FactoryInterface $addressFactory,
+        FactoryInterface $customerFactory
     ) {
         $this->addressValidator = $addressValidator;
         $this->customerRepository = $customerRepository;
+        $this->addressFactory = $addressFactory;
+        $this->customerFactory = $customerFactory;
     }
 
     public function resolve(array $applePayDirectAddress): AddressInterface
     {
         $this->addressValidator->validate($applePayDirectAddress);
 
-        $address = new Address();
+        /** @var AddressInterface $address */
+        $address = $this->addressFactory->createNew();
+
         $address->setCity($applePayDirectAddress['locality']);
         $address->setStreet(implode(' ', $applePayDirectAddress['addressLines']));
         $address->setPostcode($applePayDirectAddress['postalCode']);
@@ -49,9 +62,14 @@ final class AddressResolver implements AddressResolverInterface
         /** @var CustomerInterface $customer */
         $customer = $this->customerRepository->findOneBy(['email' => $applePayDirectAddress['emailAddress']]);
 
-        if (null !== $customer) {
-            $address->setCustomer($customer);
+        if (null === $customer) {
+            $customer = $this->customerFactory->createNew();
+            $customer->setEmail($applePayDirectAddress['emailAddress']);
+
+            $this->customerRepository->add($customer);
         }
+
+        $address->setCustomer($customer);
 
         return $address;
     }

@@ -55,6 +55,8 @@
         <service id="bitbag_sylius_mollie_plugin.resolver.address.address_resolver" class="BitBag\SyliusMolliePlugin\Resolver\Address\AddressResolver" >
             <argument type="service" id="bitbag_sylius_mollie_plugin.validator.apple_pay_direct.apple_pay_address_validator"/>
             <argument type="service" id="sylius.repository.customer"/>
+            <argument type="service" id="sylius.custom_factory.address"/>
+            <argument type="service" id="sylius.factory.customer"/>
         </service>
         <service id="bitbag_sylius_mollie_plugin.resolver.address.apple_pay_address_resolver" class="BitBag\SyliusMolliePlugin\Resolver\Address\ApplePayAddressResolver">
             <argument type="service" id="bitbag_sylius_mollie_plugin.resolver.address.address_resolver"/>

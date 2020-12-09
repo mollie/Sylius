@@ -16,5 +16,5 @@ use Sylius\Component\Order\Model\OrderInterface;
 
 interface ApplePayDirectPaymentProviderInterface
 {
-    public function provideApplePayPayment(OrderInterface $order, array $applePayPaymentToken);
+    public function provideApplePayPayment(OrderInterface $order, array $applePayPaymentToken): void;
 }

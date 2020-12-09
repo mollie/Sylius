@@ -365,3 +365,20 @@ bin/console assets:install
 
 /usr/bin/php /var/www/mollie/bin/console mollie:send-payment-link
 ```
+
+14. Add state machine configuration in `_sylius.yaml`
+```yaml
+# config/packages/_sylius.yaml
+
+winzou_state_machine:
+  sylius_order_checkout:
+    transitions:
+      complete:
+        from: [payment_selected, payment_skipped, addressed, shipping_skipped, payment_selected, cart]
+        to: completed
+```
+
+15. Download the [domain validation file](https://www.mollie.com/.well-known/apple-developer-merchantid-domain-association) and place it on your server at
+`public/.well-known/apple-developer-merchantid-domain-association`
+    
+    

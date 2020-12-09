@@ -30,6 +30,10 @@ use Symfony\Component\Validator\Constraints\Regex;
 
 final class MollieGatewayConfigurationType extends AbstractType
 {
+    public const API_KEY_LIVE = 'api_key_live';
+
+    public const API_KEY_TEST = 'api_key_test';
+
     /** @var DocumentationLinksInterface */
     private $documentationLinks;
 
@@ -61,7 +65,7 @@ final class MollieGatewayConfigurationType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('api_key_test', TextType::class, [
+            ->add(self::API_KEY_TEST, TextType::class, [
                 'label' => $this->documentationLinks->getApiKeyDoc(),
                 'help' => ' ',
                 'constraints' => [
@@ -81,7 +85,7 @@ final class MollieGatewayConfigurationType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('api_key_live', PasswordType::class, [
+            ->add(self::API_KEY_LIVE, PasswordType::class, [
                 'label' => 'bitbag_sylius_mollie_plugin.ui.api_key_live',
                 'attr' => ['placeholder' => '*******************'],
                 'constraints' => [

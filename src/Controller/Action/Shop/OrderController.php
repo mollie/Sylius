@@ -30,9 +30,10 @@ final class OrderController extends BaseOrderController
         if ($event->isStopped() && !$configuration->isHtmlRequest()) {
             throw new HttpException($event->getErrorCode(), $event->getMessage());
         }
+
         if ($event->isStopped()) {
             $eventResponse = $event->getResponse();
-            if (null !== $eventResponse) {
+            if (!empty($eventResponse)) {
                 return $eventResponse;
             }
 
@@ -41,8 +42,10 @@ final class OrderController extends BaseOrderController
 
         try {
             $this->getApplePayProviderService()->provideOrder($this->getCurrentCart(), $request);
+
             /** @var PaymentInterface $payment */
             $payment = $this->getCurrentCart()->getLastPayment();
+
             if ($payment->getState() !== PaymentInterface::STATE_COMPLETED) {
                 $response = [
                     'status' => 1,
@@ -60,13 +63,16 @@ final class OrderController extends BaseOrderController
         $postEvent = $this->eventDispatcher->dispatchPostEvent(ResourceActions::UPDATE, $configuration, $resource);
 
         $postEventResponse = $postEvent->getResponse();
-        if (null !== $postEventResponse) {
+
+        if (!empty($postEventResponse)) {
             return $postEventResponse;
         }
 
         $initializeEvent = $this->eventDispatcher->dispatchInitializeEvent(ResourceActions::UPDATE, $configuration, $resource);
+
         $initializeEventResponse = $initializeEvent->getResponse();
-        if (null !== $initializeEventResponse) {
+
+        if (!empty($initializeEventResponse)) {
             return $initializeEventResponse;
         }
 

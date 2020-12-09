@@ -29,7 +29,7 @@ final class ApplePayDirectPaymentProvider implements ApplePayDirectPaymentProvid
         $this->applePayDirectPaymentTypeResolver = $applePayDirectPaymentTypeResolver;
     }
 
-    public function provideApplePayPayment(OrderInterface $order, array $applePayPaymentToken)
+    public function provideApplePayPayment(OrderInterface $order, array $applePayPaymentToken): void
     {
         /** @var PaymentInterface $paymentMethod */
         $payment = $order->getLastPayment();
@@ -39,7 +39,7 @@ final class ApplePayDirectPaymentProvider implements ApplePayDirectPaymentProvid
         $gatewayConfig = $paymentMethod->getGatewayConfig();
 
         if ($gatewayConfig->getMollieGatewayConfig()->isEmpty()) {
-            return null;
+            return;
         }
 
         $applePayConfig = $gatewayConfig->getMethodByName(PaymentMethod::APPLEPAY);

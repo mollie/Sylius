@@ -20,3 +20,10 @@ parameters:
 sylius_shop:
     product_grid:
         include_all_descendants: true
+
+winzou_state_machine:
+    sylius_order_checkout:
+        transitions:
+            complete:
+                from: [payment_selected, payment_skipped, addressed, shipping_skipped, payment_selected, cart]
+                to: completed

@@ -39,19 +39,17 @@ final class ApplePayValidationAction
     {
         $validateUrl = $request->get('validationUrl');
 
-        if (null === $validateUrl) {
+        if (empty($validateUrl)) {
             return new JsonResponse(null, Response::HTTP_NOT_FOUND);
         }
 
         $url = $request->getHost();
-
-        $removeHttp = ['https://', 'http://', '/'];
-        $domain = str_replace($removeHttp, '', $url);
+        $domain = parse_url($url);
 
         try {
             $mollieClient = $this->apiClientKeyResolver->getClientWithKey();
 
-            $json = $mollieClient->wallets->requestApplePayPaymentSession($domain, $validateUrl);
+            $json = $mollieClient->wallets->requestApplePayPaymentSession($domain['path'], $validateUrl);
         } catch (ApiException $e) {
             $this->loggerAction->addNegativeLog(\sprintf('Error with validate apple pay with: %s', $e->getMessage()));
 

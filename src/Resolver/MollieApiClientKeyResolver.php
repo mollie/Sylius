@@ -15,6 +15,7 @@ namespace BitBag\SyliusMolliePlugin\Resolver;
 use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
 use BitBag\SyliusMolliePlugin\Entity\GatewayConfigInterface;
 use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
+use BitBag\SyliusMolliePlugin\Form\Type\MollieGatewayConfigurationType;
 use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use Mollie\Api\Exceptions\ApiException;
 use Sylius\Component\Resource\Exception\UpdateHandlingException;
@@ -49,7 +50,9 @@ final class MollieApiClientKeyResolver implements MollieApiClientKeyResolverInte
         ]);
         $config = $gateway->getConfig();
 
-        $environment = true === $config['environment'] ? 'api_key_live' : 'api_key_test';
+        $environment = true === $config['environment'] ?
+            MollieGatewayConfigurationType::API_KEY_LIVE :
+            MollieGatewayConfigurationType::API_KEY_TEST;
 
         try {
             return $this->mollieApiClient->setApiKey($config[$environment]);

@@ -112,6 +112,7 @@ final class OrderPaymentApplePayDirectProvider implements OrderPaymentApplePayDi
         $stateMachine = $this->stateMachineFactory->get($payment, PaymentTransitions::GRAPH);
 
         $targetTransition = $stateMachine->getTransitionToState($targetState);
+
         if (null !== $targetTransition) {
             $stateMachine->apply($targetTransition);
         }
@@ -120,6 +121,7 @@ final class OrderPaymentApplePayDirectProvider implements OrderPaymentApplePayDi
     private function getLastPayment(OrderInterface $order): ?PaymentInterface
     {
         $lastCancelledPayment = $order->getLastPayment(PaymentInterface::STATE_CANCELLED);
+
         if (null !== $lastCancelledPayment) {
             return $lastCancelledPayment;
         }

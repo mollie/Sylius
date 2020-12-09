@@ -72,6 +72,7 @@ final class ApplePayDirectProvider implements ApplePayDirectProviderInterface
         if (null !== $customer = $order->getShippingAddress()->getCustomer()) {
             $order->setCustomer($customer);
         }
+
         if (null === $order->getCustomer()) {
             $this->customerProvider->provideNewCustomer($applePayAddress['shippingContact']['emailAddress']);
         }

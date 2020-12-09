@@ -62,7 +62,6 @@ $(function () {
                     }
                 },
                 error: (XHR, status, error) => {
-                    alert(JSON.stringify(XHR, null, 4));
                     session.abort()
                 }
             })

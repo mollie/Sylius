@@ -4,7 +4,7 @@
     "description": "Mollie payment plugin for Sylius applications.",
     "license": "MIT",
     "require": {
-        "php": "^7.2",
+        "php": "^7.3",
 
         "sylius/sylius": "^1.7.0",
         "mollie/mollie-api-php": "^2.0",

@@ -1,5 +1,7 @@
 {% import '@SyliusUi/Macro/flags.html.twig' as flags %}
 
+{% set mollie = constant('BitBag\\SyliusMolliePlugin\\Factory\\MollieGatewayFactory::FACTORY_NAME') %}
+
 {% if form.vars.value.gatewayConfig.factoryName == 'mollie' %}
     {% include '@SyliusAdmin/PaymentMethod/_mollieMessage.html.twig' %}
     {{ bitbag_render_version_widget() }}

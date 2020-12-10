@@ -103,6 +103,9 @@ bitbag_sylius_mollie_plugin:
         emails:
             payment_link: 'This is Your payment link with order number'
         buy_with_apple_pay: 'Buy with'
+        latest_version_info: 'You are currently using version {old_version} of this plugin. The latest version is {latest_version} We advice you to'
+        enjoy_latest_version: 'to enjoy the latest features.'
+        update: 'update'
     form:
         payment_methods:
             payment_description: 'Description'

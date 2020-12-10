@@ -2,6 +2,7 @@
 
 {% if form.vars.value.gatewayConfig.factoryName == 'mollie' %}
     {% include '@SyliusAdmin/PaymentMethod/_mollieMessage.html.twig' %}
+    {{ bitbag_render_version_widget() }}
 {% endif %}
 
 <div class="ui segment">

@@ -41,7 +41,7 @@ final class Calculate
 
     public function calculateFromCart(OrderInterface $order, MollieGatewayConfig $paymentMethod): ?OrderInterface
     {
-        if (null === $paymentMethod->getPaymentSurchargeFee()->getType()) {
+        if (null === $paymentMethod->getPaymentSurchargeFee() || null === $paymentMethod->getPaymentSurchargeFee()->getType()) {
             return null;
         }
 

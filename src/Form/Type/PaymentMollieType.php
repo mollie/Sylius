@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Form\Type;
 
 use BitBag\SyliusMolliePlugin\Resolver\MolliePaymentsMethodResolverInterface;
+use BitBag\SyliusMolliePlugin\Validator\Constraints\PaymentMethodCheckout;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -45,6 +46,11 @@ final class PaymentMollieType extends AbstractType
 
         $builder
             ->add('molliePaymentMethods', ChoiceType::class, [
+                'constraints' => [
+                    new PaymentMethodCheckout([
+                        'groups' => ['sylius'],
+                    ]),
+                ],
                 'label' => false,
                 'choices' => $data,
                 'choice_attr' => function ($value) use ($images, $paymentFee) {

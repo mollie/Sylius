@@ -11,5 +11,10 @@
             <tag name="validator.constraint_validator"/>
         </service>
         <service id="bitbag_sylius_mollie_plugin.validator.apple_pay_direct.apple_pay_address_validator" class="BitBag\SyliusMolliePlugin\Validator\ApplePayDirect\ApplePayAddressValidator" />
+        <service id="bitbag_sylius_mollie_plugin.validator.apple_pay_direct.payment_method_checkout_validator" class="BitBag\SyliusMolliePlugin\Validator\Constraints\PaymentMethodCheckoutValidator">
+            <tag name="validator.constraint_validator"/>
+            <argument type="service" id="sylius.context.cart"/>
+            <argument type="service" id="session"/>
+        </service>
     </services>
 </container>

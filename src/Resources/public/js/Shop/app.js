@@ -139,11 +139,7 @@ $(function () {
         }
 
         form.addEventListener("submit", async event => {
-            const selectedMethod = $(`input[id*="sylius_checkout_select_payment_"][type=radio]:checked`)
-            if (selectedMethod.hasClass('mollie-payments') && selectedValue === false) {
-                selectedValue = $(".online-payment__input:checked").val();
-            }
-            if (selectedValue === 'creditcard') {
+            if ($(".online-payment__input:checked").val() === 'creditcard') {
                 event.preventDefault();
                 disableForm();
 

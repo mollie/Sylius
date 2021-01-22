@@ -44,10 +44,7 @@ final class PaymentMethodCheckoutValidator extends ConstraintValidator
         /** @var GatewayConfigInterface $gateway */
         $gateway = $payment->getMethod()->getGatewayConfig();
 
-        if (MollieGatewayFactory::FACTORY_NAME !== $gateway->getFactoryName()) {
-            return;
-        }
-        if (null !== $value) {
+        if (MollieGatewayFactory::FACTORY_NAME !== $gateway->getFactoryName() || null !== $value) {
             return;
         }
 

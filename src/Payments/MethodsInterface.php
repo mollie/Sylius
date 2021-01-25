@@ -20,7 +20,6 @@ use BitBag\SyliusMolliePlugin\Payments\Methods\Eps;
 use BitBag\SyliusMolliePlugin\Payments\Methods\GiftCard;
 use BitBag\SyliusMolliePlugin\Payments\Methods\Giropay;
 use BitBag\SyliusMolliePlugin\Payments\Methods\Ideal;
-use BitBag\SyliusMolliePlugin\Payments\Methods\IngHomePay;
 use BitBag\SyliusMolliePlugin\Payments\Methods\Kbc;
 use BitBag\SyliusMolliePlugin\Payments\Methods\Klarnapaylater;
 use BitBag\SyliusMolliePlugin\Payments\Methods\Klarnasliceit;
@@ -42,7 +41,6 @@ interface MethodsInterface
         GiftCard::class,
         Giropay::class,
         Ideal::class,
-        IngHomePay::class,
         Kbc::class,
         Klarnapaylater::class,
         Klarnasliceit::class,

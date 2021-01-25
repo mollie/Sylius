@@ -12,5 +12,8 @@
             <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
             <argument type="service" id="bitbag_sylius_mollie_plugin.resolver.partial_ship.from_sylius_to_mollie_lines_resolver"/>
         </service>
+        <service id="bitbag_sylius_mollie_plugin.purifier.mollie_payment_method_purifier" class="BitBag\SyliusMolliePlugin\Purifier\MolliePaymentMethodPurifier" public="true">
+            <argument type="service" id="bitbag_sylius_mollie_plugin.repository.mollie_gateway_config"/>
+        </service>
     </services>
 </container>

@@ -24,5 +24,14 @@
             <argument type="service" id="bitbag_sylius_mollie_plugin.preparer.payment_link_email_preparer"/>
             <argument type="service" id="sylius.repository.gateway_config"/>
         </service>
+        <service id="bitbag_sylius_mollie_plugin.creator.mollie_methods_creator" class="BitBag\SyliusMolliePlugin\Creator\MollieMethodsCreator">
+            <argument type="service" id="bitbag_sylius_mollie_plugin.payments.methods"/>
+            <argument type="service" id="doctrine.orm.default_entity_manager"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.mollie_api_client"/>
+            <argument type="service" id="sylius.repository.gateway_config"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.custom_factory.mollie_gateway_config"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.purifier.mollie_payment_method_purifier"/>
+        </service>
     </services>
 </container>

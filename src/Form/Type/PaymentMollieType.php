@@ -16,8 +16,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 final class PaymentMollieType extends AbstractType
@@ -59,20 +57,11 @@ final class PaymentMollieType extends AbstractType
             ->add('issuers', ChoiceType::class, [
                 'label' => false,
                 'choices' => $issuers['ideal'] ?? null,
-                'choice_value' => 'id',
                 'choice_label' => 'name',
                 'choice_attr' => function ($value) {
                     return ['image' => $value->image->svg];
                 },
             ])
-            ->add('cartToken', HiddenType::class)
-            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
-                $data = $event->getData();
-
-                $data['selected_issuer'] = isset($data['issuers']) ? $data['issuers']->id : null;
-                unset($data['issuers']);
-
-                $this->session->set('mollie_payment_options', $data);
-            });
+            ->add('cartToken', HiddenType::class);
     }
 }

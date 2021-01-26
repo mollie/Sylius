@@ -24,13 +24,9 @@ final class PaymentSurchargeProcessor implements PaymentSurchargeProcessorInterf
     /** @var Calculate */
     private $calculate;
 
-    /** @var SessionInterface */
-    private $session;
-
     public function __construct(Calculate $calculate, SessionInterface $session)
     {
         $this->calculate = $calculate;
-        $this->session = $session;
     }
 
     public function process(OrderInterface $order): void
@@ -45,7 +41,7 @@ final class PaymentSurchargeProcessor implements PaymentSurchargeProcessorInterf
             return;
         }
 
-        $data = $this->session->get('mollie_payment_options', null);
+        $data = $payment->getDetails();
 
         if (null === $data) {
             return;

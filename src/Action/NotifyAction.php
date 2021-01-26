@@ -80,7 +80,7 @@ final class NotifyAction extends BaseApiAwareAction implements ActionInterface, 
 
             $this->loggerAction->addLog(sprintf('Notify payment with id: %s', $payment->id));
 
-            throw new HttpResponse('OK', Response::HTTP_OK);
+            throw new HttpResponse(Response::$statusTexts[Response::HTTP_OK], Response::HTTP_OK);
         }
 
         if (true === isset($details['subscription_mollie_id'])) {
@@ -91,7 +91,7 @@ final class NotifyAction extends BaseApiAwareAction implements ActionInterface, 
 
             $this->loggerAction->addLog(sprintf('Notify subscription with id: %s', $details['subscription_mollie_id']));
 
-            throw new HttpResponse('OK', Response::HTTP_OK);
+            throw new HttpResponse(Response::$statusTexts[Response::HTTP_OK], Response::HTTP_OK);
         }
 
         if (true === isset($details['order_mollie_id'])) {
@@ -111,7 +111,7 @@ final class NotifyAction extends BaseApiAwareAction implements ActionInterface, 
 
             $this->loggerAction->addLog(sprintf('Notify order with id: %s', $order->id));
 
-            throw new HttpResponse('OK', Response::HTTP_OK);
+            throw new HttpResponse(Response::$statusTexts[Response::HTTP_OK], Response::HTTP_OK);
         }
     }
 

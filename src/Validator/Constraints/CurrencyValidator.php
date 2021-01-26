@@ -43,7 +43,7 @@ final class CurrencyValidator extends ConstraintValidator
                 null === $channel->getBaseCurrency() ||
                 false === in_array(strtoupper($channel->getBaseCurrency()->getCode()), MollieSubscriptionGatewayFactory::CURRENCIES_AVAILABLE)
             ) {
-                $message = isset($constraint->message) ? $constraint->message : null;
+                $message = $constraint->message ?? null;
 
                 $this->context->buildViolation($message, [
                     '{{ currencies }}' => implode(', ', MollieSubscriptionGatewayFactory::CURRENCIES_AVAILABLE),

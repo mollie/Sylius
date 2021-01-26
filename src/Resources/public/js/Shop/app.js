@@ -76,7 +76,7 @@ $(function () {
 
         const formError = document.getElementById("form-error");
         const submitButton = document.getElementById("next-step") ?? document.getElementById("sylius-pay-link");
-        const tokenField = document.querySelector('[id*="_payment_options_cartToken"]');
+        const tokenField = document.querySelector('[id*="_details_cartToken"]');
 
         const cardHolder = mollie.createComponent("cardHolder");
 

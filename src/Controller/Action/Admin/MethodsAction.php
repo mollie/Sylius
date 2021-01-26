@@ -105,6 +105,6 @@ final class MethodsAction
 
         $this->session->getFlashBag()->add('success', 'bitbag_sylius_mollie_plugin.admin.success_got_methods');
 
-        return new Response('OK', Response::HTTP_OK);
+        return new Response(Response::$statusTexts[Response::HTTP_OK], Response::HTTP_OK);
     }
 }

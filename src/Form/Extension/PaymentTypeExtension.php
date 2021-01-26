@@ -15,8 +15,7 @@ final class PaymentTypeExtension extends AbstractTypeExtension
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('mollie_payment_options', PaymentMollieType::class, [
-                'mapped' => false,
+            ->add('details', PaymentMollieType::class, [
                 'validation_groups' => ['sylius'],
                 'constraints' => [
                     new Valid(),

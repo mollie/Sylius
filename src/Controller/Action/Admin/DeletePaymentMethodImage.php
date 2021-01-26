@@ -60,6 +60,6 @@ final class DeletePaymentMethodImage
 
         $this->loggerAction->addLog(sprintf('Deleted image from method'));
 
-        return new Response('OK', Response::HTTP_OK);
+        return new Response(Response::$statusTexts[Response::HTTP_OK], Response::HTTP_OK);
     }
 }

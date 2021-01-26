@@ -52,6 +52,6 @@ final class DeletePaymentMethodImageAction
         $this->entityManager->persist($mollieGateway);
         $this->entityManager->flush();
 
-        return new Response('OK', Response::HTTP_OK);
+        return new Response(Response::$statusTexts[Response::HTTP_OK], Response::HTTP_OK);
     }
 }

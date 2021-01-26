@@ -18,6 +18,7 @@ use BitBag\SyliusMolliePlugin\Helper\ConvertOrderInterface;
 use BitBag\SyliusMolliePlugin\Helper\PaymentDescriptionInterface;
 use BitBag\SyliusMolliePlugin\Payments\PaymentTerms\Options;
 use BitBag\SyliusMolliePlugin\Request\Api\CreateCustomer;
+use Mollie\Api\Types\PaymentMethod;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Exception\RequestNotSupportedException;
@@ -82,10 +83,21 @@ final class ConvertPaymentAction extends BaseApiAwareAction implements ActionInt
         $divisor = 10 ** $currency->exp;
 
         $amount = number_format(abs($payment->getAmount() / $divisor), 2, '.', '');
-        $paymentOptions = $this->session->get('mollie_payment_options');
+
+        $paymentOptions = $payment->getDetails();
+
+        if (isset($paymentOptions['metadata'])) {
+            $paymentMethod = $paymentOptions['metadata']['molliePaymentMethods'];
+            $cartToken = $paymentOptions['metadata']['cartToken'];
+            $selectedIssuer = $paymentMethod === PaymentMethod::IDEAL ? $paymentOptions['metadata']['selected_issuer'] : null;
+        } else {
+            $paymentMethod = $paymentOptions['molliePaymentMethods'];
+            $cartToken = $paymentOptions['cartToken'];
+            $selectedIssuer = $paymentMethod === PaymentMethod::IDEAL ? $paymentOptions['issuers']['id'] : null;
+        }
 
         /** @var MollieGatewayConfigInterface $method */
-        $method = $this->mollieMethodsRepository->findOneBy(['methodId' => $paymentOptions['molliePaymentMethods']]);
+        $method = $this->mollieMethodsRepository->findOneBy(['methodId' => $paymentMethod]);
         $gatewayConfig = $method->getGateway()->getConfig();
 
         $details = [
@@ -97,9 +109,9 @@ final class ConvertPaymentAction extends BaseApiAwareAction implements ActionInt
             'metadata' => [
                 'order_id' => $order->getId(),
                 'customer_id' => $customer->getId() ?? null,
-                'molliePaymentMethods' => $paymentOptions['molliePaymentMethods'] ?? null,
-                'cartToken' => $paymentOptions['cartToken'] ?? null,
-                'selected_issuer' => $paymentOptions['selected_issuer'] ?? null,
+                'molliePaymentMethods' => $paymentMethod ?? null,
+                'cartToken' => $cartToken ?? null,
+                'selected_issuer' => $selectedIssuer ?? null,
             ],
             'full_name' => $customer->getFullName() ?? null,
             'email' => $customer->getEmail() ?? null,

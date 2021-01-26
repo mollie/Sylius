@@ -149,12 +149,6 @@ use Sylius\Component\Core\Model\Order as BaseOrder;
 class Order extends BaseOrder implements OrderInterface
 {
     use OrderTrait;
-
-    /**
-     * @var bool
-     * @ORM\Column(type="boolean")
-     */
-    protected  $abandonedEmail = false;
 }
 ```
 
@@ -230,8 +224,8 @@ class Product extends BaseProduct implements ProductInterface
     use ProductTrait;
 
     /**
-     * @ORM\ManyToOne(targetEntity="BitBag\SyliusMolliePlugin\Entity\ProductType", inversedBy="productType")
-     * @ORM\JoinColumn(name="product_type_id", onDelete="SET NULL")
+     * @ORM\ManyToOne(targetEntity="BitBag\SyliusMolliePlugin\Entity\ProductType")
+     * @ORM\JoinColumn(name="product_type_id", fieldName="productType", onDelete="SET NULL")
      */
     protected $productType;
 }

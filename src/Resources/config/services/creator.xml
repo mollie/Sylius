@@ -33,5 +33,8 @@
             <argument type="service" id="bitbag_sylius_mollie_plugin.custom_factory.mollie_gateway_config"/>
             <argument type="service" id="bitbag_sylius_mollie_plugin.purifier.mollie_payment_method_purifier"/>
         </service>
+        <service id="bitbag_sylius_mollie_plugin.creator.api_keys_test_creator" class="BitBag\SyliusMolliePlugin\Creator\ApiKeysTestCreator">
+            <argument type="service" id="bitbag_sylius_mollie_plugin.mollie_api_client"/>
+        </service>
     </services>
 </container>

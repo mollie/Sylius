@@ -1,0 +1,24 @@
+<div class="ui segment">
+{% if test.type == 'api_key_test' %}
+    <strong>{{ 'bitbag_sylius_mollie_plugin.ui.test_api_key'|trans }}:</strong>
+    {% if test.methods is not empty %}
+        {{ 'bitbag_sylius_mollie_plugin.ui.success'|trans }}
+    {% else %}
+        {{ 'bitbag_sylius_mollie_plugin.ui.fail'|trans }}
+    {% endif %}
+{% else %}
+    <strong>{{ 'bitbag_sylius_mollie_plugin.ui.live_api_key'|trans }}:</strong>
+    {% if test.methods is not empty %}
+        {{ 'bitbag_sylius_mollie_plugin.ui.success'|trans }}
+    {% else %}
+        {{ 'bitbag_sylius_mollie_plugin.ui.fail'|trans }}
+    {% endif %}
+{% endif %}
+    {% if test.key == false %}
+        {{ 'bitbag_sylius_mollie_plugin.ui.inser_you_key_first'|trans }}
+    {% endif %}
+    {{ 'bitbag_sylius_mollie_plugin.ui.available_methods'|trans }}:
+    {% for method in test.methods %}
+        {{ method.description }},
+    {% endfor %}
+</div>

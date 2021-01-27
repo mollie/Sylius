@@ -24,13 +24,24 @@
     {{ form_row(form.gatewayConfig.factoryName) }}
     {% if form.gatewayConfig.config is defined %}
         {% for field in form.gatewayConfig.config %}
-            {% if loop.index is odd %}<div class="one field">{% endif %}
+            {% if loop.index is odd %}<div class="two field">{% endif %}
             {% if field.vars.name == 'profile_id' or field.vars.name == 'api_key_test' %}
                 {{ field.vars.label|trans|raw|nl2br }}
                 {{ form_widget(field) }}
                 {{ form_help(field) }}
                 {{ form_errors(field) }}
             {% else %}
+                {% if field.vars.name == 'api_key_live' %}
+                    {{ form_row(field) }}
+                    {{ form_help(field) }}
+                    <button
+                            class="ui blue button test-api-key-button dividing"
+                            type="button"
+                            data-url="{{ path('bitbag_admin_test_api_keys') }}"
+                    >{{ 'bitbag_sylius_mollie_plugin.ui.test_api_keys'|trans }}
+                    </button>
+                    <div class="ui test-api-key-div"></div>
+                {% endif %}
                 {{ form_row(field) }}
                 {{ form_help(field) }}
             {% endif %}

@@ -18,5 +18,7 @@ final class BitBagSyliusMolliePlugin extends Bundle
 {
     public const VERSION = '3.3.5';
 
+    public const USER_AGENT_TOKEN = 'p5ACCDx8Tbn8vjpr';
+
     use SyliusPluginTrait;
 }

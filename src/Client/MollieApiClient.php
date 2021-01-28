@@ -22,15 +22,16 @@ class MollieApiClient extends BaseMollieApiClient
     /** @var bool */
     protected $isRecurringSubscription = false;
 
-    /** @var string */
-    protected $version;
-
     public function getVersion(): string
     {
         return BitBagSyliusMolliePlugin::VERSION;
     }
 
-    /** @param array $config */
+    public function getUserAgentToken(): string
+    {
+        return BitBagSyliusMolliePlugin::USER_AGENT_TOKEN;
+    }
+
     public function setConfig(array $config): void
     {
         $this->config = $config;

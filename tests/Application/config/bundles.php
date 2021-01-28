@@ -45,7 +45,6 @@ return [
     Sylius\Bundle\FixturesBundle\SyliusFixturesBundle::class => ['all' => true],
     Sylius\Bundle\PayumBundle\SyliusPayumBundle::class => ['all' => true],
     Sylius\Bundle\ThemeBundle\SyliusThemeBundle::class => ['all' => true],
-    Symfony\Bundle\WebServerBundle\WebServerBundle::class => ['all' => true],
     Sylius\Bundle\AdminBundle\SyliusAdminBundle::class => ['all' => true],
     Sylius\Bundle\ShopBundle\SyliusShopBundle::class => ['all' => true],
     FOS\OAuthServerBundle\FOSOAuthServerBundle::class => ['all' => true],
@@ -58,4 +57,8 @@ return [
     Sylius\RefundPlugin\SyliusRefundPlugin::class => ['all' => true],
     FOS\JsRoutingBundle\FOSJsRoutingBundle::class => ['all' => true],
     Sylius\AdminOrderCreationPlugin\SyliusAdminOrderCreationPlugin::class => ['all' => true],
+    ApiPlatform\Core\Bridge\Symfony\Bundle\ApiPlatformBundle::class => ['all' => true],
+    Sylius\Bundle\ApiBundle\SyliusApiBundle::class => ['all' => true],
+    Lexik\Bundle\JWTAuthenticationBundle\LexikJWTAuthenticationBundle::class => ['all' => true],
+    SyliusLabs\DoctrineMigrationsExtraBundle\SyliusLabsDoctrineMigrationsExtraBundle::class => ['all' => true],
 ];

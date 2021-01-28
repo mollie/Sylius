@@ -36,7 +36,7 @@ final class ApplePayDirectPaymentTypeResolver implements ApplePayDirectPaymentTy
         MollieGatewayConfigInterface $mollieGatewayConfig,
         PaymentInterface $payment,
         array $applePayDirectToken
-    ) {
+    ): void {
         $details = [];
         $order = $payment->getOrder();
 

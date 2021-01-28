@@ -13,7 +13,7 @@ namespace BitBag\SyliusMolliePlugin\Entity;
 
 class ProductType implements ProductTypeInterface
 {
-    /** @var int */
+    /** @var int|null */
     protected $id;
 
     /** @var string|null */
@@ -22,7 +22,7 @@ class ProductType implements ProductTypeInterface
     /** @var MollieGatewayConfigInterface|null */
     protected $mollieGatewayConfig;
 
-    public function __toString(): string
+    public function __toString(): ?string
     {
         return $this->name;
     }

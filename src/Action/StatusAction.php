@@ -19,6 +19,7 @@ use BitBag\SyliusMolliePlugin\Refund\PaymentRefundInterface;
 use BitBag\SyliusMolliePlugin\Updater\Order\OrderVoucherAdjustmentUpdaterInterface;
 use Mollie\Api\Exceptions\ApiException;
 use Mollie\Api\Resources\Customer;
+use Mollie\Api\Resources\Payment;
 use Mollie\Api\Resources\Subscription;
 use Mollie\Api\Types\PaymentStatus;
 use Mollie\Api\Types\SubscriptionStatus;
@@ -133,12 +134,15 @@ final class StatusAction extends BaseApiAwareAction implements StatusActionInter
             try {
                 $order = $this->mollieApiClient->orders->get($details['order_mollie_id'], ['embed' => 'payments']);
                 $payments = $order->_embedded->payments;
+
+                /** @var Payment $payment */
                 $payment = current($payments);
 
                 if ($payment->method === MealVoucher::MEAL_VOUCHERS) {
                     $this->orderVoucherAdjustmentUpdater->update($payment, $order->metadata->order_id);
                 }
 
+                /** @var Payment $molliePayment */
                 $molliePayment = $this->mollieApiClient->payments->get($payment->id);
                 $molliePayment->metadata = $order->metadata;
             } catch (\Exception $e) {

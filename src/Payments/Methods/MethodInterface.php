@@ -11,6 +11,8 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Payments\Methods;
 
+use BitBag\SyliusMolliePlugin\Entity\ProductTypeInterface;
+
 interface MethodInterface
 {
     public function getName(): ?string;
@@ -48,4 +50,8 @@ interface MethodInterface
     public function getIssuers(): array;
 
     public function setIssuers(array $issuers): void;
+
+    public function getDefaultCategory(): ?ProductTypeInterface;
+
+    public function setDefaultCategory(?ProductTypeInterface $defaultCategory): void;
 }

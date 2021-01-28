@@ -18,7 +18,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 final class PaymentlinkType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('methods', EntityType::class, [

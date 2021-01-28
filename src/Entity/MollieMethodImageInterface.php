@@ -15,7 +15,7 @@ use Sylius\Component\Resource\Model\ResourceInterface;
 
 interface MollieMethodImageInterface extends ResourceInterface
 {
-    public function getId();
+    public function getId(): ?int;
 
     public function getName(): ?string;
 

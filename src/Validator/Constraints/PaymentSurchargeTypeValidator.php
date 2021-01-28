@@ -20,6 +20,7 @@ use Webmozart\Assert\Assert;
 final class PaymentSurchargeTypeValidator extends ConstraintValidator
 {
     public const PERCENTAGE_FIELD = 'percentage';
+
     public const FIXED_AMOUNT_FIELD = 'fixedAmount';
 
     public function validate($value, Constraint $constraint): void

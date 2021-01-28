@@ -20,5 +20,5 @@ interface ApplePayDirectPaymentTypeResolverInterface
         MollieGatewayConfigInterface $mollieGatewayConfig,
         PaymentInterface $payment,
         array $applePayDirectToken
-    );
+    ): void;
 }

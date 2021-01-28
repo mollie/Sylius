@@ -21,7 +21,7 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
 final class BitBagSyliusMollieExtension extends Extension implements PrependExtensionInterface
 {
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $config = $this->processConfiguration($this->getConfiguration([], $container), $configs);
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));

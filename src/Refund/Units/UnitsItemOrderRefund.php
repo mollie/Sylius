@@ -53,7 +53,7 @@ final class UnitsItemOrderRefund implements UnitsItemOrderRefundInterface
         return $unitsToRefund;
     }
 
-    public function getActualRefundedQuantity(OrderInterface $order, $itemId): int
+    public function getActualRefundedQuantity(OrderInterface $order, int $itemId): int
     {
         $allItems = array_filter($this->getActualRefunded($order, $itemId));
 

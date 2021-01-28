@@ -15,6 +15,7 @@ use Symfony\Component\Validator\Constraint;
 
 final class PaymentSurchargeType extends Constraint
 {
+    /** @var string */
     public $message = 'bitbag_sylius_mollie_plugin.form.error.payment_surcharge_not_empty';
 
     public function validatedBy(): string

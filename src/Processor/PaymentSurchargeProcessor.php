@@ -17,14 +17,13 @@ use Doctrine\Common\Collections\Collection;
 use Payum\Core\Model\PaymentInterface;
 use Sylius\Component\Order\Model\OrderInterface;
 use Sylius\Component\Payment\Model\PaymentMethodInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 final class PaymentSurchargeProcessor implements PaymentSurchargeProcessorInterface
 {
     /** @var Calculate */
     private $calculate;
 
-    public function __construct(Calculate $calculate, SessionInterface $session)
+    public function __construct(Calculate $calculate)
     {
         $this->calculate = $calculate;
     }

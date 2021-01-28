@@ -76,26 +76,30 @@ final class ConvertOrder implements ConvertOrderInterface
 
     private function createShippingAddress(CustomerInterface $customer): array
     {
+        $shippingAddress = $this->order->getShippingAddress();
+
         return [
-            'streetAndNumber' => $this->order->getShippingAddress()->getStreet(),
-            'postalCode' => $this->order->getShippingAddress()->getPostcode(),
-            'city' => $this->order->getShippingAddress()->getCity(),
-            'country' => $this->order->getShippingAddress()->getCountryCode(),
-            'givenName' => $this->order->getShippingAddress()->getFirstName(),
-            'familyName' => $this->order->getShippingAddress()->getLastName(),
+            'streetAndNumber' => $shippingAddress->getStreet(),
+            'postalCode' => $shippingAddress->getPostcode(),
+            'city' => $shippingAddress->getCity(),
+            'country' => $shippingAddress->getCountryCode(),
+            'givenName' => $shippingAddress->getFirstName(),
+            'familyName' => $shippingAddress->getLastName(),
             'email' => $customer->getEmail(),
         ];
     }
 
     private function createBillingAddress(CustomerInterface $customer): array
     {
+        $billingAddress = $this->order->getShippingAddress();
+
         return [
-            'streetAndNumber' => $this->order->getBillingAddress()->getStreet(),
-            'postalCode' => $this->order->getBillingAddress()->getPostcode(),
-            'city' => $this->order->getBillingAddress()->getCity(),
-            'country' => $this->order->getBillingAddress()->getCountryCode(),
-            'givenName' => $this->order->getBillingAddress()->getFirstName(),
-            'familyName' => $this->order->getBillingAddress()->getLastName(),
+            'streetAndNumber' => $billingAddress->getStreet(),
+            'postalCode' => $billingAddress->getPostcode(),
+            'city' => $billingAddress->getCity(),
+            'country' => $billingAddress->getCountryCode(),
+            'givenName' => $billingAddress->getFirstName(),
+            'familyName' => $billingAddress->getLastName(),
             'email' => $customer->getEmail(),
         ];
     }
@@ -166,7 +170,9 @@ final class ConvertOrder implements ConvertOrderInterface
         $details = [];
 
         /** @var ShipmentInterface $shipment */
-        if (false !== $this->order->getShipments()->first()) {
+        $shipment = $this->order->getShipments()->first();
+
+        if (false !== $shipment) {
             $details[] = [
                 'type' => self::SHIPPING_TYPE,
                 'name' => self::SHIPPING_FEE,

@@ -6,7 +6,6 @@
         <defaults public="true" />
         <service id="bitbag_sylius_mollie_plugin.processor.payment_surcharge_processor" class="BitBag\SyliusMolliePlugin\Processor\PaymentSurchargeProcessor">
             <argument type="service" id="bitbag_sylius_mollie_plugin.payment_surcharge.calculate"/>
-            <argument type="service" id="session"/>
         </service>
     </services>
 </container>

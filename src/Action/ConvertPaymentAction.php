@@ -27,6 +27,7 @@ use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Convert;
 use Payum\Core\Request\GetCurrency;
 use Sylius\Bundle\CoreBundle\Context\CustomerContext;
+use Sylius\Component\Core\Model\CustomerInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
@@ -76,6 +77,7 @@ final class ConvertPaymentAction extends BaseApiAwareAction implements ActionInt
         /** @var OrderInterface $order */
         $order = $payment->getOrder();
 
+        /** @var CustomerInterface $customer */
         $customer = $order->getCustomer();
 
         $this->gateway->execute($currency = new GetCurrency($payment->getCurrencyCode()));

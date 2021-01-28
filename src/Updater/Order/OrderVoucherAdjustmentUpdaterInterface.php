@@ -11,7 +11,9 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Updater\Order;
 
+use Mollie\Api\Resources\Payment;
+
 interface OrderVoucherAdjustmentUpdaterInterface
 {
-    public function update(\stdClass $molliePayment, int $orderId): void;
+    public function update(Payment $molliePayment, int $orderId): void;
 }

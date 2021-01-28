@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Checker\Voucher;
 
 use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
+use BitBag\SyliusMolliePlugin\Entity\ProductInterface;
 use BitBag\SyliusMolliePlugin\Entity\ProductType;
 use BitBag\SyliusMolliePlugin\Payments\Methods\MealVoucher;
 use BitBag\SyliusMolliePlugin\Repository\MollieGatewayConfigRepository;
@@ -47,7 +48,9 @@ final class ProductVoucherTypeChecker implements ProductVoucherTypeCheckerInterf
         $items = $order->getItems();
         /** @var OrderItemInterface $item */
         foreach ($items as $item) {
-            if (null === $item->getProduct()->getProductType()) {
+            /** @var ProductInterface $product */
+            $product = $item->getProduct();
+            if (null === $product->getProductType()) {
                 unset($methods['data'][MealVoucher::MEAL_VOUCHERS]);
             }
         }

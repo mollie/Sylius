@@ -15,16 +15,16 @@ use Sylius\Component\Resource\Model\AbstractTranslation;
 
 class TemplateMollieEmailTranslation extends AbstractTranslation implements TemplateMollieEmailTranslationInterface
 {
-    /** @var int */
+    /** @var int|null */
     protected $id;
 
-    /** @var string */
+    /** @var string|null */
     protected $name;
 
-    /** @var string */
+    /** @var string|null */
     protected $subject;
 
-    /** @var string */
+    /** @var string|null */
     protected $content;
 
     public function getId(): ?int

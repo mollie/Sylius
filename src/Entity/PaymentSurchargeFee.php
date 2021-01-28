@@ -15,22 +15,22 @@ use Sylius\Component\Resource\Model\ResourceInterface;
 
 class PaymentSurchargeFee implements ResourceInterface, PaymentSurchargeFeeInterface
 {
-    /** @var int */
+    /** @var int|null */
     protected $id;
 
-    /** @var string */
+    /** @var string|null */
     protected $type;
 
-    /** @var float */
+    /** @var float|null */
     protected $fixedAmount;
 
-    /** @var float */
+    /** @var float|null */
     protected $percentage;
 
-    /** @var float */
+    /** @var float|null */
     protected $surchargeLimit;
 
-    /** @var MollieGatewayConfigInterface */
+    /** @var MollieGatewayConfigInterface|null */
     protected $mollieGatewayConfig;
 
     public function getId(): ?int

@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Controller\Action\Admin;
 
 use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
+use BitBag\SyliusMolliePlugin\Entity\MollieMethodImageInterface;
 use BitBag\SyliusMolliePlugin\Uploader\PaymentMethodLogoUploaderInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
@@ -39,14 +40,17 @@ final class DeletePaymentMethodImageAction
         $this->entityManager = $entityManager;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Response
     {
         $methodName = $request->request->get('method');
 
         /** @var MollieGatewayConfigInterface $mollieGateway */
         $mollieGateway = $this->logoRepository->findOneBy(['name' => $methodName]);
 
-        $this->logoUploader->remove($mollieGateway->getCustomizeMethodImage()->getPath());
+        /** @var MollieMethodImageInterface $customizeMethodImage */
+        $customizeMethodImage = $mollieGateway->getCustomizeMethodImage();
+
+        $this->logoUploader->remove($customizeMethodImage->getPath());
         $mollieGateway->setCustomizeMethodImage(null);
 
         $this->entityManager->persist($mollieGateway);

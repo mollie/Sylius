@@ -26,7 +26,7 @@ final class MealVoucherResolver implements MealVoucherResolverInterface
         return null;
     }
 
-    private function getMealVoucherCategory(MollieGatewayConfigInterface $method, OrderItemInterface $item): string
+    private function getMealVoucherCategory(MollieGatewayConfigInterface $method, OrderItemInterface $item): ?string
     {
         if (null !== $this->getMealVoucherFromItem($item)) {
             return $this->getMealVoucherFromItem($item);

@@ -17,5 +17,5 @@ interface ProductInterface extends BaseProductInterface
 {
     public function getProductType(): ?ProductTypeInterface;
 
-    public function setProductType(?ProductTypeInterface $productType);
+    public function setProductType(?ProductTypeInterface $productType): void;
 }

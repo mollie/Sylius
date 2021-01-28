@@ -56,9 +56,11 @@ final class ApplePayDirectApiOrderPaymentResolver implements ApplePayDirectApiOr
         $customer = $order->getCustomer();
 
         $orderExpiredTime = $mollieGatewayConfig->getOrderExpiration();
-        $interval = new \DateInterval('P' . $orderExpiredTime . 'D');
-        $dateExpired = new \DateTimeImmutable('now');
-        $dateExpired = $dateExpired->add($interval);
+        if (null !== $orderExpiredTime) {
+            $interval = new \DateInterval('P' . $orderExpiredTime . 'D');
+            $dateExpired = new \DateTimeImmutable('now');
+            $dateExpired = $dateExpired->add($interval);
+        }
 
         /** @var PaymentInterface $payment */
         $payment = $order->getLastPayment();

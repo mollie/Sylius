@@ -50,26 +50,29 @@ final class SetStatusOrderAction
         /** @var OrderInterface $orderSylius */
         $orderSylius = $this->orderRepository->findOneBy(['id' => $order->orderNumber]);
 
-        /** @var ShipmentInterface $shipment */
-        $shipment = $orderSylius->getShipments()->first();
+        /** @var ShipmentInterface $firstShipment */
+        $firstShipment = $orderSylius->getShipments()->first();
+
+        /** @var ShipmentInterface $lastShipment */
+        $lastShipment = $orderSylius->getShipments()->last();
 
         if ($order->isCompleted()) {
             $this->applyStateMachineOrderTransition($orderSylius, OrderTransitions::TRANSITION_FULFILL);
-            $this->applyStateMachineShipmentsTransition($orderSylius->getShipments()->first(), ShipmentTransitions::TRANSITION_SHIP);
+            $this->applyStateMachineShipmentsTransition($firstShipment, ShipmentTransitions::TRANSITION_SHIP);
         }
         if ($order->isCanceled() || $order->isExpired()) {
             $this->applyStateMachineOrderTransition($orderSylius, OrderTransitions::TRANSITION_CANCEL);
         }
 
-        if ($order->isShipping() && $this->isConfirmNotify($order, $shipment) && false === $this->isShippingAllItems($shipment)) {
+        if ($order->isShipping() && $this->isConfirmNotify($order, $firstShipment) && false === $this->isShippingAllItems($firstShipment)) {
             return;
         }
-        if ($order->isShipping() && false === $this->isShippingAllItems($shipment)) {
+        if ($order->isShipping() && false === $this->isShippingAllItems($firstShipment)) {
             $this->createPartialShipFromMollie->create($orderSylius, $order);
-            $this->applyStateMachineShipmentsTransition($orderSylius->getShipments()->last(), ShipmentTransitionsPartial::TRANSITION_CREATE_AND_SHIP);
+            $this->applyStateMachineShipmentsTransition($lastShipment, ShipmentTransitionsPartial::TRANSITION_CREATE_AND_SHIP);
         }
-        if ($order->isShipping() && true === $this->isShippingAllItems($shipment)) {
-            $this->applyStateMachineShipmentsTransition($orderSylius->getShipments()->last(), ShipmentTransitions::TRANSITION_SHIP);
+        if ($order->isShipping() && true === $this->isShippingAllItems($firstShipment)) {
+            $this->applyStateMachineShipmentsTransition($lastShipment, ShipmentTransitions::TRANSITION_SHIP);
         }
     }
 
@@ -95,7 +98,7 @@ final class SetStatusOrderAction
         $stateMachine->apply($transitions);
     }
 
-    private function isShippingAllItems(ShipmentInterface $shipment)
+    private function isShippingAllItems(ShipmentInterface $shipment): bool
     {
         return $shipment->getUnits()->isEmpty();
     }

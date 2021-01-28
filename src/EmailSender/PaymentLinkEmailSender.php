@@ -14,6 +14,7 @@ namespace BitBag\SyliusMolliePlugin\EmailSender;
 use BitBag\SyliusMolliePlugin\Entity\TemplateMollieEmailTranslationInterface;
 use BitBag\SyliusMolliePlugin\Mailer\Emails;
 use BitBag\SyliusMolliePlugin\Twig\Parser\ContentParserInterface;
+use Sylius\Component\Core\Model\CustomerInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Mailer\Sender\SenderInterface;
@@ -46,7 +47,10 @@ final class PaymentLinkEmailSender implements PaymentLinkEmailSenderInterface
         $paymentLink = $payment->getDetails()['payment_mollie_link'];
         $content = $this->contentParser->parse($template->getContent(), $paymentLink);
 
-        $this->emailSender->send(Emails::PAYMENT_LINK, [$order->getCustomer()->getEmail()], [
+        /** @var CustomerInterface $customer */
+        $customer = $order->getCustomer();
+
+        $this->emailSender->send(Emails::PAYMENT_LINK, [$customer->getEmail()], [
             'order' => $order,
             'template' => $template,
             'content' => $content,

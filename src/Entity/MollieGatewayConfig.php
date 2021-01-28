@@ -19,37 +19,37 @@ class MollieGatewayConfig extends AbstractMethod implements ResourceInterface, M
     /** @var int */
     protected $id;
 
-    /** @var string */
+    /** @var string|null */
     protected $methodId;
 
     /** @var GatewayConfigInterface */
     protected $gateway;
 
-    /** @var PaymentSurchargeFeeInterface */
+    /** @var PaymentSurchargeFeeInterface|null */
     protected $paymentSurchargeFee;
 
-    /** @var MollieMethodImageInterface */
+    /** @var MollieMethodImageInterface|null */
     protected $customizeMethodImage;
 
-    /** @var array */
+    /** @var array|null */
     protected $countryLevel;
 
-    /** @var array */
+    /** @var array|null */
     protected $countryLevelAllowed;
 
-    /** @var array */
+    /** @var array|null */
     protected $countryLevelExcluded;
 
-    /** @var int */
+    /** @var int|null */
     protected $orderExpiration = 28;
 
-    /** @var string */
+    /** @var string|null */
     protected $paymentDescription;
 
-    /** @var bool */
+    /** @var bool|null */
     protected $loggerEnabled;
 
-    /** @var int */
+    /** @var int|null */
     protected $loggerLevel;
 
     /** @var string|null */

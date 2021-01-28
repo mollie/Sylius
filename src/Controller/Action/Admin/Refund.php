@@ -15,6 +15,7 @@ use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
 use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use BitBag\SyliusMolliePlugin\Request\Api\RefundOrder;
 use Doctrine\ORM\EntityManagerInterface;
+use Payum\Core\Model\GatewayConfigInterface;
 use Payum\Core\Payum;
 use Payum\Core\Request\Refund as RefundAction;
 use Payum\Core\Security\TokenInterface;
@@ -81,7 +82,9 @@ final class Refund
         /** @var PaymentMethodInterface $paymentMethod */
         $paymentMethod = $payment->getMethod();
 
-        $factoryName = $paymentMethod->getGatewayConfig()->getFactoryName() ?? null;
+        /** @var GatewayConfigInterface $gatewayConfig */
+        $gatewayConfig = $paymentMethod->getGatewayConfig();
+        $factoryName = $gatewayConfig->getFactoryName() ?? null;
 
         if (MollieGatewayFactory::FACTORY_NAME !== $factoryName) {
             $this->applyStateMachineTransition($payment);

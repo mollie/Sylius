@@ -19,12 +19,13 @@ use BitBag\SyliusMolliePlugin\Preparer\PaymentLinkEmailPreparerInterface;
 use BitBag\SyliusMolliePlugin\Repository\OrderRepositoryInterface;
 use BitBag\SyliusMolliePlugin\Resolver\PaymentlinkResolverInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
+use Sylius\Component\Payment\Model\PaymentMethodInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 
 final class AbandonedPaymentLinkCreator implements AbandonedPaymentLinkCreatorInterface
 {
     /** @var PaymentlinkResolverInterface */
-    private $paymentlinkResolver;
+    private $paymentLinkResolver;
 
     /** @var OrderRepositoryInterface */
     private $orderRepository;
@@ -36,12 +37,12 @@ final class AbandonedPaymentLinkCreator implements AbandonedPaymentLinkCreatorIn
     private $gatewayConfigRepository;
 
     public function __construct(
-        PaymentlinkResolverInterface $paymentlinkResolver,
+        PaymentlinkResolverInterface $paymentLinkResolver,
         OrderRepositoryInterface $orderRepository,
         PaymentLinkEmailPreparerInterface $emailPreparer,
         RepositoryInterface $gatewayConfigRepository
     ) {
-        $this->paymentlinkResolver = $paymentlinkResolver;
+        $this->paymentLinkResolver = $paymentLinkResolver;
         $this->orderRepository = $orderRepository;
         $this->emailPreparer = $emailPreparer;
         $this->gatewayConfigRepository = $gatewayConfigRepository;
@@ -75,8 +76,14 @@ final class AbandonedPaymentLinkCreator implements AbandonedPaymentLinkCreatorIn
             /** @var PaymentInterface $payment */
             $payment = $order->getPayments()->first();
 
-            if ($payment->getMethod()->getGatewayConfig()->getFactoryName() === MollieGatewayFactory::FACTORY_NAME) {
-                $this->paymentlinkResolver->resolve($order, [], TemplateMollieEmailInterface::PAYMENT_LINK_ABANDONED);
+            /** @var PaymentMethodInterface $paymentMethod */
+            $paymentMethod = $payment->getMethod();
+
+            /** @var \Payum\Core\Model\GatewayConfigInterface $gatewayConfig */
+            $gatewayConfig = $paymentMethod->getGatewayConfig();
+
+            if ($gatewayConfig->getFactoryName() === MollieGatewayFactory::FACTORY_NAME) {
+                $this->paymentLinkResolver->resolve($order, [], TemplateMollieEmailInterface::PAYMENT_LINK_ABANDONED);
                 $order->setAbandonedEmail(true);
                 $this->orderRepository->add($order);
             }

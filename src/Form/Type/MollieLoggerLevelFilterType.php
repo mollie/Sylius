@@ -18,7 +18,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 final class MollieLoggerLevelFilterType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('loggerLevel', ChoiceType::class, [

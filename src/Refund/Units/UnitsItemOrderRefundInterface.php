@@ -18,5 +18,5 @@ interface UnitsItemOrderRefundInterface
 {
     public function refund(OrderInterface $order, PartialRefundItems $partialRefundItems): array;
 
-    public function getActualRefundedQuantity(OrderInterface $order, $itemId): int;
+    public function getActualRefundedQuantity(OrderInterface $order, int $itemId): int;
 }

@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Action\Api;
 
 use BitBag\SyliusMolliePlugin\Entity\MollieCustomer;
+use BitBag\SyliusMolliePlugin\Entity\MollieCustomerInterface;
 use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use BitBag\SyliusMolliePlugin\Request\Api\CreateCustomer;
 use Mollie\Api\Exceptions\ApiException;
@@ -46,6 +47,7 @@ final class CreateCustomerAction extends BaseApiAwareAction implements ActionInt
             'email' => $model['email'],
         ];
 
+        /** @var MollieCustomerInterface $customer */
         $customer = $this->mollieCustomerRepository->findOneBy(['email' => $model['email']]);
 
         if (null === $customer) {

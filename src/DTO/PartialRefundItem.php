@@ -101,7 +101,7 @@ final class PartialRefundItem
         return 0;
     }
 
-    public function getAmountToRefund()
+    public function getAmountToRefund(): int
     {
         return $this->amountToRefund;
     }

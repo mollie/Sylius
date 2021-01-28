@@ -18,7 +18,7 @@ final class Options
     const ALL_COUNTRIES = 'bitbag_sylius_mollie_plugin.ui.all_countries';
     const SELECTED_COUNTRIES = 'bitbag_sylius_mollie_plugin.ui.selected_countries';
 
-    public static function getCountriesConfigOptions()
+    public static function getCountriesConfigOptions(): array
     {
         return [
             self::ALL_COUNTRIES => MollieGatewayConfigInterface::ALL_COUNTRIES,

@@ -14,6 +14,7 @@ namespace BitBag\SyliusMolliePlugin\Resolver;
 use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
 use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfig;
 use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
+use BitBag\SyliusMolliePlugin\Form\Type\MollieGatewayConfigurationType;
 use BitBag\SyliusMolliePlugin\Helper\IntToStringConverter;
 use BitBag\SyliusMolliePlugin\Preparer\PaymentLinkEmailPreparerInterface;
 use Liip\ImagineBundle\Exception\Config\Filter\NotFoundException;
@@ -129,9 +130,9 @@ final class PaymentlinkResolver implements PaymentlinkResolverInterface
     private function getModus(array $config): string
     {
         if ($config['environment']) {
-            return $config['api_key_live'];
+            return $config[MollieGatewayConfigurationType::API_KEY_LIVE];
         }
 
-        return $config['api_key_test'];
+        return $config[MollieGatewayConfigurationType::API_KEY_TEST];
     }
 }

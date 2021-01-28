@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Factory;
 
 use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
+use BitBag\SyliusMolliePlugin\Form\Type\MollieGatewayConfigurationType;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\GatewayFactory;
 use Sylius\Bundle\CoreBundle\Application\Kernel;
@@ -22,7 +23,10 @@ final class MollieGatewayFactory extends GatewayFactory
 
     protected function populateConfig(ArrayObject $config): void
     {
-        $environment = true === $config['environment'] ? 'api_key_live' : 'api_key_test';
+        $environment = true === $config['environment'] ?
+            MollieGatewayConfigurationType::API_KEY_LIVE :
+            MollieGatewayConfigurationType::API_KEY_TEST;
+
         $config->defaults([
             'payum.factory_name' => self::FACTORY_NAME,
             'payum.factory_title' => 'Mollie',

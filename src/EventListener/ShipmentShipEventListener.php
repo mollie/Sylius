@@ -13,6 +13,7 @@ namespace BitBag\SyliusMolliePlugin\EventListener;
 
 use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
 use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
+use BitBag\SyliusMolliePlugin\Form\Type\MollieGatewayConfigurationType;
 use Mollie\Api\Exceptions\ApiException;
 use Mollie\Api\Resources\Order;
 use Sylius\Component\Core\Model\OrderInterface;
@@ -69,9 +70,9 @@ final class ShipmentShipEventListener
     private function getModus(array $config): string
     {
         if ($config['environment']) {
-            return $config['api_key_live'];
+            return $config[MollieGatewayConfigurationType::API_KEY_LIVE];
         }
 
-        return $config['api_key_test'];
+        return $config[MollieGatewayConfigurationType::API_KEY_TEST];
     }
 }

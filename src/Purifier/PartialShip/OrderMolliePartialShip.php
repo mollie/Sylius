@@ -13,6 +13,7 @@ namespace BitBag\SyliusMolliePlugin\Purifier\PartialShip;
 
 use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
 use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
+use BitBag\SyliusMolliePlugin\Form\Type\MollieGatewayConfigurationType;
 use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use BitBag\SyliusMolliePlugin\Resolver\PartialShip\FromSyliusToMollieLinesResolverInterface;
 use Mollie\Api\Exceptions\ApiException;
@@ -80,9 +81,9 @@ final class OrderMolliePartialShip implements OrderMolliePartialShipInterface
     private function getModus(array $config): string
     {
         if ($config['environment']) {
-            return $config['api_key_live'];
+            return $config[MollieGatewayConfigurationType::API_KEY_LIVE];
         }
 
-        return $config['api_key_test'];
+        return $config[MollieGatewayConfigurationType::API_KEY_TEST];
     }
 }

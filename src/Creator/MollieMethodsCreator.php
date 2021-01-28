@@ -15,6 +15,7 @@ use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
 use BitBag\SyliusMolliePlugin\Entity\GatewayConfigInterface;
 use BitBag\SyliusMolliePlugin\Factory\MollieGatewayConfigFactoryInterface;
 use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
+use BitBag\SyliusMolliePlugin\Form\Type\MollieGatewayConfigurationType;
 use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use BitBag\SyliusMolliePlugin\Payments\Methods;
 use BitBag\SyliusMolliePlugin\Payments\Methods\MethodInterface;
@@ -64,7 +65,9 @@ final class MollieMethodsCreator implements MollieMethodsCreatorInterface
         $gateway = $this->gatewayConfigRepository->findOneBy(['factoryName' => MollieGatewayFactory::FACTORY_NAME]);
 
         $config = $gateway->getConfig();
-        $environment = true === $config['environment'] ? 'api_key_live' : 'api_key_test';
+        $environment = true === $config['environment'] ?
+            MollieGatewayConfigurationType::API_KEY_LIVE :
+            MollieGatewayConfigurationType::API_KEY_TEST;
 
         $client = $this->mollieApiClient->setApiKey($config[$environment]);
 

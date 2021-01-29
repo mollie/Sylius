@@ -9,13 +9,13 @@
                 {% include '@SyliusShop/Checkout/SelectPayment/_choiceMollie.html.twig' with {
                     'form': choice_form,
                     'method': form.method.vars.choices[key].data,
-                    'mollie_payment_options': form.mollie_payment_options
+                    'mollie_payment_options': form.details
                 } %}
             {% else %}
                 {% include '@SyliusShop/Checkout/SelectPayment/_choice.html.twig' with {
                     'form': choice_form,
                     'method': form.method.vars.choices[key].data,
-                    'mollie_payment_options': form.mollie_payment_options
+                    'mollie_payment_options': form.details
                 } %}
             {% endif %}
         {% else %}

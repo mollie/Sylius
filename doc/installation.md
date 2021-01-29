@@ -1,21 +1,25 @@
 ## Installation
 
-1.Require with composer
-
-
-Right now we are using the Refund plugin. This plugin is on RC version. 
-We are recommended to install first Refund plugin by adding this line to composer.json
-Then install mollie plugin.
+The Refund plugin does not yet have stable release. 
+You can install first Refund plugin by adding this line to composer.json
 
 ```diff
     "require": {
-        "sylius/refund-plugin": "1.0.0-RCX as 1.0.0",
+        "sylius/refund-plugin": "1.0.0-RC5 as 1.0.0",
     },
     ...
 ```
+Or configure project to accept releases candidate version
 
 ```bash
-$ composer require bitbag/mollie-plugin
+composer config minimum-stability rc
+composer config prefer-stable true
+```
+
+1.Require with composer
+
+```bash
+composer require bitbag/mollie-plugin
 ```
 2.Add traits to your GatewayConfig entity class, when You don't use annotation. 
 
@@ -320,19 +324,7 @@ bitbag_sylius_mollie_plugin:
 
 9.Update your database
 
-Copy migrations of the RefundPlugin used by this MolliePlugin
-
-```bash
-cp -R vendor/sylius/refund-plugin/migrations/* src/Migrations
-```
-
-Copy migrations of the MolliePlugin
-
-```
-cp -R vendor/bitbag/mollie-plugin/migrations/* src/Migrations
-```
-
-Run migrations
+Apply migration to your database
 ```
 bin/console doctrine:migrations:migrate
 ```

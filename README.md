@@ -51,6 +51,7 @@ Mollie is the most popular and advanced payment gateway integration with Sylius.
 12. ING Home'Pay
 13. Belfius Pay Button
 14. Gift cards
+15. Apple Pay Direct
 
 Few words from Mollie: Our mission is to create a greater playing field for everyone. By offering convenient, safe world-wide payment solutions we remove barriers so you could focus on growing your business. Being authentic is our baseline.
 
@@ -83,7 +84,7 @@ We work on stable, supported and up-to-date versions of packages. We recommend y
 ----
 
 
-For the full installation guide please go to [installation.md](doc/installation.md)
+For the full installation guide please go to [installation](doc/installation.md)
 
 ## Usage
 ----

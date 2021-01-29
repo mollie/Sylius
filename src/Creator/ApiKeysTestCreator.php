@@ -27,7 +27,7 @@ final class ApiKeysTestCreator implements ApiKeysTestCreatorInterface
 
     public function create(string $keyType, string $key = null): ApiKeyTest
     {
-        if (!empty(trim($key))) {
+        if (null !== $key && !empty(trim($key))) {
             return new ApiKeyTest(
                 $keyType,
                 $key ? true : false,
@@ -44,6 +44,6 @@ final class ApiKeysTestCreator implements ApiKeysTestCreatorInterface
     {
         $client = $this->mollieApiClient->setApiKey($apiKey);
 
-        return $client->methods->allActive();
+        return $client->methods->allActive(MollieMethodsCreatorInterface::PARAMETERS);
     }
 }

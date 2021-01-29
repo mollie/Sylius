@@ -1,0 +1,9 @@
+{% set value = 'bitbag_sylius_mollie_plugin.ui.' ~ test.type %}
+<strong>{{ value|trans }}:</strong>
+<strong>
+    {% if test.methods is not empty %}
+        {{ 'bitbag_sylius_mollie_plugin.ui.success'|trans }}
+    {% else %}
+        {{ 'bitbag_sylius_mollie_plugin.ui.fail'|trans }}
+    {% endif %}
+</strong>

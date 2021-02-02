@@ -106,13 +106,6 @@ bitbag_sylius_mollie_plugin:
         latest_version_info: 'You are currently using version {old_version} of this plugin. The latest version is {latest_version} We advice you to'
         enjoy_latest_version: 'to enjoy the latest features.'
         update: 'update'
-        test_api_keys: 'Test API keys'
-        test_api_key: 'Test API key'
-        live_api_key: 'Live API key'
-        inser_you_key_first: 'Insert You key first'
-        available_methods: 'Available methods'
-        success: 'Success'
-        fail: 'Fail'
     form:
         payment_methods:
             payment_description: 'Description'

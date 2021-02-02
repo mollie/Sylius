@@ -60,9 +60,5 @@
                  parent="sylius.controller.order"
         >
         </service>
-        <service id="bitbag_sylius_mollie_plugin.controller.action.admin.test_api_keys_action" class="BitBag\SyliusMolliePlugin\Controller\Action\Admin\TestApiKeysAction">
-            <argument type="service" id="bitbag_sylius_mollie_plugin.resolver.api_keys_test_resolver"/>
-            <argument type="service" id="twig"/>
-        </service>
     </services>
 </container>

@@ -11,62 +11,46 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Resolver;
 
-use Sylius\Component\Addressing\Matcher\ZoneMatcherInterface;
-use Sylius\Component\Addressing\Model\ZoneInterface;
 use Sylius\Component\Core\Model\OrderInterface;
-use Sylius\Component\Core\Model\Scope;
 use Sylius\Component\Core\Model\ShipmentInterface;
 use Sylius\Component\Core\Model\ShippingMethodInterface;
-use Sylius\Component\Core\Provider\ZoneProviderInterface;
-use Sylius\Component\Taxation\Model\TaxRateInterface;
+use Sylius\Component\Taxation\Calculator\CalculatorInterface;
 use Sylius\Component\Taxation\Resolver\TaxRateResolverInterface;
 use Webmozart\Assert\Assert;
 
 final class TaxShipmentResolver implements TaxShipmentResolverInterface
 {
-    /** @var ZoneProviderInterface */
-    private $defaultTaxZoneProvider;
-
-    /** @var ZoneMatcherInterface */
-    private $zoneMatcher;
-
     /** @var TaxRateResolverInterface */
     private $taxRateResolver;
 
+    /** @var CalculatorInterface */
+    private $calculator;
+
     public function __construct(
-        ZoneProviderInterface $defaultTaxZoneProvider,
-        ZoneMatcherInterface $zoneMatcher,
-        TaxRateResolverInterface $taxRateResolver
+        TaxRateResolverInterface $taxRateResolver,
+        CalculatorInterface $calculator
     ) {
-        $this->defaultTaxZoneProvider = $defaultTaxZoneProvider;
-        $this->zoneMatcher = $zoneMatcher;
         $this->taxRateResolver = $taxRateResolver;
+        $this->calculator = $calculator;
     }
 
-    public function resolve(OrderInterface $order): ?TaxRateInterface
+    public function resolve(OrderInterface $order): float
     {
-        $zone = $this->getTaxZone($order);
-        $method = $this->getShippingMethod($order);
+        $shippingMethod = $this->getShippingMethod($order);
+        $rate = $this->taxRateResolver->resolve($shippingMethod);
 
-        return $this->taxRateResolver->resolve($method, ['zone' => $zone]);
-    }
-
-    private function getTaxZone(OrderInterface $order): ?ZoneInterface
-    {
-        $shippingAddress = $order->getShippingAddress();
-        $zone = null;
-
-        if (null !== $shippingAddress) {
-            $zone = $this->zoneMatcher->match($shippingAddress, Scope::TAX);
+        if (null === $rate) {
+            throw new \LogicException('Merchant not assign tax rates to shipping method with name %s.', $shippingMethod->getName());
         }
 
-        return $zone ?: $this->defaultTaxZoneProvider->getZone($order);
+        return $rate->getAmount();
     }
 
     private function getShippingMethod(OrderInterface $order): ShippingMethodInterface
     {
         /** @var ShipmentInterface|bool $shipment */
         $shipment = $order->getShipments()->first();
+
         if (false === $shipment) {
             throw new \LogicException('Order should have at least one shipment.');
         }

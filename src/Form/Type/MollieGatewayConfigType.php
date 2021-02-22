@@ -15,7 +15,7 @@ use BitBag\SyliusMolliePlugin\Documentation\DocumentationLinksInterface;
 use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
 use BitBag\SyliusMolliePlugin\Entity\ProductType;
 use BitBag\SyliusMolliePlugin\Options\Country\Options as CountryOptions;
-use BitBag\SyliusMolliePlugin\Payments\Methods\MealVoucher;
+use BitBag\SyliusMolliePlugin\Payments\Methods\AbstractMethod;
 use BitBag\SyliusMolliePlugin\Payments\PaymentTerms\Options;
 use BitBag\SyliusMolliePlugin\Validator\Constraints\PaymentSurchargeType;
 use Sylius\Bundle\ProductBundle\Form\Type\ProductType as ProductFormType;
@@ -124,8 +124,8 @@ final class MollieGatewayConfigType extends AbstractResourceType
                 $object = $event->getForm()->getData();
                 $data = $event->getData();
 
-                if ($object->getMethodId() === MealVoucher::MEAL_VOUCHERS) {
-                    $data['paymentType'] = 'ORDER_API';
+                if (in_array($object->getMethodId(), Options::getOnlyOrderAPIMethods())) {
+                    $data['paymentType'] = AbstractMethod::ORDER_API;
                 }
 
                 $event->setData($data);

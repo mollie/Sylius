@@ -12,9 +12,8 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Resolver;
 
 use Sylius\Component\Core\Model\OrderInterface;
-use Sylius\Component\Taxation\Model\TaxRateInterface;
 
 interface TaxShipmentResolverInterface
 {
-    public function resolve(OrderInterface $order): ?TaxRateInterface;
+    public function resolve(OrderInterface $order): float;
 }

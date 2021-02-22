@@ -12,6 +12,8 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Payments\PaymentTerms;
 
 use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
+use BitBag\SyliusMolliePlugin\Payments\Methods\MealVoucher;
+use Mollie\Api\Types\PaymentMethod;
 
 final class Options
 {
@@ -58,6 +60,15 @@ final class Options
         return [
             self::LOG_INFO => MollieLoggerActionInterface::LOG_ERRORS,
             self::LOG_ERRORS => MollieLoggerActionInterface::LOG_EVERYTHING,
+        ];
+    }
+
+    public static function getOnlyOrderAPIMethods(): array
+    {
+        return [
+            PaymentMethod::KLARNA_PAY_LATER,
+            PaymentMethod::KLARNA_SLICE_IT,
+            MealVoucher::MEAL_VOUCHERS,
         ];
     }
 }

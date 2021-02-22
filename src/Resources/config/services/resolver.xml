@@ -18,14 +18,12 @@
             <argument type="service" id="bitbag_sylius_mollie_plugin.repository.mollie_gateway_config"/>
         </service>
         <service id="bitbag_sylius_mollie_plugin.resolver.tax_unit_item" class="BitBag\SyliusMolliePlugin\Resolver\TaxUnitItemResolver">
-            <argument type="service" id="sylius.provider.channel_based_default_zone_provider"/>
-            <argument type="service" id="sylius.zone_matcher"/>
             <argument type="service" id="sylius.tax_rate_resolver"/>
+            <argument type="service" id="sylius.tax_calculator"/>
         </service>
         <service id="bitbag_sylius_mollie_plugin.resolver.tax_shipment" class="BitBag\SyliusMolliePlugin\Resolver\TaxShipmentResolver">
-            <argument type="service" id="sylius.provider.channel_based_default_zone_provider"/>
-            <argument type="service" id="sylius.zone_matcher"/>
             <argument type="service" id="sylius.tax_rate_resolver"/>
+            <argument type="service" id="sylius.tax_calculator"/>
         </service>
         <service id="bitbag_sylius_mollie_plugin.resolver.partial_ship.from_sylius_to_mollie_lines_resolver" class="BitBag\SyliusMolliePlugin\Resolver\PartialShip\FromSyliusToMollieLinesResolver">
         </service>

@@ -12,10 +12,9 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Resolver;
 
 use Sylius\Component\Core\Model\OrderInterface;
-use Sylius\Component\Core\Model\ProductVariantInterface;
-use Sylius\Component\Taxation\Model\TaxRateInterface;
+use Sylius\Component\Core\Model\OrderItem;
 
 interface TaxUnitItemResolverInterface
 {
-    public function resolve(OrderInterface $order, ProductVariantInterface $item): ?TaxRateInterface;
+    public function resolve(OrderInterface $order, OrderItem $item): float;
 }

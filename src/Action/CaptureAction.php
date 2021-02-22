@@ -83,6 +83,13 @@ final class CaptureAction extends BaseApiAwareAction implements CaptureActionInt
             $details['metadata'] = $metadata;
 
             if (isset($details['metadata']['methodType']) && $details['metadata']['methodType'] === Options::PAYMENT_API) {
+                if (in_array($details['metadata']['molliePaymentMethods'], Options::getOnlyOrderAPIMethods())) {
+                    throw new \sprintf('Method %s is not allowed to use %s',
+                        $details['metadata']['molliePaymentMethods'],
+                        Options::PAYMENT_API
+                    );
+                }
+
                 $this->gateway->execute(new CreatePayment($details));
             }
 

@@ -18,7 +18,7 @@ use BitBag\SyliusMolliePlugin\Resolver\MealVoucherResolverInterface;
 use BitBag\SyliusMolliePlugin\Resolver\TaxShipmentResolverInterface;
 use BitBag\SyliusMolliePlugin\Resolver\TaxUnitItemResolverInterface;
 use Sylius\Component\Core\Model\OrderInterface;
-use Sylius\Component\Core\Model\ProductVariantInterface;
+use Sylius\Component\Core\Model\OrderItem;
 use Sylius\Component\Core\Model\ShipmentInterface;
 use Sylius\Component\Customer\Model\CustomerInterface;
 use Sylius\Component\Order\Model\Adjustment;
@@ -70,7 +70,7 @@ final class ConvertOrder implements ConvertOrderInterface
         $details['billingAddress'] = $this->createBillingAddress($customer);
         $details['lines'] = $this->createLines($divisor, $method);
         $details['lines'] = array_merge($details['lines'], $this->createShippingFee($divisor));
-
+        
         return $details;
     }
 
@@ -115,7 +115,7 @@ final class ConvertOrder implements ConvertOrderInterface
                 'type' => 'physical',
                 'name' => $item->getProductName(),
                 'quantity' => $item->getQuantity(),
-                'vatRate' => (string) ($this->getTaxRatesUnitItem($item->getVariant()) * 100),
+                'vatRate' => (string) ($this->getTaxRatesUnitItem($item) * 100),
                 'unitPrice' => [
                     'currency' => $this->order->getCurrencyCode(),
                     'value' => $this->intToStringConverter->convertIntToString($item->getUnitPrice(), $divisor),
@@ -196,25 +196,13 @@ final class ConvertOrder implements ConvertOrderInterface
         return $details;
     }
 
-    private function getTaxRatesUnitItem(ProductVariantInterface $itemVariant): float
+    private function getTaxRatesUnitItem(OrderItem $item): float
     {
-        $taxRate = $this->taxUnitItemResolver->resolve($this->order, $itemVariant);
-
-        if (null === $taxRate) {
-            throw new \LogicException('Merchant could not assign tax rates to Items.');
-        }
-
-        return $taxRate->getAmount();
+        return $this->taxUnitItemResolver->resolve($this->order, $item);
     }
 
     private function getTaxRatesShipments(): float
     {
-        $taxRate = $this->taxShipmentResolver->resolve($this->order);
-
-        if (null === $taxRate) {
-            throw new \LogicException('Merchant could not assign tax rates to shipment.');
-        }
-
-        return $taxRate->getAmount();
+        return $this->taxShipmentResolver->resolve($this->order);
     }
 }

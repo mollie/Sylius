@@ -1,4 +1,6 @@
 {% set mealvouchersId = constant('BitBag\\SyliusMolliePlugin\\Payments\\Methods\\MealVoucher::MEAL_VOUCHERS') %}
+{% set klarnaPayLater = constant('Mollie\\Api\\Types\\PaymentMethod::KLARNA_PAY_LATER') %}
+{% set klarnaSliceIt = constant('Mollie\\Api\\Types\\PaymentMethod::KLARNA_SLICE_IT') %}
 
 <div class="ui segment" id="mollie-payment-form">
     <h4 class="ui header">
@@ -63,7 +65,10 @@
                 <div class="field">
                     <div class="fields">
                         <div class="twelve wide field">
-                            {% if methodForm.vars.value.methodId == mealvouchersId %}
+                            {% if methodForm.vars.value.methodId == mealvouchersId or
+                                methodForm.vars.value.methodId == klarnaPayLater  or
+                                methodForm.vars.value.methodId == klarnaSliceIt
+                            %}
                                 {{ form_row(methodForm.paymentType, {'attr': {'disabled': 'disabled'}}) }}
                                 {{ form_help(methodForm.paymentType) }}
                             {% else %}
@@ -77,7 +82,7 @@
                     </div>
                 </div>
                 <div class="field">
-                    {{ form_row(methodForm.paymentDescription) }}
+                    {{ form_widget(methodForm.paymentDescription) }}
                     <div id="payment_description_{{ name }}">
                         {{ methodForm.paymentDescription.vars.help|trans|raw|nl2br }}
                     </div>

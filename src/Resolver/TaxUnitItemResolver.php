@@ -11,52 +11,31 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Resolver;
 
-use Sylius\Component\Addressing\Matcher\ZoneMatcherInterface;
-use Sylius\Component\Addressing\Model\ZoneInterface;
 use Sylius\Component\Core\Model\OrderInterface;
-use Sylius\Component\Core\Model\ProductVariantInterface;
-use Sylius\Component\Core\Model\Scope;
-use Sylius\Component\Core\Provider\ZoneProviderInterface;
-use Sylius\Component\Taxation\Model\TaxRateInterface;
+use Sylius\Component\Core\Model\OrderItem;
+use Sylius\Component\Taxation\Calculator\CalculatorInterface;
 use Sylius\Component\Taxation\Resolver\TaxRateResolverInterface;
 
 final class TaxUnitItemResolver implements TaxUnitItemResolverInterface
 {
-    /** @var ZoneProviderInterface */
-    private $defaultTaxZoneProvider;
-
-    /** @var ZoneMatcherInterface */
-    private $zoneMatcher;
-
     /** @var TaxRateResolverInterface */
     private $taxRateResolver;
 
+    /** @var CalculatorInterface */
+    private $calculator;
+
     public function __construct(
-        ZoneProviderInterface $defaultTaxZoneProvider,
-        ZoneMatcherInterface $zoneMatcher,
-        TaxRateResolverInterface $taxRateResolver
+        TaxRateResolverInterface $taxRateResolver,
+        CalculatorInterface $calculator
     ) {
-        $this->defaultTaxZoneProvider = $defaultTaxZoneProvider;
-        $this->zoneMatcher = $zoneMatcher;
         $this->taxRateResolver = $taxRateResolver;
+        $this->calculator = $calculator;
     }
 
-    public function resolve(OrderInterface $order, ProductVariantInterface $itemVariant): ?TaxRateInterface
+    public function resolve(OrderInterface $order, OrderItem $item): float
     {
-        $zone = $this->getTaxZone($order);
+        $rate = $this->taxRateResolver->resolve($item->getVariant());
 
-        return $this->taxRateResolver->resolve($itemVariant, ['zone' => $zone]);
-    }
-
-    private function getTaxZone(OrderInterface $order): ?ZoneInterface
-    {
-        $shippingAddress = $order->getShippingAddress();
-        $zone = null;
-
-        if (null !== $shippingAddress) {
-            $zone = $this->zoneMatcher->match($shippingAddress, Scope::TAX);
-        }
-
-        return $zone ?: $this->defaultTaxZoneProvider->getZone($order);
+        return $rate->getAmount();
     }
 }

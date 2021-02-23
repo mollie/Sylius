@@ -1,7 +1,7 @@
 bitbag_sylius_mollie_plugin:
   ui:
-    api_key_test: 'API Key Test'
-    api_key_live: 'API Key Live'
+    api_key_test: 'Test API Key'
+    api_key_live: 'Live API Key'
     api_key_choice_test: 'Test'
     api_key_choice_live: 'Live'
     profilie_id: 'Profile ID'
@@ -96,7 +96,7 @@ bitbag_sylius_mollie_plugin:
     you_can_find_you_profile_id: "Profiel-ID * \n
                                      Je kunt je profiel-ID vinden in je"
     mollie_profile_id: 'Mollie Profiel'
-    find_you_api_key: "API Key Test * \n
+    find_you_api_key: "Test API Key \n
                           Je vindt je API key in je "
     mollie_profile: 'Mollie Profiel'
     it_starts_with: 'het begint met een test of live.'

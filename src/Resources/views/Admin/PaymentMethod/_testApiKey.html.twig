@@ -1,0 +1,13 @@
+<div class="ui segment">
+    {% include '@BitBagSyliusMolliePlugin/Admin/PaymentMethod/_statusTest.html.twig' %}
+
+    {% if test.status == 'ERROR' %}
+        {{ test.message }}
+    {% endif %}
+    <br>
+    <i class="cog icon green"></i>
+    {{ 'bitbag_sylius_mollie_plugin.ui.available_methods'|trans }}:
+    {% for method in test.methods %}
+        {{ method.description }},
+    {% endfor %}
+</div>

@@ -1,7 +1,7 @@
 bitbag_sylius_mollie_plugin:
     ui:
-        api_key_test: 'API Key Test'
-        api_key_live: 'API Key Live'
+        api_key_test: 'Test API Key'
+        api_key_live: 'Live API Key'
         api_key_choice_test: 'Test'
         api_key_choice_live: 'Live'
         profilie_id: 'Profile ID'
@@ -93,10 +93,10 @@ bitbag_sylius_mollie_plugin:
         selected_countries: 'Selected countries'
         country_level_allow: 'Allow payment from specific countries'
         country_level_exclude: 'Exclude payment from specific countries'
-        you_can_find_you_profile_id: "Profile ID * \n
+        you_can_find_you_profile_id: "Profile ID \n
                                      You can find your Profile ID in your"
         mollie_profile_id: 'Mollie Profile'
-        find_you_api_key: "API Key Test * \n
+        find_you_api_key: "Test API Key
                           You can find your API key in your "
         mollie_profile: 'Mollie Profile'
         it_starts_with: 'it starts with test or live.'
@@ -106,6 +106,14 @@ bitbag_sylius_mollie_plugin:
         latest_version_info: 'You are currently using version {old_version} of this plugin. The latest version is {latest_version} We advise you to'
         enjoy_latest_version: 'to enjoy the latest features.'
         update: 'update'
+        test_api_keys: 'Test API Keys'
+        inser_you_key_first: "API key doesn't exist, no value entered"
+        api_key_start_with_api_key_test: 'API key does not start with test_'
+        api_key_start_with_api_key_live: 'API key does not start with live_'
+        failed_with_test_api_key: 'Failed with test api key'
+        available_methods: 'Available methods'
+        success: 'Success'
+        fail: 'Fail'
     form:
         payment_methods:
             payment_description: 'Description'

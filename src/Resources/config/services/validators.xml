@@ -19,7 +19,7 @@
         <service id="bitbag_sylius_mollie_plugin.validator.apple_pay_direct.payment_method_checkout_validator"
                  class="BitBag\SyliusMolliePlugin\Validator\Constraints\PaymentMethodCheckoutValidator">
             <tag name="validator.constraint_validator"/>
-            <argument type="service" id="sylius.context.cart"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.resolver.order.payment_checkout_order_resolver"/>
             <argument type="service" id="session"/>
         </service>
 

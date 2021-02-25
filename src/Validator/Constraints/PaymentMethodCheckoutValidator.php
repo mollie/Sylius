@@ -12,35 +12,36 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Validator\Constraints;
 
 use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
+use BitBag\SyliusMolliePlugin\Resolver\Order\PaymentCheckoutOrderResolverInterface;
 use Payum\Core\Model\GatewayConfigInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
-use Sylius\Component\Order\Context\CartContextInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 final class PaymentMethodCheckoutValidator extends ConstraintValidator
 {
-    /** @var CartContextInterface */
-    private $cartContext;
-
     /** @var Session */
     private $session;
 
+    /** @var PaymentCheckoutOrderResolverInterface */
+    private $paymentCheckoutOrderResolver;
+
     public function __construct(
-        CartContextInterface $cartContext,
+        PaymentCheckoutOrderResolverInterface $paymentCheckoutOrderResolver,
         Session $session
     ) {
-        $this->cartContext = $cartContext;
         $this->session = $session;
+        $this->paymentCheckoutOrderResolver = $paymentCheckoutOrderResolver;
     }
 
     public function validate($value, Constraint $constraint)
     {
-        $order = $this->cartContext->getCart();
+        $order = $this->paymentCheckoutOrderResolver->resolve();
 
         /** @var PaymentInterface $payment */
         $payment = $order->getPayments()->last();
+
         /** @var GatewayConfigInterface $gateway */
         $gateway = $payment->getMethod()->getGatewayConfig();
 

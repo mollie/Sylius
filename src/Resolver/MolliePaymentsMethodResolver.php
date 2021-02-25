@@ -15,30 +15,17 @@ use BitBag\SyliusMolliePlugin\Checker\Voucher\ProductVoucherTypeCheckerInterface
 use BitBag\SyliusMolliePlugin\Entity\GatewayConfigInterface;
 use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
 use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
+use BitBag\SyliusMolliePlugin\Resolver\Order\PaymentCheckoutOrderResolverInterface;
 use Sylius\Component\Core\Model\OrderInterface;
-use Sylius\Component\Order\Context\CartContextInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
-use Symfony\Component\HttpFoundation\Session\Session;
 
 final class MolliePaymentsMethodResolver implements MolliePaymentsMethodResolverInterface
 {
     /** @var RepositoryInterface */
-    private $orderRepository;
-
-    /** @var RepositoryInterface */
     private $gatewayConfigRepository;
-
-    /** @var MolliePaymentMethodImageResolverInterface */
-    private $imageResolver;
 
     /** @var RepositoryInterface */
     private $mollieGatewayRepository;
-
-    /** @var Session */
-    private $session;
-
-    /** @var CartContextInterface */
-    private $cartContext;
 
     /** @var MollieCountriesRestrictionResolverInterface */
     private $countriesRestrictionResolver;
@@ -46,40 +33,26 @@ final class MolliePaymentsMethodResolver implements MolliePaymentsMethodResolver
     /** @var ProductVoucherTypeCheckerInterface */
     private $productVoucherTypeChecker;
 
+    /** @var PaymentCheckoutOrderResolverInterface */
+    private $paymentCheckoutOrderResolver;
+
     public function __construct(
-        RepositoryInterface $orderRepository,
         RepositoryInterface $gatewayConfigRepository,
-        MolliePaymentMethodImageResolverInterface $imageResolver,
         RepositoryInterface $mollieGatewayRepository,
-        Session $session,
-        CartContextInterface $cartContext,
         MollieCountriesRestrictionResolverInterface $countriesRestrictionResolver,
-        ProductVoucherTypeCheckerInterface $productVoucherTypeChecker
+        ProductVoucherTypeCheckerInterface $productVoucherTypeChecker,
+        PaymentCheckoutOrderResolverInterface $paymentCheckoutOrderResolver
     ) {
-        $this->orderRepository = $orderRepository;
         $this->gatewayConfigRepository = $gatewayConfigRepository;
-        $this->imageResolver = $imageResolver;
         $this->mollieGatewayRepository = $mollieGatewayRepository;
-        $this->session = $session;
-        $this->cartContext = $cartContext;
         $this->countriesRestrictionResolver = $countriesRestrictionResolver;
         $this->productVoucherTypeChecker = $productVoucherTypeChecker;
+        $this->paymentCheckoutOrderResolver = $paymentCheckoutOrderResolver;
     }
 
     public function resolve(): array
     {
-        $orderId = $this->session->get('sylius_order_id');
-        $orderFromSession = null;
-
-        $order = $this->cartContext->getCart();
-
-        if (null !== $orderId) {
-            $orderFromSession = $this->orderRepository->findOneBy(['id' => $orderId]);
-        }
-
-        if (null !== $orderFromSession) {
-            $order = $orderFromSession;
-        }
+        $order = $this->paymentCheckoutOrderResolver->resolve();
 
         /** @var OrderInterface $order */
         $address = $order->getBillingAddress();

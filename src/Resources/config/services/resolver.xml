@@ -5,14 +5,11 @@
     <services>
         <defaults public="true" />
         <service id="bitbag_sylius_mollie_plugin.resolver.payment_methods" class="BitBag\SyliusMolliePlugin\Resolver\MolliePaymentsMethodResolver">
-            <argument type="service" id="sylius.repository.order"/>
             <argument type="service" id="sylius.repository.gateway_config"/>
-            <argument type="service" id="bitbag_sylius_mollie_plugin.resolver.payment_methods_image"/>
             <argument type="service" id="bitbag_sylius_mollie_plugin.repository.mollie_gateway_config"/>
-            <argument type="service" id="session"/>
-            <argument type="service" id="sylius.context.cart"/>
             <argument type="service" id="bitbag_sylius_mollie_plugin.resolver.mollie_countries_restriction_resolver"/>
             <argument type="service" id="bitbag_sylius_mollie_plugin.checker.voucher.product_voucher_type_checker"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.resolver.order.payment_checkout_order_resolver"/>
         </service>
         <service id="bitbag_sylius_mollie_plugin.resolver.payment_methods_image" class="BitBag\SyliusMolliePlugin\Resolver\MolliePaymentMethodImageResolver">
             <argument>%images_dir%</argument>
@@ -75,6 +72,11 @@
         <service id="bitbag_sylius_mollie_plugin.resolver.apple_pay_direct.apple_pay_direct_payment_type_resolver" class="BitBag\SyliusMolliePlugin\Resolver\ApplePayDirect\ApplePayDirectPaymentTypeResolver">
             <argument type="service" id="bitbag_sylius_mollie_plugin.resolver.apple_pay_direct.apple_pay_direct_api_payment_resolver"/>
             <argument type="service" id="bitbag_sylius_mollie_plugin.resolver.apple_pay_direct.apple_pay_direct_api_order_payment_resolver"/>
+        </service>
+        <service id="bitbag_sylius_mollie_plugin.resolver.order.payment_checkout_order_resolver" class="BitBag\SyliusMolliePlugin\Resolver\Order\PaymentCheckoutOrderResolver">
+            <argument type="service" id="request_stack"/>
+            <argument type="service" id="sylius.context.cart.new_shop_based.inner"/>
+            <argument type="service" id="sylius.repository.order"/>
         </service>
     </services>
 </container>

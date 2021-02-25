@@ -4,6 +4,8 @@ $(function () {
     $(testApiKeyButton).on('click', function (event) {
         const testApiDataDiv = document.getElementsByClassName("test-api-key-div")
         const testApiKey = document.getElementById("sylius_payment_method_gatewayConfig_config_api_key_test")
+        const liveApiKey = document.getElementById("sylius_payment_method_gatewayConfig_config_api_key_live")
+
         $(this).addClass('loading');
         $(this).attr('disabled', true);
 
@@ -12,6 +14,7 @@ $(function () {
             url: $(this).data('url'),
             data: {
                 api_key_test: $(testApiKey).val(),
+                api_key_live: $(liveApiKey).val(),
             },
             success: function (data) {
                 $(testApiDataDiv).removeClass('message red');
@@ -21,10 +24,6 @@ $(function () {
                 $(testApiDataDiv).html(data);
             },
             error: function (error) {
-
-                $(testApiDataDiv).html(error.responseText);
-                $(testApiKeyButton).removeClass('loading');
-                $(testApiKeyButton).removeAttr('disabled');
             }
         });
     });

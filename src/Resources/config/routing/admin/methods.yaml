@@ -3,3 +3,9 @@ bitbag_admin_methods:
   methods: [GET]
   defaults:
     _controller: bitbag_sylius_mollie_plugin.controller.action.admin.methods
+
+bitbag_admin_test_api_keys:
+  path: /mollie/methods/test
+  methods: [GET]
+  defaults:
+    _controller: bitbag_sylius_mollie_plugin.controller.action.admin.test_api_keys_action

@@ -61,7 +61,9 @@ final class ApiKeysTestCreator implements ApiKeysTestCreatorInterface
             $apiKeyTest->setStatus(self::ERROR_STATUS);
 
             if ($exception->getCode() === 0) {
-                $apiKeyTest->setMessage($this->translator->trans('bitbag_sylius_mollie_plugin.ui.api_key_start_with_' . $apiKeyTest->getType()));
+                $apiKeyTest->setMessage($this->translator->trans(
+                    \sprintf('bitbag_sylius_mollie_plugin.ui.api_key_start_with_%s', $apiKeyTest->getType())
+                ));
 
                 return $apiKeyTest;
             }

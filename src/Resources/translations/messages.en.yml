@@ -96,7 +96,7 @@ bitbag_sylius_mollie_plugin:
         you_can_find_you_profile_id: "Profile ID \n
                                      You can find your Profile ID in your"
         mollie_profile_id: 'Mollie Profile'
-        find_you_api_key: "Test API Key
+        find_you_api_key: "Test API Key \n
                           You can find your API key in your "
         mollie_profile: 'Mollie Profile'
         it_starts_with: 'it starts with test or live.'
@@ -114,6 +114,7 @@ bitbag_sylius_mollie_plugin:
         available_methods: 'Available methods'
         success: 'Success'
         fail: 'Fail'
+        show_hide: 'Show\Hide'
     form:
         payment_methods:
             payment_description: 'Description'

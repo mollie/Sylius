@@ -1,7 +1,9 @@
+{% set errorStatus = constant('BitBag\\SyliusMolliePlugin\\Creator\\ApiKeysTestCreatorInterface::ERROR_STATUS') %}
+
 <div class="ui segment">
     {% include '@BitBagSyliusMolliePlugin/Admin/PaymentMethod/_statusTest.html.twig' %}
 
-    {% if test.status == 'ERROR' %}
+    {% if test.status == errorStatus %}
         {{ test.message }}
     {% endif %}
     <br>

@@ -71,6 +71,9 @@
             <argument type="service" id="bitbag_sylius_mollie_plugin.resolver.apple_pay_direct.apple_pay_direct_api_payment_resolver"/>
             <argument type="service" id="bitbag_sylius_mollie_plugin.resolver.apple_pay_direct.apple_pay_direct_api_order_payment_resolver"/>
         </service>
+        <service id="bitbag_sylius_mollie_plugin.resolver.api_keys_test_resolver" class="BitBag\SyliusMolliePlugin\Resolver\ApiKeysTestResolver">
+            <argument type="service" id="bitbag_sylius_mollie_plugin.creator.api_keys_test_creator"/>
+        </service>
         <service id="bitbag_sylius_mollie_plugin.resolver.order.payment_checkout_order_resolver" class="BitBag\SyliusMolliePlugin\Resolver\Order\PaymentCheckoutOrderResolver">
             <argument type="service" id="request_stack"/>
             <argument type="service" id="sylius.context.cart.new_shop_based.inner"/>

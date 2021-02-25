@@ -12,13 +12,10 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Form\Type;
 
 use BitBag\SyliusMolliePlugin\Documentation\DocumentationLinksInterface;
-use BitBag\SyliusMolliePlugin\Entity\GatewayConfigInterface;
 use BitBag\SyliusMolliePlugin\Payments\PaymentTerms\Options;
-use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -36,13 +33,9 @@ final class MollieGatewayConfigurationType extends AbstractType
     /** @var DocumentationLinksInterface */
     private $documentationLinks;
 
-    /** @var RepositoryInterface */
-    private $gatewayConfigRepository;
-
-    public function __construct(DocumentationLinksInterface $documentationLinks, RepositoryInterface $gatewayConfigRepository)
+    public function __construct(DocumentationLinksInterface $documentationLinks)
     {
         $this->documentationLinks = $documentationLinks;
-        $this->gatewayConfigRepository = $gatewayConfigRepository;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -64,7 +57,8 @@ final class MollieGatewayConfigurationType extends AbstractType
                     ]),
                 ],
             ])
-            ->add(self::API_KEY_TEST, TextType::class, [
+            ->add(self::API_KEY_TEST, PasswordType::class, [
+                'always_empty' => false,
                 'label' => $this->documentationLinks->getApiKeyDoc(),
                 'help' => ' ',
                 'constraints' => [
@@ -85,8 +79,9 @@ final class MollieGatewayConfigurationType extends AbstractType
                 ],
             ])
             ->add(self::API_KEY_LIVE, PasswordType::class, [
+                'always_empty' => false,
+                'required' => true,
                 'label' => 'bitbag_sylius_mollie_plugin.ui.api_key_live',
-                'attr' => ['placeholder' => '*******************'],
                 'constraints' => [
                     new Regex([
                         'message' => 'bitbag_sylius_mollie_plugin.api_key.invalid_live',
@@ -137,21 +132,11 @@ final class MollieGatewayConfigurationType extends AbstractType
                 $data['payum.http_client'] = '@bitbag_sylius_mollie_plugin.mollie_api_client';
 
                 $event->setData($data);
-            })
-            ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
-                $parentData = $event->getForm()->getParent()->getData();
-                $data = $event->getData();
+            });
+    }
 
-                if (empty($data[self::API_KEY_LIVE]) && !$parentData->getMollieGatewayConfig()->isEmpty()) {
-                    $mollieGateway = $this->gatewayConfigRepository->findOneBy(['gatewayName' => $parentData->getGatewayName()]);
-
-                    /** @var GatewayConfigInterface $mollieGateway */
-                    $config = $mollieGateway->getConfig();
-                    $data[self::API_KEY_LIVE] = $config[self::API_KEY_LIVE];
-
-                    $event->setData($data);
-                }
-            })
-        ;
+    public function getBlockPrefix(): string
+    {
+        return 'bitbag_mollie_gateway_configuration_type';
     }
 }

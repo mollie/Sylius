@@ -7,14 +7,26 @@
         <service id="bitbag_sylius_mollie_plugin.validator.mollie" class="BitBag\SyliusMolliePlugin\Validator\Constraints\CurrencyValidator">
             <tag name="validator.constraint_validator" alias="bitbag_sylius_mollie_plugin_currency"/>
         </service>
-        <service id="bitbag_sylius_mollie_plugin.validator.constraits.payment_surcharge_type_validator" class="BitBag\SyliusMolliePlugin\Validator\Constraints\PaymentSurchargeTypeValidator">
-            <tag name="validator.constraint_validator"/>
+
+        <service id="bitbag_sylius_mollie_plugin.validator.constraits.payment_surcharge_type_validator"
+                 class="BitBag\SyliusMolliePlugin\Validator\Constraints\PaymentSurchargeTypeValidator">
+            <tag name="validator.constraint_validator" alias="channels"/>
         </service>
-        <service id="bitbag_sylius_mollie_plugin.validator.apple_pay_direct.apple_pay_address_validator" class="BitBag\SyliusMolliePlugin\Validator\ApplePayDirect\ApplePayAddressValidator" />
-        <service id="bitbag_sylius_mollie_plugin.validator.apple_pay_direct.payment_method_checkout_validator" class="BitBag\SyliusMolliePlugin\Validator\Constraints\PaymentMethodCheckoutValidator">
+
+        <service id="bitbag_sylius_mollie_plugin.validator.apple_pay_direct.apple_pay_address_validator"
+                 class="BitBag\SyliusMolliePlugin\Validator\ApplePayDirect\ApplePayAddressValidator" />
+
+        <service id="bitbag_sylius_mollie_plugin.validator.apple_pay_direct.payment_method_checkout_validator"
+                 class="BitBag\SyliusMolliePlugin\Validator\Constraints\PaymentMethodCheckoutValidator">
             <tag name="validator.constraint_validator"/>
             <argument type="service" id="sylius.context.cart"/>
             <argument type="service" id="session"/>
+        </service>
+
+        <service id="bitbag_sylius_mollie_plugin.validator.constraints.payment_method_mollie_channel_unique_validator"
+                 class="BitBag\SyliusMolliePlugin\Validator\Constraints\PaymentMethodMollieChannelUniqueValidator">
+            <tag name="validator.constraint_validator"/>
+            <argument type="service" id="sylius.repository.payment_method"/>
         </service>
     </services>
 </container>

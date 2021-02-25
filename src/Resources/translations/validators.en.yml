@@ -25,3 +25,4 @@ bitbag_sylius_mollie_plugin:
             payment_surcharge_not_empty: 'Value cannot be blank'
             greater_than: 'The value should be greater than zero'
             key_not_empty: 'Depending on the environment, the mollie key cannot be empty'
+            channel_should_be_unique: 'You can use mollie payment method for channel only once'

@@ -47,6 +47,10 @@ final class MollieGatewayConfigType extends AbstractResourceType
             ->add('enabled', CheckboxType::class, [
                 'label' => 'bitbag_sylius_mollie_plugin.ui.enable',
             ])
+            ->add('applePayDirectButton', CheckboxType::class, [
+                'label' => 'bitbag_sylius_mollie_plugin.ui.enabled_buy_now_button',
+                'help' => 'bitbag_sylius_mollie_plugin.form.enabled_buy_now_button_help',
+            ])
             ->add('defaultCategory', EntityType::class, [
                 'class' => ProductType::class,
                 'label' => 'bitbag_sylius_mollie_plugin.form.product_type_default',

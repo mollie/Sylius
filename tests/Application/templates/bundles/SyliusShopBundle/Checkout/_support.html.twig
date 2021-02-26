@@ -1,4 +1,7 @@
-{% include '@SyliusShop/Checkout/SelectPayment/_applePayButton.html.twig' %}
+{% if true == bitbag_render_apple_pay_direct() %}
+    {% include '@SyliusShop/Checkout/SelectPayment/_applePayButton.html.twig' %}
+{% endif %}
+
 <h2 class="ui center aligned icon header">
     <i class="circular phone icon"></i>
     +48 123 456 789

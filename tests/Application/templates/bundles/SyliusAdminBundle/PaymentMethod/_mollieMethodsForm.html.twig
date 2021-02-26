@@ -1,4 +1,5 @@
 {% set mealvouchersId = constant('BitBag\\SyliusMolliePlugin\\Payments\\Methods\\MealVoucher::MEAL_VOUCHERS') %}
+{% set applePay = constant('Mollie\\Api\\Types\\PaymentMethod::APPLEPAY') %}
 {% set klarnaPayLater = constant('Mollie\\Api\\Types\\PaymentMethod::KLARNA_PAY_LATER') %}
 {% set klarnaSliceIt = constant('Mollie\\Api\\Types\\PaymentMethod::KLARNA_SLICE_IT') %}
 
@@ -34,6 +35,11 @@
                     <div class="field">
                         {{ form_widget(methodForm.defaultCategory) }}
                         {{ methodForm.defaultCategory.vars.help|trans }}
+                    </div>
+                {% elseif methodForm.vars.value.methodId == applePay %}
+                    <div class="field">
+                        {{ form_row(methodForm.applePayDirectButton) }}
+                        {{ form_help(methodForm.applePayDirectButton) }}
                     </div>
                 {% endif %}
                 <div class="field">

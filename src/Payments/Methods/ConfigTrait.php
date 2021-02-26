@@ -39,6 +39,9 @@ trait ConfigTrait
     /** @var ProductTypeInterface|null */
     protected $defaultCategory;
 
+    /** @var bool|null */
+    protected $applePayDirectButton;
+
     public function getImage(): array
     {
         return $this->image;
@@ -117,5 +120,15 @@ trait ConfigTrait
     public function setDefaultCategory(?ProductTypeInterface $defaultCategory): void
     {
         $this->defaultCategory = $defaultCategory;
+    }
+
+    public function isApplePayDirectButton(): ?bool
+    {
+        return $this->applePayDirectButton;
+    }
+
+    public function setApplePayDirectButton(?bool $applePayDirectButton): void
+    {
+        $this->applePayDirectButton = $applePayDirectButton;
     }
 }

@@ -54,4 +54,8 @@ interface MethodInterface
     public function getDefaultCategory(): ?ProductTypeInterface;
 
     public function setDefaultCategory(?ProductTypeInterface $defaultCategory): void;
+
+    public function isApplePayDirectButton(): ?bool;
+
+    public function setApplePayDirectButton(?bool $applePayDirectButton): void;
 }

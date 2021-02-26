@@ -47,6 +47,7 @@ final class MollieApiClientKeyResolver implements MollieApiClientKeyResolverInte
         $gateway = $this->gatewayConfigRepository->findOneBy([
             'factoryName' => MollieGatewayFactory::FACTORY_NAME,
         ]);
+
         $config = $gateway->getConfig();
 
         $environment = true === $config['environment'] ?

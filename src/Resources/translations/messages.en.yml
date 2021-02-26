@@ -115,7 +115,9 @@ bitbag_sylius_mollie_plugin:
         success: 'Success'
         fail: 'Fail'
         show_hide: 'Show\Hide'
+        enabled_buy_now_button: 'Enable Buy Now Button'
     form:
+        enabled_buy_now_button_help: 'The button is shown on the checkout page'
         payment_methods:
             payment_description: 'Description'
             payment_description_help: "The description to be used for the transactions. These variables are available:\n

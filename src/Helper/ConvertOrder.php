@@ -70,7 +70,7 @@ final class ConvertOrder implements ConvertOrderInterface
         $details['billingAddress'] = $this->createBillingAddress($customer);
         $details['lines'] = $this->createLines($divisor, $method);
         $details['lines'] = array_merge($details['lines'], $this->createShippingFee($divisor));
-        
+
         return $details;
     }
 

@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Controller\Action\Shop;
 
+use BitBag\SyliusMolliePlugin\Checker\ApplePay\ApplePayEnabledCheckerInterface;
 use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use BitBag\SyliusMolliePlugin\Resolver\MollieApiClientKeyResolverInterface;
 use Mollie\Api\Exceptions\ApiException;
@@ -26,16 +27,25 @@ final class ApplePayValidationAction
     /** @var MollieApiClientKeyResolverInterface */
     private $apiClientKeyResolver;
 
+    /** @var ApplePayEnabledCheckerInterface */
+    private $applePayEnabledChecker;
+
     public function __construct(
         MollieLoggerActionInterface $loggerAction,
-        MollieApiClientKeyResolverInterface $apiClientKeyResolver
+        MollieApiClientKeyResolverInterface $apiClientKeyResolver,
+        ApplePayEnabledCheckerInterface $applePayEnabledChecker
     ) {
         $this->loggerAction = $loggerAction;
         $this->apiClientKeyResolver = $apiClientKeyResolver;
+        $this->applePayEnabledChecker = $applePayEnabledChecker;
     }
 
     public function __invoke(Request $request): Response
     {
+        if (false === $this->applePayEnabledChecker->isEnabled()) {
+            return new JsonResponse(null, Response::HTTP_FORBIDDEN);
+        }
+
         $validateUrl = $request->get('validationUrl');
 
         if (empty($validateUrl)) {

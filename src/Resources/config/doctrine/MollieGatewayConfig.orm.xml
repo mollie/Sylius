@@ -11,7 +11,7 @@
             <generator strategy="AUTO"/>
         </id>
         <field name="methodId" column="method_id"/>
-        <field name="name" column="name" unique="true"/>
+        <field name="name" column="name" />
         <field name="enabled" column="enabled" type="boolean" />
         <field name="image" column="image" type="array" />
         <field name="minimumAmount" column="minimum_amount" type="array" />

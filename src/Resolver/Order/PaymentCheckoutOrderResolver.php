@@ -40,9 +40,12 @@ final class PaymentCheckoutOrderResolver implements PaymentCheckoutOrderResolver
 
     public function resolve(): OrderInterface
     {
+        $order = null;
         $tokenValue = $this->requestStack->getCurrentRequest()->get('tokenValue');
 
-        $order = $this->orderRepository->findOneBy(['tokenValue' => $tokenValue]);
+        if (null !== $tokenValue) {
+            $order = $this->orderRepository->findOneBy(['tokenValue' => $tokenValue]);
+        }
 
         if (!$order instanceof OrderInterface) {
             $order = $this->cartContext->getCart();

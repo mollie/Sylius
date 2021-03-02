@@ -31,18 +31,19 @@ final class MollieGatewayConfigFactory implements MollieGatewayConfigFactoryInte
         $this->repository = $repository;
     }
 
-    private function createNewOrUpdate(MethodInterface $method): MollieGatewayConfigInterface
+    private function createNewOrUpdate(MethodInterface $method, GatewayConfigInterface $gateway): MollieGatewayConfigInterface
     {
-        if ($methodExist = $this->repository->findOneBy(['methodId' => $method->getMethodId()])) {
-            return $methodExist;
-        }
+        $methodExist = $this->repository->findOneBy([
+            'methodId' => $method->getMethodId(),
+            'gateway' => $gateway,
+        ]);
 
-        return $this->mollieGatewayConfigFactory->createNew();
+        return null !== $methodExist ? $methodExist : $this->mollieGatewayConfigFactory->createNew();
     }
 
     public function create(MethodInterface $method, GatewayConfigInterface $gateway): MollieGatewayConfigInterface
     {
-        $mollieGatewayConfig = $this->createNewOrUpdate($method);
+        $mollieGatewayConfig = $this->createNewOrUpdate($method, $gateway);
 
         $mollieGatewayConfig->setMethodId($method->getMethodId());
         $mollieGatewayConfig->setName($method->getName());
@@ -52,6 +53,7 @@ final class MollieGatewayConfigFactory implements MollieGatewayConfigFactoryInte
         $mollieGatewayConfig->setGateway($gateway);
         $mollieGatewayConfig->setIssuers($method->getIssuers());
         $mollieGatewayConfig->setPaymentType($method->getPaymentType());
+        $mollieGatewayConfig->setApplePayDirectButton(false);
 
         return $mollieGatewayConfig;
     }

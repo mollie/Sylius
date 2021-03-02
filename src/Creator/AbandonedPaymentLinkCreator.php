@@ -17,10 +17,11 @@ use BitBag\SyliusMolliePlugin\Entity\TemplateMollieEmailInterface;
 use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
 use BitBag\SyliusMolliePlugin\Preparer\PaymentLinkEmailPreparerInterface;
 use BitBag\SyliusMolliePlugin\Repository\OrderRepositoryInterface;
+use BitBag\SyliusMolliePlugin\Repository\PaymentMethodRepositoryInterface;
 use BitBag\SyliusMolliePlugin\Resolver\PaymentlinkResolverInterface;
+use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Payment\Model\PaymentMethodInterface;
-use Sylius\Component\Resource\Repository\RepositoryInterface;
 
 final class AbandonedPaymentLinkCreator implements AbandonedPaymentLinkCreatorInterface
 {
@@ -33,25 +34,39 @@ final class AbandonedPaymentLinkCreator implements AbandonedPaymentLinkCreatorIn
     /** @var PaymentLinkEmailPreparerInterface */
     private $emailPreparer;
 
-    /** @var RepositoryInterface */
-    private $gatewayConfigRepository;
+    /** @var PaymentMethodRepositoryInterface */
+    private $paymentMethodRepository;
+
+    /** @var ChannelContextInterface */
+    private $channelContext;
 
     public function __construct(
         PaymentlinkResolverInterface $paymentLinkResolver,
         OrderRepositoryInterface $orderRepository,
         PaymentLinkEmailPreparerInterface $emailPreparer,
-        RepositoryInterface $gatewayConfigRepository
+        PaymentMethodRepositoryInterface $paymentMethodRepository,
+        ChannelContextInterface $channelContext
     ) {
         $this->paymentLinkResolver = $paymentLinkResolver;
         $this->orderRepository = $orderRepository;
         $this->emailPreparer = $emailPreparer;
-        $this->gatewayConfigRepository = $gatewayConfigRepository;
+        $this->paymentMethodRepository = $paymentMethodRepository;
+        $this->channelContext = $channelContext;
     }
 
     public function create(): void
     {
+        $paymentMethod = $this->paymentMethodRepository->findOneByChannelAndGatewayFactoryName(
+            $this->channelContext->getChannel(),
+            MollieGatewayFactory::FACTORY_NAME
+        );
+
+        if (null === $paymentMethod) {
+            return;
+        }
+
         /** @var GatewayConfigInterface $gateway */
-        $gateway = $this->gatewayConfigRepository->findOneBy(['factoryName' => MollieGatewayFactory::FACTORY_NAME]);
+        $gateway = $paymentMethod->getGatewayConfig();
 
         if (null === $gateway) {
             return;

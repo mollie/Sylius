@@ -62,19 +62,21 @@ final class MollieMethodsCreator implements MollieMethodsCreatorInterface
     public function create(): void
     {
         /** @var GatewayConfigInterface $gateway */
-        $gateway = $this->gatewayConfigRepository->findOneBy(['factoryName' => MollieGatewayFactory::FACTORY_NAME]);
+        $gateways = $this->gatewayConfigRepository->findBy(['factoryName' => MollieGatewayFactory::FACTORY_NAME]);
 
-        $config = $gateway->getConfig();
-        $environment = true === $config['environment'] ?
-            MollieGatewayConfigurationType::API_KEY_LIVE :
-            MollieGatewayConfigurationType::API_KEY_TEST;
+        foreach ($gateways as $gateway) {
+            $config = $gateway->getConfig();
+            $environment = true === $config['environment'] ?
+                MollieGatewayConfigurationType::API_KEY_LIVE :
+                MollieGatewayConfigurationType::API_KEY_TEST;
 
-        $client = $this->mollieApiClient->setApiKey($config[$environment]);
+            $client = $this->mollieApiClient->setApiKey($config[$environment]);
 
-        $allMollieMethods = $client->methods->allActive(self::PARAMETERS);
-        $this->createMethods($allMollieMethods, $gateway);
+            $allMollieMethods = $client->methods->allActive(self::PARAMETERS);
+            $this->createMethods($allMollieMethods, $gateway);
 
-        $this->loggerAction->addLog(sprintf('Downloaded all methods from mollie API'));
+            $this->loggerAction->addLog(sprintf('Downloaded all methods from mollie API'));
+        }
     }
 
     private function createMethods(MethodCollection $allMollieMethods, GatewayConfigInterface $gateway): void

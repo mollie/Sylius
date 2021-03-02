@@ -22,7 +22,8 @@
             <argument type="service" id="bitbag_sylius_mollie_plugin.resolver.paymentlink_resolver" />
             <argument type="service" id="sylius.repository.order" />
             <argument type="service" id="bitbag_sylius_mollie_plugin.preparer.payment_link_email_preparer"/>
-            <argument type="service" id="sylius.repository.gateway_config"/>
+            <argument type="service" id="sylius.repository.payment_method"/>
+            <argument type="service" id="sylius.context.channel"/>
         </service>
         <service id="bitbag_sylius_mollie_plugin.creator.mollie_methods_creator" class="BitBag\SyliusMolliePlugin\Creator\MollieMethodsCreator">
             <argument type="service" id="bitbag_sylius_mollie_plugin.payments.methods"/>

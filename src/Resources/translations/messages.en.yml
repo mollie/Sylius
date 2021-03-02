@@ -108,12 +108,12 @@ bitbag_sylius_mollie_plugin:
         update: 'update'
         test_api_keys: 'Test API Keys'
         inser_you_key_first: "API key doesn't exist, no value entered"
-        api_key_start_with_api_key_test: 'API key does not start with test_'
-        api_key_start_with_api_key_live: 'API key does not start with live_'
+        api_key_start_with_api_key_test: 'API key must start with test_'
+        api_key_start_with_api_key_live: 'API key must start with live_'
         failed_with_test_api_key: 'Failed with test api key'
         available_methods: 'Available methods'
         success: 'Success'
-        fail: 'Fail'
+        fail: 'Failed'
         show_hide: 'Show\Hide'
         enabled_buy_now_button: 'Enable Buy Now Button'
     form:

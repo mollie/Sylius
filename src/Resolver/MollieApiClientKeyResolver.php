@@ -12,41 +12,52 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Resolver;
 
 use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
-use BitBag\SyliusMolliePlugin\Entity\GatewayConfigInterface;
 use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
 use BitBag\SyliusMolliePlugin\Form\Type\MollieGatewayConfigurationType;
 use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
+use BitBag\SyliusMolliePlugin\Repository\PaymentMethodRepositoryInterface;
 use Mollie\Api\Exceptions\ApiException;
+use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Sylius\Component\Resource\Exception\UpdateHandlingException;
-use Sylius\Component\Resource\Repository\RepositoryInterface;
 
 final class MollieApiClientKeyResolver implements MollieApiClientKeyResolverInterface
 {
-    /** @var RepositoryInterface */
-    private $gatewayConfigRepository;
-
     /** @var MollieApiClient */
     private $mollieApiClient;
 
     /** @var MollieLoggerActionInterface */
     private $loggerAction;
 
+    /** @var PaymentMethodRepositoryInterface */
+    private $paymentMethodRepository;
+
+    /** @var ChannelContextInterface */
+    private $channelContext;
+
     public function __construct(
-        RepositoryInterface $gatewayConfigRepository,
         MollieApiClient $mollieApiClient,
-        MollieLoggerActionInterface $loggerAction
+        MollieLoggerActionInterface $loggerAction,
+        PaymentMethodRepositoryInterface $paymentMethodRepository,
+        ChannelContextInterface $channelContext
     ) {
-        $this->gatewayConfigRepository = $gatewayConfigRepository;
         $this->mollieApiClient = $mollieApiClient;
         $this->loggerAction = $loggerAction;
+        $this->paymentMethodRepository = $paymentMethodRepository;
+        $this->channelContext = $channelContext;
     }
 
     public function getClientWithKey(): MollieApiClient
     {
-        /** @var GatewayConfigInterface $gateway */
-        $gateway = $this->gatewayConfigRepository->findOneBy([
-            'factoryName' => MollieGatewayFactory::FACTORY_NAME,
-        ]);
+        $paymentMethod = $this->paymentMethodRepository->findOneByChannelAndGatewayFactoryName(
+            $this->channelContext->getChannel(),
+            MollieGatewayFactory::FACTORY_NAME,
+        );
+
+        if (null === $paymentMethod) {
+            throw new UpdateHandlingException(sprintf('No payment method found'));
+        }
+
+        $gateway = $paymentMethod->getGatewayConfig();
 
         $config = $gateway->getConfig();
 

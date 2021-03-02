@@ -60,7 +60,6 @@ final class ApiKeysTestCreator implements ApiKeysTestCreatorInterface
             return $apiKeyTest;
         }
 
-
         return $this->testApiKey($apiKeyTest, $key);
     }
 

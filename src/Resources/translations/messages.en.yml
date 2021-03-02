@@ -117,6 +117,7 @@ bitbag_sylius_mollie_plugin:
         show_hide: 'Show\Hide'
         enabled_buy_now_button: 'Enable Buy Now Button'
     form:
+        channel_should_be_unique: 'Mollie payment method is already enabled for {channels} channel. Mollie can only be configured once per channel.'
         enabled_buy_now_button_help: 'The button is shown on the checkout page'
         payment_methods:
             payment_description: 'Description'

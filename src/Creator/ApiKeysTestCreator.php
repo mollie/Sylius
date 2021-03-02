@@ -13,6 +13,7 @@ namespace BitBag\SyliusMolliePlugin\Creator;
 
 use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
 use BitBag\SyliusMolliePlugin\DTO\ApiKeyTest;
+use BitBag\SyliusMolliePlugin\Form\Type\MollieGatewayConfigurationType;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class ApiKeysTestCreator implements ApiKeysTestCreatorInterface
@@ -45,6 +46,21 @@ final class ApiKeysTestCreator implements ApiKeysTestCreatorInterface
             return $apiKeyTest;
         }
 
+        if ($apiKeyTest->getType() === MollieGatewayConfigurationType::API_KEY_TEST && !str_starts_with($key, self::TEST_PREFIX)) {
+            $apiKeyTest->setStatus(self::ERROR_STATUS);
+            $apiKeyTest->setMessage($this->translator->trans('bitbag_sylius_mollie_plugin.ui.api_key_start_with_api_key_test'));
+
+            return $apiKeyTest;
+        }
+
+        if ($apiKeyTest->getType() === MollieGatewayConfigurationType::API_KEY_LIVE && !str_starts_with($key, self::LIVE_PREFIX)) {
+            $apiKeyTest->setStatus(self::ERROR_STATUS);
+            $apiKeyTest->setMessage($this->translator->trans('bitbag_sylius_mollie_plugin.ui.api_key_start_with_api_key_live'));
+
+            return $apiKeyTest;
+        }
+
+
         return $this->testApiKey($apiKeyTest, $key);
     }
 
@@ -68,7 +84,7 @@ final class ApiKeysTestCreator implements ApiKeysTestCreatorInterface
                 return $apiKeyTest;
             }
 
-            $apiKeyTest->setMessage($this->translator->trans('bitbag_sylius_mollie_plugin.ui.failed_with_test_api_key'));
+            $apiKeyTest->setMessage($this->translator->trans(''));
 
             return $apiKeyTest;
         }

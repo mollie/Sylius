@@ -21,5 +21,11 @@ interface ApiKeysTestCreatorInterface
     /** @var string */
     public const OK_STATUS = 'OK';
 
+    /** @var string  */
+    public const TEST_PREFIX = 'test_';
+
+    /** @var string  */
+    public const LIVE_PREFIX = 'live_';
+
     public function create(string $keyType, string $key = null): ApiKeyTest;
 }

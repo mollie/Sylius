@@ -32,10 +32,10 @@ final class TaxUnitItemResolver implements TaxUnitItemResolverInterface
         $this->calculator = $calculator;
     }
 
-    public function resolve(OrderInterface $order, OrderItem $item): float
+    public function resolve(OrderInterface $order, OrderItem $item): ?float
     {
         $rate = $this->taxRateResolver->resolve($item->getVariant());
 
-        return $rate->getAmount();
+        return null === $rate ? null : $rate->getAmount();
     }
 }

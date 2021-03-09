@@ -13,7 +13,7 @@ namespace BitBag\SyliusMolliePlugin\Calculator;
 
 use BitBag\SyliusMolliePlugin\Helper\IntToStringConverter;
 
-final class CalculateShippingTaxAmount implements CalculateShippingTaxAmountInterface
+final class CalculateTaxAmount implements CalculateTaxAmountInterface
 {
     /** @var IntToStringConverter */
     private $converter;
@@ -23,9 +23,9 @@ final class CalculateShippingTaxAmount implements CalculateShippingTaxAmountInte
         $this->converter = $converter;
     }
 
-    public function calculate(float $taxRateAmount, int $shippingAmount): string
+    public function calculate(float $taxRateAmount, int $amount): string
     {
-        $shippingTaxAmount = round($shippingAmount - ($shippingAmount / (1 + $taxRateAmount)));
+        $shippingTaxAmount = round($amount - ($amount / (1 + $taxRateAmount)));
 
         return $this->converter->convertIntToString((int) $shippingTaxAmount, 100);
     }

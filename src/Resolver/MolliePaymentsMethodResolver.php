@@ -73,7 +73,6 @@ final class MolliePaymentsMethodResolver implements MolliePaymentsMethodResolver
     {
         $methods = $this->getDefaultOptions();
         /** @var GatewayConfigInterface $gateway */
-
         $paymentMethod = $this->paymentMethodRepository->findOneByChannelAndGatewayFactoryName(
             $order->getChannel(),
             MollieGatewayFactory::FACTORY_NAME

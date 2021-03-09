@@ -34,16 +34,12 @@ final class TaxShipmentResolver implements TaxShipmentResolverInterface
         $this->calculator = $calculator;
     }
 
-    public function resolve(OrderInterface $order): float
+    public function resolve(OrderInterface $order): ?float
     {
         $shippingMethod = $this->getShippingMethod($order);
         $rate = $this->taxRateResolver->resolve($shippingMethod);
 
-        if (null === $rate) {
-            throw new \LogicException('Merchant not assign tax rates to shipping method with name %s.', $shippingMethod->getName());
-        }
-
-        return $rate->getAmount();
+        return null === $rate ? null : $rate->getAmount();
     }
 
     private function getShippingMethod(OrderInterface $order): ShippingMethodInterface

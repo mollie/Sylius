@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Helper;
 
-use BitBag\SyliusMolliePlugin\Calculator\CalculateShippingTaxAmountInterface;
+use BitBag\SyliusMolliePlugin\Calculator\CalculateTaxAmountInterface;
 use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
 use BitBag\SyliusMolliePlugin\Payments\PaymentTerms\Options;
 use BitBag\SyliusMolliePlugin\Resolver\MealVoucherResolverInterface;
@@ -31,8 +31,8 @@ final class ConvertOrder implements ConvertOrderInterface
     /** @var IntToStringConverter */
     private $intToStringConverter;
 
-    /** @var CalculateShippingTaxAmountInterface */
-    private $calculateShippingTaxAmount;
+    /** @var CalculateTaxAmountInterface */
+    private $calculateTaxAmount;
 
     /** @var TaxUnitItemResolverInterface */
     private $taxUnitItemResolver;
@@ -45,13 +45,13 @@ final class ConvertOrder implements ConvertOrderInterface
 
     public function __construct(
         IntToStringConverter $intToStringConverter,
-        CalculateShippingTaxAmountInterface $calculateShippingTaxAmount,
+        CalculateTaxAmountInterface $calculateTaxAmount,
         TaxUnitItemResolverInterface $taxUnitItemResolver,
         TaxShipmentResolverInterface $taxShipmentResolver,
         MealVoucherResolverInterface $mealVoucherResolver
     ) {
         $this->intToStringConverter = $intToStringConverter;
-        $this->calculateShippingTaxAmount = $calculateShippingTaxAmount;
+        $this->calculateTaxAmount = $calculateTaxAmount;
         $this->taxUnitItemResolver = $taxUnitItemResolver;
         $this->taxShipmentResolver = $taxShipmentResolver;
         $this->mealVoucherResolver = $mealVoucherResolver;
@@ -115,7 +115,7 @@ final class ConvertOrder implements ConvertOrderInterface
                 'type' => 'physical',
                 'name' => $item->getProductName(),
                 'quantity' => $item->getQuantity(),
-                'vatRate' => (string) ($this->getTaxRatesUnitItem($item) * 100),
+                'vatRate' => null === $this->getTaxRatesUnitItem($item) ? '0.00' : (string) ($this->getTaxRatesUnitItem($item) * 100),
                 'unitPrice' => [
                     'currency' => $this->order->getCurrencyCode(),
                     'value' => $this->intToStringConverter->convertIntToString($item->getUnitPrice(), $divisor),
@@ -126,7 +126,9 @@ final class ConvertOrder implements ConvertOrderInterface
                 ],
                 'vatAmount' => [
                     'currency' => $this->order->getCurrencyCode(),
-                    'value' => $this->intToStringConverter->convertIntToString($item->getTaxTotal(), $divisor),
+                    'value' => null === $this->getTaxRatesUnitItem($item) ?
+                        '0.00' :
+                        $this->calculateTaxAmount->calculate($this->getTaxRatesUnitItem($item), $this->order->getItemsTotal()),
                 ],
                 'metadata' => [
                     'item_id' => $item->getId(),
@@ -177,7 +179,7 @@ final class ConvertOrder implements ConvertOrderInterface
                 'type' => self::SHIPPING_TYPE,
                 'name' => self::SHIPPING_FEE,
                 'quantity' => 1,
-                'vatRate' => (string) ($this->getTaxRatesShipments() * 100),
+                'vatRate' => null === $this->getTaxRatesShipments() ? '0.00' : (string) ($this->getTaxRatesShipments() * 100),
                 'unitPrice' => [
                     'currency' => $this->order->getCurrencyCode(),
                     'value' => $this->intToStringConverter->convertIntToString($this->order->getShippingTotal(), $divisor),
@@ -188,7 +190,7 @@ final class ConvertOrder implements ConvertOrderInterface
                 ],
                 'vatAmount' => [
                     'currency' => $this->order->getCurrencyCode(),
-                    'value' => false !== $this->getTaxRatesShipments() ? $this->calculateShippingTaxAmount->calculate($this->getTaxRatesShipments(), $this->order->getShippingTotal()) : '0.00',
+                    'value' => null === $this->getTaxRatesShipments() ? '0.00' : $this->calculateTaxAmount->calculate($this->getTaxRatesShipments(), $this->order->getShippingTotal()),
                 ],
             ];
         }
@@ -196,12 +198,12 @@ final class ConvertOrder implements ConvertOrderInterface
         return $details;
     }
 
-    private function getTaxRatesUnitItem(OrderItem $item): float
+    private function getTaxRatesUnitItem(OrderItem $item): ?float
     {
         return $this->taxUnitItemResolver->resolve($this->order, $item);
     }
 
-    private function getTaxRatesShipments(): float
+    private function getTaxRatesShipments(): ?float
     {
         return $this->taxShipmentResolver->resolve($this->order);
     }

@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Calculator;
 
-interface CalculateShippingTaxAmountInterface
+interface CalculateTaxAmountInterface
 {
     public function calculate(float $taxRateAmount, int $shippingAmount): string;
 }

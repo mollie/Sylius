@@ -15,5 +15,5 @@ use Sylius\Component\Core\Model\OrderInterface;
 
 interface TaxShipmentResolverInterface
 {
-    public function resolve(OrderInterface $order): float;
+    public function resolve(OrderInterface $order): ?float;
 }

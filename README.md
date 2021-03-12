@@ -26,7 +26,7 @@ At BitBag we do believe in open source. However, we are able to do it just becau
 * [License](#license)
 * [Contact](#contact)
 
-# Overwiev
+# Overview
 ----
 
 ![Screenshot showing payment methods show in shop](doc/payment_methods_shop.png)

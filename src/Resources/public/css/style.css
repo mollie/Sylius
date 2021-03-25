@@ -187,7 +187,3 @@
         border: none;
     }
 }
-
-.sortable-element:hover {
-    cursor: move;
-}

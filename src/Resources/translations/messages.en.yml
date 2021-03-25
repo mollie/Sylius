@@ -16,6 +16,7 @@ bitbag_sylius_mollie_plugin:
         iban: 'IBAN'
         cancel_subscription: 'Cancel subscription'
         payment_mathod_conf_title: 'Payment methods configuration'
+        you_can_sort_methods_via_drag_and_drop: 'You can sort payment methods via drag and drop'
         load_methods_button: 'Load methods'
         percentage_surcharge: 'Percentage'
         fix_amount_surcharge: 'Fix amount'

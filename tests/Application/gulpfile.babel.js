@@ -1,5 +1,6 @@
 import chug from 'gulp-chug';
 import gulp from 'gulp';
+import del from 'del';
 import yargs from 'yargs';
 
 const { argv } = yargs

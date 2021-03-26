@@ -19,6 +19,12 @@
             <argument>@BitBagSyliusMolliePlugin/Admin/_javascripts.html.twig</argument>
             <tag name="kernel.event_listener" event="sonata.block.event.sylius.admin.layout.javascripts" method="onBlockEvent"/>
         </service>
+        <service id="bitbag_sylius_mollie_plugin.block_event_listener.admin.layout.stylesheets"
+          class="Sylius\Bundle\UiBundle\Block\BlockEventListener">
+            <argument>@BitBagSyliusMolliePlugin/Admin/_stylesheets.html.twig</argument>
+            <tag name="kernel.event_listener" event="sonata.block.event.sylius.admin.layout.stylesheets"
+              method="onBlockEvent"/>
+        </service>
         <service id="bitbag_sylius_mollie_plugin.block_event_listener.shop.layout.javascripts" class="Sylius\Bundle\UiBundle\Block\BlockEventListener">
             <argument>@BitBagSyliusMolliePlugin/Shop/_javascripts.html.twig</argument>
             <tag name="kernel.event_listener" event="sonata.block.event.sylius.shop.layout.javascripts" method="onBlockEvent"/>
@@ -32,5 +38,6 @@
             <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
             <tag name="messenger.message_handler" priority="1" />
         </service>
+
     </services>
 </container>

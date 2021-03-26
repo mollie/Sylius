@@ -24,15 +24,16 @@
             {% if methodForm.vars.value.customizeMethodImage != null and methodForm.vars.value.customizeMethodImage.path != null %}
                 {% set methodImage = image_dir_global ~ methodForm.vars.value.customizeMethodImage.path %}
             {% endif %}
-            <div class="js-draggable" draggable="true" style="position: relative">
-                <i class="icon expand arrows alternate" style="position:absolute; left: 7px; top: 18px; font-size: 10px"></i>
+            <div class="draggable js-draggable" draggable="true">
+                <div class="draggable-button-enable">
+                    {{ form_row(methodForm.enabled, { 'attr': {'class': 'test'} }) }}
+                </div>
                 <div class="title{% if 0 == loop.index0 %} active{% endif %}">
                     <i class="dropdown icon"></i>
                     <img class="ui mini avatar image" src="{{ methodImage }}">
                     {{ methodForm.vars.value.name }}
                 </div>
                 <div class="content{% if 0 == loop.index0 %} active{% endif %}">
-                    {{ form_row(methodForm.enabled) }}
                     {{ form_row(methodForm.name) }}
                     {% if methodForm.vars.value.methodId == mealvouchersId %}
                         <div class="field">

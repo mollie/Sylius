@@ -18,13 +18,14 @@
         </div>
         <div class="sub header"><i class="info circle icon"></i> {{ 'bitbag_sylius_mollie_plugin.ui.you_can_sort_methods_via_drag_and_drop'|trans }}</div>
     </h4>
-    <div class="ui styled fluid accordion js-sortable" id="payment_methods">
+    <div class="ui styled fluid accordion js-sortable " id="payment_methods">
         {% for name, methodForm in form.gatewayConfig.mollieGatewayConfig %}
             {% set methodImage = methodForm.vars.value.image.svg %}
             {% if methodForm.vars.value.customizeMethodImage != null and methodForm.vars.value.customizeMethodImage.path != null %}
                 {% set methodImage = image_dir_global ~ methodForm.vars.value.customizeMethodImage.path %}
             {% endif %}
-            <div>
+            <div class="js-draggable" draggable="true" style="position: relative">
+                <i class="icon expand arrows alternate" style="position:absolute; left: 7px; top: 18px; font-size: 10px"></i>
                 <div class="title{% if 0 == loop.index0 %} active{% endif %}">
                     <i class="dropdown icon"></i>
                     <img class="ui mini avatar image" src="{{ methodImage }}">

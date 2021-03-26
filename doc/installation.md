@@ -355,18 +355,10 @@ cp -R vendor/bitbag/mollie-plugin/tests/Application/templates/bundles/SyliusRefu
 bin/console assets:install
 ```
 
-12.(optional) if you don't use `symfony/messenger` component yet, it is required to configure default message bus:
-
-```yaml
-    framework:
-        messenger:
-            default_bus: sylius_refund_plugin.command_bus
-```
-
 **Note:** If you are running it on production, add the `-e prod` flag to this command.
 
 
-13.On abandoned payment link to run it on CLI we need to add a script e.g cron. Example here:
+12.On abandoned payment link to run it on CLI we need to add a script e.g cron. Example here:
 
 ```shell script
 * * * * * /var/www/mollie/scripts/payment-link.sh
@@ -374,7 +366,7 @@ bin/console assets:install
 /usr/bin/php /var/www/mollie/bin/console mollie:send-payment-link
 ```
 
-14. Add state machine configuration in `_sylius.yaml`
+13. Add state machine configuration in `_sylius.yaml`
 ```yaml
 # config/packages/_sylius.yaml
 
@@ -386,7 +378,7 @@ winzou_state_machine:
         to: completed
 ```
 
-15. Download the [domain validation file](https://www.mollie.com/.well-known/apple-developer-merchantid-domain-association) and place it on your server at
+14. Download the [domain validation file](https://www.mollie.com/.well-known/apple-developer-merchantid-domain-association) and place it on your server at
 `public/.well-known/apple-developer-merchantid-domain-association`
     
     

@@ -4,7 +4,7 @@ bitbag_sylius_mollie_plugin_mollie_logger:
     section: admin
     path: /mollie/logger
     permission: true
-    templates: SyliusAdminBundle:Crud
+    templates: "@SyliusAdmin\\Crud"
     redirect: update
     grid: bitbag_sylius_mollie_plugin_mollie_logger
     vars:

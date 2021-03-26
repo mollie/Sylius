@@ -3,7 +3,7 @@ bitbag_sylius_mollie_plugin_mollie_logger:
     alias: bitbag_sylius_mollie_plugin.template_mollie_email
     section: admin
     path: /mollie/email-template
-    templates: SyliusAdminBundle:Crud
+    templates: "@SyliusAdmin\\Crud"
     redirect: update
     permission: true
     grid: bitbag_sylius_mollie_plugin_template_mollie_email

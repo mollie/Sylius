@@ -11,7 +11,9 @@ $(function () {
     })
 
     draggable.addEventListener('dragend', () => {
-      draggable.classList.remove('dragging')
+      draggable.classList.remove('dragging');
+      const payload = getPaymentMethodPositions();
+      console.log(payload);
     });
   })
 
@@ -25,6 +27,18 @@ $(function () {
       container.insertBefore(draggable, afterElement);
     }
   })
+
+  function getPaymentMethodPositions () {
+    const draggables = [...container.querySelectorAll('.js-draggable')];
+    const updatedPositions = [];
+
+    draggables.map((item, index) => {
+      const { paymentMethod } = item.dataset;
+      updatedPositions.push({ id: index, name: paymentMethod })
+    });
+
+    return updatedPositions;
+  }
 
   function getDragAfterElement(container, y) {
     const draggableElements = [...container.querySelectorAll('.js-draggable:not(.dragging)')];
@@ -40,4 +54,28 @@ $(function () {
 
     }, { offset: Number.NEGATIVE_INFINITY }).element
   }
+
+  // const tour = new Shepherd.Tour({
+  //   defaultStepOptions: {
+  //     classes: 'shadow-md bg-purple-dark',
+  //     scrollTo: true
+  //   }
+  // });
+  //
+  // tour.addStep({
+  //   id: 'mollie-payment-form',
+  //   text: 'This step is attached to the bottom of the <code>.example-css-selector</code> element.',
+  //   attachTo: {
+  //     element: '.example-css-selector',
+  //     on: 'bottom'
+  //   },
+  //   classes: 'example-step-extra-class',
+  //   buttons: [
+  //     {
+  //       text: 'Next',
+  //       action: tour.next
+  //     }
+  //   ]
+  // });
+  // tour.start();
 });

@@ -24,7 +24,11 @@
             {% if methodForm.vars.value.customizeMethodImage != null and methodForm.vars.value.customizeMethodImage.path != null %}
                 {% set methodImage = image_dir_global ~ methodForm.vars.value.customizeMethodImage.path %}
             {% endif %}
-            <div class="draggable js-draggable" draggable="true">
+            <div
+                class="draggable js-draggable"
+                draggable="true"
+                data-payment-method="{{ methodForm.vars.value.methodId }}"
+            >
                 <div class="draggable-button-enable">
                     {{ form_row(methodForm.enabled, { 'attr': {'class': 'test'} }) }}
                 </div>

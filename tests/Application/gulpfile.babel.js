@@ -50,6 +50,24 @@ export const watchShop = function watchShop() {
 };
 watchShop.description = 'Watch shop asset sources and rebuild on changes.';
 
+export const buildJsAssets = function buildJsAssets() {
+  return gulp.src('../../src/Resources/public/js/Admin/*.js')
+    .pipe(gulp.dest('./public/bundles/bitbagsyliusmollieplugin/js/Admin/'));
+};
+
+export const buildCssAssets = function buildCssAssets() {
+  return gulp.src('../../src/Resources/public/css/**/*.css')
+    .pipe(gulp.dest('./public/bundles/bitbagsyliusmollieplugin/css/'));
+};
+
+export const cleanJs = function cleanJs() {
+  return del(['./public/bundles/bitbagsyliusmollieplugin/js/public/js/Admin/sortable.js']);
+};
+
+export const cleanCss = function cleanCss() {
+  return del(['./public/bundles/bitbagsyliusmollieplugin/css/*/']);
+};
+
 export const build = gulp.parallel(buildAdmin, buildShop);
 build.description = 'Build assets.';
 
@@ -57,5 +75,13 @@ gulp.task('admin', buildAdmin);
 gulp.task('admin-watch', watchAdmin);
 gulp.task('shop', buildShop);
 gulp.task('shop-watch', watchShop);
+gulp.task('cleanJs', cleanJs);
+gulp.task('cleanCss', cleanCss);
+gulp.task('buildJsAssets', gulp.series('cleanJs'), buildJsAssets);
+gulp.task('buildCssAssets', gulp.series('cleanCss'), buildCssAssets);
+gulp.task('watch', function () {
+  gulp.watch('../../src/Resources/public/js/Admin/**/*.js', gulp.task('buildJsAssets'));
+  gulp.watch('../../src/Resources/public/css/**/*.css', gulp.task('buildCssAssets'));
+});
 
 export default build;

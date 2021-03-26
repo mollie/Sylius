@@ -29,5 +29,11 @@
             <argument type="service" id="sylius.repository.payment_method"/>
             <argument type="service" id="translator"/>
         </service>
+
+        <service id="bitbag_sylius_mollie_plugin.validator.refund.refund_units_command_validator" class="BitBag\SyliusMolliePlugin\Validator\Refund\RefundUnitsCommandValidator" decorates="Sylius\RefundPlugin\Validator\RefundUnitsCommandValidator">
+            <argument type="service" id="Sylius\RefundPlugin\Checker\OrderRefundingAvailabilityChecker"/>
+            <argument type="service" id="Sylius\RefundPlugin\Validator\RefundAmountValidator" />
+            <argument type="service" id="bitbag_sylius_mollie_plugin.checker.refund.duplicate_refund_the_same_amount_checker"/>
+        </service>
     </services>
 </container>

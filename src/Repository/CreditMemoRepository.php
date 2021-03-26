@@ -11,18 +11,24 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Repository;
 
-use BitBag\SyliusMolliePlugin\Entity\SubscriptionInterface;
 use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 
-class SubscriptionRepository extends EntityRepository implements SubscriptionRepositoryInterface
+class CreditMemoRepository extends EntityRepository implements CreditMemoRepositoryInterface
 {
-    public function findOneByOrderId($orderId): ?SubscriptionInterface
-    {
+    public function findByOrderNumberAndDateTime(
+        int $orderId,
+        \DateTime $dateTime,
+        int $amount
+    ): array {
         return $this->createQueryBuilder('o')
-            ->where('o.order = :orderId')
+            ->andWhere('o.order = :orderId')
+            ->andWhere('o.issuedAt > :issuedAt')
+            ->andWhere('o.total = :amount')
             ->setParameter('orderId', $orderId)
+            ->setParameter('issuedAt', $dateTime)
+            ->setParameter('amount', $amount)
             ->getQuery()
-            ->getOneOrNullResult()
+            ->getResult()
         ;
     }
 }

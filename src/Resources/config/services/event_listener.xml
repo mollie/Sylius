@@ -30,7 +30,7 @@
         <service id="BitBag\SyliusMolliePlugin\EventListener\PaymentPartialEventListener">
             <argument type="service" id="bit_bag.sylius_mollie_plugin.order.order_payment_refund"/>
             <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
-            <tag name="messenger.message_handler" />
+            <tag name="messenger.message_handler" priority="1" />
         </service>
     </services>
 </container>

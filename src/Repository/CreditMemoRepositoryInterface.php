@@ -11,10 +11,12 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Repository;
 
-use BitBag\SyliusMolliePlugin\Entity\SubscriptionInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 
-interface SubscriptionRepositoryInterface extends RepositoryInterface
+interface CreditMemoRepositoryInterface extends RepositoryInterface
 {
-    public function findOneByOrderId($orderId): ?SubscriptionInterface;
+    public function findByOrderNumberAndDateTime(
+        int $orderId,
+        \DateTime $dateTime,
+        int $amount): array;
 }

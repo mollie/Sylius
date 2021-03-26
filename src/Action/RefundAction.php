@@ -58,7 +58,6 @@ final class RefundAction extends BaseApiAwareAction implements ActionInterface, 
 
             if (true === $molliePayment->canBeRefunded()) {
                 $molliePayment->refund(['amount' => $refundData]);
-
                 $this->loggerAction->addLog(sprintf('Refund action with payment id %s', $molliePayment->id));
             } else {
                 $this->loggerAction->addNegativeLog(sprintf('Payment %s can not be refunded.', $molliePayment->id));
@@ -68,7 +67,7 @@ final class RefundAction extends BaseApiAwareAction implements ActionInterface, 
         } catch (ApiException $e) {
             $this->loggerAction->addNegativeLog(sprintf('API call failed: %s', htmlspecialchars($e->getMessage())));
 
-            throw new UpdateHandlingException(sprintf('API call failed: %s', htmlspecialchars($e->getMessage())));
+            throw new \Exception(sprintf('API call failed: %s', htmlspecialchars($e->getMessage())));
         }
     }
 

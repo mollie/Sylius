@@ -42,6 +42,10 @@ final class PaymentMethodCheckoutValidator extends ConstraintValidator
         /** @var PaymentInterface $payment */
         $payment = $order->getPayments()->last();
 
+        if ($payment === false) {
+            return;
+        }
+
         /** @var GatewayConfigInterface $gateway */
         $gateway = $payment->getMethod()->getGatewayConfig();
 

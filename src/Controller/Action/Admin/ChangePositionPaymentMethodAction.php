@@ -11,50 +11,24 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Controller\Action\Admin;
 
-use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
-use Doctrine\Common\Persistence\ObjectManager;
-use Sylius\Component\Resource\Repository\RepositoryInterface;
+use BitBag\SyliusMolliePlugin\Creator\ChangePositionPaymentMethodCreatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 final class ChangePositionPaymentMethodAction
 {
-    /** @var RepositoryInterface */
-    private $mollieGatewayRepository;
+    /** @var ChangePositionPaymentMethodCreatorInterface */
+    private $changePositionPaymentMethodCreator;
 
-    /** @var ObjectManager */
-    private $mollieGatewayObjectManager;
-
-    public function __construct(
-        RepositoryInterface $mollieGatewayRepository,
-        ObjectManager $mollieGatewayObjectManager
-    ) {
-        $this->mollieGatewayRepository = $mollieGatewayRepository;
-        $this->mollieGatewayObjectManager = $mollieGatewayObjectManager;
+    public function __construct(ChangePositionPaymentMethodCreatorInterface $changePositionPaymentMethodCreator)
+    {
+        $this->changePositionPaymentMethodCreator = $changePositionPaymentMethodCreator;
     }
 
     public function __invoke(Request $request): Response
     {
-        $positions = $this->emptyPositionFilter($request->get('data', []));
-
-        foreach ($positions as $position) {
-            $method = $this->mollieGatewayRepository->findOneBy(['methodId' => $position['name']]);
-            if ($method instanceof MollieGatewayConfigInterface and isset($position['id'])) {
-                $method->setPosition((int) $position['id']);
-
-                $this->mollieGatewayObjectManager->persist($method);
-            }
-        }
-
-        $this->mollieGatewayObjectManager->flush();
+        $this->changePositionPaymentMethodCreator->createFromRequest($request);
 
         return new Response('OK');
-    }
-
-    private function emptyPositionFilter(array $positions): array
-    {
-        return array_filter($positions, function (array $position): bool {
-            return isset($position['id']) && $position['id'] !== '';
-        });
     }
 }

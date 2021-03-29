@@ -38,5 +38,10 @@
             <argument type="service" id="bitbag_sylius_mollie_plugin.mollie_api_client"/>
             <argument type="service" id="translator"/>
         </service>
+
+        <service id="bitbag_sylius_mollie_plugin.creator.change_position_payment_method_creator" class="BitBag\SyliusMolliePlugin\Creator\ChangePositionPaymentMethodCreator">
+            <argument type="service" id="bitbag_sylius_mollie_plugin.repository.mollie_gateway_config"/>
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+        </service>
     </services>
 </container>

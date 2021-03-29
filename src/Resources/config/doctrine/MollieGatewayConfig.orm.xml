@@ -25,6 +25,7 @@
         <field name="countryLevelAllowed" column="country_level_allowed" type="array" nullable="true" />
         <field name="orderExpiration" column="order_expiration" type="integer" nullable="true" />
         <field name="applePayDirectButton" column="apple_pay_direct" type="boolean" />
+        <field name="position" column="position" type="integer" />
         <many-to-one field="gateway" target-entity="Sylius\Bundle\PayumBundle\Model\GatewayConfigInterface" inversed-by="mollieGatewayConfig">
             <join-column name="gateway_id" referenced-column-name="id"/>
         </many-to-one>

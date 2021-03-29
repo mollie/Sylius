@@ -1,8 +1,10 @@
 $(function () {
   const container = document.querySelector('.js-sortable');
+
   if (!container && !container.length) {
     return;
   }
+
   const draggables = document.querySelectorAll('.js-draggable');
 
   draggables.forEach(draggable => {
@@ -13,7 +15,7 @@ $(function () {
     draggable.addEventListener('dragend', () => {
       draggable.classList.remove('dragging');
       const payload = getPaymentMethodPositions();
-      console.log(payload);
+      changePositionAjaxAction(payload);
     });
   })
 
@@ -55,27 +57,17 @@ $(function () {
     }, { offset: Number.NEGATIVE_INFINITY }).element
   }
 
-  // const tour = new Shepherd.Tour({
-  //   defaultStepOptions: {
-  //     classes: 'shadow-md bg-purple-dark',
-  //     scrollTo: true
-  //   }
-  // });
-  //
-  // tour.addStep({
-  //   id: 'mollie-payment-form',
-  //   text: 'This step is attached to the bottom of the <code>.example-css-selector</code> element.',
-  //   attachTo: {
-  //     element: '.example-css-selector',
-  //     on: 'bottom'
-  //   },
-  //   classes: 'example-step-extra-class',
-  //   buttons: [
-  //     {
-  //       text: 'Next',
-  //       action: tour.next
-  //     }
-  //   ]
-  // });
-  // tour.start();
+  function changePositionAjaxAction(data) {
+    const url = document.getElementById("payment_methods").getAttribute('data-ajax-url');
+
+    $.ajax({
+      type: "GET",
+      url: url,
+      data: {'data': data},
+      success: function (data) {
+      },
+      error: function () {
+      }
+    });
+  }
 });

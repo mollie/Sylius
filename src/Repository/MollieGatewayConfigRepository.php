@@ -22,6 +22,7 @@ class MollieGatewayConfigRepository extends EntityRepository implements MollieGa
             ->where('m.enabled = true')
             ->andWhere('m.gateway = :gateway')
             ->setParameter('gateway', $gateway)
+            ->orderBy('m.position', 'ASC')
             ->getQuery()
             ->getResult()
         ;

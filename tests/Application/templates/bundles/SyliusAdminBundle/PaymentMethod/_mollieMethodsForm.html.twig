@@ -18,8 +18,8 @@
         </div>
         <div class="sub header"><i class="info circle icon"></i> {{ 'bitbag_sylius_mollie_plugin.ui.you_can_sort_methods_via_drag_and_drop'|trans }}</div>
     </h4>
-    <div class="ui styled fluid accordion js-sortable " id="payment_methods">
-        {% for name, methodForm in form.gatewayConfig.mollieGatewayConfig %}
+    <div class="ui styled fluid accordion js-sortable" id="payment_methods" data-ajax-url="{{ path('bitbag_admin_change_position') }}">
+        {% for name, methodForm in form.gatewayConfig.mollieGatewayConfig|sort((a, b) => a.vars.value.position <=> b.vars.value.position) %}
             {% set methodImage = methodForm.vars.value.image.svg %}
             {% if methodForm.vars.value.customizeMethodImage != null and methodForm.vars.value.customizeMethodImage.path != null %}
                 {% set methodImage = image_dir_global ~ methodForm.vars.value.customizeMethodImage.path %}

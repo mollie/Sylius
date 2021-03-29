@@ -68,4 +68,8 @@ interface MollieGatewayConfigInterface extends MethodInterface
     public function getCountryRestriction(): ?string;
 
     public function setCountryRestriction(?string $countryRestriction): void;
+
+    public function getPosition(): ?int;
+
+    public function setPosition(?int $position): void;
 }

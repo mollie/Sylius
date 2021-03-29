@@ -9,3 +9,9 @@ bitbag_admin_test_api_keys:
   methods: [GET]
   defaults:
     _controller: bitbag_sylius_mollie_plugin.controller.action.admin.test_api_keys_action
+
+bitbag_admin_change_position:
+  path: /mollie/methods/change-position
+  methods: [GET]
+  defaults:
+    _controller: bitbag_sylius_mollie_plugin.controller.action.admin.change_position_payment_method_action

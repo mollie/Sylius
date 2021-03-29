@@ -41,8 +41,11 @@ final class MollieGatewayConfigFactory implements MollieGatewayConfigFactoryInte
         return null !== $methodExist ? $methodExist : $this->mollieGatewayConfigFactory->createNew();
     }
 
-    public function create(MethodInterface $method, GatewayConfigInterface $gateway): MollieGatewayConfigInterface
-    {
+    public function create(
+        MethodInterface $method,
+        GatewayConfigInterface $gateway,
+        int $key
+    ): MollieGatewayConfigInterface {
         $mollieGatewayConfig = $this->createNewOrUpdate($method, $gateway);
 
         $mollieGatewayConfig->setMethodId($method->getMethodId());
@@ -54,6 +57,7 @@ final class MollieGatewayConfigFactory implements MollieGatewayConfigFactoryInte
         $mollieGatewayConfig->setIssuers($method->getIssuers());
         $mollieGatewayConfig->setPaymentType($method->getPaymentType());
         $mollieGatewayConfig->setApplePayDirectButton(false);
+        $mollieGatewayConfig->setPosition($key);
 
         return $mollieGatewayConfig;
     }

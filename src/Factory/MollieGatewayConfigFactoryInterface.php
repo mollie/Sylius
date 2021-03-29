@@ -17,5 +17,5 @@ use Sylius\Bundle\PayumBundle\Model\GatewayConfigInterface;
 
 interface MollieGatewayConfigFactoryInterface
 {
-    public function create(MethodInterface $method, GatewayConfigInterface $gateway): MollieGatewayConfigInterface;
+    public function create(MethodInterface $method, GatewayConfigInterface $gateway, int $key): MollieGatewayConfigInterface;
 }

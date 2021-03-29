@@ -65,5 +65,10 @@
             <argument type="service" id="bitbag_sylius_mollie_plugin.resolver.api_keys_test_resolver"/>
             <argument type="service" id="twig"/>
         </service>
+
+        <service id="bitbag_sylius_mollie_plugin.controller.action.admin.change_position_payment_method_action" class="BitBag\SyliusMolliePlugin\Controller\Action\Admin\ChangePositionPaymentMethodAction">
+            <argument type="service" id="bitbag_sylius_mollie_plugin.repository.mollie_gateway_config"/>
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+        </service>
     </services>
 </container>

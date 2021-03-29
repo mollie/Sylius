@@ -90,8 +90,8 @@ final class MollieMethodsCreator implements MollieMethodsCreatorInterface
         }
 
         /** @var MethodInterface $method */
-        foreach ($this->methods->getAllEnabled() as $method) {
-            $gatewayConfig = $this->factory->create($method, $gateway);
+        foreach ($this->methods->getAllEnabled() as $key => $method) {
+            $gatewayConfig = $this->factory->create($method, $gateway, $key);
 
             $this->entityManager->persist($gatewayConfig);
             $this->entityManager->flush();

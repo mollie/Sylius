@@ -55,6 +55,9 @@ class MollieGatewayConfig extends AbstractMethod implements ResourceInterface, M
     /** @var string|null */
     protected $countryRestriction;
 
+    /** @var int|null */
+    protected $position;
+
     public function getId(): int
     {
         return $this->id;
@@ -183,5 +186,15 @@ class MollieGatewayConfig extends AbstractMethod implements ResourceInterface, M
     public function setCountryRestriction(?string $countryRestriction): void
     {
         $this->countryRestriction = $countryRestriction;
+    }
+
+    public function getPosition(): ?int
+    {
+        return $this->position;
+    }
+
+    public function setPosition(?int $position): void
+    {
+        $this->position = $position;
     }
 }

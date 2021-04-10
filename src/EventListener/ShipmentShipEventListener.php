@@ -46,6 +46,10 @@ final class ShipmentShipEventListener
         $order = $shipment->getOrder();
         $payment = $order->getLastPayment();
 
+        if ($payment === null) {
+            return;
+        }
+
         /** @var PaymentMethodInterface $paymentMethod */
         $paymentMethod = $payment->getMethod();
 

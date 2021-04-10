@@ -34,6 +34,10 @@ final class AdminOrderShowMenuListener
         /** @var PaymentInterface $payment */
         $payment = $order->getPayments()->last();
 
+        if ($payment === false) {
+            return;
+        }
+
         /** @var PaymentMethodInterface $paymentMethod */
         $paymentMethod = $payment->getMethod();
 

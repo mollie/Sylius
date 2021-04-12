@@ -46,7 +46,7 @@ final class ShipmentShipEventListener
         $order = $shipment->getOrder();
         $payment = $order->getLastPayment();
 
-        if ($payment === null) {
+        if (null === $payment) {
             return;
         }
 

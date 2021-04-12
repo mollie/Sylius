@@ -382,7 +382,7 @@ winzou_state_machine:
   sylius_order_checkout:
     transitions:
       complete:
-        from: [payment_selected, payment_skipped, addressed, shipping_skipped, payment_selected, cart]
+        from: [cart, addressed, shipping_selected, shipping_skipped, payment_selected, payment_skipped]
         to: completed
 ```
 

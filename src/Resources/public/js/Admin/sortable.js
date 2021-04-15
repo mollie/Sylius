@@ -1,7 +1,7 @@
 $(function () {
   const container = document.querySelector('.js-sortable');
 
-  if (!container && !container.length) {
+  if (!container) {
     return;
   }
 
@@ -64,10 +64,8 @@ $(function () {
       type: "GET",
       url: url,
       data: {'data': data},
-      success: function (data) {
-      },
-      error: function () {
-      }
+      success: function (data) {},
+      error: function () {}
     });
   }
 });

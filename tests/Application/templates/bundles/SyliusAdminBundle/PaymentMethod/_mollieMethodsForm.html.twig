@@ -16,9 +16,16 @@
                 </div>
             </div>
         </div>
-        <div class="sub header"><i class="info circle icon"></i> {{ 'bitbag_sylius_mollie_plugin.ui.you_can_sort_methods_via_drag_and_drop'|trans }}</div>
+        <div class="sub header">
+            <i class="info circle icon"></i>
+            {{ 'bitbag_sylius_mollie_plugin.ui.you_can_sort_methods_via_drag_and_drop'|trans }}
+        </div>
     </h4>
-    <div class="ui styled fluid accordion js-sortable" id="payment_methods" data-ajax-url="{{ path('bitbag_admin_change_position') }}">
+    <div
+        class="ui styled fluid accordion js-sortable"
+        id="payment_methods"
+        data-ajax-url="{{ path('bitbag_admin_change_position') }}"
+    >
         {% for name, methodForm in form.gatewayConfig.mollieGatewayConfig|sort((a, b) => a.vars.value.position <=> b.vars.value.position) %}
             {% set methodImage = methodForm.vars.value.image.svg %}
             {% if methodForm.vars.value.customizeMethodImage != null and methodForm.vars.value.customizeMethodImage.path != null %}
@@ -32,12 +39,12 @@
                 <div class="draggable-button-enable">
                     {{ form_row(methodForm.enabled, { 'attr': {'class': 'test'} }) }}
                 </div>
-                <div class="title{% if 0 == loop.index0 %} active{% endif %}">
+                <div class="title{% if loop.index0 == 0 %} active{% endif %}">
                     <i class="dropdown icon"></i>
                     <img class="ui mini avatar image" src="{{ methodImage }}">
                     {{ methodForm.vars.value.name }}
                 </div>
-                <div class="content{% if 0 == loop.index0 %} active{% endif %}">
+                <div class="content{% if loop.index0 == 0 %} active{% endif %}">
                     {{ form_row(methodForm.name) }}
                     {% if methodForm.vars.value.methodId == mealvouchersId %}
                         <div class="field">
@@ -54,13 +61,18 @@
                         <div class="twelve wide column">
                             {{ form_row(methodForm.customizeMethodImage) }}
                         </div>
-                        {% if methodForm.vars.value.customizeMethodImage != null and methodForm.vars.value.customizeMethodImage.path != null %}
+                        {% if
+                            methodForm.vars.value.customizeMethodImage != null and
+                            methodForm.vars.value.customizeMethodImage.path != null
+                        %}
                             <div class="four wide column">
-                                <div id={{ name }}
-                                data-value="{{ methodForm.vars.value.name }}"
-                                        data-url="{{ path('bitbag_admin_delete_logo') }}"
-                                        class="ui button red form_button--delete-img"
-                                >{{ 'sylius.ui.delete'|trans }}</div>
+                                <div
+                                    class="ui button red form_button--delete-img"
+                                    id="{{ name }}"
+                                    data-value="{{ methodForm.vars.value.name }}"
+                                    data-url="{{ path('bitbag_admin_delete_logo') }}"
+                                >{{ 'sylius.ui.delete'|trans }}
+                                </div>
                             </div>
                         {% endif %}
                     </div>
@@ -79,10 +91,12 @@
                     </div>
                     <div class="field">
                         <div class="fields">
-                            <div class="twelve wide field">
-                                {% if methodForm.vars.value.methodId == mealvouchersId or
+                            <div class="twelve wide field onboardingWizard-paymentType">
+                                {% if
+                                    methodForm.vars.value.methodId == mealvouchersId or
                                     methodForm.vars.value.methodId == klarnaPayLater  or
-                                    methodForm.vars.value.methodId == klarnaSliceIt %}
+                                    methodForm.vars.value.methodId == klarnaSliceIt
+                                %}
                                     {{ form_row(methodForm.paymentType, {'attr': {'disabled': 'disabled'}}) }}
                                     {{ form_help(methodForm.paymentType) }}
                                 {% else %}

@@ -1,3 +1,14 @@
+:root {
+  --paddingSize: 40px;
+  --colorPrimary: #0040FF;
+  --colorGray: #979797;
+  --colorGreen: #32AD30;
+}
+
+.pushable {
+  height: fit-content;
+}
+
 .draggable {
   position: relative;
 }
@@ -6,4 +17,313 @@
   position:absolute;
   right: 20px;
   top: 20px;
+}
+
+.right-bottom {
+  position: fixed !important;
+  top: auto !important;
+  left: auto !important;
+  bottom: 100px !important;
+  right: 50px !important;
+  transform: none !important;
+}
+
+.d-none {
+  display: none !important;
+}
+
+.mr-auto {
+  margin-right: auto !important;
+}
+
+.ml-auto {
+  margin-left: auto;
+}
+
+[data-shepherd-step-id="mollie-connect"] .shepherd-footer,
+[data-shepherd-step-id="step-start"] .shepherd-footer {
+  flex-direction: column-reverse;
+  padding: 0 var(--paddingSize) var(--paddingSize);
+}
+
+[data-shepherd-step-id="mollie-connect"] .shepherd-footer .shepherd-button:not(.btn-collapse),
+[data-shepherd-step-id="step-start"] .shepherd-footer .shepherd-button:not(.btn-collapse) {
+  border-radius: 25px;
+}
+
+body.shepherd-target .shepherd-footer {
+  flex-direction: column-reverse;
+  padding: 0 var(--paddingSize) var(--paddingSize);
+}
+
+body.shepherd-target .shepherd-footer .shepherd-button {
+  border-radius: 25px !important;
+}
+
+.onboardingWizard-mollieComponents.shepherd-step-highlight {
+  position: absolute;
+  display: block;
+  width: 100px;
+  height: 50px;
+}
+
+.onboardingWizard-nav {
+  background-color: white;
+  border-radius: 30px;
+  bottom: 10px;
+  counter-reset: nav-element 0;
+  min-height: 46px;
+  padding: 20px;
+  position: fixed;
+  right: 125px;
+  z-index: 9999;
+}
+
+.onboardingWizard-nav-item {
+  position: relative;
+  counter-increment: nav-element 1;
+}
+
+.onboardingWizard-nav-item::before {
+  position: absolute;
+  width: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 18px;
+}
+
+.onboardingWizard-nav-item::before {
+  content: counter(nav-element);
+  border-radius: 50%;
+  color: #fff;
+  background-color: black;
+  display: flex;
+  font-weight: 600;
+  justify-content: center;
+  left: -2px;
+  align-items: center;
+}
+
+.onboardingWizard-nav-item.active.last ~ .active {
+  color: #000;
+}
+
+.onboardingWizard-nav-item.active.last ~ .active::before {
+  color: #fff;
+  content: counter(nav-element);
+}
+
+.onboardingWizard-nav-item.active:not(.last)::before {
+  content: none;
+}
+
+.onboardingWizard-nav-item.active:not(.last) {
+  color: var(--colorGray);
+}
+
+.onboardingWizard-nav-item::before,
+.onboardingWizard-nav-item::before:not(.last):not(.active) {
+  background-color: black;
+}
+
+.onboardingWizard-nav-item.active.last::before {
+  background-color: var(--colorGreen);
+}
+
+.onboardingWizard-nav-item.active.last {
+  font-weight: 600;
+}
+
+.onboardingWizard-nav-item.active.last ~ .active .icon,
+.onboardingWizard-nav-item:not(.active) .icon,
+.onboardingWizard-nav-item.active.last .icon {
+  visibility: hidden;
+}
+
+.onboardingWizard-nav-item.active:not(.last) .icon {
+  visibility: visible;
+  color: var(--colorGray);
+}
+
+.onboardingWizard-nav-item .icon {
+  margin: 0 10px 0 0;
+}
+
+.onboardingWizard-logo {
+  bottom: 0;
+  right: -75px;
+  position: absolute;
+  width: 60px;
+  height: 60px;
+}
+
+.onboardingWizard-nav ul {
+  align-items: center;
+  display: flex;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.onboardingWizard-nav li:not(.onboardingWizard-nav-item) {
+  padding: 0 5px;
+}
+
+.shepherd-button:not(.shepherd-button-secondary):not(.btn-collapse):not(.btn-close) .icon {
+  margin-left: 15px;
+}
+
+.shepherd-element.collapsed {
+  width: 100px;
+  height: 50px;
+}
+
+.collapsed .shepherd-header,
+.collapsed .shepherd-button:not(.btn-collapse),
+.collapsed .shepherd-text {
+  opacity: 0;
+}
+
+.collapsed .shepherd-button.btn-collapse {
+  left: 10px;
+  top: 10px;
+  background-color: var(--colorPrimary);
+}
+
+.collapsed .shepherd-button.btn-collapse .icon {
+  transform: rotate(180deg);
+  color: #fff;
+}
+
+.collapsed .btn-text-open {
+  color: #000;
+  position: absolute;
+  left: 35px;
+  font-weight: 600;
+}
+
+.shepherd-arrow {
+  transform: translate(360px, 0px) !important;
+}
+
+.shepherd-arrow::before {
+  background-color: var(--colorPrimary);
+}
+
+.shepherd-has-title .shepherd-title {
+  font-size: 30px;
+  font-weight: 600;
+  width: 100%;
+}
+
+.shepherd-has-title .shepherd-title .icon {
+  color: var(--colorGreen);
+}
+
+.shepherd-has-title .shepherd-text {
+  padding: 0 var(--paddingSize) var(--paddingSize);
+}
+
+.shepherd-has-title .shepherd-button.btn-close,
+.shepherd-has-title .shepherd-button.btn-collapse {
+  top: -80px;
+}
+
+.shepherd-has-title .shepherd-content .shepherd-header {
+  background-color: #fff;
+  color: #000;
+  padding: var(--paddingSize) var(--paddingSize) 0;
+  position: relative;
+  width: 100%;
+}
+
+.shepherd-footer {
+  padding: 0;
+}
+
+.shepherd-header {
+  padding: 0;
+  position: absolute;
+  right: 0;
+  top: -40px;
+}
+
+.shepherd-button.btn-close:hover,
+.shepherd-button.btn-collapse:hover {
+  background-color: var(--colorPrimary);
+}
+
+.shepherd-button.btn-collapse:hover {
+  color: #fff;
+}
+
+.shepherd-button:not(.btn-collapse) {
+  font-weight: 600;
+  margin-right: 0;
+  padding: 15px 25px;
+}
+
+.shepherd-button:not(.btn-collapse).collapsed {
+  opacity: 0;
+}
+
+.shepherd-button:not(.shepherd-button-secondary):not(.btn-collapse):not(.btn-close) {
+  background-color: var(--colorPrimary);
+  border-radius: 0 0 4px 0;
+  color: #fff;
+  position: relative;
+}
+
+.shepherd-button.with-triangle::after {
+  border-style: solid;
+  border-width: 10px 10px 0 10px;
+  border-color: #0040ff transparent transparent transparent;
+  bottom: -10px;
+  content: "";
+  right: 15px;
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.shepherd-button.shepherd-button-secondary {
+  color: #979797;
+  background-color: transparent;
+}
+
+.shepherd-button.btn-close,
+.shepherd-button.btn-collapse {
+  align-items: center;
+  background: white;
+  border-radius: 50%;
+  color: #000;
+  display: flex;
+  height: 28px;
+  justify-content: center;
+  position: absolute;
+  padding: 1px;
+  top: -40px;
+  transition: unset;
+  width: 28px;
+}
+
+.shepherd-button.btn-close {
+  right: 0;
+}
+
+.shepherd-button.btn-collapse {
+  right: 30px;
+}
+
+.btn-close .icon,
+.btn-collapse .icon {
+  margin: 0;
+}
+
+.shepherd-text {
+  padding: var(--paddingSize);
+}
+
+.shepherd-text.collapsed {
+  opacity: 0;
 }

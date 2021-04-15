@@ -139,7 +139,6 @@ $(function () {
       btnCloseClass: 'btn-close',
     },
     {
-      id: 'orderNumber',
       classActive: 'payment-settings',
       text:'When using Payments API you may want additional details to help you match payments with customer orders -- you can enter those values here but make sure to use the correct tags provide in the text below',
       stepClass: 'step-13 right-bottom',
@@ -151,6 +150,7 @@ $(function () {
       btnCloseClass: 'btn-close',
     },
     {
+      id: 'fees',
       text: 'In case you have fees that you are passing on to the consumer, you can add them here',
       stepClass: 'step-13 right-bottom',
       classActive: 'payment-settings',
@@ -417,7 +417,7 @@ $(function () {
           {
             text: 'Next',
             action: () => {
-              tour.show('orderNumber')
+              tour.show('fees')
             },
             classes: 'with-triangle',
           },

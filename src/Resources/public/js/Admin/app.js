@@ -57,25 +57,24 @@ $(function () {
     })
 
     $('[id$="_paymentType"]').each(function (index) {
-        const value = $(this).find(":selected").val();
-        setPaymentDescription(value, index);
+        setPaymentDescription($(this), index);
 
-        $(this).on('change', function () {
-            const value = $(this).val();
-            setPaymentDescription(value, index);
+        $(this).on('change', function (event) {
+            setPaymentDescription($(event.target), index);
         })
     });
 
-    function setPaymentDescription(value, index) {
-        const field = 'sylius_payment_method_gatewayConfig_mollieGatewayConfig_'+ index +'_paymentDescription';
-        const description = $("#payment_description_" + index);
+    function setPaymentDescription(select) {
+        const $targetMethod = select.closest('.js-draggable');
+        const $inputOrderNumber = $targetMethod.find('[id$="_paymentDescription"]');
+        const $descriptionOrderNumber = $targetMethod.find('[id^="payment_description_"]');
 
-        if (value === 'PAYMENT_API') {
-            $('label[for='+field+'], input#'+field).show();
-            description.show();
+        if (select.find(':selected').val() === 'PAYMENT_API') {
+            $inputOrderNumber.show();
+            $descriptionOrderNumber.show();
         } else {
-            $('label[for='+field+'], input#'+field).hide();
-            description.hide();
+            $inputOrderNumber.hide();
+            $descriptionOrderNumber.hide();
         }
     }
 

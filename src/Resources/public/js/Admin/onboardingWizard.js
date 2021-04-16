@@ -128,8 +128,7 @@ $(function () {
       btnCloseClass: 'btn-close',
     },
     {
-      text: 'Choose Payments API (Payments API can not be used for methods such as Klarna - we\'ll set-up that up\n' +
-        ' later) Learn about the difference  between Orders APIor the Payments API',
+      text: 'Choose Payments API Learn about the difference   between Orders APIor the Payments API',
       stepClass: 'step-10 right-bottom',
       classActive: 'payment-settings',
       btnBackText:'Go back',

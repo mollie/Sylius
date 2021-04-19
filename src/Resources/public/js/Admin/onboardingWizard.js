@@ -88,7 +88,8 @@ $(function () {
       btnCloseClass: 'btn-close',
     },
     {
-      text: 'We\'ll go through setup with the Payments API first and then highlight differences if you choose to use the Orders API',
+      text: 'We\'ll go through setup with the Payments API first and then highlight differences if \n' +
+        'you choose to use the Orders API',
       stepClass: 'step-8 right-bottom',
       classActive: 'payment-settings',
       btnBackText:'Go back',
@@ -127,13 +128,13 @@ $(function () {
       btnBackText:'Go back',
       btnNextText: 'Next <i class="icon angle right"></i>',
       btnNextClass: 'with-triangle',
-      attachToElement: '[for="sylius_payment_method_gatewayConfig_mollieGatewayConfig_1_country_restriction"] +' +
+      attachToElement: '[for="sylius_payment_method_gatewayConfig_mollieGatewayConfig_1_country_restriction"] + \n' +
         ' .dropdown',
       btnCollapseClass: 'btn-collapse',
       btnCloseClass: 'btn-close',
     },
     {
-      text: 'Choose Payments API Learn about the difference   between Orders APIor the Payments API',
+      text: 'Choose Payments API Learn about the difference between Orders APIor the Payments API',
       stepClass: 'step-10 right-bottom',
       classActive: 'payment-settings',
       btnBackText:'Go back',
@@ -163,7 +164,7 @@ $(function () {
       btnBackText:'Go back',
       btnNextText: 'Next <i class="icon angle right"></i>',
       btnNextClass: 'with-triangle',
-      attachToElement: '[for="sylius_payment_method_gatewayConfig_mollieGatewayConfig_1_paymentSurchargeFee_type"] +' +
+      attachToElement: '[for="sylius_payment_method_gatewayConfig_mollieGatewayConfig_1_paymentSurchargeFee_type"] + ' +
         ' .dropdown',
       btnCollapseClass: 'btn-collapse',
       btnCloseClass: 'btn-close',

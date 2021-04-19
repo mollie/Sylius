@@ -5,16 +5,95 @@ $(function () {
 
   const stepPaymentType = {
     id: 'paymentType',
-    classActive: 'payment-settings',
-    text:'When using Payments API you may want additional details to help you match payments with customer orders -- \n' +
+    text: 'When using Payments API you may want additional details to help you match payments with customer orders -- \n' +
       'you can enter those values here but make sure to use the correct tags provide in the text below',
-    stepClass: 'step-13 right-bottom',
-    btnNextText: 'Next <i class="icon angle right"></i>',
-    btnNextClass: 'with-triangle',
-    btnBackText: 'Go back',
-    attachToElement: '.js-onboardingWizard-paymentType',
-    btnCollapseClass: 'btn-collapse',
-    btnCloseClass: 'btn-close',
+    classes: 'right-bottom',
+    attachTo: {
+      element: '.js-onboardingWizard-paymentType',
+      on: 'top-start'
+    },
+    highlightClass: 'payment-settings',
+    when: {
+      show: () => {
+        this.previousStepIndex = tour.steps.indexOf(tour.getCurrentStep());
+        navbarProgressHandler(tour);
+      }
+    },
+    buttons: [
+      {
+        text: '<i class="close icon"></i>',
+        action: () => {
+          tour.addStep(stepQuitConfirmationHandler(this.previousStepIndex));
+          tour.show('step-quitConfirmation');
+        },
+        classes: 'btn-close',
+      },
+      {
+        text: '<i class="arrow down icon"></i>',
+        action: () => modalCollapseHandler(tour),
+        classes: 'btn-collapse',
+      },
+      {
+        text: 'Go back',
+        action() {
+          tour.back();
+        },
+        secondary: true,
+      },
+      {
+        text: 'Next <i class="icon angle right"></i>',
+        action() {
+          tour.next();
+        },
+        classes: 'with-triangle',
+      },
+    ],
+  };
+
+  const stepPaymentDescription = {
+    id: 'paymentDescription',
+    text: 'Choose Payments API Learn about the difference between Orders API or the Payments API',
+    classes: 'right-bottom',
+    attachTo: {
+      element: '.js-onboardingWizard-paymentDescription',
+      on: 'top-start'
+    },
+    highlightClass: 'payment-settings',
+    when: {
+      show: () => {
+        this.previousStepIndex = tour.steps.indexOf(tour.getCurrentStep());
+        navbarProgressHandler(tour);
+      }
+    },
+    buttons: [
+      {
+        text: '<i class="close icon"></i>',
+        action: () => {
+          tour.addStep(stepQuitConfirmationHandler(this.previousStepIndex));
+          tour.show('step-quitConfirmation');
+        },
+        classes: 'btn-close',
+      },
+      {
+        text: '<i class="arrow down icon"></i>',
+        action: () => modalCollapseHandler(tour),
+        classes: 'btn-collapse',
+      },
+      {
+        text: 'Go back',
+        action() {
+          tour.back();
+        },
+        secondary: true,
+      },
+      {
+        text: 'Next <i class="icon angle right"></i>',
+        action() {
+          tour.next();
+        },
+        classes: 'with-triangle',
+      },
+    ],
   };
 
   const stepOrderApi = {
@@ -30,8 +109,6 @@ $(function () {
     when: {
       show: () => {
         this.previousStepIndex = tour.steps.indexOf(tour.getCurrentStep());
-        // console.log('when show', tour.steps);
-
         navbarProgressHandler(tour);
       },
     },
@@ -41,7 +118,6 @@ $(function () {
         action: () => {
           tour.addStep(stepQuitConfirmationHandler(this.previousStepIndex));
           tour.show('step-quitConfirmation')
-          // console.log('close click when added orderAPI', tour.steps);
         },
         classes: 'btn-close',
       },
@@ -54,18 +130,13 @@ $(function () {
         text: 'Go back',
         action: () => {
           tour.back();
-
-
         },
         secondary: true,
-
       },
       {
         text: 'Next <i class="icon angle right"></i>',
         action: () => {
-          // console.log('next', tour.steps);
-          tour.show('fees');
-
+          tour.next();
         },
         classes: 'with-triangle',
       },
@@ -198,18 +269,6 @@ $(function () {
       btnNextText: 'Next <i class="icon angle right"></i>',
       btnNextClass: 'with-triangle',
       attachToElement: '.js-onboardingWizard-countryRestriction',
-      btnCollapseClass: 'btn-collapse',
-      btnCloseClass: 'btn-close',
-    },
-    { ...stepPaymentType },
-    {
-      text: 'Choose Payments API Learn about the difference between Orders API or the Payments API',
-      stepClass: 'right-bottom',
-      classActive: 'payment-settings',
-      btnBackText:'Go back',
-      btnNextText: 'Next <i class="icon angle right"></i>',
-      btnNextClass: 'with-triangle',
-      attachToElement: '.js-onboardingWizard-paymentDescription',
       btnCollapseClass: 'btn-collapse',
       btnCloseClass: 'btn-close',
     },
@@ -350,8 +409,6 @@ $(function () {
       when: {
         show: () => {
           this.previousStepIndex = tour.steps.indexOf(tour.getCurrentStep());
-          // console.log('when show index', this.previousStepIndex);
-          // console.log('when show steps', tour.steps);
           navbarProgressHandler(tour);
         }
       },
@@ -410,38 +467,51 @@ $(function () {
 
   tour.start();
 
+  navbarVisibilityHandler(tour.isActive);
+
   ['inactive', 'show'].forEach(event => tour.on(event, () => {
     navbarVisibilityHandler(tour.isActive);
   }));
 
   function mountTourOrderApi () {
-    const $dropdown = $('.js-onboardingWizard-paymentType');
+    const dropdown = document.querySelector('.js-onboardingWizard-paymentType');
 
-    if (!$dropdown) {
+    if (!dropdown) {
       return;
     }
 
-    $dropdown.dropdown({
+    const $optionPayemtnApiSelected = $(dropdown).find('[data-value="PAYMENT_API"]').hasClass('selected');
+
+    if ($optionPayemtnApiSelected) {
+      tour.addStep( { ...stepPaymentType }, 11);
+      tour.addStep( { ...stepPaymentDescription }, 12);
+      console.log(tour.steps);
+    }
+
+    if (!$optionPayemtnApiSelected) {
+      tour.addStep( { ...stepOrderApi }, 11);
+      console.log(tour.steps);
+    }
+
+    $(dropdown).dropdown({
       onChange: function(value, text, $selectedItem) {
-       if (value === 'ORDER_API') {
-         tour.steps.forEach(step => {
-           if (step.id === 'orderApi') {
-             tour.show('orderApi');
+        if (value === 'ORDER_API') {
+          tour.steps.forEach(step => {
+            if (step.id === 'orderApi') {
+              tour.show('orderApi');
 
-             return;
-           }
-         });
+              return;
+            }
+          });
 
-         // console.log(tour.steps.indexOf(tour.getCurrentStep()));
-         tour.removeStep('paymentType')
-         tour.addStep({ ...stepOrderApi }, 12);
-         // console.log(paymentIndex);
-         // tour.steps.slice()
+          tour.removeStep('paymentType');
+          tour.removeStep('paymentDescription');
+          tour.addStep({ ...stepOrderApi }, 11);
 
-         tour.start();
-         tour.show('orderApi');
-       }
-      }
+          tour.start();
+          tour.show('orderApi');
+        }
+      },
     })
   }
 

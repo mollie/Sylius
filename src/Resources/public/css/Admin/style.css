@@ -46,8 +46,8 @@
   padding: 0 var(--paddingSize) var(--paddingSize);
 }
 
-[data-shepherd-step-id="mollie-connect"] .shepherd-footer .shepherd-button:not(.btn-collapse),
-[data-shepherd-step-id="step-start"] .shepherd-footer .shepherd-button:not(.btn-collapse) {
+[data-shepherd-step-id="mollie-connect"] .shepherd-footer .shepherd-button:not(.btn-collapse):not(.btn-close),
+[data-shepherd-step-id="step-start"] .shepherd-footer .shepherd-button:not(.btn-collapse):not(.btn-close) {
   border-radius: 25px;
 }
 

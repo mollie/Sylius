@@ -3,6 +3,75 @@ $(function () {
     return;
   }
 
+  const stepPaymentType = {
+    id: 'paymentType',
+    classActive: 'payment-settings',
+    text:'When using Payments API you may want additional details to help you match payments with customer orders -- \n' +
+      'you can enter those values here but make sure to use the correct tags provide in the text below',
+    stepClass: 'step-13 right-bottom',
+    btnNextText: 'Next <i class="icon angle right"></i>',
+    btnNextClass: 'with-triangle',
+    btnBackText: 'Go back',
+    attachToElement: '.js-onboardingWizard-paymentType',
+    btnCollapseClass: 'btn-collapse',
+    btnCloseClass: 'btn-close',
+  };
+
+  const stepOrderApi = {
+    id: 'orderApi',
+    highlightClass: 'payment-settings',
+    classes: 'right-bottom',
+    text: 'Select Orders API - this is Mollie\n' +
+      'suggested API to use for webshops b/c it allows you to create “orders”. An order contains the personal information of a customer (e.g. address) and products that the customer ordered. When an order is made, a corresponding payment will be created automatically.',
+    attachTo: {
+      element: '.js-onboardingWizard-paymentType',
+      on: 'top-start',
+    },
+    when: {
+      show: () => {
+        this.previousStepIndex = tour.steps.indexOf(tour.getCurrentStep());
+        // console.log('when show', tour.steps);
+
+        navbarProgressHandler(tour);
+      },
+    },
+    buttons: [
+      {
+        text: '<i class="close icon"></i>',
+        action: () => {
+          tour.addStep(stepQuitConfirmationHandler(this.previousStepIndex));
+          tour.show('step-quitConfirmation')
+          // console.log('close click when added orderAPI', tour.steps);
+        },
+        classes: 'btn-close',
+      },
+      {
+        text: '<i class="arrow down icon"></i>',
+        action: () => modalCollapseHandler(tour),
+        classes: 'btn-collapse',
+      },
+      {
+        text: 'Go back',
+        action: () => {
+          tour.back();
+
+
+        },
+        secondary: true,
+
+      },
+      {
+        text: 'Next <i class="icon angle right"></i>',
+        action: () => {
+          // console.log('next', tour.steps);
+          tour.show('fees');
+
+        },
+        classes: 'with-triangle',
+      },
+    ],
+  };
+
   const steps = [
     {
       id: 'step-start',
@@ -21,7 +90,7 @@ $(function () {
         'LIVE environments available. Try easily togging between the two.',
       stepClass: 'right-bottom',
       classActive: 'api-settings',
-      attachToElement: '.onboardingWizard-environment',
+      attachToElement: '.js-onboardingWizard-environment',
       btnBackText:'Go back',
       btnNextText: 'Next <i class="icon angle right"></i>',
       btnNextClass: 'with-triangle',
@@ -48,7 +117,7 @@ $(function () {
       btnBackText:'Go back',
       btnNextText: 'Next <i class="icon angle right"></i>',
       btnNextClass: 'with-triangle',
-      attachToElement: '[for="sylius_payment_method_gatewayConfig_config_api_key_test"] + *',
+      attachToElement: '.js-onboardingWizard-apiKey',
       btnCollapseClass: 'btn-collapse',
       btnCloseClass: 'btn-close',
     },
@@ -71,26 +140,26 @@ $(function () {
       btnBackText:'Go back',
       btnNextText: 'Next <i class="icon angle right"></i>',
       btnNextClass: 'with-triangle',
-      attachToElement: '.onboardingWizard-mollieComponents',
+      attachToElement: '.js-onboardingWizard-mollieComponents + label',
       btnCollapseClass: 'btn-collapse',
       btnCloseClass: 'btn-close',
     },
     {
       text: 'Enabling single click payments remembers your consumer\'s payment preferences in order to expedite follow-up \n' +
         'payments. Your consumer does not have to perform any additional actions to enjoy quick and easy payments.',
-      stepClass: 'step-7 right-bottom',
+      stepClass: 'right-bottom',
       classActive: 'store-settings',
       btnBackText:'Go back',
       btnNextText: 'Next <i class="icon angle right"></i>',
       btnNextClass: 'with-triangle',
-      attachToElement: '.onboardingWizard-singleClick',
+      attachToElement: '.js-onboardingWizard-singleClick + label',
       btnCollapseClass: 'btn-collapse',
       btnCloseClass: 'btn-close',
     },
     {
       text: 'We\'ll go through setup with the Payments API first and then highlight differences if \n' +
         'you choose to use the Orders API',
-      stepClass: 'step-8 right-bottom',
+      stepClass: 'right-bottom',
       classActive: 'payment-settings',
       btnBackText:'Go back',
       btnNextText: 'Next',
@@ -105,7 +174,7 @@ $(function () {
       btnBackText:'Go back',
       btnNextText: 'Next <i class="icon angle right"></i>',
       btnNextClass: 'with-triangle',
-      attachToElement: '#sylius_payment_method_gatewayConfig_mollieGatewayConfig_1_name',
+      attachToElement: '.js-onboardingWizard-paymentName',
       btnCollapseClass: 'btn-collapse',
       btnCloseClass: 'btn-close',
     },
@@ -116,43 +185,31 @@ $(function () {
       btnBackText:'Go back',
       btnNextText: 'Next <i class="icon angle right"></i>',
       btnNextClass: 'with-triangle',
-      attachToElement: '#sylius_payment_method_gatewayConfig_mollieGatewayConfig_1_customizeMethodImage_file',
+      attachToElement: '.js-onboardingWizard-customizeMethodImage input',
       btnCollapseClass: 'btn-collapse',
       btnCloseClass: 'btn-close',
     },
     {
       id: 'restrictPayment',
-      text: 'Restrict/ allow payment per individual countries.',
+      text: 'Restrict/allow payment per individual countries.',
       stepClass: 'step-12 right-bottom',
       classActive: 'payment-settings',
       btnBackText:'Go back',
       btnNextText: 'Next <i class="icon angle right"></i>',
       btnNextClass: 'with-triangle',
-      attachToElement: '[for="sylius_payment_method_gatewayConfig_mollieGatewayConfig_1_country_restriction"] + \n' +
-        ' .dropdown',
+      attachToElement: '.js-onboardingWizard-countryRestriction',
       btnCollapseClass: 'btn-collapse',
       btnCloseClass: 'btn-close',
     },
+    { ...stepPaymentType },
     {
-      text: 'Choose Payments API Learn about the difference between Orders APIor the Payments API',
-      stepClass: 'step-10 right-bottom',
+      text: 'Choose Payments API Learn about the difference between Orders API or the Payments API',
+      stepClass: 'right-bottom',
       classActive: 'payment-settings',
       btnBackText:'Go back',
       btnNextText: 'Next <i class="icon angle right"></i>',
       btnNextClass: 'with-triangle',
-      attachToElement: '[for="sylius_payment_method_gatewayConfig_mollieGatewayConfig_1_paymentType"] + .dropdown',
-      btnCollapseClass: 'btn-collapse',
-      btnCloseClass: 'btn-close',
-    },
-    {
-      classActive: 'payment-settings',
-      text:'When using Payments API you may want additional details to help you match payments with customer orders -- \n' +
-        'you can enter those values here but make sure to use the correct tags provide in the text below',
-      stepClass: 'step-13 right-bottom',
-      btnNextText: 'Next <i class="icon angle right"></i>',
-      btnNextClass: 'with-triangle',
-      btnBackText: 'Go back',
-      attachToElement: '#sylius_payment_method_gatewayConfig_mollieGatewayConfig_1_paymentDescription',
+      attachToElement: '.js-onboardingWizard-paymentDescription',
       btnCollapseClass: 'btn-collapse',
       btnCloseClass: 'btn-close',
     },
@@ -164,8 +221,7 @@ $(function () {
       btnBackText:'Go back',
       btnNextText: 'Next <i class="icon angle right"></i>',
       btnNextClass: 'with-triangle',
-      attachToElement: '[for="sylius_payment_method_gatewayConfig_mollieGatewayConfig_1_paymentSurchargeFee_type"] + ' +
-        ' .dropdown',
+      attachToElement: '.js-onboardingWizard-paymentFee .dropdown',
       btnCollapseClass: 'btn-collapse',
       btnCloseClass: 'btn-close',
     },
@@ -268,6 +324,7 @@ $(function () {
     useModalOverlay: true,
     confirmCancel: false,
     keyboardNavigation: false,
+    exitOnEsc: false,
     defaultStepOptions: {
       class: 'onboardingWizard-popup',
       arrow: false,
@@ -293,6 +350,8 @@ $(function () {
       when: {
         show: () => {
           this.previousStepIndex = tour.steps.indexOf(tour.getCurrentStep());
+          // console.log('when show index', this.previousStepIndex);
+          // console.log('when show steps', tour.steps);
           navbarProgressHandler(tour);
         }
       },
@@ -351,88 +410,38 @@ $(function () {
 
   tour.start();
 
-  ['inactive', 'show'].forEach(event => tour.on(event, () => navbarVisibilityHandler(tour.isActive)));
+  ['inactive', 'show'].forEach(event => tour.on(event, () => {
+    navbarVisibilityHandler(tour.isActive);
+  }));
 
   function mountTourOrderApi () {
-    const selectCustom = document.querySelector(
-      '#sylius_payment_method_gatewayConfig_mollieGatewayConfig_1_paymentType ~ .menu'
-    )
+    const $dropdown = $('.js-onboardingWizard-paymentType');
 
-    const orderApiOption = selectCustom.querySelector('[data-value="ORDER_API"]');
-
-    if (!orderApiOption) {
+    if (!$dropdown) {
       return;
     }
 
-    const orderApiOptionSelected =
-      $('[for=sylius_payment_method_gatewayConfig_mollieGatewayConfig_1_paymentType] + .dropdown')
-        .find(':selected')
-        .val() === 'ORDER_API'
+    $dropdown.dropdown({
+      onChange: function(value, text, $selectedItem) {
+       if (value === 'ORDER_API') {
+         tour.steps.forEach(step => {
+           if (step.id === 'orderApi') {
+             tour.show('orderApi');
 
+             return;
+           }
+         });
 
-    orderApiOption.addEventListener('click', () => {
-      tour.steps.forEach(step => {
-        if (step.id === 'orderApi') {
-          tour.show('orderApi');
+         // console.log(tour.steps.indexOf(tour.getCurrentStep()));
+         tour.removeStep('paymentType')
+         tour.addStep({ ...stepOrderApi }, 12);
+         // console.log(paymentIndex);
+         // tour.steps.slice()
 
-          return;
-        }
-      });
-
-      tour.addStep({
-        keyboardNavigation: false,
-        id: 'orderApi',
-        highlightClass: 'payment-settings',
-        classes: 'right-bottom',
-        text: 'Select Orders API - this is Mollie\n' +
-          'suggested API to use for webshops b/c it allows you to create “orders”. An order contains the personal information of a customer (e.g. address) and products that the customer ordered. When an order is made, a corresponding payment will be created automatically.',
-        btnBackText:'Go back',
-        btnNextText: 'Next',
-        attachTo: {
-          element: '[for="sylius_payment_method_gatewayConfig_mollieGatewayConfig_1_paymentType"] + .dropdown',
-          on: 'top-start',
-        },
-        when: {
-          show: () => {
-            const previousStepIndex = tour.steps.indexOf(tour.getCurrentStep());
-            const buttonClose = document.querySelector('.btn-close');
-
-            buttonClose.addEventListener('click', () => {
-              tour.addStep(stepQuitConfirmationHandler(previousStepIndex));
-              tour.show('step-quitConfirmation');
-            });
-
-            navbarProgressHandler(tour);
-          },
-        },
-        buttons: [
-          {
-            text: '<i class="close icon"></i>',
-            action: () => tour.addStep(stepQuitConfirmationHandler(this.previousStepIndex)),
-            classes: 'btn-close',
-          },
-          {
-            text: '<i class="arrow down icon"></i>',
-            action: () => modalCollapseHandler(tour),
-            classes: 'btn-collapse',
-          },
-          {
-            text: 'Go back',
-            action: () => tour.show('paymentTitle'),
-            secondary: true,
-          },
-          {
-            text: 'Next',
-            action: () => {
-              tour.show('fees')
-            },
-            classes: 'with-triangle',
-          },
-        ],
-      });
-
-      tour.start();
-      tour.show('orderApi');
+         tour.start();
+         tour.show('orderApi');
+       }
+      }
     })
   }
 

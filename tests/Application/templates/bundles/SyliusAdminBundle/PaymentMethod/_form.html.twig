@@ -28,10 +28,8 @@
                 <div class="two field">
             {% endif %}
             {% if field.vars.name == 'environment'%}
-                <div class="onboardingWizard-environment">
-                    {{ form_widget(field) }}
-                    {{ form_errors(field) }}
-                </div>
+                {{ form_widget(field, { 'attr': { 'class': 'js-onboardingWizard-environment' } }) }}
+                {{ form_errors(field) }}
             {% elseif field.vars.name == 'profile_id'%}
                 <div class="required field">
                     <label for="sylius_payment_method_gatewayConfig_config_profile_id" class="required">
@@ -41,18 +39,14 @@
                     {{ form_errors(field) }}
                 </div>
             {% elseif field.vars.name == 'api_key_test' %}
-                <div class="onboardingWizard-apiKey">
-                    {% include 'bundles/SyliusAdminBundle/PaymentMethod/_api_test_key.html.twig' %}
-                </div>
+                {% include 'bundles/SyliusAdminBundle/PaymentMethod/_api_test_key.html.twig' %}
             {% elseif field.vars.name == 'api_key_live' %}
                 {% include 'bundles/SyliusAdminBundle/PaymentMethod/_api_live_key.html.twig' %}
             {% elseif field.vars.name == 'components' %}
-                <div class="onboardingWizard-mollieComponents">
-                    {{ form_row(field) }}
-                </div>
+                {{ form_row(field, { 'attr': { 'class': 'onboardingWizard-mollieComponents js-onboardingWizard-mollieComponents' } }) }}
             {% elseif field.vars.name == 'single_click_enabled' %}
-                <div class="onboardingWizard-singleClick">
-                    {{ form_row(field) }}
+                <div class="js-onboardingWizard-singleClick">
+                    {{ form_row(field, { 'attr': { 'class': 'js-onboardingWizard-singleClick' } }) }}
                 </div>
             {% else %}
                 {{ form_row(field) }}

@@ -37,7 +37,7 @@
                 data-payment-method="{{ methodForm.vars.value.methodId }}"
             >
                 <div class="draggable-button-enable">
-                    {{ form_row(methodForm.enabled, { 'attr': {'class': 'test'} }) }}
+                    {{ form_row(methodForm.enabled) }}
                 </div>
                 <div class="title{% if loop.index0 == 0 %} active{% endif %}">
                     <i class="dropdown icon"></i>
@@ -45,7 +45,7 @@
                     {{ methodForm.vars.value.name }}
                 </div>
                 <div class="content{% if loop.index0 == 0 %} active{% endif %}">
-                    {{ form_row(methodForm.name) }}
+                    {{ form_row(methodForm.name, { 'attr': { 'class': 'js-onboardingWizard-paymentName' } }) }}
                     {% if methodForm.vars.value.methodId == mealvouchersId %}
                         <div class="field">
                             {{ form_widget(methodForm.defaultCategory) }}
@@ -59,7 +59,7 @@
                     {% endif %}
                     <div class="field">
                         <div class="twelve wide column">
-                            {{ form_row(methodForm.customizeMethodImage) }}
+                            {{ form_row(methodForm.customizeMethodImage, { 'attr': { 'class': 'js-onboardingWizard-customizeMethodImage' } }) }}
                         </div>
                         {% if
                             methodForm.vars.value.customizeMethodImage != null and
@@ -77,7 +77,7 @@
                         {% endif %}
                     </div>
                     <div class="field">
-                        {{ form_row(methodForm.country_restriction) }}
+                        {{ form_row(methodForm.country_restriction, { 'attr': { 'class': 'js-onboardingWizard-countryRestriction' } }) }}
                     </div>
                     <div class="field">
                         <div id="country-allowed_{{ loop.index0 }}">
@@ -91,7 +91,7 @@
                     </div>
                     <div class="field">
                         <div class="fields">
-                            <div class="twelve wide field onboardingWizard-paymentType">
+                            <div class="twelve wide field">
                                 {% if
                                     methodForm.vars.value.methodId == mealvouchersId or
                                     methodForm.vars.value.methodId == klarnaPayLater  or
@@ -100,7 +100,7 @@
                                     {{ form_row(methodForm.paymentType, {'attr': {'disabled': 'disabled'}}) }}
                                     {{ form_help(methodForm.paymentType) }}
                                 {% else %}
-                                    {{ form_row(methodForm.paymentType) }}
+                                    {{ form_row(methodForm.paymentType, { 'attr': { 'class': 'js-onboardingWizard-paymentType' } }) }}
                                     {{ form_help(methodForm.paymentType) }}
                                 {% endif %}
                             </div>
@@ -110,7 +110,7 @@
                         </div>
                     </div>
                     <div class="field">
-                        {{ form_widget(methodForm.paymentDescription) }}
+                        {{ form_widget(methodForm.paymentDescription, { 'attr': { 'class': 'js-onboardingWizard-paymentDescription' } }) }}
                         <div id="payment_description_{{ name }}">
                             {{ methodForm.paymentDescription.vars.help|trans|raw|nl2br }}
                         </div>
@@ -118,7 +118,7 @@
                     <h4 class="ui horizontal divider header">
                         {{ 'bitbag_sylius_mollie_plugin.ui.payment_fee'|trans }}
                     </h4>
-                    {{ form_row(methodForm.paymentSurchargeFee) }}
+                    {{ form_row(methodForm.paymentSurchargeFee, { 'attr': { 'class': 'js-onboardingWizard-paymentFee' } }) }}
                 </div>
             </div>
         {% else %}

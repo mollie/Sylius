@@ -6,7 +6,9 @@ $(function () {
   const steps = [
     {
       id: 'step-start',
-      text: 'Thank you for installing Mollie for payment services. This guide will take you through the configuration setup. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam suscipit nibh quis urna congue, et interdum nulla rutrum. Cras at justo ornare.',
+      text: 'Thank you for installing Mollie for payment services. This guide will take you \n' +
+        'through the configuration setup. Lorem ipsum dolor sit amet, consectetur adipiscing elit. \n' +
+        'Etiam suscipit nibh quis urna congue, et interdum nulla rutrum. Cras at justo ornare.',
       title: 'Let me help you',
       btnBackText:'Skip this, I know how it works',
       btnNextText: 'Start onboarding assistant <i class="icon angle right"></i>',
@@ -15,7 +17,8 @@ $(function () {
       btnCloseClass: 'd-none',
     },
     {
-      text: 'TEST will be the default in the plugin. You only need to do the configuration once to have TEST + LIVE environments available. Try easily togging between the two.',
+      text: 'TEST will be the default in the plugin. You only need to do the configuration once to have TEST + \n' +
+        'LIVE environments available. Try easily togging between the two.',
       stepClass: 'right-bottom',
       classActive: 'api-settings',
       attachToElement: '.onboardingWizard-environment',
@@ -37,8 +40,8 @@ $(function () {
       urlMollie: 'https://www.mollie.com/dashboard',
     },
     {
-      text: 'Fill in your correct details and click "TEST API Key" this will return a successful or failed result for both the LIVE and TEST environments.\n' +
-        '\n' +
+      text: 'Fill in your correct details and click "TEST API Key" this will return a successful or failed result for \n' +
+        'both the LIVE and TEST environments.\n' +
         'Learn about the difference between: Orders API or the Payments API',
       stepClass: 'right-bottom',
       classActive: 'api-settings',
@@ -50,7 +53,8 @@ $(function () {
       btnCloseClass: 'btn-close',
     },
     {
-      text: 'Webshop checkout Configurations, Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce semper velit et urna gravida efficitur.',
+      text: 'Webshop checkout Configurations, Lorem ipsum dolor sit amet, consectetur adipiscing elit. \n' +
+        'Fusce semper velit et urna gravida efficitur.',
       stepClass: 'step-6 right-bottom',
       classActive: 'store-settings',
       btnBackText: 'Go back',
@@ -72,7 +76,8 @@ $(function () {
       btnCloseClass: 'btn-close',
     },
     {
-      text: 'Enabling single click payments remembers your consumer\'s payment preferences in order to expedite follow-up payments. Your consumer does not have to perform any additional actions to enjoy quick and easy payments.',
+      text: 'Enabling single click payments remembers your consumer\'s payment preferences in order to expedite follow-up \n' +
+        'payments. Your consumer does not have to perform any additional actions to enjoy quick and easy payments.',
       stepClass: 'step-7 right-bottom',
       classActive: 'store-settings',
       btnBackText:'Go back',
@@ -140,7 +145,8 @@ $(function () {
     },
     {
       classActive: 'payment-settings',
-      text:'When using Payments API you may want additional details to help you match payments with customer orders -- you can enter those values here but make sure to use the correct tags provide in the text below',
+      text:'When using Payments API you may want additional details to help you match payments with customer orders -- \n' +
+        'you can enter those values here but make sure to use the correct tags provide in the text below',
       stepClass: 'step-13 right-bottom',
       btnNextText: 'Next <i class="icon angle right"></i>',
       btnNextClass: 'with-triangle',

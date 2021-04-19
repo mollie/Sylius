@@ -340,10 +340,12 @@ bin/console doctrine:migrations:migrate
 ```
 mkdir -p templates/bundles/SyliusAdminBundle/
 mkdir -p templates/bundles/SyliusShopBundle/
+mkdir -p templates/bundles/SyliusUiBundle/
 mkdir -p templates/bundles/SyliusRefundPlugin/
 
 cp -R vendor/bitbag/mollie-plugin/tests/Application/templates/bundles/SyliusAdminBundle/* templates/bundles/SyliusAdminBundle/
 cp -R vendor/bitbag/mollie-plugin/tests/Application/templates/bundles/SyliusShopBundle/* templates/bundles/SyliusShopBundle/
+cp -R vendor/bitbag/mollie-plugin/tests/Application/templates/bundles/SyliusUiBundle/* templates/bundles/SyliusUiBundle/
 cp -R vendor/bitbag/mollie-plugin/tests/Application/templates/bundles/SyliusRefundPlugin/* templates/bundles/SyliusRefundPlugin/
 ```
 

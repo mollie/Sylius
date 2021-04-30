@@ -33,13 +33,12 @@
             <argument>@BitBagSyliusMolliePlugin/Shop/_stylesheets.html.twig</argument>
             <tag name="kernel.event_listener" event="sonata.block.event.sylius.shop.layout.stylesheets" method="onBlockEvent"/>
         </service>
-        <service id="BitBag\SyliusMolliePlugin\EventListener\PaymentPartialEventListener">
+        <service id="bitbag_sylius_mollie_plugin.event_listener.payment_partial_event_listener" class="BitBag\SyliusMolliePlugin\EventListener\PaymentPartialEventListener">
             <argument type="service" id="bitbag_sylius_mollie_plugin.order.order_payment_refund"/>
             <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
             <tag name="messenger.message_handler" priority="1" />
         </service>
-
-        <service id="BitBag\SyliusMolliePlugin\EventListener\RefundPaymentGeneratedAutoCompleteListener">
+        <service id="bitbag_sylius_mollie_plugin.event_listener.refund_payment_generated_auto_complete_listener" class="BitBag\SyliusMolliePlugin\EventListener\RefundPaymentGeneratedAutoCompleteListener">
             <argument type="service" id="sylius_refund.repository.refund_payment" />
             <argument type="service" id="Sylius\RefundPlugin\StateResolver\RefundPaymentCompletedStateApplier"/>
             <argument type="service" id="sylius.repository.payment_method"/>

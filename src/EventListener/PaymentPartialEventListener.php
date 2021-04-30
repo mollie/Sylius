@@ -11,10 +11,10 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\EventListener;
 
+use BitBag\SyliusMolliePlugin\Exceptions\InvalidRefundAmountException;
 use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use BitBag\SyliusMolliePlugin\Order\OrderPaymentRefundInterface;
 use Sylius\RefundPlugin\Event\UnitsRefunded;
-use Sylius\RefundPlugin\Exception\InvalidRefundAmountException;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
 
 final class PaymentPartialEventListener

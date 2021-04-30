@@ -1,9 +1,6 @@
 {% import "@SyliusAdmin/Common/Macro/money.html.twig" as money %}
 {% import '@SyliusUi/Macro/labels.html.twig' as label %}
 
-{% set factoryName = payment.method.gatewayConfig.factoryName %}
-{% set mollieFactory = constant('BitBag\\SyliusMolliePlugin\\Factory\\MollieGatewayFactory::FACTORY_NAME') %}
-
 <div class="item">
     <div class="right floated content">
         {{ label.default(('sylius.ui.'~payment.state)|trans) }}
@@ -12,13 +9,6 @@
     <div class="content">
         <div class="header">
             {{ payment.method }}
-            {% if factoryName == mollieFactory and payment.details.metadata['molliePaymentMethods'] is defined %}
-                {% set method = payment.method.gatewayConfig.getMethodByName(payment.details.metadata['molliePaymentMethods']) %}
-                {% if method is not null %}
-                     - <span>{{ method.name }} </span>
-                    <img class="ui avatar image" src="{{ method.image.svg }}">
-                {% endif %}
-            {% endif %}
         </div>
         <div class="description">
             {{ money.format(payment.amount, payment.order.currencyCode) }}
@@ -27,17 +17,10 @@
     {% if sm_can(payment, 'complete', 'sylius_payment') %}
         <div class="ui segment">
             <form action="{{ path('sylius_admin_order_payment_complete', {'orderId': order.id, 'id': payment.id}) }}" method="post" novalidate>
-                <input type="hidden" name="_method" value="PUT">
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token(payment.id) }}" />
+                <input type="hidden" name="_method" value="PUT">
                 <button type="submit" class="ui icon labeled tiny blue fluid loadable button"><i class="check icon"></i> {{ 'sylius.ui.complete'|trans }}</button>
             </form>
         </div>
-        {% if payment.details['payment-link'] is defined %}
-            <div class="ui segment">
-                <a href="{{ payment.details['payment-link'] }}">
-                    <button type="submit" id="payment-link" class="ui icon labeled tiny yellow fluid loadable button"><i class="money icon"></i> {{ 'sylius.ui.pay'|trans }}</button>
-                </a>
-            </div>
-        {% endif %}
     {% endif %}
 </div>

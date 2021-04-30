@@ -11,9 +11,9 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Repository;
 
-use Sylius\Component\Resource\Repository\RepositoryInterface;
+use Sylius\RefundPlugin\Repository\CreditMemoRepositoryInterface as BaseCreditMemoRepositoryInterface;
 
-interface CreditMemoRepositoryInterface extends RepositoryInterface
+interface CreditMemoRepositoryInterface extends BaseCreditMemoRepositoryInterface
 {
     public function findByOrderNumberAndDateTime(
         int $orderId,

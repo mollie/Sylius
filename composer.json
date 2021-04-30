@@ -8,8 +8,8 @@
         "sylius/sylius": "^1.8",
         "symfony/messenger": "^4.4 || ^5.2",
         "mollie/mollie-api-php": "^2.0",
-        "sylius/refund-plugin": "1.0.0-RC.8",
-        "sylius/admin-order-creation-plugin": "^0.9.0",
+        "sylius/refund-plugin": "1.0.0-RC.9",
+        "sylius/admin-order-creation-plugin": "^0.11",
         "ext-json": "*"
     },
     "require-dev": {

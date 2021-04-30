@@ -1,6 +1,0 @@
-sylius_resource:
-  resources:
-    sylius_refund.credit_memo:
-      classes:
-        model: Sylius\RefundPlugin\Entity\CreditMemo
-        repository: BitBag\SyliusMolliePlugin\Repository\CreditMemoRepository

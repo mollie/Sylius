@@ -12,9 +12,9 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Refund;
 
 use BitBag\SyliusMolliePlugin\Creator\PaymentRefundCommandCreatorInterface;
+use BitBag\SyliusMolliePlugin\Exceptions\InvalidRefundAmountException;
 use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use Mollie\Api\Resources\Payment;
-use Sylius\RefundPlugin\Exception\InvalidRefundAmountException;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Symfony\Component\Messenger\MessageBusInterface;
 

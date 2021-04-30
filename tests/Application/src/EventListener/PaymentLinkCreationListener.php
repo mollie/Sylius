@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Tests\BitBag\SyliusMolliePlugin\Application\src\EventListener;
 
 use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Payum\Core\Model\GatewayConfigInterface;
 use Payum\Core\Payum;
 use Sylius\AdminOrderCreationPlugin\Provider\PaymentTokenProviderInterface;

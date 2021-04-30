@@ -14,8 +14,8 @@ namespace BitBag\SyliusMolliePlugin\Validator\Refund;
 use BitBag\SyliusMolliePlugin\Checker\Refund\DuplicateRefundTheSameAmountCheckerInterface;
 use Sylius\RefundPlugin\Checker\OrderRefundingAvailabilityCheckerInterface;
 use Sylius\RefundPlugin\Command\RefundUnits;
-use Sylius\RefundPlugin\Exception\InvalidRefundAmountException;
-use Sylius\RefundPlugin\Exception\OrderNotAvailableForRefundingException;
+use Sylius\RefundPlugin\Exception\InvalidRefundAmount;
+use Sylius\RefundPlugin\Exception\OrderNotAvailableForRefunding;
 use Sylius\RefundPlugin\Model\RefundType;
 use Sylius\RefundPlugin\Validator\RefundAmountValidatorInterface;
 use Sylius\RefundPlugin\Validator\RefundUnitsCommandValidatorInterface;
@@ -44,14 +44,14 @@ final class RefundUnitsCommandValidator implements RefundUnitsCommandValidatorIn
     public function validate(RefundUnits $command): void
     {
         if (!$this->orderRefundingAvailabilityChecker->__invoke($command->orderNumber())) {
-            throw OrderNotAvailableForRefundingException::withOrderNumber($command->orderNumber());
+            throw OrderNotAvailableForRefunding::withOrderNumber($command->orderNumber());
         }
 
         $this->refundAmountValidator->validateUnits($command->units(), RefundType::orderItemUnit());
         $this->refundAmountValidator->validateUnits($command->shipments(), RefundType::shipment());
 
         if (true === $this->duplicateRefundTheSameAmountChecker->check($command)) {
-            throw new InvalidRefundAmountException('A duplicate refund has been detected');
+            throw new InvalidRefundAmount('A duplicate refund has been detected');
         }
     }
 }

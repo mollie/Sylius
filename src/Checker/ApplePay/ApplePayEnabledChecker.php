@@ -32,7 +32,7 @@ final class ApplePayEnabledChecker implements ApplePayEnabledCheckerInterface
         ]);
 
         if ($applePayConfig instanceof MollieGatewayConfigInterface) {
-            return $applePayConfig->isApplePayDirectButton();
+            return $applePayConfig->isApplePayDirectButton() && $applePayConfig->isEnabled();
         }
 
         return false;

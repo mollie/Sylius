@@ -13,7 +13,7 @@ namespace BitBag\SyliusMolliePlugin\EventListener;
 
 use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
 use BitBag\SyliusMolliePlugin\Repository\PaymentMethodRepositoryInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 use Sylius\Component\Core\Model\PaymentMethodInterface;
 use Sylius\RefundPlugin\Entity\RefundPaymentInterface;
 use Sylius\RefundPlugin\Event\RefundPaymentGenerated;
@@ -21,7 +21,7 @@ use Sylius\RefundPlugin\StateResolver\RefundPaymentCompletedStateApplierInterfac
 
 final class RefundPaymentGeneratedAutoCompleteListener
 {
-    /** @var ObjectRepository */
+    /** @var EntityRepository */
     private $refundPaymentRepository;
 
     /** @var RefundPaymentCompletedStateApplierInterface */
@@ -31,7 +31,7 @@ final class RefundPaymentGeneratedAutoCompleteListener
     private $paymentMethodRepository;
 
     public function __construct(
-        ObjectRepository $refundPaymentInterface,
+        EntityRepository $refundPaymentInterface,
         RefundPaymentCompletedStateApplierInterface $refundPaymentCompletedStateApplier,
         PaymentMethodRepositoryInterface $paymentMethodRepository
     ) {

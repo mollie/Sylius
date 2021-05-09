@@ -1,0 +1,85 @@
+.onboarding-wizard {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  position: fixed;
+  right: 50px;
+  bottom: 10px;
+  z-index: 9999;
+  counter-reset: nav-element 0;  
+}
+
+.onboarding-wizard__logo {
+  width: 60px;
+  height: 60px;
+  margin-left: 15px;
+}
+
+.onboarding-wizard__steps {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 20px;
+  border-radius: 30px;
+  background-color: #FFF;
+  list-style-type: none;
+}
+
+.onboarding-wizard__step {
+  display: flex;
+  align-items: center;
+  position: relative;
+  counter-increment: nav-element 1;
+
+  &:before {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 1px;
+    bottom: 0;
+    left: -1px;
+    width: 18px;
+    height: 18px;
+    margin: auto;
+    border-radius: 50%;
+    background-color: #000;
+    color: #FFF;
+    font-size: 12px;
+    font-weight: 600;
+  }
+}
+
+.onboarding-wizard__step--current {
+  &:before {
+    background-color: $c-success;
+  }
+
+  &.onboarding-wizard__step,
+  ~ .onboarding-wizard__step {
+    .onboarding-wizard__name {
+      color: #000;
+    }
+
+    &:before {
+      content: counter(nav-element);
+    }
+  }
+}
+
+.onboarding-wizard__name {
+  color: $c-secondary;
+}
+
+.onboarding-wizard__check {
+  color: $c-secondary;
+  font-size: 14px;
+  
+  &.icon {
+    margin-right: 5px;
+  }
+}
+
+.onboarding-wizard__arrow.icon {
+  margin-left: 2px;
+}

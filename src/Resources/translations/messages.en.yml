@@ -140,6 +140,11 @@ bitbag_sylius_mollie_plugin:
         cancel: 'Subscription has been successfully canceled.'
     onboardingMollie:
         btnBack: 'Go back'
+        navigation:
+            intro: Intro
+            api_settings: API settings
+            store_settings: Store settings
+            payment_settings: Payment settings
         step_1:
             title: 'Onboarding Assistant Designs'
             btnNext: 'Start guide'

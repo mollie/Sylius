@@ -1,0 +1,220 @@
+.pushable {
+  height: fit-content;
+}
+
+.draggable {
+  position: relative;
+}
+
+.draggable-button-enable {
+  position:absolute;
+  right: 20px;
+  top: 20px;
+}
+
+.right-bottom {
+  position: fixed !important;
+  top: auto !important;
+  left: auto !important;
+  bottom: 100px !important;
+  right: 50px !important;
+  transform: none !important;
+}
+
+.d-none {
+  display: none !important;
+}
+
+.mr-auto {
+  margin-right: auto !important;
+}
+
+.ml-auto {
+  margin-left: auto;
+}
+
+[data-shepherd-step-id="mollie-connect"] .shepherd-footer,
+[data-shepherd-step-id="step-start"] .shepherd-footer {
+  flex-direction: column-reverse;
+  padding: 0 $spacing $spacing;
+}
+
+[data-shepherd-step-id="mollie-connect"] .shepherd-footer .shepherd-button:not(.btn-collapse):not(.btn-close),
+[data-shepherd-step-id="step-start"] .shepherd-footer .shepherd-button:not(.btn-collapse):not(.btn-close) {
+  border-radius: 25px;
+}
+
+body.shepherd-target .shepherd-footer {
+  flex-direction: column-reverse;
+  padding: 0 $spacing $spacing;
+}
+
+body.shepherd-target .shepherd-footer .shepherd-button {
+  border-radius: 25px !important;
+}
+
+.onboardingWizard-mollieComponents.shepherd-step-highlight {
+  position: absolute;
+  display: block;
+  width: 100px;
+  height: 50px;
+}
+
+.shepherd-button:not(.shepherd-button-secondary):not(.btn-collapse):not(.btn-close) .icon {
+  margin-left: 15px;
+}
+
+.shepherd-element.collapsed {
+  width: 100px;
+  height: 50px;
+}
+
+.collapsed .shepherd-header,
+.collapsed .shepherd-button:not(.btn-collapse),
+.collapsed .shepherd-text {
+  opacity: 0;
+}
+
+.collapsed .shepherd-button.btn-collapse {
+  left: 10px;
+  top: 10px;
+  background-color: $c-primary;
+}
+
+.collapsed .shepherd-button.btn-collapse .icon {
+  transform: rotate(180deg);
+  color: #fff;
+}
+
+.collapsed .btn-text-open {
+  color: #000;
+  position: absolute;
+  left: 35px;
+  font-weight: 600;
+}
+
+.shepherd-arrow {
+  transform: translate(360px, 0px) !important;
+}
+
+.shepherd-arrow::before {
+  background-color: $c-primary;
+}
+
+.shepherd-has-title .shepherd-title {
+  font-size: 30px;
+  font-weight: 600;
+  width: 100%;
+}
+
+.shepherd-has-title .shepherd-title .icon {
+  color: $c-success;
+}
+
+.shepherd-has-title .shepherd-text {
+  padding: 0 $spacing $spacing;
+}
+
+.shepherd-has-title .shepherd-button.btn-close,
+.shepherd-has-title .shepherd-button.btn-collapse {
+  top: -80px;
+}
+
+.shepherd-has-title .shepherd-content .shepherd-header {
+  background-color: #fff;
+  color: #000;
+  padding: $spacing $spacing 0;
+  position: relative;
+  width: 100%;
+}
+
+.shepherd-footer {
+  padding: 0;
+}
+
+.shepherd-header {
+  padding: 0;
+  position: absolute;
+  right: 0;
+  top: -40px;
+}
+
+.shepherd-button.btn-close:hover,
+.shepherd-button.btn-collapse:hover {
+  background-color: $c-primary;
+}
+
+.shepherd-button.btn-collapse:hover {
+  color: #fff;
+}
+
+.shepherd-button:not(.btn-collapse) {
+  font-weight: 600;
+  margin-right: 0;
+  padding: 15px 25px;
+}
+
+.shepherd-button:not(.btn-collapse).collapsed {
+  opacity: 0;
+}
+
+.shepherd-button:not(.shepherd-button-secondary):not(.btn-collapse):not(.btn-close) {
+  background-color: $c-primary;
+  border-radius: 0 0 4px 0;
+  color: #fff;
+  position: relative;
+}
+
+.shepherd-button.with-triangle::after {
+  border-style: solid;
+  border-width: 10px 10px 0 10px;
+  border-color: #0040ff transparent transparent transparent;
+  bottom: -10px;
+  content: "";
+  right: 15px;
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.shepherd-button.shepherd-button-secondary {
+  color: #979797;
+  background-color: transparent;
+}
+
+.shepherd-button.btn-close,
+.shepherd-button.btn-collapse {
+  align-items: center;
+  background: white;
+  border-radius: 50%;
+  color: #000;
+  display: flex;
+  height: 28px;
+  justify-content: center;
+  position: absolute;
+  padding: 1px;
+  top: -40px;
+  transition: unset;
+  width: 28px;
+}
+
+.shepherd-button.btn-close {
+  right: 0;
+}
+
+.shepherd-button.btn-collapse {
+  right: 30px;
+}
+
+.btn-close .icon,
+.btn-collapse .icon {
+  margin: 0;
+}
+
+.shepherd-text {
+  padding: $spacing;
+}
+
+.shepherd-text.collapsed {
+  opacity: 0;
+}

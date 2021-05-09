@@ -20,12 +20,12 @@ const handleStepButtons = (OnboardingWizard, stepIndex, step) => {
       action: () => {
         OnboardingWizard.handleQuitConfirmation()
       },
-      classes: `btn-close ${step.btnCloseClass || ''}`
+      classes: `shepherd-button--close ${step.btnCloseClass || ''}`
     },
     {
       text: '<i class="arrow down icon"></i>',
       action: () => OnboardingWizard.modalCollapseHandler(),
-      classes: `btn-collapse js-tour-collapse ${step.btnCollapseClass || ''}`
+      classes: `shepherd-button--collapse js-tour-collapse ${step.btnCollapseClass || ''}`
     },
     {
       text: step.btnBackText ?
@@ -35,7 +35,7 @@ const handleStepButtons = (OnboardingWizard, stepIndex, step) => {
       classes: `${step.btnBackClass || ''}`,
       action() {
         const tour = OnboardingWizard.tour;
-        
+
         if (stepIndex === 0) {
           tour.complete();
         } else {

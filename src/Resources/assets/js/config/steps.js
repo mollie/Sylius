@@ -2,7 +2,7 @@ export const stepPaymentType = {
   id: 'paymentType',
   text: 'When using Payments API you may want additional details to help you match payments with customer orders -- \n' +
     'you can enter those values here but make sure to use the correct tags provide in the text below',
-  classes: 'right-bottom',
+  classes: 'shepherd-element--align-right',
   attachTo: {
     element: '.js-onboardingWizard-paymentType',
     on: 'top-start'
@@ -21,12 +21,12 @@ export const stepPaymentType = {
         tour.addStep(stepQuitConfirmationHandler(this.previousStepIndex));
         tour.show('step-quitConfirmation');
       },
-      classes: 'btn-close',
+      classes: 'shepherd-button--close',
     },
     {
       text: '<i class="arrow down icon"></i>',
       action: () => modalCollapseHandler(tour),
-      classes: 'btn-collapse',
+      classes: 'shepherd-button--collapse',
     },
     {
       text: 'Go back',
@@ -48,7 +48,7 @@ export const stepPaymentType = {
 export const stepPaymentDescription = {
   id: 'paymentDescription',
   text: 'Choose Payments API Learn about the difference between Orders API or the Payments API',
-  classes: 'right-bottom',
+  classes: 'shepherd-element--align-right',
   attachTo: {
     element: '.js-onboardingWizard-paymentDescription',
     on: 'top-start'
@@ -67,12 +67,12 @@ export const stepPaymentDescription = {
         tour.addStep(stepQuitConfirmationHandler(this.previousStepIndex));
         tour.show('step-quitConfirmation');
       },
-      classes: 'btn-close',
+      classes: 'shepherd-button--close',
     },
     {
       text: '<i class="arrow down icon"></i>',
       action: () => modalCollapseHandler(tour),
-      classes: 'btn-collapse',
+      classes: 'shepherd-button--collapse',
     },
     {
       text: 'Go back',
@@ -94,7 +94,7 @@ export const stepPaymentDescription = {
 export const stepOrderApi = {
   id: 'orderApi',
   highlightClass: 'payment-settings',
-  classes: 'right-bottom',
+  classes: 'shepherd-element--align-right',
   text: 'Select Orders API - this is Mollie\n' +
     'suggested API to use for webshops b/c it allows you to create “orders”. An order contains the personal information of a customer (e.g. address) and products that the customer ordered. When an order is made, a corresponding payment will be created automatically.',
   attachTo: {
@@ -114,12 +114,12 @@ export const stepOrderApi = {
         tour.addStep(stepQuitConfirmationHandler(this.previousStepIndex));
         tour.show('step-quitConfirmation')
       },
-      classes: 'btn-close',
+      classes: 'shepherd-button--close',
     },
     {
       text: '<i class="arrow down icon"></i>',
       action: () => modalCollapseHandler(tour),
-      classes: 'btn-collapse',
+      classes: 'shepherd-button--collapse',
     },
     {
       text: 'Go back',
@@ -169,6 +169,7 @@ export const steps = [
     id: 'step-start',
     title: 'stepStart.title',
     text: 'stepStart.text',
+    classes: 'shepherd-element--first',
     highlightClass: 'intro',
     btnBackText: 'stepButtons.skipWizard',
     btnNextText: 'stepButtons.startWizard',
@@ -178,7 +179,7 @@ export const steps = [
   {
     id: 'step-env',
     text: 'stepEnv.text',
-    classes: 'right-bottom',
+    classes: 'shepherd-element--align-right',
     highlightClass: 'api-settings',
     attachTo: {
       element: '.js-onboardingWizard-environment',
@@ -199,25 +200,25 @@ export const steps = [
   {
     id: 'step-api-key',
     text: 'stepApiKey.text',
-    classes: 'right-bottom',
+    classes: 'shepherd-element--align-right',
     highlightClass: 'api-settings',
     btnNextClass: 'with-triangle',
     attachTo: {
-      element: '.js-onboardingWizard-apiKey',
+      element: '.js-onboardingWizard-profile-api',
       on: 'top-start'
     },
   },
   {
     id: 'step-checkout-config',
     text: 'stepCheckoutConfig.text',
-    classes: 'step-6 right-bottom',
+    classes: 'step-6 shepherd-element--align-right',
     highlightClass: 'store-settings',
     btnNextText: 'stepButtons.next',
   },
   {
     id: 'step-mollie-components',
     text: 'stepMollieComponents.text',
-    classes: 'right-bottom',
+    classes: 'shepherd-element--align-right',
     highlightClass: 'store-settings',
     btnNextClass: 'with-triangle',
     attachTo: {
@@ -228,7 +229,7 @@ export const steps = [
   {
     id: 'step-mollie-payments',
     text: 'stepMolliePayments.text',
-    classes: 'right-bottom',
+    classes: 'shepherd-element--align-right',
     highlightClass: 'store-settings',
     btnNextClass: 'with-triangle',
     attachTo: {
@@ -239,14 +240,14 @@ export const steps = [
   {
     id: 'step-payments-api',
     text: 'stepPaymentsApi.text',
-    classes: 'right-bottom',
+    classes: 'shepherd-element--align-right',
     highlightClass: 'payment-settings',
     btnNextText: 'stepButtons.next',
   },
   {
     id: 'step-payment-title',
     text: 'stepPaymentTitle.text',
-    classes: 'step-9 right-bottom',
+    classes: 'step-9 shepherd-element--align-right',
     highlightClass: 'payment-settings',
     btnNextClass: 'with-triangle',
     attachTo: {
@@ -257,7 +258,7 @@ export const steps = [
   {
     id: 'step-image-upload',
     text: 'stepImageUpload.text',
-    classes: 'step-14 right-bottom',
+    classes: 'step-14 shepherd-element--align-right',
     highlightClass: 'payment-settings',
     btnNextClass: 'with-triangle',
     attachTo: {
@@ -268,7 +269,7 @@ export const steps = [
   {
     id: 'step-restrict-payment',
     text: 'stepRestrictPayment.text',
-    classes: 'step-12 right-bottom',
+    classes: 'step-12 shepherd-element--align-right',
     highlightClass: 'payment-settings',
     btnNextClass: 'with-triangle',
     attachTo: {
@@ -279,7 +280,7 @@ export const steps = [
   {
     id: 'step-fees',
     text: 'stepFees.text',
-    classes: 'step-13 right-bottom',
+    classes: 'step-13 shepherd-element--align-right',
     highlightClass: 'payment-settings',
     btnNextClass: 'with-triangle',
     attachTo: {

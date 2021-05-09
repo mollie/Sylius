@@ -24,21 +24,21 @@ export default class OnboardingWizard {
   modalCollapseHandler = () => {
     const currentStep = this.tour.currentStep.el;
     const buttonCollapse = currentStep.querySelector('.js-tour-collapse');
-    const isCollapsed = [...currentStep.classList].includes('collapsed');
+    const isCollapsed = [...currentStep.classList].includes('shepherd-element--collapsed');
     
     const paragraph = document.createElement('span');
-    paragraph.classList.add('btn-text-open');
+    paragraph.classList.add('shepherd-button__open');
     paragraph.textContent = _get(wizardTranslations, 'common.open');
 
     if (!buttonCollapse) {
       return;
     }
 
-    const textOpen = buttonCollapse.querySelector('.btn-text-open')
+    const textOpen = buttonCollapse.querySelector('.shepherd-button__open')
 
     !isCollapsed ? buttonCollapse.appendChild(paragraph) : buttonCollapse.removeChild(textOpen)
 
-    currentStep.classList.toggle('collapsed', !isCollapsed);
+    currentStep.classList.toggle('shepherd-element--collapsed', !isCollapsed);
     currentStep.setAttribute('aria-hidden', !isCollapsed);
   }
 
@@ -70,6 +70,15 @@ export default class OnboardingWizard {
     });
   }
 
+  restartTourListener = () => {
+    const restartTourTrigger = document.querySelector('.js-restart-tour');
+
+    restartTourTrigger.addEventListener('click', () => {
+      console.log('btn click');
+      this.tour.start();
+    });
+  }
+
   initTour() {
     if (this.navbar) {
       this.tour = new Shepherd.Tour({
@@ -94,6 +103,8 @@ export default class OnboardingWizard {
       });
 
       this.tour.start();
+
+      this.restartTourListener();
     }
   }
 };

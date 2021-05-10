@@ -7,8 +7,6 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
 Encore
   .setOutputPath('./public/bundles/bitbagsyliusmollieplugin/build')
   .setPublicPath('/build')
-  // only needed for CDN's or sub-directory deploy
-  //.setManifestKeyPrefix('build/')
 
   /*
     * ENTRY CONFIG
@@ -22,11 +20,6 @@ Encore
   .addEntry('onboarding-plugin', '../../src/Resources/assets/js/main.js')
   .addStyleEntry('onboarding-plugin-css', '../../src/Resources/assets/css/main.scss')
 
-  // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
-  // .splitEntryChunks()
-
-  // will require an extra script tag for runtime.js
-  // but, you probably want this, unless you're building a single-page app
   .disableSingleRuntimeChunk()
   .cleanupOutputBeforeBuild()
   .enableSourceMaps(!Encore.isProduction())

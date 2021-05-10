@@ -1,7 +1,6 @@
 import Shepherd from 'shepherd.js';
 import _get from 'lodash.get';
 
-// import { steps, stepPaymentType, stepPaymentDescription, stepOrderApi } from './config/steps';
 import { steps, stepQuitConfirmation } from './config/steps';
 import shepherdConfig from './config/shepherdConfig';
 import stepFactory from './helpers/stepFactory';
@@ -26,17 +25,18 @@ export default class OnboardingWizard {
     const buttonCollapse = currentStep.querySelector('.js-tour-collapse');
     const isCollapsed = [...currentStep.classList].includes('shepherd-element--collapsed');
     
-    const paragraph = document.createElement('span');
-    paragraph.classList.add('shepherd-button__open');
-    paragraph.textContent = _get(wizardTranslations, 'common.open');
+    const expandButton = document.createElement('span');
+    expandButton.classList.add('shepherd-button__open');
+    expandButton.classList.add('js-shepherd-expand');
+    expandButton.textContent = _get(wizardTranslations, 'common.open');
 
-    if (!buttonCollapse) {
-      return;
+    const textOpen = buttonCollapse.querySelector('.js-shepherd-expand')
+
+    if (isCollapsed) {
+      buttonCollapse.removeChild(textOpen);
+    } else {
+      buttonCollapse.appendChild(expandButton)
     }
-
-    const textOpen = buttonCollapse.querySelector('.shepherd-button__open')
-
-    !isCollapsed ? buttonCollapse.appendChild(paragraph) : buttonCollapse.removeChild(textOpen)
 
     currentStep.classList.toggle('shepherd-element--collapsed', !isCollapsed);
     currentStep.setAttribute('aria-hidden', !isCollapsed);
@@ -74,7 +74,6 @@ export default class OnboardingWizard {
     const restartTourTrigger = document.querySelector('.js-restart-tour');
 
     restartTourTrigger.addEventListener('click', () => {
-      console.log('btn click');
       this.tour.start();
     });
   }
@@ -88,13 +87,13 @@ export default class OnboardingWizard {
       this.steps.forEach((step, stepIndex) => {
         this.tour.addStep({
           ...step,
+          buttons: step.stepButtons(this, stepIndex),
           when: {
             show: () => {
               this.previousStepIndex = this.tour.getCurrentStep().id;
               this.navbarProgressHandler();
             }
-          },
-          buttons: step.stepButtons(this, stepIndex)
+          }
         });
       });
 

@@ -7,7 +7,7 @@ export const stepPaymentType = {
     element: '.js-onboardingWizard-paymentType',
     on: 'top-start'
   },
-  btnNextClass: 'with-triangle'
+  btnNextClass: 'shepherd-button--arrow-down'
 };
 
 export const stepPaymentDescription = {
@@ -19,7 +19,7 @@ export const stepPaymentDescription = {
     on: 'top-start'
   },
   highlightClass: 'payment-settings',
-  btnNextClass: 'with-triangle'
+  btnNextClass: 'shepherd-button--arrow-down'
 };
 
 export const stepOrderApi = {
@@ -31,7 +31,7 @@ export const stepOrderApi = {
     element: '.js-onboardingWizard-paymentType',
     on: 'top-start',
   },
-  btnNextClass: 'with-triangle'
+  btnNextClass: 'shepherd-button--arrow-down'
 };
 
 export const stepQuitConfirmation = [
@@ -81,7 +81,7 @@ export const steps = [
       element: '.js-onboardingWizard-environment',
       on: 'top-start'
     },
-    btnNextClass: 'with-triangle',
+    btnNextClass: 'shepherd-button--arrow-down',
   },
   {
     id: 'step-mollie-connect',
@@ -98,7 +98,7 @@ export const steps = [
     text: 'stepApiKey.text',
     classes: 'shepherd-element--align-right',
     highlightClass: 'api-settings',
-    btnNextClass: 'with-triangle',
+    btnNextClass: 'shepherd-button--arrow-down',
     attachTo: {
       element: '.js-onboardingWizard-profile-api',
       on: 'top-start'
@@ -116,7 +116,7 @@ export const steps = [
     text: 'stepMollieComponents.text',
     classes: 'shepherd-element--align-right',
     highlightClass: 'store-settings',
-    btnNextClass: 'with-triangle',
+    btnNextClass: 'shepherd-button--arrow-down',
     attachTo: {
       element: '.js-onboardingWizard-mollieComponents + label',
       on: 'top-start'
@@ -127,7 +127,7 @@ export const steps = [
     text: 'stepMolliePayments.text',
     classes: 'shepherd-element--align-right',
     highlightClass: 'store-settings',
-    btnNextClass: 'with-triangle',
+    btnNextClass: 'shepherd-button--arrow-down',
     attachTo: {
       element: '.js-onboardingWizard-singleClick + label',
       on: 'top-start'
@@ -145,7 +145,7 @@ export const steps = [
     text: 'stepPaymentTitle.text',
     classes: 'step-9 shepherd-element--align-right',
     highlightClass: 'payment-settings',
-    btnNextClass: 'with-triangle',
+    btnNextClass: 'shepherd-button--arrow-down',
     attachTo: {
       element: '.js-onboardingWizard-paymentName',
       on: 'top-start'
@@ -156,7 +156,7 @@ export const steps = [
     text: 'stepImageUpload.text',
     classes: 'step-14 shepherd-element--align-right',
     highlightClass: 'payment-settings',
-    btnNextClass: 'with-triangle',
+    btnNextClass: 'shepherd-button--arrow-down',
     attachTo: {
       element: '.js-onboardingWizard-customizeMethodImage input',
       on: 'top-start'
@@ -167,7 +167,7 @@ export const steps = [
     text: 'stepRestrictPayment.text',
     classes: 'step-12 shepherd-element--align-right',
     highlightClass: 'payment-settings',
-    btnNextClass: 'with-triangle',
+    btnNextClass: 'shepherd-button--arrow-down',
     attachTo: {
       element: '.js-onboardingWizard-countryRestriction',
       on: 'top-start'
@@ -178,7 +178,7 @@ export const steps = [
     text: 'stepFees.text',
     classes: 'step-13 shepherd-element--align-right',
     highlightClass: 'payment-settings',
-    btnNextClass: 'with-triangle',
+    btnNextClass: 'shepherd-button--arrow-down',
     attachTo: {
       element: '.js-onboardingWizard-paymentFee .dropdown',
       on: 'top-start'

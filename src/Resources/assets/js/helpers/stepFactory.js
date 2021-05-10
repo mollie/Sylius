@@ -63,8 +63,6 @@ const handleStepButtons = (OnboardingWizard, stepIndex, step) => {
         } else {
           if (step.urlMollie) {
             window.open(`${step.urlMollie}/signup`, '_blank');
-            tour.next();
-            return;
           }
           tour.next();
         }

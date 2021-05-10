@@ -45,6 +45,16 @@ export default {
     title: 'Are you sure you want to quit ?',
     text: 'You\'re all done, you can now attempt a consumer order or your website'
   },
+  stepPaymentType: {
+    text: 'When using Payments API you may want additional details to help you match payments with customer orders -- you can enter those values here but make sure to use the correct tags provide in the text below'
+  },
+  stepPaymentDescription: {
+    text: 'Choose Payments API Learn about the difference between Orders API or the Payments API'
+  },
+  stepOrderApi: {
+    text: 'Select Orders API - this is Mollie\n' +
+    'suggested API to use for webshops b/c it allows you to create “orders”. An order contains the personal information of a customer (e.g. address) and products that the customer ordered. When an order is made, a corresponding payment will be created automatically.',
+  },
   stepButtons: {
     goBack: 'Go back',
     skipWizard: 'Skip this, I know how it works',

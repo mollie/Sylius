@@ -1,141 +1,37 @@
 export const stepPaymentType = {
-  id: 'paymentType',
-  text: 'When using Payments API you may want additional details to help you match payments with customer orders -- \n' +
-    'you can enter those values here but make sure to use the correct tags provide in the text below',
+  id: 'step-payment-type',
+  text: 'stepPaymentType.text',
   classes: 'shepherd-element--align-right',
+  highlightClass: 'payment-settings',
   attachTo: {
     element: '.js-onboardingWizard-paymentType',
     on: 'top-start'
   },
-  highlightClass: 'payment-settings',
-  when: {
-    show: () => {
-      this.previousStepIndex = tour.steps.indexOf(tour.getCurrentStep());
-      navbarProgressHandler(tour);
-    }
-  },
-  buttons: [
-    {
-      text: '<i class="close icon"></i>',
-      action: () => {
-        tour.addStep(stepQuitConfirmationHandler(this.previousStepIndex));
-        tour.show('step-quitConfirmation');
-      },
-      classes: 'shepherd-button--close',
-    },
-    {
-      text: '<i class="arrow down icon"></i>',
-      action: () => modalCollapseHandler(tour),
-      classes: 'shepherd-button--collapse',
-    },
-    {
-      text: 'Go back',
-      action() {
-        tour.back();
-      },
-      secondary: true,
-    },
-    {
-      text: 'Next <i class="icon angle right"></i>',
-      action() {
-        tour.next();
-      },
-      classes: 'with-triangle',
-    },
-  ],
+  btnNextClass: 'with-triangle'
 };
 
 export const stepPaymentDescription = {
-  id: 'paymentDescription',
-  text: 'Choose Payments API Learn about the difference between Orders API or the Payments API',
+  id: 'step-payment-description',
+  text: 'stepPaymentDescription.text',
   classes: 'shepherd-element--align-right',
   attachTo: {
     element: '.js-onboardingWizard-paymentDescription',
     on: 'top-start'
   },
   highlightClass: 'payment-settings',
-  when: {
-    show: () => {
-      this.previousStepIndex = tour.steps.indexOf(tour.getCurrentStep());
-      navbarProgressHandler(tour);
-    }
-  },
-  buttons: [
-    {
-      text: '<i class="close icon"></i>',
-      action: () => {
-        tour.addStep(stepQuitConfirmationHandler(this.previousStepIndex));
-        tour.show('step-quitConfirmation');
-      },
-      classes: 'shepherd-button--close',
-    },
-    {
-      text: '<i class="arrow down icon"></i>',
-      action: () => modalCollapseHandler(tour),
-      classes: 'shepherd-button--collapse',
-    },
-    {
-      text: 'Go back',
-      action() {
-        tour.back();
-      },
-      secondary: true,
-    },
-    {
-      text: 'Next <i class="icon angle right"></i>',
-      action() {
-        tour.next();
-      },
-      classes: 'with-triangle',
-    },
-  ],
+  btnNextClass: 'with-triangle'
 };
 
 export const stepOrderApi = {
-  id: 'orderApi',
+  id: 'step-order-api',
   highlightClass: 'payment-settings',
   classes: 'shepherd-element--align-right',
-  text: 'Select Orders API - this is Mollie\n' +
-    'suggested API to use for webshops b/c it allows you to create “orders”. An order contains the personal information of a customer (e.g. address) and products that the customer ordered. When an order is made, a corresponding payment will be created automatically.',
+  text: 'stepOrderApi.text',
   attachTo: {
     element: '.js-onboardingWizard-paymentType',
     on: 'top-start',
   },
-  when: {
-    show: () => {
-      this.previousStepIndex = tour.steps.indexOf(tour.getCurrentStep());
-      navbarProgressHandler(tour);
-    },
-  },
-  buttons: [
-    {
-      text: '<i class="close icon"></i>',
-      action: () => {
-        tour.addStep(stepQuitConfirmationHandler(this.previousStepIndex));
-        tour.show('step-quitConfirmation')
-      },
-      classes: 'shepherd-button--close',
-    },
-    {
-      text: '<i class="arrow down icon"></i>',
-      action: () => modalCollapseHandler(tour),
-      classes: 'shepherd-button--collapse',
-    },
-    {
-      text: 'Go back',
-      action: () => {
-        tour.back();
-      },
-      secondary: true,
-    },
-    {
-      text: 'Next <i class="icon angle right"></i>',
-      action: () => {
-        tour.next();
-      },
-      classes: 'with-triangle',
-    },
-  ],
+  btnNextClass: 'with-triangle'
 };
 
 export const stepQuitConfirmation = [

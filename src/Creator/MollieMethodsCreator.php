@@ -74,6 +74,7 @@ final class MollieMethodsCreator implements MollieMethodsCreatorInterface
 
             $allMollieMethods = $client->methods->allActive(self::PARAMETERS);
             $this->createMethods($allMollieMethods, $gateway);
+
             $this->loggerAction->addLog(sprintf('Downloaded all methods from mollie API'));
         }
     }

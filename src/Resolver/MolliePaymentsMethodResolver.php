@@ -12,13 +12,14 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Resolver;
 
 use BitBag\SyliusMolliePlugin\Checker\Voucher\ProductVoucherTypeCheckerInterface;
-use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
 use BitBag\SyliusMolliePlugin\Entity\GatewayConfigInterface;
+use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfig;
 use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
 use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
-use BitBag\SyliusMolliePlugin\Form\Type\MollieGatewayConfigurationType;
+use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use BitBag\SyliusMolliePlugin\Repository\PaymentMethodRepositoryInterface;
 use BitBag\SyliusMolliePlugin\Resolver\Order\PaymentCheckoutOrderResolverInterface;
+use Mollie\Api\Exceptions\ApiException;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 
@@ -39,14 +40,12 @@ final class MolliePaymentsMethodResolver implements MolliePaymentsMethodResolver
     /** @var PaymentMethodRepositoryInterface */
     private $paymentMethodRepository;
 
-    /** @var MollieAmountRestrictionResolverInterface  */
-    private $amountRestrictionResolver;
+    /** @var MollieAllowedMethodsResolver */
+    private $allowedMethodsResolver;
 
-    /** @var RepositoryInterface  */
-    private $gatewayConfigRepository;
+    /** @var MollieLoggerActionInterface  */
+    private $loggerAction;
 
-    /** @var MollieApiClient  */
-    private $mollieApiClient;
 
     public function __construct(
         RepositoryInterface $mollieGatewayRepository,
@@ -54,18 +53,16 @@ final class MolliePaymentsMethodResolver implements MolliePaymentsMethodResolver
         ProductVoucherTypeCheckerInterface $productVoucherTypeChecker,
         PaymentCheckoutOrderResolverInterface $paymentCheckoutOrderResolver,
         PaymentMethodRepositoryInterface $paymentMethodRepository,
-        MollieAmountRestrictionResolverInterface $amountRestrictionResolver,
-        RepositoryInterface $gatewayConfigRepository,
-        MollieApiClient $mollieApiClient
+        MollieAllowedMethodsResolver $allowedMethodsResolver,
+        MollieLoggerActionInterface $loggerAction
     ) {
         $this->mollieGatewayRepository = $mollieGatewayRepository;
         $this->countriesRestrictionResolver = $countriesRestrictionResolver;
         $this->productVoucherTypeChecker = $productVoucherTypeChecker;
         $this->paymentCheckoutOrderResolver = $paymentCheckoutOrderResolver;
         $this->paymentMethodRepository = $paymentMethodRepository;
-        $this->amountRestrictionResolver = $amountRestrictionResolver;
-        $this->gatewayConfigRepository = $gatewayConfigRepository;
-        $this->mollieApiClient = $mollieApiClient;
+        $this->allowedMethodsResolver = $allowedMethodsResolver;
+        $this->loggerAction = $loggerAction;
     }
 
     public function resolve(): array
@@ -88,9 +85,10 @@ final class MolliePaymentsMethodResolver implements MolliePaymentsMethodResolver
 
     private function getMolliePaymentOptions(OrderInterface $order, string $countryCode): array
     {
-        $requestedMethods = $this->requestMethods($order);
+        $allowedMethods = [];
 
         $methods = $this->getDefaultOptions();
+
         /** @var GatewayConfigInterface $gateway */
         $paymentMethod = $this->paymentMethodRepository->findOneByChannelAndGatewayFactoryName(
             $order->getChannel(),
@@ -113,13 +111,28 @@ final class MolliePaymentsMethodResolver implements MolliePaymentsMethodResolver
             return $this->getDefaultOptions();
         }
 
-        /** @var MollieGatewayConfigInterface $paymentMethod */
-        foreach ($paymentConfigs as $paymentMethod) {
-            $methods = $this->countriesRestrictionResolver->resolve($paymentMethod, $methods, $countryCode);
+        try {
+            $allowedMethodsIds = $this->allowedMethodsResolver->resolve($order);
+        } catch (ApiException $e) {
+            $this->loggerAction->addNegativeLog($e->getMessage());
+
+            return $this->getDefaultOptions();
         }
 
+        /** @var MollieGatewayConfig $paymentMethod */
         foreach ($paymentConfigs as $paymentMethod) {
-            $methods = $this->amountRestrictionResolver->resolve($paymentMethod, $methods, $order);
+            if (in_array($paymentMethod->getMethodId(), $allowedMethodsIds, true)) {
+                $allowedMethods[] = $paymentMethod;
+            }
+        }
+
+        if (empty($allowedMethods)) {
+            return $this->getDefaultOptions();
+        }
+
+        /** @var MollieGatewayConfigInterface $paymentMethod */
+        foreach ($allowedMethods as $paymentMethod) {
+            $methods = $this->countriesRestrictionResolver->resolve($paymentMethod, $methods, $countryCode);
         }
 
         $methods = $this->productVoucherTypeChecker->checkTheProductTypeOnCart($order, $methods);
@@ -135,32 +148,5 @@ final class MolliePaymentsMethodResolver implements MolliePaymentsMethodResolver
             'issuers' => [],
             'paymentFee' => [],
         ];
-    }
-
-    private function requestMethods(OrderInterface $order): array
-    {
-        $gateways = $this->gatewayConfigRepository->findBy(['factoryName' => MollieGatewayFactory::FACTORY_NAME]);
-
-        /** @var GatewayConfigInterface $gateway */
-        foreach ($gateways as $gateway) {
-            $config = $gateway->getConfig();
-            $environment = true === $config['environment'] ?
-                MollieGatewayConfigurationType::API_KEY_LIVE :
-                MollieGatewayConfigurationType::API_KEY_TEST;
-
-            $client = $this->mollieApiClient->setApiKey($config[$environment]);
-
-            $allMollieMethods = $client->methods->allActive([
-                'amount[value]' => substr_replace((string) $order->getTotal(), '.', -2, 0),
-                'amount[currency]' => $order->getCurrencyCode(),
-                'locale' => $order->getLocaleCode()
-            ]);
-        }
-
-        foreach($allMollieMethods as $method) {
-            dump($method);
-        }
-        die;
-        return [];
     }
 }

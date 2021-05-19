@@ -17,6 +17,7 @@ use Sylius\Component\Resource\Model\TranslatableInterface;
 interface TemplateMollieEmailInterface extends ResourceInterface, TranslatableInterface
 {
     public const PAYMENT_LINK = 'payment_link';
+
     public const PAYMENT_LINK_ABANDONED = 'payment_link_abandoned';
 
     public function getId(): ?int;

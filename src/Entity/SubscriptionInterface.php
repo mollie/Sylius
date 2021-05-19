@@ -16,12 +16,17 @@ use Sylius\Component\Resource\Model\ResourceInterface;
 
 interface SubscriptionInterface extends ResourceInterface
 {
-    const STATE_NEW = 'new';
-    const STATE_PENDING = 'pending';
-    const STATE_ACTIVE = 'active';
-    const STATE_CANCELLED = 'cancelled';
-    const STATE_SUSPENDED = 'suspended';
-    const STATE_COMPLETED = 'completed';
+    public const STATE_NEW = 'new';
+
+    public const STATE_PENDING = 'pending';
+
+    public const STATE_ACTIVE = 'active';
+
+    public const STATE_CANCELLED = 'cancelled';
+
+    public const STATE_SUSPENDED = 'suspended';
+
+    public const STATE_COMPLETED = 'completed';
 
     public function getOrder(): OrderInterface;
 

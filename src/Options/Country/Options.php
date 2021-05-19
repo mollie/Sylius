@@ -15,8 +15,9 @@ use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
 
 final class Options
 {
-    const ALL_COUNTRIES = 'bitbag_sylius_mollie_plugin.ui.all_countries';
-    const SELECTED_COUNTRIES = 'bitbag_sylius_mollie_plugin.ui.selected_countries';
+    public const ALL_COUNTRIES = 'bitbag_sylius_mollie_plugin.ui.all_countries';
+
+    public const SELECTED_COUNTRIES = 'bitbag_sylius_mollie_plugin.ui.selected_countries';
 
     public static function getCountriesConfigOptions(): array
     {

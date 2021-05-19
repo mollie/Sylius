@@ -16,6 +16,7 @@ use BitBag\SyliusMolliePlugin\Entity\TemplateMollieEmailInterface;
 final class Options
 {
     public const PAYMENT_LINK = 'bitbag_sylius_mollie_plugin.ui.paymentlink';
+
     public const PAYMENT_LINK_ABANDONED = 'bitbag_sylius_mollie_plugin.ui.paymentlinkAbandoned';
 
     public static function getAvailableEmailTemplate(): array

@@ -19,7 +19,7 @@ use Sylius\Component\Core\Model\PaymentMethodInterface;
 
 final class AdminOrderShowMenuListener
 {
-    const AVAILABLE_PAYMENT_STATE = [
+    public const AVAILABLE_PAYMENT_STATE = [
         PaymentInterface::STATE_NEW,
         PaymentInterface::STATE_PROCESSING,
         PaymentInterface::STATE_CANCELLED,

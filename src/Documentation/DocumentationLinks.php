@@ -33,8 +33,11 @@ final class DocumentationLinks implements DocumentationLinksInterface
 
     public function getSingleClickDoc(): string
     {
-        $link = \sprintf('<a target="_blank" href="%s"> %s </a>', self::DOCUMENTATION_LINKS['single_click'],
-            $this->translator->trans('bitbag_sylius_mollie_plugin.ui.mollie_single_click'));
+        $link = \sprintf(
+            '<a target="_blank" href="%s"> %s </a>',
+            self::DOCUMENTATION_LINKS['single_click'],
+            $this->translator->trans('bitbag_sylius_mollie_plugin.ui.mollie_single_click')
+        );
 
         return $this->translator->trans('bitbag_sylius_mollie_plugin.ui.read_more_single_click_enabled', [
             '%link%' => $link,
@@ -43,8 +46,11 @@ final class DocumentationLinks implements DocumentationLinksInterface
 
     public function getMollieComponentsDoc(): string
     {
-        $link = \sprintf('<a target="_blank" href="%s"> %s </a>', self::DOCUMENTATION_LINKS['mollie_components'],
-            $this->translator->trans('bitbag_sylius_mollie_plugin.ui.mollie_components'));
+        $link = \sprintf(
+            '<a target="_blank" href="%s"> %s </a>',
+            self::DOCUMENTATION_LINKS['mollie_components'],
+            $this->translator->trans('bitbag_sylius_mollie_plugin.ui.mollie_components')
+        );
 
         return $this->translator->trans('bitbag_sylius_mollie_plugin.ui.read_more_enable_components', [
             '%link%' => $link,
@@ -53,7 +59,8 @@ final class DocumentationLinks implements DocumentationLinksInterface
 
     public function getPaymentMethodDoc(): string
     {
-        return \sprintf('%s <a target="_blank" href="%s"> %s </a> %s',
+        return \sprintf(
+            '%s <a target="_blank" href="%s"> %s </a> %s',
             $this->translator->trans('bitbag_sylius_mollie_plugin.ui.click'),
             self::DOCUMENTATION_LINKS['payment_methods'],
             $this->translator->trans('bitbag_sylius_mollie_plugin.ui.here'),
@@ -63,7 +70,8 @@ final class DocumentationLinks implements DocumentationLinksInterface
 
     public function getProfileIdDoc(): string
     {
-        return \sprintf('%s <a target="_blank" href="%s"> %s </a>',
+        return \sprintf(
+            '%s <a target="_blank" href="%s"> %s </a>',
             $this->translator->trans('bitbag_sylius_mollie_plugin.ui.you_can_find_you_profile_id'),
             self::DOCUMENTATION_LINKS['profile_id'],
             $this->translator->trans('bitbag_sylius_mollie_plugin.ui.mollie_profile_id')
@@ -72,7 +80,8 @@ final class DocumentationLinks implements DocumentationLinksInterface
 
     public function getApiKeyDoc(): string
     {
-        return \sprintf('%s <a target="_blank" href="%s"> %s </a> %s',
+        return \sprintf(
+            '%s <a target="_blank" href="%s"> %s </a> %s',
             $this->translator->trans('bitbag_sylius_mollie_plugin.ui.find_you_api_key'),
             self::DOCUMENTATION_LINKS['api_key'],
             $this->translator->trans('bitbag_sylius_mollie_plugin.ui.mollie_profile'),

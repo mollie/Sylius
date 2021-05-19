@@ -18,15 +18,21 @@ use Mollie\Api\Types\PaymentMethod;
 final class Options
 {
     public const ORDER_API = 'Orders API';
+
     public const PAYMENT_API = 'Payments API';
 
     public const PERCENTAGE = 'percentage';
+
     public const FIXED_FEE = 'fixed_fee';
+
     public const FIXED_FEE_AND_PERCENTAGE = 'fixed_fee_and_percentage';
 
     public const LOG_NOTHING = 'bitbag_sylius_mollie_plugin.ui.nothing_log';
+
     public const LOG_ERRORS = 'bitbag_sylius_mollie_plugin.ui.errors';
+
     public const LOG_EVERYTHING = 'bitbag_sylius_mollie_plugin.ui.everything';
+
     public const LOG_INFO = 'bitbag_sylius_mollie_plugin.ui.info';
 
     public static function getAvailablePaymentType(): array

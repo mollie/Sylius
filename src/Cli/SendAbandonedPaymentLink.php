@@ -21,6 +21,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
 class SendAbandonedPaymentLink extends Command
 {
     public const COMMAND_NAME = 'mollie:send-payment-link';
+
     public const COMMAND_ID = 'mollie:send-payment-link';
 
     /** @var SymfonyStyle */

@@ -15,8 +15,5 @@ use BitBag\SyliusMolliePlugin\Entity\SubscriptionInterface;
 
 interface CancelRecurringSubscriptionProcessorInterface
 {
-    /**
-     * @param SubscriptionInterface $subscription
-     */
     public function process(SubscriptionInterface $subscription): void;
 }

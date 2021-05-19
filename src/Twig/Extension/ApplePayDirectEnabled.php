@@ -28,8 +28,10 @@ final class ApplePayDirectEnabled extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('bitbag_render_apple_pay_direct',
-                [$this->applePayEnabledChecker, 'isEnabled'], ['is_safe' => ['html']]
+            new TwigFunction(
+                'bitbag_render_apple_pay_direct',
+                [$this->applePayEnabledChecker, 'isEnabled'],
+                ['is_safe' => ['html']]
             ),
         ];
     }

@@ -25,8 +25,8 @@ final class ApplePayDirectPaymentTypeResolver implements ApplePayDirectPaymentTy
     private $apiOrderPaymentResolver;
 
     public function __construct(
-      ApplePayDirectApiPaymentResolverInterface $apiPaymentResolver,
-      ApplePayDirectApiOrderPaymentResolverInterface $apiOrderPaymentResolver
+        ApplePayDirectApiPaymentResolverInterface $apiPaymentResolver,
+        ApplePayDirectApiOrderPaymentResolverInterface $apiOrderPaymentResolver
     ) {
         $this->apiPaymentResolver = $apiPaymentResolver;
         $this->apiOrderPaymentResolver = $apiOrderPaymentResolver;

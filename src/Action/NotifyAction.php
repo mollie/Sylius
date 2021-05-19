@@ -74,7 +74,7 @@ final class NotifyAction extends BaseApiAwareAction implements ActionInterface, 
                 throw new ApiException(sprintf('Error with get customer from mollie with: %s', $e->getMessage()));
             }
 
-            if ($details['metadata']['order_id'] === filter_var($payment->metadata->order_id, FILTER_VALIDATE_INT)) {
+            if ($details['metadata']['order_id'] === filter_var($payment->metadata->order_id, \FILTER_VALIDATE_INT)) {
                 $details['payment_mollie_id'] = $this->getHttpRequest->request['id'];
             }
 
@@ -103,7 +103,7 @@ final class NotifyAction extends BaseApiAwareAction implements ActionInterface, 
                 throw new ApiException('Error to get order with ' . $e->getMessage());
             }
 
-            if ($details['metadata']['order_id'] === filter_var($order->metadata->order_id, FILTER_VALIDATE_INT)) {
+            if ($details['metadata']['order_id'] === filter_var($order->metadata->order_id, \FILTER_VALIDATE_INT)) {
                 $details['order_mollie_id'] = $this->getHttpRequest->request['id'];
             }
 

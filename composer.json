@@ -10,7 +10,7 @@
         "mollie/mollie-api-php": "^2.0",
         "sylius/refund-plugin": "1.0.0-RC.9",
         "sylius/admin-order-creation-plugin": "^0.11",
-        "ext-json": "*"
+        "ext-json": "*",
     },
     "require-dev": {
         "behat/behat": "^3.4",
@@ -28,7 +28,7 @@
         "phpstan/phpstan": "0.12.29",
         "phpstan/phpstan-webmozart-assert": "0.12.6",
         "sensiolabs/security-checker": "^5.0",
-        "sylius-labs/coding-standard": "^2.0",
+        "sylius-labs/coding-standard": "^4.0",
         "symfony/browser-kit": "^4.4 || ^5.2",
         "symfony/debug-bundle": "^4.4 || ^5.2",
         "symfony/dotenv": "^4.4 || ^5.2",
@@ -36,11 +36,7 @@
         "symfony/web-profiler-bundle": "^4.4 || ^5.2"
     },
     "conflict": {
-        "symfony/symfony": "4.1.8",
-        "symfony/browser-kit": "4.1.8",
-        "symfony/dependency-injection": "4.4.19",
-        "symfony/dom-crawler": "4.1.8",
-        "symfony/routing": "4.1.8"
+        "symplify/package-builder": "8.3.25"
     },
     "scripts": {
         "analyse": [

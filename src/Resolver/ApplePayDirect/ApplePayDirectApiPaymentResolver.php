@@ -60,7 +60,8 @@ final class ApplePayDirectApiPaymentResolver implements ApplePayDirectApiPayment
         ];
 
         try {
-            $response = $this->mollieApiClient->payments->create([
+            $response = $this->mollieApiClient->payments->create(
+                [
                     'method' => PaymentMethod::APPLEPAY,
                     'amount' => $details['amount'],
                     'description' => 'Apple pay direct payment',

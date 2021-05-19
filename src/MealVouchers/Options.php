@@ -14,7 +14,9 @@ namespace BitBag\SyliusMolliePlugin\MealVouchers;
 final class Options
 {
     public const MEAL = 'meal';
+
     public const ECO = 'eco';
+
     public const GIFT = 'gift';
 
     public static function getAvailableMealVouchersCategory(): array

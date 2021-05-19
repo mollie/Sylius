@@ -20,20 +20,12 @@ use Symfony\Component\HttpFoundation\Session\Session;
 
 final class CancelRecurringSubscriptionProcessor implements CancelRecurringSubscriptionProcessorInterface
 {
-    /**
-     * @var Payum
-     */
+    /** @var Payum */
     private $payum;
 
-    /**
-     * @var Session
-     */
+    /** @var Session */
     private $session;
 
-    /**
-     * @param Payum $payum
-     * @param Session $session
-     */
     public function __construct(Payum $payum, Session $session)
     {
         $this->payum = $payum;

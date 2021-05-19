@@ -19,6 +19,7 @@ use Payum\Core\GatewayFactory;
 final class MollieSubscriptionGatewayFactory extends GatewayFactory
 {
     public const FACTORY_NAME = 'mollie_subscription';
+
     public const CURRENCIES_AVAILABLE = ['EUR'];
 
     protected function populateConfig(ArrayObject $config): void

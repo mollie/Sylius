@@ -22,7 +22,10 @@ final class GatewayConfigTypeExtension extends AbstractTypeExtension
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('mollieGatewayConfig', CollectionType::class, [
+        $builder->add(
+            'mollieGatewayConfig',
+            CollectionType::class,
+            [
                 'entry_type' => MollieGatewayConfigType::class,
                 'validation_groups' => ['sylius'],
                 'constraints' => [

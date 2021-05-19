@@ -16,10 +16,15 @@ final class SubscriptionTransitions
     public const GRAPH = 'mollie_subscription';
 
     public const TRANSITION_PROCESS = 'process';
+
     public const TRANSITION_ACTIVATE = 'activate';
+
     public const TRANSITION_CANCEL = 'cancel';
+
     public const TRANSITION_SUSPEND = 'suspend';
+
     public const TRANSITION_COMPLETE = 'complete';
+
     public const TRANSITION_FAIL = 'fail';
 
     private function __construct()

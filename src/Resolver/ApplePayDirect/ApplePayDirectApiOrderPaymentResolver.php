@@ -75,7 +75,8 @@ final class ApplePayDirectApiOrderPaymentResolver implements ApplePayDirectApiOr
         ];
 
         try {
-            $response = $this->mollieApiClient->orders->create([
+            $response = $this->mollieApiClient->orders->create(
+                [
                     'method' => PaymentMethod::APPLEPAY,
                     'payment' => [
                         'applePayPaymentToken' => $details['applePayDirectToken'],

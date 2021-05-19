@@ -42,26 +42,23 @@ final class MollieAllowedMethodsResolver implements MollieAllowedMethodsResolver
      */
     public function resolve(OrderInterface $order): array
     {
-        $allowedMethods = [];
         $allowedMethodsIds = [];
 
-        $gateways = $this->gatewayConfigRepository->findBy(['factoryName' => MollieGatewayFactory::FACTORY_NAME]);
+        $gateway = $this->gatewayConfigRepository->findOneBy(['factoryName' => MollieGatewayFactory::FACTORY_NAME]);
 
-        if (empty($gateways)) {
+        if (empty($gateway)) {
             return [];
         }
 
-        /** @var GatewayConfigInterface $gateway */
-        foreach ($gateways as $gateway) {
-            $config = $gateway->getConfig();
-            $environment = true === $config['environment'] ?
-                MollieGatewayConfigurationType::API_KEY_LIVE :
-                MollieGatewayConfigurationType::API_KEY_TEST;
+        $config = $gateway->getConfig();
+        $environment = true === $config['environment'] ?
+            MollieGatewayConfigurationType::API_KEY_LIVE :
+            MollieGatewayConfigurationType::API_KEY_TEST;
 
-            $client = $this->mollieApiClient->setApiKey($config[$environment]);
+        $client = $this->mollieApiClient->setApiKey($config[$environment]);
 
-            $allowedMethods = $client->methods->allActive($this->createParametersByOrder($order));
-        }
+        /** API will return only payment methods allowed for order total, currency, billing country */
+        $allowedMethods = $client->methods->allActive($this->createParametersByOrder($order));
 
         /** @var Method $method */
         foreach ($allowedMethods as $method) {
@@ -79,7 +76,10 @@ final class MollieAllowedMethodsResolver implements MollieAllowedMethodsResolver
             'locale' => $order->getLocaleCode(),
             'billingCountry' => null !== $order->getBillingAddress()
                 ? $order->getBillingAddress()->getCountryCode()
-                : null
+                : null,
+            'include' => 'issuers',
+            'includeWallets' => 'applepay',
+            'resource' => 'orders',
         ];
     }
 

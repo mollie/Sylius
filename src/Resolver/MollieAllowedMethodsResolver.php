@@ -46,7 +46,7 @@ final class MollieAllowedMethodsResolver implements MollieAllowedMethodsResolver
 
         $gateway = $this->gatewayConfigRepository->findOneBy(['factoryName' => MollieGatewayFactory::FACTORY_NAME]);
 
-        if (empty($gateway)) {
+        if ($gateway === null) {
             return [];
         }
 

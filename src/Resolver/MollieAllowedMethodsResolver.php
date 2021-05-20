@@ -45,9 +45,9 @@ final class MollieAllowedMethodsResolver implements MollieAllowedMethodsResolver
     private function createParametersByOrder($order): array
     {
         return array_merge(
-    [
+            [
                 'amount' => [
-                    'value' =>  $this->parseTotalToString($order->getTotal()),
+                    'value' => $this->parseTotalToString($order->getTotal()),
                     'currency' => $order->getCurrencyCode(),
                 ],
                 'locale' => $order->getLocaleCode(),
@@ -61,6 +61,6 @@ final class MollieAllowedMethodsResolver implements MollieAllowedMethodsResolver
 
     private function parseTotalToString(int $total): string
     {
-        return substr_replace((string) $total, '.', -2, 0);
+        return substr_replace((string)$total, '.', -2, 0);
     }
 }

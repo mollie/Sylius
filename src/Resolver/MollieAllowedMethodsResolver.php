@@ -45,9 +45,11 @@ final class MollieAllowedMethodsResolver implements MollieAllowedMethodsResolver
     private function createParametersByOrder($order): array
     {
         return array_merge(
-            [
-                'amount[value]' => $this->parseTotalToString($order->getTotal()),
-                'amount[currency]' => $order->getCurrencyCode(),
+    [
+                'amount' => [
+                    'value' =>  $this->parseTotalToString($order->getTotal()),
+                    'currency' => $order->getCurrencyCode(),
+                ],
                 'locale' => $order->getLocaleCode(),
                 'billingCountry' => null !== $order->getBillingAddress()
                     ? $order->getBillingAddress()->getCountryCode()

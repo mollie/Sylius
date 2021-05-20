@@ -46,7 +46,6 @@ final class MolliePaymentsMethodResolver implements MolliePaymentsMethodResolver
     /** @var MollieLoggerActionInterface  */
     private $loggerAction;
 
-
     public function __construct(
         RepositoryInterface $mollieGatewayRepository,
         MollieCountriesRestrictionResolverInterface $countriesRestrictionResolver,

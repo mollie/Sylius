@@ -84,8 +84,7 @@
         </service>
         <service id="bitbag_sylius_mollie_plugin.resolver.mollie_amount_restriction_resolver" class="BitBag\SyliusMolliePlugin\Resolver\MollieAmountRestrictionResolver"/>
         <service id="bitbag_sylius_mollie_plugin.resolver.mollie_allowed_methods_resolver" class="BitBag\SyliusMolliePlugin\Resolver\MollieAllowedMethodsResolver">
-            <argument type="service" id="sylius.repository.gateway_config"/>
-            <argument type="service" id="bitbag_sylius_mollie_plugin.mollie_api_client"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.resolver.mollie_api_client_key_resolver"/>
         </service>
     </services>
 </container>

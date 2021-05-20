@@ -12,50 +12,27 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Resolver;
 
 use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
-use BitBag\SyliusMolliePlugin\Entity\GatewayConfigInterface;
+use BitBag\SyliusMolliePlugin\Creator\MollieMethodsCreatorInterface;
 use Sylius\Component\Core\Model\OrderInterface;
-use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
-use BitBag\SyliusMolliePlugin\Form\Type\MollieGatewayConfigurationType;
-use Mollie\Api\Exceptions\ApiException;
+
 use Mollie\Api\Resources\Method;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 
 final class MollieAllowedMethodsResolver implements MollieAllowedMethodsResolverInterface
 {
+    /** @var MollieApiClientKeyResolverInterface */
+    private $mollieApiClientKeyResolver;
 
-    /** @var RepositoryInterface */
-    private $gatewayConfigRepository;
-
-    /** @var MollieApiClient  */
-    private $mollieApiClient;
-
-    public function __construct(RepositoryInterface $gatewayConfigRepository, MollieApiClient $mollieApiClient)
+    public function __construct(MollieApiClientKeyResolverInterface $mollieApiClientKeyResolver)
     {
-        $this->gatewayConfigRepository = $gatewayConfigRepository;
-        $this->mollieApiClient = $mollieApiClient;
+        $this->mollieApiClientKeyResolver = $mollieApiClientKeyResolver;
     }
 
-    /**
-     * @param OrderInterface $order
-     * @return string[]
-     * @throws ApiException
-     */
     public function resolve(OrderInterface $order): array
     {
         $allowedMethodsIds = [];
 
-        $gateway = $this->gatewayConfigRepository->findOneBy(['factoryName' => MollieGatewayFactory::FACTORY_NAME]);
-
-        if ($gateway === null) {
-            return [];
-        }
-
-        $config = $gateway->getConfig();
-        $environment = true === $config['environment'] ?
-            MollieGatewayConfigurationType::API_KEY_LIVE :
-            MollieGatewayConfigurationType::API_KEY_TEST;
-
-        $client = $this->mollieApiClient->setApiKey($config[$environment]);
+        $client = $this->mollieApiClientKeyResolver->getClientWithKey();
 
         /** API will return only payment methods allowed for order total, currency, billing country */
         $allowedMethods = $client->methods->allActive($this->createParametersByOrder($order));
@@ -70,17 +47,17 @@ final class MollieAllowedMethodsResolver implements MollieAllowedMethodsResolver
 
     private function createParametersByOrder($order): array
     {
-        return [
-            'amount[value]' => $this->parseTotalToString($order->getTotal()),
-            'amount[currency]' => $order->getCurrencyCode(),
-            'locale' => $order->getLocaleCode(),
-            'billingCountry' => null !== $order->getBillingAddress()
-                ? $order->getBillingAddress()->getCountryCode()
-                : null,
-            'include' => 'issuers',
-            'includeWallets' => 'applepay',
-            'resource' => 'orders',
-        ];
+        return array_merge(
+            [
+                'amount[value]' => $this->parseTotalToString($order->getTotal()),
+                'amount[currency]' => $order->getCurrencyCode(),
+                'locale' => $order->getLocaleCode(),
+                'billingCountry' => null !== $order->getBillingAddress()
+                    ? $order->getBillingAddress()->getCountryCode()
+                    : null
+            ],
+            MollieMethodsCreatorInterface::PARAMETERS
+        );
     }
 
     private function parseTotalToString(int $total): string

@@ -47,10 +47,12 @@
             {% elseif field.vars.name == 'api_key_live' %}
                 {% include 'bundles/SyliusAdminBundle/PaymentMethod/_api_live_key.html.twig' %}
             {% elseif field.vars.name == 'components' %}
-                {{ form_row(field, { 'attr': { 'class': 'onboardingWizard-mollieComponents js-onboardingWizard-mollieComponents' } }) }}
+                <div class="js-onboardingWizard-mollieComponents">
+                    {{ form_row(field) }}
+                </div>
             {% elseif field.vars.name == 'single_click_enabled' %}
                 <div class="js-onboardingWizard-singleClick">
-                    {{ form_row(field, { 'attr': { 'class': 'js-onboardingWizard-singleClick' } }) }}
+                    {{ form_row(field) }}
                 </div>
             {% else %}
                 {{ form_row(field) }}

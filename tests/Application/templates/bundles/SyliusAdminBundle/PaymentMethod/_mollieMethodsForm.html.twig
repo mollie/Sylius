@@ -5,7 +5,7 @@
 
 <div class="ui segment" id="mollie-payment-form">
     <h4 class="ui header">
-        <div class="ui two column stackable grid">
+        <div class="ui two column stackable grid js-onboardingWizard-load-methods">
             <div class="middle aligned column">
                 {{ 'bitbag_sylius_mollie_plugin.ui.payment_mathod_conf_title'|trans }}
             </div>
@@ -100,7 +100,7 @@
                                     {{ form_row(methodForm.paymentType, {'attr': {'disabled': 'disabled'}}) }}
                                     {{ form_help(methodForm.paymentType) }}
                                 {% else %}
-                                    {{ form_row(methodForm.paymentType, { 'attr': { 'class': 'js-onboardingWizard-paymentType' } }) }}
+                                    {{ form_row(methodForm.paymentType, { 'attr': { 'class': 'js-onboardingWizard-PaymentMethod' } }) }}
                                     {{ form_help(methodForm.paymentType) }}
                                 {% endif %}
                             </div>
@@ -109,7 +109,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="field">
+                    <div class="field js-onboardingWizard-order-number">
                         {{ form_widget(methodForm.paymentDescription, { 'attr': { 'class': 'js-onboardingWizard-paymentDescription' } }) }}
                         <div id="payment_description_{{ name }}">
                             {{ methodForm.paymentDescription.vars.help|trans|raw|nl2br }}

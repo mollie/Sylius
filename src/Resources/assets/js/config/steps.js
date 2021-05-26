@@ -45,17 +45,17 @@ export const stepQuitConfirmation = [
 		customButtons: [
 			{
 				text: 'stepButtons.quitConfirm',
-				action: (OnboardingWizard) => {
-					OnboardingWizard.tour.removeStep('step-quit-confirmation');
-					OnboardingWizard.tour.complete();
+				action: (onboardingWizard) => {
+					onboardingWizard.tour.removeStep('step-quit-confirmation');
+					onboardingWizard.tour.complete();
 				},
 				secondary: true,
 			},
 			{
 				text: 'stepButtons.quitCancel',
-				action: (OnboardingWizard, stepIndex) => {
-					OnboardingWizard.tour.show(stepIndex, true);
-					OnboardingWizard.tour.removeStep('step-quit-confirmation');
+				action: (onboardingWizard, stepIndex) => {
+					onboardingWizard.tour.show(stepIndex, true);
+					onboardingWizard.tour.removeStep('step-quit-confirmation');
 				},
 			},
 		],
@@ -175,9 +175,9 @@ export const steps = [
 		customButtons: [
 			{
 				text: 'stepButtons.quitConfirm',
-				action: (OnboardingWizard) => {
-					OnboardingWizard.tour.removeStep('step-quit-confirmation');
-					OnboardingWizard.tour.complete();
+				action: (onboardingWizard) => {
+					onboardingWizard.tour.removeStep('step-quit-confirmation');
+					onboardingWizard.tour.complete();
 				},
 				secondary: true,
 			},

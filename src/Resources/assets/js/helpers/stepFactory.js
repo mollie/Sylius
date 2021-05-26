@@ -3,13 +3,13 @@ import _get from 'lodash.get';
 import { steps } from '../config/steps';
 import wizardTranslations from '../config/wizardTranslations';
 
-const handleStepButtons = (OnboardingWizard, stepIndex, step) => {
+const handleStepButtons = (onboardingWizard, stepIndex, step) => {
   if (step.customButtons) {
     return step.customButtons.map(customButton => (
       {
         ...customButton,
         text: _get(wizardTranslations, customButton.text),
-        action: () => customButton.action(OnboardingWizard, stepIndex)
+        action: () => customButton.action(onboardingWizard, stepIndex)
       }
     ));
   }
@@ -18,13 +18,13 @@ const handleStepButtons = (OnboardingWizard, stepIndex, step) => {
     {
       text: '<i class="close icon"></i>',
       action: () => {
-        OnboardingWizard.handleQuitConfirmation()
+        onboardingWizard.handleQuitConfirmation()
       },
       classes: `shepherd-button--close ${step.btnCloseClass || ''}`
     },
     {
       text: '<i class="arrow down icon"></i>',
-      action: () => OnboardingWizard.modalCollapseHandler(),
+      action: () => onboardingWizard.modalCollapseHandler(),
       classes: `shepherd-button--collapse js-tour-collapse ${step.btnCollapseClass || ''}`
     },
     {
@@ -34,7 +34,7 @@ const handleStepButtons = (OnboardingWizard, stepIndex, step) => {
       secondary: true,
       classes: `${step.btnBackClass || ''}`,
       action() {
-        const tour = OnboardingWizard.tour;
+        const tour = onboardingWizard.tour;
 
         if (stepIndex === 0) {
           tour.complete();
@@ -56,9 +56,9 @@ const handleStepButtons = (OnboardingWizard, stepIndex, step) => {
         : _get(wizardTranslations, 'stepButtons.nextWithArrow'),
       classes: `${step.btnNextClass || ''}`,
       action() {
-        const tour = OnboardingWizard.tour;
+        const tour = onboardingWizard.tour;
 
-        if (stepIndex === OnboardingWizard.steps.length - 1) {
+        if (stepIndex === onboardingWizard.steps.length - 1) {
           tour.complete();
         } else {
           if (step.urlMollie) {
@@ -76,6 +76,6 @@ export default (steps = []) => steps.map(step => (
     ...step,
     title: step.title ? _get(wizardTranslations, step.title) : null,
     text: _get(wizardTranslations, step.text),
-    stepButtons: (OnboardingWizard, stepIndex) => handleStepButtons(OnboardingWizard, stepIndex, step)
+    stepButtons: (onboardingWizard, stepIndex) => handleStepButtons(onboardingWizard, stepIndex, step)
   }
 ));

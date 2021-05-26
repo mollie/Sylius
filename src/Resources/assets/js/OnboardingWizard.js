@@ -6,7 +6,7 @@ import shepherdConfig from './config/shepherdConfig';
 import stepFactory from './helpers/stepFactory';
 import wizardTranslations from './config/wizardTranslations';
 
-export default class OnboardingWizard {
+export default class onboardingWizard {
   constructor(
     tourSteps = steps,
     tourConfig = shepherdConfig,

@@ -29,7 +29,7 @@ export default {
 		text: 'The loaded methods are required to complete onboard wizard and move forward, please load methods by clicking "Load Methods" button and come back to complete this tutorial',
 	},
 	stepErrorTitle: {
-		text: 'Something went wrong...',
+		text: 'Onboarding Assistant Wizard - Ended Up',
 	},
 	stepErrorDescription: {
 		text: 'The required action was not performed',

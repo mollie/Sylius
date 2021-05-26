@@ -9,14 +9,14 @@ bitbag_sylius_mollie_plugin:
     mollie_gateway_label: 'Mollie'
     refunded_only_locally: 'De terugbetaling is alleen lokaal gedaan'
     times: 'Duur'
-    interval: 'Interva'
+    interval: 'Interval'
     mollie_subscription_gateway_label: 'Mollie abonnement'
     mollie_order_gateway_label: 'Mollie order'
     consumer_name: 'Consumer name'
     iban: 'IBAN'
     cancel_subscription: 'Abonnement opzeggen'
-    payment_mathod_conf_title: 'Configuratie Betalingsmethode'
-    load_methods_button: 'Methodes laden'
+    payment_mathod_conf_title: 'Configuratie Betaalmethode'
+    load_methods_button: 'Betaalmethodes inladen'
     percentage_surcharge: 'Percentage'
     fix_amount_surcharge: 'Vast bedrag'
     percentage_and_fix_amount_surcharge: 'Vast bedrag en percentage'
@@ -25,7 +25,7 @@ bitbag_sylius_mollie_plugin:
     payment_type: 'Betaalwijze'
     payment_method_id: 'Betaalmethode ID'
     payment_name: 'Betalingsnaam'
-    customize_image: 'Selecteer aanpasbare afbeelding'
+    customize_image: 'Selecteer aangepaste afbeelding'
     country_level_restriction: 'Beperking op landniveau'
     payment_fee_type: 'Type'
     enable: 'Activeren'
@@ -55,7 +55,7 @@ bitbag_sylius_mollie_plugin:
     splitting_shipment_for_order: 'Verzending opsplitsen voor Bestelnr. #%number%'
     split_shipment: 'Verzending opsplitsen'
     partially_ship: 'Gedeeltelijk verzenden'
-    no_methods_found_message: 'Geen methodes gevonden. Klik op de knop "Laad methodes", maar voer eerst je profiel-ID en API-sleutel in.'
+    no_methods_found_message: 'Geen betaalmethodes gevonden. Klik op de knop "Methodes inladen", maar voer eerst je profiel-ID en API-sleutel in.'
     paymentlink_generate: 'Betaallink aanmaken'
     paymentlink_generate_subtitle: 'Betaallink aanmaken en naar de klant sturen'
     paymentlink: 'Betaallink'
@@ -106,16 +106,16 @@ bitbag_sylius_mollie_plugin:
     payment_methods:
       payment_description: 'Beschrijving'
       payment_description_help: "De beschrijving die voor de transacties moet worden gebruikt. Deze variabelen zijn beschikbaar:\n
-                                                      <b>{ordernumber}:  </b>Het bestelnumber voor deze transactie \n
+                                                      <b>{ordernumber}:  </b>Het bestelnummer voor deze transactie \n
                                                        <b>{storename}:</b> De naam van de winkel \n\n
                                                       (Let op: dit werkt alleen als de methode is ingesteld op Payments API)"
     product_type: 'Producttype (verplicht voor maaltijdcheques)'
     product_type_default: 'Kies standaardproductcategorie'
     product_type_default_help: 'De geselecteerde categorie wordt gebruikt voor alle producten in je webshop.'
     no_category: 'Geen standaardcategorie'
-    product_type_none: 'Gee'
+    product_type_none: 'Geen'
     shipment:
-      units: 'Eenhede'
+      units: 'Eenheden'
       tracking_code: 'Trackingcode'
     methods: 'Kies geactiveerde methodes'
     expiration_date_time: 'Vervaldatum tijd'

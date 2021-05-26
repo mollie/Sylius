@@ -23,7 +23,16 @@ export default {
 		text: `Enabling single click payments remembers your consumer's payment preferences in order to expedite follow-up payments. Your consumer does not have to perform any additional actions to enjoy quick and easy payments. Learn more about single click payments <a href="https://help.mollie.com/hc/en-us/articles/115000671249-What-are-single-click-payments-and-how-does-it-work-"here</a>.`,
 	},
 	stepMethodConfig: {
-		text: 'Now time to customize features for individual payment methods. First, select the load methods button. Only the methods that are enabled in your Mollie account will display here. Then you use the enable/disable selector to control which will show on your webshop checkout. ',
+		text: 'Now time to customize features for individual payment methods. First, select the load methods button. Only the methods that are enabled in your Mollie account will display here. Then you use the enable/disable selector to control which will show on your webshop checkout.',
+	},
+	stepMethodRequired: {
+		text: 'The loaded methods are required to complete onboard wizard and move forward, please load methods by clicking "Load Methods" button and come back to complete this tutorial',
+	},
+	stepErrorTitle: {
+		text: 'Something went wrong...',
+	},
+	stepErrorDescription: {
+		text: 'The required action was not performed',
 	},
 	stepPaymentTitle: {
 		text: 'For each method, you can enter a custom title here - it will be displayed on your webshop checkout page.',

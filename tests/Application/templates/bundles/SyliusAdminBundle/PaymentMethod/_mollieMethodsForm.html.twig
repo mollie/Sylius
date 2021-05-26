@@ -10,7 +10,7 @@
                 {{ 'bitbag_sylius_mollie_plugin.ui.payment_mathod_conf_title'|trans }}
             </div>
             <div class="right aligned column">
-                <div class="ui buttons">
+                <div class="ui buttons js-header-btn">
                     <a href="#" id="get_methods" data-url="{{ path('bitbag_admin_methods') }}"
                        class="ui button primary">{{ 'bitbag_sylius_mollie_plugin.ui.load_methods_button'|trans }}</a>
                 </div>
@@ -122,7 +122,7 @@
                 </div>
             </div>
         {% else %}
-            <div class="ui mini message center float">
+            <div class="ui mini message center float js-payment-method-not-loaded">
                 {{ 'bitbag_sylius_mollie_plugin.ui.no_methods_found_message'|trans }}
             </div>
         {% endfor %}

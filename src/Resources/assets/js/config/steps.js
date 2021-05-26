@@ -1,4 +1,4 @@
-import {paymentTypeIndicator} from '../helpers/filterMethod';
+import {paymentTypeIndicator, methodLoadIndicator} from '../helpers/filterMethod';
 
 export const stepPaymentType = {
 	id: 'step-payment-type',
@@ -147,6 +147,44 @@ export const steps = [
 		},
 	},
 	{
+		showOn: function() {
+			return !methodLoadIndicator(
+				'.js-payment-method-not-loaded'
+			);
+		},
+		id: 'step-methods-required',
+		text: 'stepMethodRequired.text',
+		classes: 'shepherd-element--align-right',
+		highlightClass: 'payment-settings',
+		btnNextText: 'stepButtons.next',
+		attachTo: {
+			element: '.js-onboardingWizard-load-methods #get_methods',
+			on: 'top-start',
+		},
+	},
+	{
+		showOn: function() {
+			return !methodLoadIndicator(
+				'.js-payment-method-not-loaded'
+			);
+		},
+		id: 'step-finish-wizard-error',
+		title: 'stepErrorTitle.text',
+		text: 'stepErrorDescription.text',
+		highlightClass: 'payment-settings',
+		customButtons: [
+			{
+				text: 'stepButtons.quitConfirm',
+				action: (OnboardingWizard) => {
+					OnboardingWizard.tour.removeStep('step-quit-confirmation');
+					OnboardingWizard.tour.complete();
+				},
+				secondary: true,
+			},
+
+		],
+	},
+	{
 		id: 'step-payment-title',
 		text: 'stepPaymentTitle.text',
 		classes: 'step-9 shepherd-element--align-right',
@@ -179,7 +217,6 @@ export const steps = [
 			on: 'top-start',
 		},
 	},
-	// payment type select
 	{
 		id: 'step-payment-method',
 		text: 'stepPaymentMethod.text',
@@ -191,41 +228,50 @@ export const steps = [
 			on: 'top-start',
 		},
 	},
-	//
 	{
-		showOn: paymentTypeIndicator(
-			'#sylius_payment_method_gatewayConfig_mollieGatewayConfig_0_paymentType',
-			'ORDER_API'
-		),
-		id: 'step-order-number',
-		text: 'stepOrderNumber.text',
-		classes: 'step-12 shepherd-element--align-right',
-		highlightClass: 'payment-settings',
-		btnNextClass: 'shepherd-button--arrow-down',
-	},
-	{
-		showOn: paymentTypeIndicator(
-			'#sylius_payment_method_gatewayConfig_mollieGatewayConfig_0_paymentType',
-			'ORDER_API'
-		),
-		id: 'step-order-api',
-		text: 'stepOrderAPI.text',
-		classes: 'step-12 shepherd-element--align-right',
-		highlightClass: 'payment-settings',
-		btnNextClass: 'shepherd-button--arrow-down',
-	},
-	{
-		showOn: paymentTypeIndicator(
-			'#sylius_payment_method_gatewayConfig_mollieGatewayConfig_0_paymentType',
-			'PAYMENT_API'
-		),
+		showOn: function() {
+			return paymentTypeIndicator(
+				'#sylius_payment_method_gatewayConfig_mollieGatewayConfig_0_paymentType',
+				'PAYMENT_API'
+			);
+		},
 		id: 'step-payments-api',
 		text: 'stepPaymentsAPI.text',
 		classes: 'step-12 shepherd-element--align-right',
 		highlightClass: 'payment-settings',
 		btnNextClass: 'shepherd-button--arrow-down',
 	},
-	//
+	{
+		showOn: function() {
+			return paymentTypeIndicator(
+				'#sylius_payment_method_gatewayConfig_mollieGatewayConfig_0_paymentType',
+				'PAYMENT_API'
+			);
+		},
+		id: 'step-order-number',
+		text: 'stepOrderNumber.text',
+		classes: 'step-12 shepherd-element--align-right',
+		highlightClass: 'payment-settings',
+		btnNextClass: 'shepherd-button--arrow-down',
+		attachTo: {
+			element: '.js-onboardingWizard-order-number',
+			on: 'top-start',
+		},
+	},
+	{
+		showOn: function() {
+			return paymentTypeIndicator(
+				'#sylius_payment_method_gatewayConfig_mollieGatewayConfig_0_paymentType',
+				'ORDER_API'
+			);
+		},
+		id: 'step-order-api',
+		text: 'stepOrdersAPI.text',
+		classes: 'step-12 shepherd-element--align-right',
+		highlightClass: 'payment-settings',
+		btnNextClass: 'shepherd-button--arrow-down',
+	},
+	
 	{
 		id: 'step-fees',
 		text: 'stepFees.text',
@@ -244,7 +290,7 @@ export const steps = [
 		highlightClass: 'payment-settings',
 		btnNextClass: 'shepherd-button--arrow-down',
 		attachTo: {
-			element: '#sylius_save_changes_button',
+			element: '.ui.buttons:not(.js-header-btn)',
 			on: 'top-start',
 		},
 	},

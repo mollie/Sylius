@@ -49,10 +49,10 @@ export default {
 	stepOrderNumber: {
 		text: 'When using Payments API you may want additional details to help you match payments with customer orders -- you can enter those values here but make sure to use the correct tags provided in the text below',
 	},
-  stepOrdersAPI: {
+	stepOrdersAPI: {
 		text: 'Orders API <br>This is Mollie suggested API to use for webshops because it allows you to create “orders”. An order contains the personal information of a customer (e.g. address) and products that the customer ordered. When an order is made, a corresponding payment will be created automatically.',
 	},
-  stepPaymentsAPI: {
+	stepPaymentsAPI: {
 		text: 'Payments API <br>Note: Payments API can not be used for methods such as Klarna',
 	},
 	stepFees: {

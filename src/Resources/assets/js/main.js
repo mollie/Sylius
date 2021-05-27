@@ -1,4 +1,4 @@
 import onboardingWizard from './onboardingWizard';
 
-const tour = new onboardingWizard()
+const tour = new onboardingWizard();
 tour.initTour();

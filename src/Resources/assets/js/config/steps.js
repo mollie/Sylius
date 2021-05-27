@@ -1,4 +1,7 @@
-import {paymentTypeIndicator, methodLoadIndicator} from '../helpers/filterMethod';
+import {
+	paymentTypeIndicator,
+	methodLoadIndicator,
+} from '../helpers/filterMethod';
 
 export const stepPaymentType = {
 	id: 'step-payment-type',
@@ -147,10 +150,8 @@ export const steps = [
 		},
 	},
 	{
-		showOn: function() {
-			return !methodLoadIndicator(
-				'.js-payment-method-not-loaded'
-			);
+		showOn: function () {
+			return !methodLoadIndicator('.js-payment-method-not-loaded');
 		},
 		id: 'step-methods-required',
 		text: 'stepMethodRequired.text',
@@ -163,10 +164,8 @@ export const steps = [
 		},
 	},
 	{
-		showOn: function() {
-			return !methodLoadIndicator(
-				'.js-payment-method-not-loaded'
-			);
+		showOn: function () {
+			return !methodLoadIndicator('.js-payment-method-not-loaded');
 		},
 		id: 'step-finish-wizard-error',
 		title: 'stepErrorTitle.text',
@@ -181,7 +180,6 @@ export const steps = [
 				},
 				secondary: true,
 			},
-
 		],
 	},
 	{
@@ -229,7 +227,7 @@ export const steps = [
 		},
 	},
 	{
-		showOn: function() {
+		showOn: function () {
 			return paymentTypeIndicator(
 				'#sylius_payment_method_gatewayConfig_mollieGatewayConfig_0_paymentType',
 				'PAYMENT_API'
@@ -242,7 +240,7 @@ export const steps = [
 		btnNextClass: 'shepherd-button--arrow-down',
 	},
 	{
-		showOn: function() {
+		showOn: function () {
 			return paymentTypeIndicator(
 				'#sylius_payment_method_gatewayConfig_mollieGatewayConfig_0_paymentType',
 				'PAYMENT_API'
@@ -259,7 +257,7 @@ export const steps = [
 		},
 	},
 	{
-		showOn: function() {
+		showOn: function () {
 			return paymentTypeIndicator(
 				'#sylius_payment_method_gatewayConfig_mollieGatewayConfig_0_paymentType',
 				'ORDER_API'
@@ -271,7 +269,7 @@ export const steps = [
 		highlightClass: 'payment-settings',
 		btnNextClass: 'shepherd-button--arrow-down',
 	},
-	
+
 	{
 		id: 'step-fees',
 		text: 'stepFees.text',

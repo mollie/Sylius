@@ -10,10 +10,9 @@ export const paymentTypeIndicator = (item, expectedValue) => {
 
 export const methodLoadIndicator = (item) => {
 	const indicatedItem = document.querySelector(`${item}`);
-	if (indicatedItem ) {
+	if (indicatedItem) {
 		return false;
 	} else {
 		return true;
 	}
 };
-

@@ -56,11 +56,11 @@
 
 		&:before {
 			content: '';
-			width: 60px;
-			height: 60px;
+			width: 120px;
+			height: 26px;
 			margin-bottom: 20px;
-			border-radius: 50%;
-			background-size: cover;
+			background-repeat:no-repeat;
+			background-size: contain;
 			background-image: url('https://sylius.com/wp-content/uploads/2018/06/mollie.png');
 		}
 	}

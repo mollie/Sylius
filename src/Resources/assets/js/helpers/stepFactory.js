@@ -1,6 +1,6 @@
 import _get from 'lodash.get';
 
-import {steps} from '../config/steps';
+import { steps } from '../config/steps';
 import wizardTranslations from '../config/wizardTranslations';
 
 const handleStepButtons = (onboardingWizard, stepIndex, step) => {

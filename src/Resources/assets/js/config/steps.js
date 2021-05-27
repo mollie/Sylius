@@ -302,5 +302,5 @@ export const steps = [
 		btnNextText: 'stepButtons.finishWizard',
 		btnCollapseClass: 'd-none',
 		btnCloseClass: 'd-none',
-	},
+	}
 ];

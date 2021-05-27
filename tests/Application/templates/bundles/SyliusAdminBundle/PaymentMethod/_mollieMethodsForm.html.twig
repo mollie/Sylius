@@ -109,10 +109,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="field js-onboardingWizard-order-number">
-                        {{ form_widget(methodForm.paymentDescription, { 'attr': { 'class': 'js-onboardingWizard-paymentDescription' } }) }}
-                        <div id="payment_description_{{ name }}">
-                            {{ methodForm.paymentDescription.vars.help|trans|raw|nl2br }}
+                    <div class="field">
+                        <div class="js-onboardingWizard-order-number">
+                            {{ form_widget(methodForm.paymentDescription, { 'attr': { 'class': 'js-onboardingWizard-paymentDescription' } }) }}
+                            <div id="payment_description_{{ name }}">
+                                {{ methodForm.paymentDescription.vars.help|trans|raw|nl2br }}
+                            </div>
                         </div>
                     </div>
                     <h4 class="ui horizontal divider header">

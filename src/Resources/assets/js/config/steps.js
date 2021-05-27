@@ -1,7 +1,13 @@
 import {
 	paymentTypeIndicator,
 	methodLoadIndicator,
+	currentStepValidator
 } from '../helpers/filterMethod';
+
+// currentStepValidator(".js-onboardingWizard-profile-api", '.pushable')
+// showOn: function () {
+// 	currentStepValidator(".js-onboardingWizard-profile-api", '.pushable')
+// },
 
 export const stepPaymentType = {
 	id: 'step-payment-type',
@@ -88,6 +94,10 @@ export const steps = [
 		urlMollie: 'https://www.mollie.com/dashboard',
 	},
 	{
+		showOn: function () {
+			currentStepValidator('.js-onboardingWizard-environment', '.pushable');
+			return true;
+		},
 		id: 'step-env',
 		text: 'stepEnv.text',
 		classes: 'shepherd-element--align-right',
@@ -99,6 +109,10 @@ export const steps = [
 		btnNextClass: 'shepherd-button--arrow-down',
 	},
 	{
+		showOn: function () {
+			currentStepValidator('.js-onboardingWizard-profile-api', '.pushable');
+			return true;
+		},
 		id: 'step-api-key',
 		text: 'stepApiKey.text',
 		classes: 'shepherd-element--align-right',
@@ -117,6 +131,10 @@ export const steps = [
 		btnNextText: 'stepButtons.next',
 	},
 	{
+		showOn: function () {
+			currentStepValidator('.js-onboardingWizard-mollieComponents', '.pushable');
+			return true;
+		},
 		id: 'step-mollie-components',
 		text: 'stepMollieComponents.text',
 		classes: 'shepherd-element--align-right',
@@ -128,6 +146,10 @@ export const steps = [
 		},
 	},
 	{
+		showOn: function () {
+			currentStepValidator('.js-onboardingWizard-singleClick', '.pushable');
+			return true;
+		},
 		id: 'step-mollie-payments',
 		text: 'stepMolliePayments.text',
 		classes: 'shepherd-element--align-right',
@@ -139,6 +161,10 @@ export const steps = [
 		},
 	},
 	{
+		showOn: function () {
+			currentStepValidator('.js-onboardingWizard-load-methods', '.pushable');
+			return true;
+		},
 		id: 'step-payments-api',
 		text: 'stepMethodConfig.text',
 		classes: 'shepherd-element--align-right',
@@ -151,6 +177,7 @@ export const steps = [
 	},
 	{
 		showOn: function () {
+			currentStepValidator('.js-onboardingWizard-load-methods', '.pushable');
 			return !methodLoadIndicator('.js-payment-method-not-loaded');
 		},
 		id: 'step-methods-required',
@@ -183,6 +210,10 @@ export const steps = [
 		],
 	},
 	{
+		showOn: function () {
+			currentStepValidator('.js-onboardingWizard-paymentName', '.pushable');
+			return true;
+		},
 		id: 'step-payment-title',
 		text: 'stepPaymentTitle.text',
 		classes: 'step-9 shepherd-element--align-right',
@@ -194,6 +225,10 @@ export const steps = [
 		},
 	},
 	{
+		showOn: function () {
+			currentStepValidator('.js-onboardingWizard-customizeMethodImage', '.pushable');
+			return true;
+		},
 		id: 'step-image-upload',
 		text: 'stepImageUpload.text',
 		classes: 'step-14 shepherd-element--align-right',
@@ -205,6 +240,10 @@ export const steps = [
 		},
 	},
 	{
+		showOn: function () {
+			currentStepValidator('.js-onboardingWizard-countryRestriction', '.pushable');
+			return true;
+		},
 		id: 'step-country-restriction',
 		text: 'stepCountryRestriction.text',
 		classes: 'step-12 shepherd-element--align-right',
@@ -216,6 +255,10 @@ export const steps = [
 		},
 	},
 	{
+		showOn: function () {
+			currentStepValidator('.js-onboardingWizard-PaymentMethod', '.pushable');
+			return true;
+		},
 		id: 'step-payment-method',
 		text: 'stepPaymentMethod.text',
 		classes: 'step-12 shepherd-element--align-right',
@@ -241,6 +284,7 @@ export const steps = [
 	},
 	{
 		showOn: function () {
+			currentStepValidator('.js-onboardingWizard-order-number', '.pushable');
 			return paymentTypeIndicator(
 				'#sylius_payment_method_gatewayConfig_mollieGatewayConfig_0_paymentType',
 				'PAYMENT_API'
@@ -271,6 +315,10 @@ export const steps = [
 	},
 
 	{
+		showOn: function () {
+			currentStepValidator('.js-onboardingWizard-paymentFee', '.pushable');
+			return true;
+		},
 		id: 'step-fees',
 		text: 'stepFees.text',
 		classes: 'step-13 shepherd-element--align-right',

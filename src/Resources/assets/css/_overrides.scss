@@ -241,3 +241,15 @@
 .js-onboardingWizard-mollieComponents {
 	padding: 4px 0;
 }
+
+.step-next-disabled{
+	.shepherd-button--arrow-down{
+		pointer-events: none;
+		background-color: $c-secondary;
+		user-select: none;
+
+		&:hover{
+			background-color: darken($c-secondary, 10%);
+		}
+	}
+}

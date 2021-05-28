@@ -4,11 +4,6 @@ import {
 	currentStepValidator
 } from '../helpers/filterMethod';
 
-// currentStepValidator(".js-onboardingWizard-profile-api", '.pushable')
-// showOn: function () {
-// 	currentStepValidator(".js-onboardingWizard-profile-api", '.pushable')
-// },
-
 export const stepPaymentType = {
 	id: 'step-payment-type',
 	text: 'stepPaymentType.text',

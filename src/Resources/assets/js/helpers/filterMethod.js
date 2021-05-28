@@ -30,15 +30,14 @@ export const validateFields = (elements, messageContainer) => {
 export const currentStepValidator = (element, popup) => {
 	const validationContainer = document.querySelector(element);
 	const validationElements = validationContainer.parentNode
-	.querySelectorAll(`input:not([type="file"]):not([type="submit"]):not(disabled):not([style*="display: none"]),
+		.querySelectorAll(`input:not([type="file"]):not([type="submit"]):not(disabled):not([style*="display: none"]),
 		select:not(disabled):not([style*="display: none;"])`);
 	const messageWindow = document.querySelector(popup);
 
-	console.log(validationContainer, validationElements)
 	if (validationElements && validationElements.length != 0){
 		validateFields(validationElements, messageWindow);
 		validationElements.forEach(el => {
-			el.addEventListener('change', () => {
+			el.addEventListener('input', () => {
 				validateFields(validationElements, messageWindow);
 			})
 		})

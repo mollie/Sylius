@@ -21,11 +21,11 @@
             </label>
 
             {% if choice.value == 'creditcard' and true == gatewayConfig.config['components'] %}
-                {% include 'BitBagSyliusMolliePlugin:Shop/PaymentMollie:_creditCardForm.html.twig' %}
+                {% include '@BitBagSyliusMolliePlugin/Shop/PaymentMollie/_creditCardForm.html.twig' %}
             {% elseif choice.value == 'ideal' %}
                 {% for key, method in mollie_payment_options %}
                     {% if key == 'issuers' and method.vars.choices|length > 0 %}
-                        {% include 'BitBagSyliusMolliePlugin:Shop/PaymentMollie:_issuers.html.twig' %}
+                        {% include '@BitBagSyliusMolliePlugin/Shop/PaymentMollie/_issuers.html.twig' %}
                     {% endif %}
                 {% endfor %}
             {% endif %}

@@ -1,31 +1,22 @@
+const path = require('path');
 const Encore = require('@symfony/webpack-encore');
-
-if (!Encore.isRuntimeEnvironmentConfigured()) {
-  Encore.configureRuntimeEnvironment(process.env.NODE_ENV || 'dev');
-}
-
+const syliusBundles = path.resolve(__dirname, 'vendor/sylius/sylius/src/Sylius/Bundle/');
+const uiBundleScripts = path.resolve(syliusBundles, 'UiBundle/Resources/private/js/');
+const uiBundleResources = path.resolve(syliusBundles, 'UiBundle/Resources/private/');
+// Admin config
 Encore
-  .setOutputPath('./public/bundles/bitbagsyliusmollieplugin/build')
-  .setPublicPath('/build')
-
-  /*
-    * ENTRY CONFIG
-    *
-    * Add 1 entry for each "page" of your app
-    * (including one that's included on every page - e.g. "app")
-    *
-    * Each entry will result in one JavaScript file (e.g. app.js)
-    * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
-    */
-  .addEntry('onboarding-plugin', '../../src/Resources/assets/js/main.js')
-  .addStyleEntry('onboarding-plugin-css', '../../src/Resources/assets/css/main.scss')
-
-  .disableSingleRuntimeChunk()
-  .cleanupOutputBeforeBuild()
-  .enableSourceMaps(!Encore.isProduction())
-  .enableVersioning(Encore.isProduction())
-  .enableSassLoader()
-  .autoProvidejQuery();
-;
-
-module.exports = Encore.getWebpackConfig();
+    .setOutputPath('public/build/admin/')
+    .setPublicPath('/build/admin')
+    .addEntry('admin-entry', '../../src/Resources/assets/js/main.js')
+    .disableSingleRuntimeChunk()
+    .cleanupOutputBeforeBuild()
+    .enableSourceMaps(!Encore.isProduction())
+    .enableVersioning(Encore.isProduction())
+    .enableSassLoader();
+const adminConfig = Encore.getWebpackConfig();
+adminConfig.resolve.alias['sylius/ui'] = uiBundleScripts;
+adminConfig.resolve.alias['sylius/ui-resources'] = uiBundleResources;
+adminConfig.resolve.alias['sylius/bundle'] = syliusBundles;
+adminConfig.externals = Object.assign({}, adminConfig.externals, { window: 'window', document: 'document' });
+adminConfig.name = 'admin';
+module.exports = [adminConfig];

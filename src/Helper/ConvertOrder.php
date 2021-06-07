@@ -91,7 +91,7 @@ final class ConvertOrder implements ConvertOrderInterface
 
     private function createBillingAddress(CustomerInterface $customer): array
     {
-        $billingAddress = $this->order->getShippingAddress();
+        $billingAddress = $this->order->getBillingAddress();
 
         return [
             'streetAndNumber' => $billingAddress->getStreet(),
@@ -128,7 +128,7 @@ final class ConvertOrder implements ConvertOrderInterface
                     'currency' => $this->order->getCurrencyCode(),
                     'value' => null === $this->getTaxRatesUnitItem($item) ?
                         '0.00' :
-                        $this->calculateTaxAmount->calculate($this->getTaxRatesUnitItem($item), $this->order->getItemsTotal()),
+                        $this->calculateTaxAmount->calculate($this->getTaxRatesUnitItem($item), $item->getTotal()),
                 ],
                 'metadata' => [
                     'item_id' => $item->getId(),

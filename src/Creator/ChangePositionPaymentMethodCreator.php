@@ -12,7 +12,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Creator;
 
 use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -21,15 +21,15 @@ final class ChangePositionPaymentMethodCreator implements ChangePositionPaymentM
     /** @var RepositoryInterface */
     private $mollieGatewayRepository;
 
-    /** @var ObjectManager */
-    private $mollieGatewayObjectManager;
+    /** @var EntityManagerInterface */
+    private $mollieGatewayEntityManager;
 
     public function __construct(
         RepositoryInterface $mollieGatewayRepository,
-        ObjectManager $mollieGatewayObjectManager
+        EntityManagerInterface $mollieGatewayObjectManager
     ) {
         $this->mollieGatewayRepository = $mollieGatewayRepository;
-        $this->mollieGatewayObjectManager = $mollieGatewayObjectManager;
+        $this->mollieGatewayEntityManager = $mollieGatewayObjectManager;
     }
 
     public function createFromRequest(Request $request): void
@@ -41,11 +41,11 @@ final class ChangePositionPaymentMethodCreator implements ChangePositionPaymentM
             if ($method instanceof MollieGatewayConfigInterface && isset($position['id'])) {
                 $method->setPosition((int) $position['id']);
 
-                $this->mollieGatewayObjectManager->persist($method);
+                $this->mollieGatewayEntityManager->persist($method);
             }
         }
 
-        $this->mollieGatewayObjectManager->flush();
+        $this->mollieGatewayEntityManager->flush();
     }
 
     private function emptyPositionFilter(array $positions): array

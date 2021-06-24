@@ -17,10 +17,10 @@ export default {
 		text: "Next, we'll set-up key settings for the checkout screen display on your webshop.",
 	},
 	stepMollieComponents: {
-		text: `Enabling components, allows you to add the fields needed for credit card holder data to your own checkout. If you select NO, users will be redirected to the Mollie checkout page. Learn more about Mollie components <a href="https://www.mollie.com/en/news/post/better-checkout-flows-with-mollie-components">here</a>.`,
+		text: `Enabling components, allows you to add the fields needed for credit card holder data to your own checkout.<br><br>If you select NO, customers will be redirected to the Mollie checkout page.<br><br>Learn more about Mollie components <a target="_blank" href="https://www.mollie.com/en/news/post/better-checkout-flows-with-mollie-components">here</a>.`,
 	},
 	stepMolliePayments: {
-		text: `Enabling single click payments remembers your consumer's payment preferences in order to expedite follow-up payments. Your consumer does not have to perform any additional actions to enjoy quick and easy payments. Learn more about single click payments <a href="https://help.mollie.com/hc/en-us/articles/115000671249-What-are-single-click-payments-and-how-does-it-work-"here</a>.`,
+		text: `Enabling single click payments remembers your consumer's payment preferences in order to expedite follow-up payments. Your consumer does not have to perform any additional actions to enjoy quick and easy payments.<br><br>Learn more about single click payments <a target="_blank" href="https://help.mollie.com/hc/en-us/articles/115000671249-What-are-single-click-payments-and-how-does-it-work-">here</a>.`,
 	},
 	stepMethodConfig: {
 		text: "Now it's time to customize features for individual payment methods.<br><br>First, select the load methods button. Only the methods that are enabled in your Mollie account will display here.<br><br>Then you use the enable/disable selector to control which will show on your webshop checkout.<br><br>NOTE: It is not possible to continue the guided onboarding without loading payment methods. ",
@@ -44,7 +44,7 @@ export default {
 		text: 'Here you can create filters for country specific payment methods - for example, if you want iDEAL only to show for Netherlands customers you choose "Select Countries" and select Netherlands.',
 	},
 	stepPaymentMethod: {
-		text: 'Per method, you can select which Mollie API to use to create payments. Click <a href="https://docs.mollie.com/orders/why-use-orders">here</a> to read about the differences between Orders and Payments API.',
+		text: 'Per method, you can select which Mollie API to use to create payments. Click <a target="_blank" href="https://docs.mollie.com/orders/why-use-orders">here</a> to read about the differences between Orders and Payments API.',
 	},
 	stepOrderNumber: {
 		text: 'When using Payments API you may want additional details to help you match payments with customer orders -- you can enter those values here but make sure to use the correct tags provided in the text below',
@@ -56,7 +56,7 @@ export default {
 		text: 'Payments API <br>Note: Payments API can not be used for methods such as Klarna',
 	},
 	stepFees: {
-		text: 'In case you have fees that you are passing on to the consumer, you can add them here',
+		text: 'In case you have fees that you are passing on to the consumer, you can add them <a target="_blank" href="https://help.mollie.com/hc/en-us/articles/360012564454-Can-I-pass-over-the-costs-for-the-use-of-a-payment-method-to-my-customers-">here</a>',
 	},
 	stepSave: {
 		text: 'Remeber to save your configurations. ',

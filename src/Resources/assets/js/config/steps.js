@@ -4,6 +4,11 @@ import {
 	currentStepValidator,
 } from '../helpers/filterMethod';
 
+const paymentMethodPaymentApi = 'PAYMENT_API';
+const paymentMethodOrderApi = 'ORDER_API';
+const enviromentTest = '0';
+const enviromentLive = '1';
+
 export const stepPaymentType = {
 	id: 'step-payment-type',
 	text: 'stepPaymentType.text',
@@ -114,7 +119,7 @@ export const steps = [
 			);
 			return paymentTypeIndicator(
 				'.js-onboardingWizard-environment',
-				'0'
+				enviromentTest
 			);
 		},
 		id: 'step-api-key-test',
@@ -135,7 +140,7 @@ export const steps = [
 			);
 			return paymentTypeIndicator(
 				'.js-onboardingWizard-environment',
-				'1'
+				enviromentLive
 			);
 		},
 		id: 'step-api-key',
@@ -290,7 +295,7 @@ export const steps = [
 			);
 			return paymentTypeIndicator(
 				'#sylius_payment_method_gatewayConfig_mollieGatewayConfig_0_paymentType',
-				'PAYMENT_API'
+				paymentMethodPaymentApi
 			);
 		},
 		id: 'step-order-number',
@@ -307,7 +312,7 @@ export const steps = [
 		showOn: function () {
 			return paymentTypeIndicator(
 				'#sylius_payment_method_gatewayConfig_mollieGatewayConfig_0_paymentType',
-				'ORDER_API'
+				paymentMethodOrderApi
 			);
 		},
 		id: 'step-order-api',

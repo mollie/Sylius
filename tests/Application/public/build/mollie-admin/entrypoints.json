@@ -1,19 +1,11 @@
 {
   "entrypoints": {
-    "admin-entry": {
+    "mollie-admin-entry": {
       "css": [
-        "/build/mollie-admin/admin-entry.css"
+        "/build/mollie-admin/mollie-admin-entry.css"
       ],
       "js": [
-        "/build/mollie-admin/admin-entry.js"
-      ]
-    },
-    "plugin-admin-entry": {
-      "css": [
-        "/build/mollie-admin/plugin-admin-entry.css"
-      ],
-      "js": [
-        "/build/mollie-admin/plugin-admin-entry.js"
+        "/build/mollie-admin/mollie-admin-entry.js"
       ]
     }
   }

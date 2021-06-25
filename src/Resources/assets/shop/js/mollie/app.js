@@ -75,7 +75,7 @@ $(function () {
         const form = document.getElementsByName("sylius_checkout_select_payment")[0];
 
         const formError = document.getElementById("form-error");
-        const submitButton = document.getElementById("next-step") ?? document.getElementById("sylius-pay-link");
+        const submitButton = document.getElementById("next-step") || document.getElementById("sylius-pay-link");
         const tokenField = document.querySelector('[id*="_details_cartToken"]');
 
         const cardHolder = mollie.createComponent("cardHolder");

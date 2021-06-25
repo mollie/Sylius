@@ -1,4 +1,6 @@
 {
   "build/mollie-admin/mollie-admin-entry.css": "/build/mollie-admin/mollie-admin-entry.css",
-  "build/mollie-admin/mollie-admin-entry.js": "/build/mollie-admin/mollie-admin-entry.js"
+  "build/mollie-admin/mollie-admin-entry.js": "/build/mollie-admin/mollie-admin-entry.js",
+  "build/mollie-admin/mollie-shop-entry.js": "/build/mollie-admin/mollie-shop-entry.js",
+  "build/mollie-admin/mollie-shop-entry.css": "/build/mollie-admin/mollie-shop-entry.css"
 }

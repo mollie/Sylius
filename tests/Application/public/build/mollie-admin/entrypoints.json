@@ -1,5 +1,13 @@
 {
   "entrypoints": {
+    "mollie-shop-entry": {
+      "css": [
+        "/build/mollie-admin/mollie-shop-entry.css"
+      ],
+      "js": [
+        "/build/mollie-admin/mollie-shop-entry.js"
+      ]
+    },
     "mollie-admin-entry": {
       "css": [
         "/build/mollie-admin/mollie-admin-entry.css"

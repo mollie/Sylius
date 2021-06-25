@@ -1,19 +1,11 @@
 {
   "entrypoints": {
-    "shop-entry": {
+    "mollie-shop-entry": {
       "css": [
-        "/build/mollie-shop/shop-entry.css"
+        "/build/mollie-shop/mollie-shop-entry.css"
       ],
       "js": [
-        "/build/mollie-shop/shop-entry.js"
-      ]
-    },
-    "plugin-shop-entry": {
-      "css": [
-        "/build/mollie-shop/plugin-shop-entry.css"
-      ],
-      "js": [
-        "/build/mollie-shop/plugin-shop-entry.js"
+        "/build/mollie-shop/mollie-shop-entry.js"
       ]
     }
   }

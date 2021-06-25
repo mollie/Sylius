@@ -5,6 +5,8 @@
 !/public/media/image/
 /public/media/image/*
 !/public/media/image/.gitignore
+/public/bitbag/*
+/public/build/*
 
 /node_modules
 

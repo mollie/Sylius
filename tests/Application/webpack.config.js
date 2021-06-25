@@ -1,8 +1,9 @@
 const path = require('path');
 const Encore = require('@symfony/webpack-encore');
+// const pluginConfig = require('../../webpack.config');
 const syliusBundles = path.resolve(
 	__dirname,
-	'vendor/sylius/sylius/src/Sylius/Bundle/'
+	'../../vendor/sylius/sylius/src/Sylius/Bundle/'
 );
 const uiBundleScripts = path.resolve(
 	syliusBundles,
@@ -16,7 +17,8 @@ const uiBundleResources = path.resolve(
 // Mollie Shop config
 Encore.setOutputPath('public/build/mollie-shop/')
 	.setPublicPath('/build/mollie-shop')
-	.addEntry('mollie-shop-entry', '../../src/Resources/assets/shop/entry.js')
+	.addEntry('shop-entry', './assets/shop/entry.js')
+	.addEntry('plugin-shop-entry', '../../src/Resources/assets/shop/entry.js')
 	.disableSingleRuntimeChunk()
 	.cleanupOutputBeforeBuild()
 	.enableSourceMaps(!Encore.isProduction())
@@ -29,10 +31,13 @@ shopConfig.resolve.alias['sylius/ui-resources'] = uiBundleResources;
 shopConfig.resolve.alias['sylius/bundle'] = syliusBundles;
 shopConfig.name = 'shop';
 
+Encore.reset();
+
 // Mollie Admin config
 Encore.setOutputPath('public/build/mollie-admin/')
 	.setPublicPath('/build/mollie-admin')
-	.addEntry('mollie-admin-entry', '../../src/Resources/assets/admin/entry.js')
+	.addEntry('admin-entry', './assets/admin/entry.js')
+	.addEntry('plugin-admin-entry', '../../src/Resources/assets/admin/entry.js')
 	.disableSingleRuntimeChunk()
 	.cleanupOutputBeforeBuild()
 	.enableSourceMaps(!Encore.isProduction())
@@ -49,6 +54,6 @@ adminConfig.externals = Object.assign({}, adminConfig.externals, {
 });
 adminConfig.name = 'admin';
 
-module.exports = [shopConfig, adminConfig];
+Encore.reset();
 
-// .addEntry('mollie-admin-entry', './vendor/bitbag/mollie-plugin/src/Resources/assets/admin/entry.js')
+module.exports = [shopConfig, adminConfig];

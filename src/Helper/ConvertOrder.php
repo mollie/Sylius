@@ -118,7 +118,7 @@ final class ConvertOrder implements ConvertOrderInterface
                 'vatRate' => null === $this->getTaxRatesUnitItem($item) ? '0.00' : (string) ($this->getTaxRatesUnitItem($item) * 100),
                 'unitPrice' => [
                     'currency' => $this->order->getCurrencyCode(),
-                    'value' => $this->intToStringConverter->convertIntToString($item->getUnitPrice(), $divisor),
+                    'value' => $this->intToStringConverter->convertIntToString($this->getUnitPriceWithTax($item), $divisor),
                 ],
                 'totalAmount' => [
                     'currency' => $this->order->getCurrencyCode(),
@@ -129,6 +129,10 @@ final class ConvertOrder implements ConvertOrderInterface
                     'value' => null === $this->getTaxRatesUnitItem($item) ?
                         '0.00' :
                         $this->calculateTaxAmount->calculate($this->getTaxRatesUnitItem($item), $item->getTotal()),
+                ],
+                'discountAmount' => [
+                    'currency' => $this->order->getCurrencyCode(),
+                    'value' => $this->intToStringConverter->convertIntToString($this->getUnitDiscountAmount($item), $divisor),
                 ],
                 'metadata' => [
                     'item_id' => $item->getId(),
@@ -206,5 +210,15 @@ final class ConvertOrder implements ConvertOrderInterface
     private function getTaxRatesShipments(): ?float
     {
         return $this->taxShipmentResolver->resolve($this->order);
+    }
+
+    private function getUnitPriceWithTax(OrderItem $item): int
+    {
+        return (int) round($item->getUnitPrice() + ($item->getTaxTotal() / $item->getQuantity()));
+    }
+
+    private function getUnitDiscountAmount(OrderItem $item): int
+    {
+        return ($item->getUnitPrice() - $item->getFullDiscountedUnitPrice()) * $item->getQuantity();
     }
 }

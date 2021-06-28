@@ -16,6 +16,7 @@ bitbag_sylius_mollie_plugin:
     iban: 'IBAN'
     cancel_subscription: "Annuler l'abonnement"
     payment_mathod_conf_title: "Configuration des moyens de paiement"
+    you_can_sort_methods_via_drag_and_drop: 'Vous pouvez trier les méthodes de paiement via glisser-déposer'
     load_methods_button: "Charger les moyens de paiement"
     percentage_surcharge: 'Pourcentage'
     fix_amount_surcharge: "Montant fixe"
@@ -102,7 +103,29 @@ bitbag_sylius_mollie_plugin:
     it_starts_with: "elle commence par test ou live."
     emails:
       payment_link: "Voici votre lien de paiement avec numéro de commande"
+    buy_with_apple_pay: "Acheter avec'"
+    latest_version_info: "Vous utilisez actuellement la version {old_version} du plugin. La version la plus récente est {latest_version} Nous vous conseillons de'"
+    enjoy_latest_version: 'profiter des fonctionnalités les plus récentes'
+    update: 'mettre à jour votre version'
+    test_api_keys: 'Clés test API'
+    inser_you_key_first: "Insérer d'abord votre clé"
+    api_key_start_with_api_key_test: 'La clé Test API doit commencer par test_'
+    api_key_start_with_api_key_live: 'La clé Test API doit commencer par live_'
+    failed_with_test_api_key: 'Échec du clé test API'
+    available_methods: 'Méthodes disponibles'
+    success: 'Succès'
+    fail: 'Échec'
+    show_hide: 'Afficher/Masquer'
+    enabled_buy_now_button: 'Activer le bouton Acheter maintenant'
+    developed_by: 'Développé par'
+    you_can_fin_info_about: "Vous trouverez plus d'informations nous concernant sur"
+    sylius_bundle: 'Visiter le lot Sylius'
+    contact_bitbag: 'Contacter Bitbag'
+    contact_mollie: 'Contacter Mollie'
+    more_info_about_mollie: "Plus d'informations sur Mollie"
   form:
+    channel_should_be_unique: "La méthode de paiement Mollie est déjà activée pour le canal {channels}. Mollie ne peut être configuré qu'une seule fois par canal."
+    enabled_buy_now_button_help: 'Le bouton est affiché sur la page de paiement'
     payment_methods:
       payment_description: "Description"
       payment_description_help: "La description à utiliser pour les transactions. Ces variables sont disponibles:\n
@@ -121,3 +144,54 @@ bitbag_sylius_mollie_plugin:
     expiration_date_time: "Date et heure d'expiration"
   subscription:
     cancel: "L'abonnement a été correctement annulé."
+  onboardingMollie:
+    btnBack: 'Retour'
+    btnNext: 'Suivant'
+    step_1:
+      title: 'Laissez-moi vous aider'
+      text: "Nous vous remercions d'avoir installé Mollie pour services de paiement. Ce guide vous assistera lors de la configuration."
+      btnNext: "Lancer l'assistant de mise en route"
+      btnBack: "Ignorer, le sais comment ça fonctionne"
+    step_2:
+      title: 'Se connecter au compte Mollie'
+      text: "Pour synchroniser le plugin Mollie avec votre boutique en ligne, vous aurez besoin de la clé API de Mollie et d'un identifiant de profil."
+      btnLogin: 'Me connecter à mon compte'
+      btnRegister: 'Créer un compte Mollie'
+    step_3:
+      title: "Vous êtes connecté(e) à Mollie, et nous allons maintenant configurer l'environnement et les coordonnées Molli"
+      text: "Le test sera l'environnement par défaut du plugin. Vous ne devez réaliser la configuration qu'une fois pour que les environnements TEST + LIVE soient disponibles. Essayez de basculer facilement entre les deux."
+    step_4:
+      text: 'Complétez tous les détails et cliquez sur Clé TEST API, pour obtenir le résultat réussite ou échec pour les environnements LIVE et TEST'
+    step_5:
+      text: "Après, nous allons configurer les paramètres de la clé pour l'écran de la page de paiement de votre boutique en ligne."
+    step_6:
+      text: "En activant les composants, vous pouvez ajouter les champs nécessaires pour les données du titulaire de la carte de crédit à votre page de paiement. Si vous choisissez NON, les utilisateurs seront redigirés vers la page de paiement de Mollie. Pour en savoir plus des composants Mollie [link] https://www.mollie.com/en/news/post/better-checkout-flows-with-mollie-components'"
+    step_7:
+      text: "L'activation des paiement sur clic unique mémorise les préférences de paiement de vos clients et permet de réaliser les paiements ultérieurs plus rapidement. Votre client n'a pas besoin d'exécuter des actions supplémentaires afin de profiter d'un paieme Pour en savoir plus sur les paiements à clic unique. [link] https://help.mollie.com/hc/en-us/articles/115000671249-What-are-single-click-payments-and-how-does-it-work"
+    step_8:
+      text: "À présent, nous pouvons personnaliser les fonctionnalités des méthodes de paiement individuelles. Sélectionnez d'abord le bouton de chargement des méthodes. Seules les méthodes activées dans votre compte Mollie seront affichées ici. Après, vous contrôlez à l'aide du sélecteur Activer/Désactiver lesquelles sont affichées sur la page de paiement de votre boutique en ligne."
+    step_9:
+      text: "Pour chaque méthode, vous pouvez saisir ici un titre personnalisé qui sera affiché sur la page de paiement de votre boutique en ligne."
+    step_10:
+      text: "Essayez de charger une image personnalisée comme symbole de la méthode de paiement. Elle sera affichée à la page de paiement de la boutique en ligne.'"
+    step_11:
+      text: "Ici, vous pouvez créer les filtres pour les méthodes de paiement spécifiques de votre pays. Par ex., si vous voulez qu'iDEAl soit affiché uniquement aux Pays-Bas, vous pouvez choisir Sélectionner Pays, puis sélectionner les Pays-Bas."
+    step_12:
+      text: "Vous pouvez choisir l'API de Mollie pour chaque méthode afin de créer les paiements. Cliquez ici pour en apprendre plus sur les différences entre les API Orders et Payments. https://docs.mollie.com/orders/why-use-orders"
+    step_13:
+      1:
+        1:
+          title: 'Payments API'
+          text: "Remarque: Les Payments API ne peuvent pas être utilisés pour des méthodes comme Klarna'"
+        2:
+          text: "Pour utiliser Payments API, vous aurez éventuellement besoin de détails supplémentaires afin d'apparier les paiements et les commandes des clients - vous pouvez saisir ces valeurs ici mais devez vous assurer d'utiliser les balises correctes comme fournies"
+      2:
+        title: 'Orders API'
+        text: "Il s'agit de l'API proposé par Mollie pour utilisation dans les boutiques en ligne, car il permet de créer des orders. Une commande contient les informations personnelles d'un client (comme son adresse) et les produits commandés par le client. Quand u"
+    step_15:
+      text: "N'oubliez pas d'enregistrer votre configuration."
+    step_16:
+      title: "Maintenant, tout est prêt!"
+      text: "Vous pouvez essayer de passer une commande de client sur votre site Internet."
+      btnNext: "Commencer à utiliser Mollie"
+

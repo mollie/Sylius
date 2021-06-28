@@ -117,6 +117,12 @@ bitbag_sylius_mollie_plugin:
         fail: 'Failed'
         show_hide: 'Show\Hide'
         enabled_buy_now_button: 'Enable Buy Now Button'
+        developed_by: 'Developed by'
+        you_can_fin_info_about: 'You can find more information about us on'
+        sylius_bundle: 'Visit the Sylius bundle'
+        contact_bitbag: 'Contact Bitbag'
+        contact_mollie: 'Contact Mollie'
+        more_info_about_mollie: 'More info on Mollie'
     form:
         channel_should_be_unique: 'Mollie payment method is already enabled for {channels} channel. Mollie can only be configured once per channel.'
         enabled_buy_now_button_help: 'The button is shown on the checkout page'
@@ -140,64 +146,51 @@ bitbag_sylius_mollie_plugin:
         cancel: 'Subscription has been successfully canceled.'
     onboardingMollie:
         btnBack: 'Go back'
-        navigation:
-            intro: Intro
-            api_settings: API settings
-            store_settings: Store settings
-            payment_settings: Payment settings
+        btnNext: 'Next'
         step_1:
-            title: 'Onboarding Assistant Designs'
-            btnNext: 'Start guide'
+            title: 'Let me help you'
+            text: 'Thank you for installing Mollie for payment services. This guide will take your through the configuration set-up.'
+            btnNext: 'Start onboarding assistant'
+            btnBack: 'Skip, I know how it works'
         step_2:
-            text: 'Thank you for installing Mollie for payment services. This guide will take you through the configuration setup. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam suscipit nibh quis urna congue, et interdum nulla rutrum. Cras at justo ornare.'
-            btnBack: 'Skip this, I know how it works'
-            btnNext: 'Start onboarding assistant <i class="icon angle right"></i>'
-        step_3:
-            text: 'TEST will be the default in the plugin. You only need to do the configuration once to have TEST + LIVE environments available. Try easily togging between the two.'
-            btnBack: 'Go back'
-            btnNext: 'Next <i class="icon angle right"></i>'
-        step_4:
-            title: 'Connect to your account'
+            title: 'Connect to your Mollie account'
             text: "To sync the Mollie plugin to your webshop you'll need Mollie API keys and Profile ID."
-            btnBack: 'Go back'
-            btnNext: 'Create a Mollie account <i class="icon angle right"></i>'
+            btnLogin: 'Log in to my account'
+            btnRegister: 'Create a Mollie account'
+        step_3:
+            title: "Now that you're connected to Mollie we will configure the environment and credentials."
+            text: "Test will be the default environment in the plugin. You only need to do the configuration once to have TEST + LIVE environments available. Try easily togging between the two."
+        step_4:
+            text: 'Fill in your correct details and click "TEST API Key" this will return a successful or failed result for both the LIVE and TEST environments'
         step_5:
-            text: 'Fill in your correct details and click "TEST API Key" this will return a successful or failed result for both the LIVE and TEST environments. Learn about the difference between: Orders API or the Payments API'
-            btnBack: 'Go back'
-            btnNext: 'Next <i class="icon angle right"></i>'
+            text: "Next, we'll set-up key settings for the checkout screen display on your webshop."
         step_6:
-            text: 'Webshop checkout Configurations, Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce semper velit et urna gravida efficitur.'
-            btnBack: 'Go back'
-            btnNext: 'Next'
+            text: 'Enabling components allows you to add the fields needed for credit card holder data to your own checkout. If you select NO users will be redirected to the Mollie checkout page. Learn more about Mollie components here. [link] https://www.mollie.com/en/news/post/better-checkout-flows-with-mollie-components'
         step_7:
-            text: 'Enabling components, allows you to add the fields needed for credit card holder data to your own checkout. If you select NO, users will be redirected to the Mollie checkout page'
-            btnBack: 'Go back'
-            btnNext: 'Next <i class="icon angle right"></i>'
+            text: "Enabling single click payments remembers your consumer's payment preferences in order to expedite follow-up payments. Your consumer does not have to perform any additional actions to enjoy quick and easy payments. Learn more about single click payments here. [link] https://help.mollie.com/hc/en-us/articles/115000671249-What-are-single-click-payments-and-how-does-it-work"
         step_8:
-            text: "We'll go through setup with the Payments API first and then highlight differences if you choose to use the Orders API"
-            btnBack: 'Go back'
-            btnNext: 'Next'
+            text: "Now time to customize features for individual payment methods. First select the load methods button. Only the methods that are enabled in your Mollie account will display here. Then you use the enable/disable selector to control which will show on your webshop checkout.'"
         step_9:
-            text: 'You can enter a custom title here - it will be displayed on your checkout page'
-            btnBack: 'Go back'
-            btnNext: 'Next <i class="icon angle right"></i>'
+            text: 'For each method you can enter a custom title here - it will be displayed on your webshop checkout page.'
         step_10:
-            text: "Choose Payments API (Payments API can not be used for methods such as Klarna - we'll set-up that up later) Learn about the difference  between Orders APIor the Payments API"
-            btnBack: 'Go back'
-            btnNext: 'Next <i class="icon angle right"></i>'
+            text: "Try uploading a custom image for the payment method icon. This will be shown in the wenshop checkout page."
         step_11:
-            text: 'When using Payments API you may want additional details to help you match payments with customer orders -- you can enter those values here but make sure to use the correct tags provide in the text below'
-            btnBack: 'Go back'
-            btnNext: 'Next'
+            text: 'Here you can create filters for country specific payment methods - for example if you want iDEAL only to show for Netherlands customers you choose "Select Countries" and select Netherlands.'
         step_12:
-            text: 'Restrict/ allow payment per individual countries.'
-            btnBack: 'Go back'
-            btnNext: 'Next <i class="icon angle right"></i>'
+            text: 'Per method you can select which Mollie API to use to create payments. Click here to read about the differences between Orders and Payments API. https://docs.mollie.com/orders/why-use-orders'
         step_13:
-            text: 'In case you have fees that you are passing on to the consumer, you can add them here'
-            btnBack: 'Go back'
-            btnNext: 'Next <i class="icon angle right"></i>'
-        step_14:
-            title: "<i class='icon check circle'></i> You're all set!"
-            text: "You're all done, you can now attempt a consumer order or your website"
-            btnNext: 'Start using Mollie plugin'
+            1:
+                1:
+                    title: 'Payments API'
+                    text: 'Note: Payments API can not be used for methods such as Klarna'
+                2:
+                    text: 'When using Payments API you may want additional details to help you match payments with customer orders -- you can enter those values here but make sure to use the correct tags provided in the text below'
+            2:
+                title: 'Orders API'
+                text: 'This is Mollie suggested API to use for webshops because it allows you to create “orders”. An order contains the personal information of a customer (e.g. address) and products that the customer ordered. When an order is made'
+        step_15:
+            text: 'Remeber to save your configurations.'
+        step_16:
+            title: "You're all set!"
+            text: "You can now attempt a customer order on your website."
+            btnNext: 'Start using Mollie'

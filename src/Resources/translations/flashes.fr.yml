@@ -19,3 +19,5 @@ bitbag_sylius_mollie_plugin:
     inactive_card: "Carte inactive"
     possible_fraud: "Risque de fraude"
     authentication_failed: "Échec de l'authentification"
+    empty_payment_method_checkout: 'Veuillez choisir une méthode de paiement Mollie'
+

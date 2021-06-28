@@ -16,6 +16,7 @@ bitbag_sylius_mollie_plugin:
     iban: 'IBAN'
     cancel_subscription: 'Abonnement opzeggen'
     payment_mathod_conf_title: 'Configuratie Betaalmethode'
+    you_can_sort_methods_via_drag_and_drop: 'U kunt betalingsmethoden sorteren via drag-and-drop'
     load_methods_button: 'Betaalmethodes inladen'
     percentage_surcharge: 'Percentage'
     fix_amount_surcharge: 'Vast bedrag'
@@ -102,7 +103,29 @@ bitbag_sylius_mollie_plugin:
     it_starts_with: 'het begint met een test of live.'
     emails:
       payment_link: 'Dit is Je betalingslink met bestelnummer'
+    buy_with_apple_pay: "Koop met"
+    latest_version_info: "Momenteel gebruikt u versie {old_version} van deze plug-in. De meest recente versie is {latest_version} Wij adviseren u om"
+    enjoy_latest_version: 'om van de meest recente functies te kunnen genieten.'
+    update: 'update'
+    test_api_keys: 'Test API-sleutels'
+    inser_you_key_first: "Voer eerst uw sleutel in"
+    api_key_start_with_api_key_test: 'API-sleutel moet beginnen met test_'
+    api_key_start_with_api_key_live: 'API-sleutel moet beginnen met live_'
+    failed_with_test_api_key: 'Mislukt met test API-sleutel'
+    available_methods: 'Beschikbare methoden'
+    success: 'Gelukt'
+    fail: 'Mislukt'
+    show_hide: 'Tonen\verbergen'
+    enabled_buy_now_button: 'Schakel "Koop nu" knop in'
+    developed_by: 'Ontwikkeld door'
+    you_can_fin_info_about: 'Meer informatie over ons vindt u op'
+    sylius_bundle: 'Bezoek de Sylius-bundel'
+    contact_bitbag: 'Neem contact op met Bitbag'
+    contact_mollie: 'Neem contact op met Mollie'
+    more_info_about_mollie: 'Meer informatie vindt u onder Mollie'
   form:
+    channel_should_be_unique: 'De Mollie-betalingsmethode is al ingeschakeld voor het {channels} kanaal. Mollie kan slecht een keer per kanaal worden geconfigureerd.'
+    enabled_buy_now_button_help: 'De knop wordt getoond op de betalingspagina'
     payment_methods:
       payment_description: 'Beschrijving'
       payment_description_help: "De beschrijving die voor de transacties moet worden gebruikt. Deze variabelen zijn beschikbaar:\n
@@ -121,3 +144,53 @@ bitbag_sylius_mollie_plugin:
     expiration_date_time: 'Vervaldatum tijd'
   subscription:
     cancel: 'Abonnement is succesvol opgezegd.'
+  onboardingMollie:
+    btnBack: 'Ga terug'
+    btnNext: 'Volgende'
+    step_1:
+      title: 'Laat mij u helpen'
+      text: 'Bedankt voor het installeren van Mollie voor uw betalingsdiensten. Deze handleiding leidt u door de configuratie-instellingen'
+      btnNext: 'Start introductie'
+      btnBack: 'Sla over, ik weet hoe het werkt'
+    step_2:
+      title: 'Verbind met uw Mollie account'
+      text: "Om de Mollie plug-in te synchroniseren met uw webshop heeft u Mollie API-sleutels en profiel-ID's nodig."
+      btnLogin: 'Log in op mijn account'
+      btnRegister: 'Maak een Mollie account aan'
+    step_3:
+      title: 'Nu u met Mollie bent verbonden, configureren wij de omgeving en de inloggegevens.'
+      text: 'Test is de standaardomgeving in de plug-in.U hoeft slecht één keer te configureren om over TEST + LIVE-omgevingen te kunnen beschikken. Probeer eenvoudig van de een naar de ander over te schakelen.'
+    step_4:
+      text: 'Vul uw juiste details in en klik op "Test API-sleutel", dit levert een geslaagd of mislukt resultaat op voor zowel de LIVE- als de Test-omgevingen'
+    step_5:
+      text: 'Vervolgens richten we de sleutelinstellingen voor de weergave van het betalingsscherm van uw webshop in.'
+    step_6:
+      text: 'Het inschakelen van componenten staat u toe om velden voor creditcardhoudergegevens toe te voegen aan uw eigen betalingspagina. Wanneer u NEE selecteert, worden gebruikers doorverwezen naar de Mollie-betalingspagina. Meer informatie over Mollie-componenten vindt u hier. [link] https://www.mollie.com/en/news/post/better-checkout-flows-with-mollie-components'
+    step_7:
+      text: 'Het inschakelen van "Betalen met één klik" onthoudt de betalingsvoorkeuren van uw klant om volgende betalingen te versnellen. Uw klant hoeft geen verdere acties uit te voeren om te kunnen genieten van snelle en gemakkelijke betalingen. Meer informatie over betalen met één klik vindt u hier. [link] https://help.mollie.com/hc/en-us/articles/115000671249-What-are-single-click-payments-and-how-does-it-work'
+    step_8:
+      text: 'Het is nu tijd om functies aan te passen voor individuele betalingsmethoden.De eerste stap is het selecteren van de knop "Laad betalingsmethoden". Alleen betalingsmethoden die in uw Mollie-account zijn geactiveerd, worden hier getoond. Gebruik vervolgens de activeer/deactiveer keuzemogelijkheid om in te stellen wat er op de betalingspagina van uw webshop wordt getoond.'
+    step_9:
+      text: 'Voor elke betalingsmethode kunt u zelf een titel invoeren. Deze wordt getoond op de betalingspagina van uw webshop.'
+    step_10:
+      text: 'Probeer een eigen afbeelding te uploaden voor de betalingsicoon. Deze wordt getoond op de betalingspagina van de webshop.'
+    step_11:
+      text: 'Hier kunt u filters creëren voor landspecifieke betalingsmethoden - wanneer u bijvoorbeeld IDEAL alleen aan Nederlandse klanten wilt tonen, kiest u "Selecteer landen" en selecteert u "Nederland".'
+    step_12:
+      text: 'Per methode kunt u selecteren welke Mollie-API u wilt gebruiken voor het creëren van betalingen. Klik hier voor informatie over de verschillen tussen de Orders en de Payments API.https://docs.mollie.com/orders/why-use-orders'
+    step_13:
+      1:
+        1:
+          title: 'Payments API'
+          text: 'Opmerking: De Payments API kan niet worden gebruikt voor betaalmethoden zoals Klarna'
+        2:
+          text: 'Wanneer u de Payments API gebruikt kan het zijn dat u aanvullende informatie wilt om de betalingen te koppelen aan de bestellingen van de klant -- u kunt deze waarden hier invoeren, maar zorg ervoor dat u de juiste tags uit de onderstaande tekst gebruikt'
+      2:
+        title: 'Orders API'
+        text: 'Dit is de door Mollie aangeraden API voor het gebruik voor webshops, omdat hij de mogelijkheid biedt om "orders" te creëren. Een bestelling bevat de persoonlijke gegevens van een klant (bijv. het adres) en de producten die de klant heeft besteld. Wannee'
+    step_15:
+      text: 'Vergeet niet om uw configuraties op te slaan.'
+    step_16:
+      title: 'U bent klaar!'
+      text: 'Nu kunt u proberen een klantbestelling te plaatsen op uw website.'
+      btnNext: 'Ga aan de slag met Mollie'

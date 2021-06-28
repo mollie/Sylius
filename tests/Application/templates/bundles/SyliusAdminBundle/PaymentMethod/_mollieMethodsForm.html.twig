@@ -76,12 +76,15 @@
                             </div>
                         {% endif %}
                     </div>
-                    <div class="field">
-                        {{ form_row(methodForm.country_restriction, { 'attr': { 'class': 'js-onboardingWizard-countryRestriction' } }) }}
-                    </div>
-                    <div class="field">
-                        <div id="country-allowed_{{ loop.index0 }}">
-                            {{ form_row(methodForm.countryLevel_allowed, { 'attr': {'class': 'fluid search'} }) }}
+
+                    <div class="js-onboardingWizard-countryRestrictions">
+                        <div class="field">
+                            {{ form_row(methodForm.country_restriction, { 'attr': { 'class': 'js-onboardingWizard-countryRestriction' } }) }}
+                        </div>
+                        <div class="field">
+                            <div id="country-allowed_{{ loop.index0 }}">
+                                {{ form_row(methodForm.countryLevel_allowed, { 'attr': {'class': 'fluid search'} }) }}
+                            </div>
                         </div>
                     </div>
                     <div class="field">

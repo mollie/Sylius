@@ -265,7 +265,7 @@ export const steps = [
 		highlightClass: 'payment-settings',
 		btnNextClass: 'shepherd-button--arrow-down',
 		attachTo: {
-			element: '.js-onboardingWizard-countryRestriction',
+			element: '.js-onboardingWizard-countryRestrictions',
 			on: 'top-start',
 		},
 	},

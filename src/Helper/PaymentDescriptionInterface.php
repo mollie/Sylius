@@ -17,7 +17,7 @@ use Sylius\Component\Core\Model\PaymentInterface;
 
 interface PaymentDescriptionInterface
 {
-    public const PAYPAL_DESCRIPTION = 'Order %s';
+    public const PAYPAL_DESCRIPTION = 'Order';
 
     public function getPaymentDescription(
         PaymentInterface $payment,

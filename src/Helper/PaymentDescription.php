@@ -58,6 +58,6 @@ final class PaymentDescription implements PaymentDescriptionInterface
 
     private function createPayPalDescription(string $orderNumber): string
     {
-        return sprintf(self::PAYPAL_DESCRIPTION, $orderNumber);
+        return sprintf('%s %s', self::PAYPAL_DESCRIPTION, $orderNumber);
     }
 }

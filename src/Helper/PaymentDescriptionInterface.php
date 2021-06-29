@@ -17,6 +17,8 @@ use Sylius\Component\Core\Model\PaymentInterface;
 
 interface PaymentDescriptionInterface
 {
+    public const PAYPAL_DESCRIPTION = 'Order %s';
+
     public function getPaymentDescription(
         PaymentInterface $payment,
         MollieGatewayConfigInterface $methodConfig,

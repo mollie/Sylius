@@ -13,6 +13,7 @@ namespace BitBag\SyliusMolliePlugin\Helper;
 
 use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
 use BitBag\SyliusMolliePlugin\Payments\PaymentTerms\Options;
+use Mollie\Api\Types\PaymentMethod;
 use Sylius\Bundle\PayumBundle\Provider\PaymentDescriptionProviderInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
@@ -35,6 +36,10 @@ final class PaymentDescription implements PaymentDescriptionInterface
         $paymentMethodType = array_search($methodConfig->getPaymentType(), Options::getAvailablePaymentType());
         $description = $methodConfig->getPaymentDescription();
 
+        if ($methodConfig->getMethodId() === PaymentMethod::PAYPAL) {
+            return $this->createPayPalDescription($order->getNumber());
+        }
+
         if ($paymentMethodType === Options::PAYMENT_API && !empty($description)) {
             $replacements = [
                 '{ordernumber}' => $order->getNumber(),
@@ -44,10 +49,14 @@ final class PaymentDescription implements PaymentDescriptionInterface
             return str_replace(
                 array_keys($replacements),
                 array_values($replacements),
-                $methodConfig->getPaymentDescription()
+                $description
             );
         }
 
         return $this->paymentDescriptionProvider->getPaymentDescription($payment);
+    }
+
+    private function createPayPalDescription(string $orderNumber) {
+        return 'Order ' . $orderNumber;
     }
 }

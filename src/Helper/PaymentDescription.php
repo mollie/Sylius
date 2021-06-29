@@ -49,7 +49,7 @@ final class PaymentDescription implements PaymentDescriptionInterface
             return str_replace(
                 array_keys($replacements),
                 array_values($replacements),
-                $description
+                $methodConfig->getPaymentDescription()
             );
         }
 

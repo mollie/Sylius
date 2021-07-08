@@ -13,6 +13,7 @@ namespace BitBag\SyliusMolliePlugin\Helper;
 
 use BitBag\SyliusMolliePlugin\Calculator\CalculateTaxAmountInterface;
 use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
+use BitBag\SyliusMolliePlugin\Order\AdjustmentInterface;
 use BitBag\SyliusMolliePlugin\Payments\PaymentTerms\Options;
 use BitBag\SyliusMolliePlugin\Resolver\MealVoucherResolverInterface;
 use BitBag\SyliusMolliePlugin\Resolver\TaxShipmentResolverInterface;
@@ -22,6 +23,7 @@ use Sylius\Component\Core\Model\OrderItem;
 use Sylius\Component\Core\Model\ShipmentInterface;
 use Sylius\Component\Customer\Model\CustomerInterface;
 use Sylius\Component\Order\Model\Adjustment;
+use Sylius\Component\Taxation\Resolver\TaxRateResolverInterface;
 
 final class ConvertOrder implements ConvertOrderInterface
 {
@@ -43,18 +45,23 @@ final class ConvertOrder implements ConvertOrderInterface
     /** @var MealVoucherResolverInterface */
     private $mealVoucherResolver;
 
+    /** @var TaxRateResolverInterface */
+    private $taxRateResolver;
+
     public function __construct(
         IntToStringConverter $intToStringConverter,
         CalculateTaxAmountInterface $calculateTaxAmount,
         TaxUnitItemResolverInterface $taxUnitItemResolver,
         TaxShipmentResolverInterface $taxShipmentResolver,
-        MealVoucherResolverInterface $mealVoucherResolver
+        MealVoucherResolverInterface $mealVoucherResolver,
+        TaxRateResolverInterface $taxRateResolver
     ) {
         $this->intToStringConverter = $intToStringConverter;
         $this->calculateTaxAmount = $calculateTaxAmount;
         $this->taxUnitItemResolver = $taxUnitItemResolver;
         $this->taxShipmentResolver = $taxShipmentResolver;
         $this->mealVoucherResolver = $mealVoucherResolver;
+        $this->taxRateResolver = $taxRateResolver;
     }
 
     public function convert(OrderInterface $order, array $details, int $divisor, MollieGatewayConfigInterface $method): array
@@ -132,7 +139,7 @@ final class ConvertOrder implements ConvertOrderInterface
                 ],
                 'discountAmount' => [
                     'currency' => $this->order->getCurrencyCode(),
-                    'value' => $this->intToStringConverter->convertIntToString($this->getUnitDiscountAmount($item), $divisor),
+                    'value' => $this->intToStringConverter->convertIntToString($this->getItemDiscountAmount($item), $divisor),
                 ],
                 'metadata' => [
                     'item_id' => $item->getId(),
@@ -214,11 +221,28 @@ final class ConvertOrder implements ConvertOrderInterface
 
     private function getUnitPriceWithTax(OrderItem $item): int
     {
-        return (int) round($item->getUnitPrice() + ($item->getTaxTotal() / $item->getQuantity()));
+        $taxRate = $this->taxRateResolver->resolve($item->getVariant());
+
+        if ($taxRate === null) {
+            return $item->getUnitPrice();
+        }
+
+        if ($taxRate->isIncludedInPrice()) {
+            return $item->getUnitPrice();
+        }
+
+        return $item->getAdjustmentsTotalRecursively(AdjustmentInterface::TAX_ADJUSTMENT);
     }
 
-    private function getUnitDiscountAmount(OrderItem $item): int
+    private function getItemDiscountAmount(OrderItem $item): int
     {
-        return ($item->getUnitPrice() - $item->getFullDiscountedUnitPrice()) * $item->getQuantity();
+        $adjustments = [AdjustmentInterface::ORDER_UNIT_PROMOTION_ADJUSTMENT, AdjustmentInterface::ORDER_ITEM_PROMOTION_ADJUSTMENT, AdjustmentInterface::ORDER_PROMOTION_ADJUSTMENT];
+        $totalDiscount = 0;
+
+        foreach ($adjustments as $adjustment) {
+            $totalDiscount += $item->getAdjustmentsTotalRecursively($adjustment);
+        }
+
+        return $totalDiscount;
     }
 }

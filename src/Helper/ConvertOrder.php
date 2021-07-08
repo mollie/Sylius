@@ -238,8 +238,8 @@ final class ConvertOrder implements ConvertOrderInterface
     {
         $totalDiscount = 0;
 
-        foreach (self::ITEM_DISCOUNT_ADJUSTMENTS as $adjustment) {
-            $totalDiscount += $item->getAdjustmentsTotalRecursively($adjustment);
+        foreach (self::ITEM_DISCOUNT_ADJUSTMENTS_TYPES as $adjustmentType) {
+            $totalDiscount += $item->getAdjustmentsTotalRecursively($adjustmentType);
         }
 
         return $totalDiscount;

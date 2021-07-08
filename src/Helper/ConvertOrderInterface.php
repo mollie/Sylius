@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Helper;
 
 use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
+use BitBag\SyliusMolliePlugin\Order\AdjustmentInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 
 interface ConvertOrderInterface
@@ -25,6 +26,8 @@ interface ConvertOrderInterface
     public const SHIPPING_FEE = 'SHIPPING_FEE';
 
     public const PHYSICAL_TYPE = 'physical';
+
+    public const ITEM_DISCOUNT_ADJUSTMENTS = [AdjustmentInterface::ORDER_UNIT_PROMOTION_ADJUSTMENT, AdjustmentInterface::ORDER_ITEM_PROMOTION_ADJUSTMENT, AdjustmentInterface::ORDER_PROMOTION_ADJUSTMENT];
 
     public function convert(OrderInterface $order, array $details, int $divisor, MollieGatewayConfigInterface $method): array;
 }

@@ -231,15 +231,14 @@ final class ConvertOrder implements ConvertOrderInterface
             return $item->getUnitPrice();
         }
 
-        return $item->getAdjustmentsTotalRecursively(AdjustmentInterface::TAX_ADJUSTMENT);
+        return (int) round($item->getUnitPrice() + ($item->getTaxTotal() / $item->getQuantity()));
     }
 
     private function getItemDiscountAmount(OrderItem $item): int
     {
-        $adjustments = [AdjustmentInterface::ORDER_UNIT_PROMOTION_ADJUSTMENT, AdjustmentInterface::ORDER_ITEM_PROMOTION_ADJUSTMENT, AdjustmentInterface::ORDER_PROMOTION_ADJUSTMENT];
         $totalDiscount = 0;
 
-        foreach ($adjustments as $adjustment) {
+        foreach (self::ITEM_DISCOUNT_ADJUSTMENTS as $adjustment) {
             $totalDiscount += $item->getAdjustmentsTotalRecursively($adjustment);
         }
 

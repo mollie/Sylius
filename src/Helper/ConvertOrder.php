@@ -18,6 +18,7 @@ use BitBag\SyliusMolliePlugin\Payments\PaymentTerms\Options;
 use BitBag\SyliusMolliePlugin\Resolver\MealVoucherResolverInterface;
 use BitBag\SyliusMolliePlugin\Resolver\TaxShipmentResolverInterface;
 use BitBag\SyliusMolliePlugin\Resolver\TaxUnitItemResolverInterface;
+use Sylius\Component\Addressing\Matcher\ZoneMatcherInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\OrderItem;
 use Sylius\Component\Core\Model\ShipmentInterface;
@@ -48,13 +49,17 @@ final class ConvertOrder implements ConvertOrderInterface
     /** @var TaxRateResolverInterface */
     private $taxRateResolver;
 
+    /** @var ZoneMatcherInterface  */
+    private $zoneMatcher;
+
     public function __construct(
         IntToStringConverter $intToStringConverter,
         CalculateTaxAmountInterface $calculateTaxAmount,
         TaxUnitItemResolverInterface $taxUnitItemResolver,
         TaxShipmentResolverInterface $taxShipmentResolver,
         MealVoucherResolverInterface $mealVoucherResolver,
-        TaxRateResolverInterface $taxRateResolver
+        TaxRateResolverInterface $taxRateResolver,
+        ZoneMatcherInterface $zoneMatcher
     ) {
         $this->intToStringConverter = $intToStringConverter;
         $this->calculateTaxAmount = $calculateTaxAmount;
@@ -62,6 +67,7 @@ final class ConvertOrder implements ConvertOrderInterface
         $this->taxShipmentResolver = $taxShipmentResolver;
         $this->mealVoucherResolver = $mealVoucherResolver;
         $this->taxRateResolver = $taxRateResolver;
+        $this->zoneMatcher = $zoneMatcher;
     }
 
     public function convert(OrderInterface $order, array $details, int $divisor, MollieGatewayConfigInterface $method): array
@@ -221,7 +227,8 @@ final class ConvertOrder implements ConvertOrderInterface
 
     private function getUnitPriceWithTax(OrderItem $item): int
     {
-        $taxRate = $this->taxRateResolver->resolve($item->getVariant());
+        $zone = $this->zoneMatcher->match($this->order->getBillingAddress());
+        $taxRate = $this->taxRateResolver->resolve($item->getVariant(), ['zone' => $zone]);
 
         if ($taxRate === null) {
             return $item->getUnitPrice();

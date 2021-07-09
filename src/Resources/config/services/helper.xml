@@ -13,6 +13,7 @@
             <argument type="service" id="bitbag_sylius_mollie_plugin.resolver.tax_shipment"/>
             <argument type="service" id="bitbag_sylius_mollie_plugin.resolver.meal_voucher_resolver"/>
             <argument type="service" id="sylius.tax_rate_resolver"/>
+            <argument type="service" id="sylius.zone_matcher"/>
         </service>
         <service id="bitbag_sylius_mollie_plugin.helper.convert_price_to_amount" class="BitBag\SyliusMolliePlugin\Helper\ConvertPriceToAmount">
             <argument type="service" id="sylius.context.currency"/>

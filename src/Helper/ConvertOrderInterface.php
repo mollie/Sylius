@@ -33,5 +33,7 @@ interface ConvertOrderInterface
         AdjustmentInterface::ORDER_PROMOTION_ADJUSTMENT
     ];
 
+    public const TAX_RATE_CRITERIA_ZONE = 'zone';
+
     public function convert(OrderInterface $order, array $details, int $divisor, MollieGatewayConfigInterface $method): array;
 }

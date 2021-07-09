@@ -228,7 +228,7 @@ final class ConvertOrder implements ConvertOrderInterface
     private function getUnitPriceWithTax(OrderItem $item): int
     {
         $zone = $this->zoneMatcher->match($this->order->getBillingAddress());
-        $taxRate = $this->taxRateResolver->resolve($item->getVariant(), ['zone' => $zone]);
+        $taxRate = $this->taxRateResolver->resolve($item->getVariant(), [self::TAX_RATE_CRITERIA_ZONE => $zone]);
 
         if ($taxRate === null) {
             return $item->getUnitPrice();

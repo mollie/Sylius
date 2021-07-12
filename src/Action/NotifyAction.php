@@ -65,6 +65,8 @@ final class NotifyAction extends BaseApiAwareAction implements ActionInterface, 
         $details = ArrayObject::ensureArrayObject($request->getModel());
         $this->gateway->execute($this->getHttpRequest);
 
+        $details['created_in_mollie'] = true;
+
         if (true === isset($details['payment_mollie_id'])) {
             try {
                 $payment = $this->mollieApiClient->payments->get($this->getHttpRequest->request['id']);

@@ -49,6 +49,12 @@ final class RefundAction extends BaseApiAwareAction implements ActionInterface, 
         RequestNotSupportedException::assertSupports($this, $request);
 
         $details = ArrayObject::ensureArrayObject($request->getModel());
+
+        if ($details['created_in_mollie']) {
+            $this->loggerAction->addLog('Received refund created in Mollie dashboard');
+            return;
+        }
+
         /** @var PaymentInterface $payment */
         $payment = $request->getFirstModel();
 

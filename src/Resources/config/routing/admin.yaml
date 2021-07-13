@@ -14,3 +14,5 @@ bitbag_mollie_email_template:
   resource: "admin/mollie_email_template.yaml"
 bitbag_mollie_product_type:
   resource: "admin/product_type.yaml"
+bitbat_mollie_onboarding_wizard_status:
+  resource: "admin/onboarding_wizard_status.yaml"

@@ -69,5 +69,10 @@
         <service id="bitbag_sylius_mollie_plugin.controller.action.admin.change_position_payment_method_action" class="BitBag\SyliusMolliePlugin\Controller\Action\Admin\ChangePositionPaymentMethodAction">
             <argument type="service" id="bitbag_sylius_mollie_plugin.creator.change_position_payment_method_creator"/>
         </service>
+
+        <service id="bitbag_sylius_mollie_plugin.controller.onboarding_wizard_status" class="BitBag\SyliusMolliePlugin\Controller\OnboardingWizardStatusController">
+            <argument type="service" id="security.helper"/>
+            <argument type="service" id="serializer"/>
+        </service>
     </services>
 </container>

@@ -1,4 +1,0 @@
-bitbag_sylius_mollie_plugin_onboarding_wizard_status_set:
-  path: /onboarding_wizard_status/completed
-  controller: bitbag_sylius_mollie_plugin.controller.onboarding_wizard_status::setStatus
-  methods: [ POST ]

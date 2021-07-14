@@ -11,9 +11,15 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Entity;
 
+use Sylius\Component\Core\Model\AdminUserInterface;
+
 interface OnboardingWizardStatusInterface
 {
     public function isCompleted(): bool;
 
     public function setCompleted(bool $completed): void;
+
+    public function getAdminUser(): AdminUserInterface;
+
+    public function setAdminUser(AdminUserInterface $adminUser): void;
 }

@@ -43,7 +43,7 @@ final class OnboardingWizardStatusCreator implements OnboardingWizardStatusCreat
 
         if (!$onboardingWizardStatus instanceof OnboardingWizardStatus) {
             $onboardingWizardStatus = new OnboardingWizardStatus();
-            $onboardingWizardStatus->setCustomer($adminUser);
+            $onboardingWizardStatus->setAdminUser($adminUser);
         }
 
         $onboardingWizardStatus->setCompleted(true);

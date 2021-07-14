@@ -14,7 +14,7 @@ namespace BitBag\SyliusMolliePlugin\Entity;
 use Sylius\Component\Core\Model\AdminUserInterface;
 use Sylius\Component\Resource\Model\ResourceInterface;
 
-final class OnboardingWizardStatus implements OnboardingWizardStatusInterface, ResourceInterface
+class OnboardingWizardStatus implements OnboardingWizardStatusInterface
 {
     /** @var int */
     protected $id;

@@ -9,34 +9,37 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Creator;
+namespace BitBag\SyliusMolliePlugin\Creator\OnboardingWizard;
 
 use BitBag\SyliusMolliePlugin\Context\Admin\AdminUserContextInterface;
-use BitBag\SyliusMolliePlugin\Entity\OnboardingWizardStatus;
+use BitBag\SyliusMolliePlugin\Entity\OnboardingWizardStatusInterface;
 use BitBag\SyliusMolliePlugin\Exceptions\AdminUserNotFound;
+use BitBag\SyliusMolliePlugin\Factory\OnboardingWizard\StatusFactoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Sylius\Component\Resource\Repository\RepositoryInterface;
 
-final class OnboardingWizardStatusCreator implements OnboardingWizardStatusCreatorInterface
+final class StatusCreator implements StatusCreatorInterface
 {
-
-    /** @var RepositoryInterface $statusRepository */
-    private $statusRepository;
-
     /** @var EntityManagerInterface $entityManager */
     private $entityManager;
 
     /** @var AdminUserContextInterface $adminUserContext */
     private $adminUserContext;
 
-    public function __construct(RepositoryInterface $statusRepository, EntityManagerInterface $entityManager, AdminUserContextInterface $adminUserContext)
+    /** @var StatusFactoryInterface $statusFactory */
+    private $statusFactory;
+
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        AdminUserContextInterface $adminUserContext,
+        StatusFactoryInterface $statusFactory
+    )
     {
-        $this->statusRepository = $statusRepository;
         $this->entityManager = $entityManager;
         $this->adminUserContext = $adminUserContext;
+        $this->statusFactory = $statusFactory;
     }
 
-    public function create(): OnboardingWizardStatus
+    public function create(): OnboardingWizardStatusInterface
     {
         $adminUser = $this->adminUserContext->getAdminUser();
 
@@ -44,12 +47,7 @@ final class OnboardingWizardStatusCreator implements OnboardingWizardStatusCreat
             throw new AdminUserNotFound("Couldn't resolve admin user account.");
         }
 
-        $onboardingWizardStatus = $this->statusRepository->findOneBy(['adminUser' => $adminUser]);
-
-        if (!$onboardingWizardStatus instanceof OnboardingWizardStatus) {
-            $onboardingWizardStatus = new OnboardingWizardStatus();
-            $onboardingWizardStatus->setAdminUser($adminUser);
-        }
+        $onboardingWizardStatus = $this->statusFactory->create($adminUser);
 
         $onboardingWizardStatus->setCompleted(true);
 

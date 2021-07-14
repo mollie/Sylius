@@ -11,17 +11,17 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Controller\Action\Admin\OnboardingWizard;
 
-use BitBag\SyliusMolliePlugin\Creator\OnboardingWizardStatusCreatorInterface;
+use BitBag\SyliusMolliePlugin\Creator\OnboardingWizard\StatusCreatorInterface;
 use BitBag\SyliusMolliePlugin\Exceptions\AdminUserNotFound;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 final class CompletedAction
 {
-    /** @var OnboardingWizardStatusCreatorInterface $onboardingWizardStatusCreator */
+    /** @var StatusCreatorInterface $onboardingWizardStatusCreator */
     private $onboardingWizardStatusCreator;
 
-    public function __construct(OnboardingWizardStatusCreatorInterface $onboardingWizardStatusCreator)
+    public function __construct(StatusCreatorInterface $onboardingWizardStatusCreator)
     {
         $this->onboardingWizardStatusCreator = $onboardingWizardStatusCreator;
     }

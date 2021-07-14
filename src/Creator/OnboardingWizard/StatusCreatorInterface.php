@@ -9,11 +9,11 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Creator;
+namespace BitBag\SyliusMolliePlugin\Creator\OnboardingWizard;
 
-use BitBag\SyliusMolliePlugin\Entity\OnboardingWizardStatus;
+use BitBag\SyliusMolliePlugin\Entity\OnboardingWizardStatusInterface;
 
-interface OnboardingWizardStatusCreatorInterface
+interface StatusCreatorInterface
 {
-    public function create(): OnboardingWizardStatus;
+    public function create(): OnboardingWizardStatusInterface;
 }

@@ -12,8 +12,8 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Resolver;
 
 use BitBag\SyliusMolliePlugin\Creator\MollieMethodsCreatorInterface;
-use Sylius\Component\Core\Model\OrderInterface;
 use Mollie\Api\Resources\Method;
+use Sylius\Component\Core\Model\OrderInterface;
 
 final class MollieAllowedMethodsResolver implements MollieAllowedMethodsResolverInterface
 {

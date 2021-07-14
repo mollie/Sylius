@@ -12,7 +12,6 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Entity;
 
 use Sylius\Component\Core\Model\AdminUserInterface;
-use Sylius\Component\Resource\Model\ResourceInterface;
 
 class OnboardingWizardStatus implements OnboardingWizardStatusInterface
 {

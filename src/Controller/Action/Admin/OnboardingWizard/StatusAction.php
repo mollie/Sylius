@@ -13,7 +13,6 @@ namespace BitBag\SyliusMolliePlugin\Controller\Action\Admin\OnboardingWizard;
 
 use BitBag\SyliusMolliePlugin\Context\Admin\AdminUserContextInterface;
 use BitBag\SyliusMolliePlugin\Entity\OnboardingWizardStatus;
-use PHP_CodeSniffer\Reports\Json;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;

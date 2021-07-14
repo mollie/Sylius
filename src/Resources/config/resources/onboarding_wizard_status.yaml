@@ -1,0 +1,7 @@
+sylius_resource:
+  resources:
+    bitbag_sylius_mollie_plugin.onboarding_wizard_status:
+      driver: doctrine/orm
+      classes:
+        model: BitBag\SyliusMolliePlugin\Entity\OnboardingWizardStatus
+        interface: BitBag\SyliusMolliePlugin\Entity\OnboardingWizardStatusInterface

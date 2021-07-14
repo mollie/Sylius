@@ -1,0 +1,4 @@
+bitbag_sylius_mollie_plugin_onboarding_wizard_status:
+  path: /onboarding-wizard/status
+  controller: bitbag_sylius_mollie_plugin.controller.onboarding_wizard.status
+  methods: [GET]

@@ -1,8 +1,3 @@
-bitbag_sylius_mollie_plugin_onboarding_wizard_status_get:
-  path: /onboarding_wizard_status
-  controller: bitbag_sylius_mollie_plugin.controller.onboarding_wizard_status::getStatus
-  methods: [ GET ]
-
 bitbag_sylius_mollie_plugin_onboarding_wizard_status_set:
   path: /onboarding_wizard_status/completed
   controller: bitbag_sylius_mollie_plugin.controller.onboarding_wizard_status::setStatus

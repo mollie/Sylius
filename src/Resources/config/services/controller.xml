@@ -70,9 +70,15 @@
             <argument type="service" id="bitbag_sylius_mollie_plugin.creator.change_position_payment_method_creator"/>
         </service>
 
-        <service id="bitbag_sylius_mollie_plugin.controller.onboarding_wizard_status" class="BitBag\SyliusMolliePlugin\Controller\OnboardingWizardStatusController">
-            <argument type="service" id="security.helper"/>
-            <argument type="service" id="serializer"/>
+        <service id="bitbag_sylius_mollie_plugin.controller.onboarding_wizard.status" class="BitBag\SyliusMolliePlugin\Controller\Action\Admin\OnboardingWizard\StatusAction">
+            <argument type="service" id="sylius.context.customer"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.repository.onboarding_wizard_status"/>
+        </service>
+
+        <service id="bitbag_sylius_mollie_plugin.controller.onboarding_wizard.completed" class="BitBag\SyliusMolliePlugin\Controller\Action\Admin\OnboardingWizard\CompletedAction">
+            <argument type="service" id="sylius.context.customer"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.repository.onboarding_wizard_status"/>
+            <argument type="service" id="doctrine.orm.entity_manager"/>
         </service>
     </services>
 </container>

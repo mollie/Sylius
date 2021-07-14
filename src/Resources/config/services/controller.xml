@@ -71,14 +71,12 @@
         </service>
 
         <service id="bitbag_sylius_mollie_plugin.controller.onboarding_wizard.status" class="BitBag\SyliusMolliePlugin\Controller\Action\Admin\OnboardingWizard\StatusAction">
-            <argument type="service" id="sylius.context.customer"/>
             <argument type="service" id="bitbag_sylius_mollie_plugin.repository.onboarding_wizard_status"/>
+            <argument type="service" id="bitbag.sylius_mollie_plugin.context.admin.admin_user_context"/>
         </service>
 
         <service id="bitbag_sylius_mollie_plugin.controller.onboarding_wizard.completed" class="BitBag\SyliusMolliePlugin\Controller\Action\Admin\OnboardingWizard\CompletedAction">
-            <argument type="service" id="sylius.context.customer"/>
-            <argument type="service" id="bitbag_sylius_mollie_plugin.repository.onboarding_wizard_status"/>
-            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.creator.onboarding_wizard_status_creator"/>
         </service>
     </services>
 </container>

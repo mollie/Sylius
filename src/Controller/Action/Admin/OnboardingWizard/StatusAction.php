@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Controller\Action\Admin\OnboardingWizard;
 
+use BitBag\SyliusMolliePlugin\Context\Admin\AdminUserContextInterface;
 use BitBag\SyliusMolliePlugin\Entity\OnboardingWizardStatus;
 use Sylius\Component\Customer\Context\CustomerContextInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
@@ -14,23 +15,22 @@ use Symfony\Component\Serializer\Serializer;
 
 final class StatusAction
 {
-
-    /** @var CustomerContextInterface $customerContext */
-    private $customerContext;
-
     /** @var RepositoryInterface $statusRepository */
     private $statusRepository;
 
-    public function __construct(CustomerContextInterface $customerContext, RepositoryInterface $statusRepository)
-    {
+    /** @var AdminUserContextInterface $adminUserContext*/
+    private $adminUserContext;
 
+    public function __construct(RepositoryInterface $statusRepository, AdminUserContextInterface $adminUserContext)
+    {
         $this->statusRepository = $statusRepository;
-        $this->customerContext = $customerContext;
+        $this->adminUserContext = $adminUserContext;
     }
 
     public function __invoke(): Response
     {
-        $onboardingWizardStatus = $this->statusRepository->findOneBy(['adminUser' => $this->customerContext->getCustomer()]);
+        $adminUser = $this->adminUserContext->getAdminUser();
+        $onboardingWizardStatus = $this->statusRepository->findOneBy(['adminUser' => $adminUser]);
 
         if ($onboardingWizardStatus instanceof OnboardingWizardStatus) {
             return new JsonResponse(['completed' => $onboardingWizardStatus->isCompleted()]);

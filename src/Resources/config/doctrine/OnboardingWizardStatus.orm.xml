@@ -9,8 +9,8 @@
         <id name="id" column="id" type="integer">
             <generator strategy="AUTO"/>
         </id>
-        <one-to-one field="customer" target-entity="Sylius\Component\Customer\Model\Customer">
-            <join-column name="customer_id" referenced-column-name="id" />
+        <one-to-one field="adminUser" target-entity="Sylius\Component\Core\Model\AdminUser">
+            <join-column name="user_id" referenced-column-name="id" />
         </one-to-one>
         <field name="completed" column="completed" type="boolean" />
     </mapped-superclass>

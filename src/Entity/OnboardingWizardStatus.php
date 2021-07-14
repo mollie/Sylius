@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Entity;
 
-use Sylius\Component\Customer\Model\CustomerInterface;
+use Sylius\Component\Core\Model\AdminUserInterface;
 use Sylius\Component\Resource\Model\ResourceInterface;
 
 final class OnboardingWizardStatus implements OnboardingWizardStatusInterface, ResourceInterface
@@ -12,8 +12,8 @@ final class OnboardingWizardStatus implements OnboardingWizardStatusInterface, R
     /** @var int */
     protected $id;
 
-    /** @var CustomerInterface */
-    protected $customer;
+    /** @var AdminUserInterface */
+    protected $adminUser;
 
     /** @var bool */
     protected $completed;
@@ -33,13 +33,13 @@ final class OnboardingWizardStatus implements OnboardingWizardStatusInterface, R
         $this->completed = $completed;
     }
 
-    public function getCustomer(): CustomerInterface
+    public function getAdminUser(): AdminUserInterface
     {
-        return $this->customer;
+        return $this->adminUser;
     }
 
-    public function setCustomer(CustomerInterface $customer): void
+    public function setAdminUser(AdminUserInterface $adminUser): void
     {
-        $this->customer = $customer;
+        $this->adminUser = $adminUser;
     }
 }

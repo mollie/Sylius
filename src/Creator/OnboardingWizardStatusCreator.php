@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * This file has been created by developers from BitBag.
+ * Feel free to contact us once you face any issues or want to start
+ * You can find more information about us on https://bitbag.io and write us
+ * an email on hello@bitbag.io.
+ */
+
 declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Creator;
@@ -8,9 +15,7 @@ use BitBag\SyliusMolliePlugin\Context\Admin\AdminUserContextInterface;
 use BitBag\SyliusMolliePlugin\Entity\OnboardingWizardStatus;
 use BitBag\SyliusMolliePlugin\Exceptions\AdminUserNotFound;
 use Doctrine\ORM\EntityManagerInterface;
-use Sylius\Component\Customer\Context\CustomerContextInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
-use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 final class OnboardingWizardStatusCreator implements OnboardingWizardStatusCreatorInterface
 {
@@ -21,7 +26,7 @@ final class OnboardingWizardStatusCreator implements OnboardingWizardStatusCreat
     /** @var EntityManagerInterface $entityManager */
     private $entityManager;
 
-    /** @var AdminUserContextInterface $adminUserContext*/
+    /** @var AdminUserContextInterface $adminUserContext */
     private $adminUserContext;
 
     public function __construct(RepositoryInterface $statusRepository, EntityManagerInterface $entityManager, AdminUserContextInterface $adminUserContext)

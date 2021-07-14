@@ -51,6 +51,7 @@ final class RefundOrderAction extends BaseApiAwareAction implements ActionInterf
 
         if ($details['created_in_mollie']) {
             $this->loggerAction->addLog('Received refund created in Mollie dashboard');
+
             return;
         }
 

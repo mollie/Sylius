@@ -24,9 +24,9 @@ final class StatusCreator implements StatusCreatorInterface
 
     /** @var AdminUserContextInterface $adminUserContext */
     private $adminUserContext;
-    /** @var StatusResolverInterface */
-    private $statusResolver;
 
+    /** @var StatusResolverInterface $statusResolver */
+    private $statusResolver;
 
     public function __construct(
         EntityManagerInterface $entityManager,

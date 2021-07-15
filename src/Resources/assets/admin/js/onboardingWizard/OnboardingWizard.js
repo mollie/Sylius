@@ -119,7 +119,7 @@ export default class onboardingWizard {
 
 			this.tour.start();
 
-			this.restartTourListener();
+			// this.restartTourListener();
 		}
 	}
 }

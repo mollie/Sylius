@@ -34,7 +34,9 @@
 	},
 	"scripts": {
 		"lint": "yarn lint:js",
-		"lint:js": "eslint gulpfile.babel.js"
+		"lint:js": "eslint gulpfile.babel.js",
+		"watch": "yarn encore dev --watch",
+		"dev": "yarn encore dev --watch"
 	},
 	"repository": {
 		"type": "git",

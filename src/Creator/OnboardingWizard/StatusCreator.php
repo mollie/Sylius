@@ -32,8 +32,7 @@ final class StatusCreator implements StatusCreatorInterface
         EntityManagerInterface $entityManager,
         AdminUserContextInterface $adminUserContext,
         StatusResolverInterface $statusResolver
-    )
-    {
+    ) {
         $this->entityManager = $entityManager;
         $this->adminUserContext = $adminUserContext;
         $this->statusResolver = $statusResolver;

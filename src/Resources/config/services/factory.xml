@@ -21,6 +21,10 @@
         <service id="bit_bag.sylius_mollie_plugin.factory.shipment_factory" class="BitBag\SyliusMolliePlugin\Factory\PartialShip\ShipmentFactory" public="true">
             <argument type="service" id="sylius.factory.shipment" />
         </service>
-        <service id="bitbag.sylius_mollie_plugin.factory.onboarding_wizard.status_factory" class="BitBag\SyliusMolliePlugin\Factory\OnboardingWizard\StatusFactory" decorates="bitbag_sylius_mollie_plugin.factory.onboarding_wizard_status"/>
+        <service id="bitbag.sylius_mollie_plugin.factory.onboarding_wizard.status_factory"
+                 class="BitBag\SyliusMolliePlugin\Factory\OnboardingWizard\StatusFactory"
+                 decorates="bitbag_sylius_mollie_plugin.factory.onboarding_wizard_status">
+            <argument type="service" id="bitbag.sylius_mollie_plugin.factory.onboarding_wizard.status_factory.inner"/>
+        </service>
     </services>
 </container>

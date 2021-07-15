@@ -11,24 +11,32 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Factory\OnboardingWizard;
 
-use BitBag\SyliusMolliePlugin\Entity\OnboardingWizardStatus;
 use BitBag\SyliusMolliePlugin\Entity\OnboardingWizardStatusInterface;
 use Sylius\Component\Core\Model\AdminUserInterface;
+use Sylius\Component\Resource\Factory\FactoryInterface;
 
 final class StatusFactory implements StatusFactoryInterface
 {
+    /** @var FactoryInterface */
+    private $factory;
+
+    public function __construct(FactoryInterface $factory)
+    {
+        $this->factory = $factory;
+    }
+
+    public function createNew(): OnboardingWizardStatusInterface
+    {
+        return $this->factory->createNew();
+    }
+
     public function create(AdminUserInterface $adminUser, bool $completed): OnboardingWizardStatusInterface
     {
-        $onboardingWizardStatus = new OnboardingWizardStatus();
+        $onboardingWizardStatus = $this->createNew();
 
         $onboardingWizardStatus->setAdminUser($adminUser);
         $onboardingWizardStatus->setCompleted($completed);
 
         return $onboardingWizardStatus;
-    }
-
-    public function createNew(): OnboardingWizardStatus
-    {
-        return new OnboardingWizardStatus();
     }
 }

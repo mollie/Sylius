@@ -47,7 +47,7 @@
         <service id="bitbag_sylius_mollie_plugin.creator.onboarding_wizard.status_creator" class="BitBag\SyliusMolliePlugin\Creator\OnboardingWizard\StatusCreator">
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="bitbag.sylius_mollie_plugin.context.admin.admin_user_context"/>
-            <argument type="service" id="bitbag.sylius_mollie_plugin.factory.onboarding_wizard.status_factory"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.resolver.onboarding_wizard.status_resolver"/>
         </service>
     </services>
 </container>

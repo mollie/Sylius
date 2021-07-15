@@ -14,26 +14,21 @@ namespace BitBag\SyliusMolliePlugin\Factory\OnboardingWizard;
 use BitBag\SyliusMolliePlugin\Entity\OnboardingWizardStatus;
 use BitBag\SyliusMolliePlugin\Entity\OnboardingWizardStatusInterface;
 use Sylius\Component\Core\Model\AdminUserInterface;
-use Sylius\Component\Resource\Repository\RepositoryInterface;
 
 final class StatusFactory implements StatusFactoryInterface
 {
-    /** @var RepositoryInterface $statusRepository */
-    private $statusRepository;
-
-    public function __construct(RepositoryInterface $statusRepository)
+    public function create(AdminUserInterface $adminUser, bool $completed): OnboardingWizardStatusInterface
     {
-        $this->statusRepository = $statusRepository;
-    }
-    public function create(AdminUserInterface $adminUser): OnboardingWizardStatusInterface
-    {
-        $onboardingWizardStatus = $this->statusRepository->findOneBy(['adminUser' => $adminUser]);
+        $onboardingWizardStatus = new OnboardingWizardStatus();
 
-        if (!$onboardingWizardStatus instanceof OnboardingWizardStatus) {
-            $onboardingWizardStatus = new OnboardingWizardStatus();
-            $onboardingWizardStatus->setAdminUser($adminUser);
-        }
+        $onboardingWizardStatus->setAdminUser($adminUser);
+        $onboardingWizardStatus->setCompleted($completed);
 
         return $onboardingWizardStatus;
+    }
+
+    public function createNew(): OnboardingWizardStatus
+    {
+        return new OnboardingWizardStatus();
     }
 }

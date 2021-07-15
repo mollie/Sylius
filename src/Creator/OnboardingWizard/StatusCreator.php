@@ -14,7 +14,7 @@ namespace BitBag\SyliusMolliePlugin\Creator\OnboardingWizard;
 use BitBag\SyliusMolliePlugin\Context\Admin\AdminUserContextInterface;
 use BitBag\SyliusMolliePlugin\Entity\OnboardingWizardStatusInterface;
 use BitBag\SyliusMolliePlugin\Exceptions\AdminUserNotFound;
-use BitBag\SyliusMolliePlugin\Factory\OnboardingWizard\StatusFactoryInterface;
+use BitBag\SyliusMolliePlugin\Resolver\OnboardingWizard\StatusResolverInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
 final class StatusCreator implements StatusCreatorInterface
@@ -24,19 +24,19 @@ final class StatusCreator implements StatusCreatorInterface
 
     /** @var AdminUserContextInterface $adminUserContext */
     private $adminUserContext;
+    /** @var StatusResolverInterface */
+    private $statusResolver;
 
-    /** @var StatusFactoryInterface $statusFactory */
-    private $statusFactory;
 
     public function __construct(
         EntityManagerInterface $entityManager,
         AdminUserContextInterface $adminUserContext,
-        StatusFactoryInterface $statusFactory
+        StatusResolverInterface $statusResolver
     )
     {
         $this->entityManager = $entityManager;
         $this->adminUserContext = $adminUserContext;
-        $this->statusFactory = $statusFactory;
+        $this->statusResolver = $statusResolver;
     }
 
     public function create(): OnboardingWizardStatusInterface
@@ -47,9 +47,7 @@ final class StatusCreator implements StatusCreatorInterface
             throw new AdminUserNotFound("Couldn't resolve admin user account.");
         }
 
-        $onboardingWizardStatus = $this->statusFactory->create($adminUser);
-
-        $onboardingWizardStatus->setCompleted(true);
+        $onboardingWizardStatus = $this->statusResolver->resolve($adminUser);
 
         $this->entityManager->persist($onboardingWizardStatus);
         $this->entityManager->flush();

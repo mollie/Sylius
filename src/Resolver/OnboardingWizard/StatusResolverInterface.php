@@ -9,13 +9,12 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Factory\OnboardingWizard;
+namespace BitBag\SyliusMolliePlugin\Resolver\OnboardingWizard;
 
 use BitBag\SyliusMolliePlugin\Entity\OnboardingWizardStatusInterface;
 use Sylius\Component\Core\Model\AdminUserInterface;
-use Sylius\Component\Resource\Factory\FactoryInterface;
 
-interface StatusFactoryInterface extends FactoryInterface
+interface StatusResolverInterface
 {
-    public function create(AdminUserInterface $adminUser, bool $completed): OnboardingWizardStatusInterface;
+    public function resolve(AdminUserInterface $adminUser): OnboardingWizardStatusInterface;
 }

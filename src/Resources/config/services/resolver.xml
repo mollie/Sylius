@@ -86,5 +86,9 @@
         <service id="bitbag_sylius_mollie_plugin.resolver.mollie_allowed_methods_resolver" class="BitBag\SyliusMolliePlugin\Resolver\MollieAllowedMethodsResolver">
             <argument type="service" id="bitbag_sylius_mollie_plugin.resolver.mollie_api_client_key_resolver"/>
         </service>
+        <service id="bitbag_sylius_mollie_plugin.resolver.onboarding_wizard.status_resolver" class="BitBag\SyliusMolliePlugin\Resolver\OnboardingWizard\StatusResolver">
+            <argument type="service" id="bitbag_sylius_mollie_plugin.repository.onboarding_wizard_status"/>
+            <argument type="service" id="bitbag.sylius_mollie_plugin.factory.onboarding_wizard.status_factory"/>
+        </service>
     </services>
 </container>

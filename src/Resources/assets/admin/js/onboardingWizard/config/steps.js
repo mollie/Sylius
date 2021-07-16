@@ -2,6 +2,7 @@ import {
 	paymentTypeIndicator,
 	methodLoadIndicator,
 	currentStepValidator,
+	updateTourCompletition,
 } from '../helpers/filterMethod';
 
 const paymentMethodPaymentApi = 'PAYMENT_API';
@@ -338,6 +339,10 @@ export const steps = [
 		},
 	},
 	{
+		showOn: function () {
+			updateTourCompletition();
+			return true;
+		},
 		id: 'save',
 		text: 'stepSave.text',
 		classes: 'step-13 shepherd-element--align-right',

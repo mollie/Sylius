@@ -1,26 +1,21 @@
 import OnboardingWizard from './OnboardingWizard';
-const tour = new OnboardingWizard();
-// tour.initTour();
-// const handleTour = () => {
-//     if (getTourCompletitionInfo() = 'dupa'){
-//         tour.restartTourListener()
-//     }
-//     else {
-//         tour.initTour()
-//         tour.restartTourListener()
-//     }
-// };
 
-// const getTourCompletitionInfo = async () => {
-// 	const url = 'dupa';
-// 	try {
-// 		const response = await fetch(url);
-// 		const data = await response.json();
-// 		return console.log('działa', data);
-// 	} catch {
-// 		console.log(error);
-// 	}
-// };
+const handleTourShow = async () => {
+	const tour = new OnboardingWizard();
+	const url = '/admin/onboarding-wizard/status';
+	try {
+		const response = await fetch(url);
+		const data = await response.json();
 
-// handleTour()
-// tour.restartTourListener()
+		tour.initTour();
+		if (data.completed === true) {
+			tour.disableTour();
+		}
+	} catch {
+		console.log(error);
+	}
+};
+
+if (document.querySelector('.js-onboarding-wizard')) {
+	handleTourShow();
+}

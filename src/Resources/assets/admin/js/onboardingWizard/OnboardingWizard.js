@@ -98,7 +98,6 @@ export default class onboardingWizard {
 			this.tour = new Shepherd.Tour({
 				...this.tourConfig,
 			});
-
 			this.steps.forEach((step, stepIndex) => {
 				this.tour.addStep({
 					...step,
@@ -117,9 +116,13 @@ export default class onboardingWizard {
 				this.navbarVisibilityHandler(false);
 			});
 
-			this.tour.start();
+			this.tour.start()
 
-			// this.restartTourListener();
+			this.restartTourListener();
 		}
+	}
+
+	disableTour() {
+		this.tour.complete()
 	}
 }

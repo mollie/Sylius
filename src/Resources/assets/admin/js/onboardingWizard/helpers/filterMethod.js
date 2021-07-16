@@ -49,20 +49,20 @@ export const currentStepValidator = (element, popup) => {
 	}
 };
 
-const updateTourCompletition = async () => {
-	const url = '';
-	const data = {};
-	try {
-		const response = await fetch(url, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify(data),
-		});
-		const text = await response.json();
-		console.log(text);
-	} catch (error) {
-		console.log(`Error Occoured - ${error}`);
-	}
-};
+// const updateTourCompletition = async () => {
+// 	const url = '';
+// 	const data = {};
+// 	try {
+// 		const response = await fetch(url, {
+// 			method: 'POST',
+// 			headers: {
+// 				'Content-Type': 'application/json',
+// 			},
+// 			body: JSON.stringify(data),
+// 		});
+// 		const text = await response.json();
+// 		console.log(text);
+// 	} catch (error) {
+// 		console.log(`Error Occoured - ${error}`);
+// 	}
+// };

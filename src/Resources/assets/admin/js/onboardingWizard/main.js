@@ -1,6 +1,6 @@
 import OnboardingWizard from './OnboardingWizard';
 const tour = new OnboardingWizard();
-tour.initTour();
+// tour.initTour();
 // const handleTour = () => {
 //     if (getTourCompletitionInfo() = 'dupa'){
 //         tour.restartTourListener()

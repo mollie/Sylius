@@ -47,7 +47,7 @@ export default class onboardingWizard {
 			!isCollapsed
 		);
 		currentStep.setAttribute('aria-hidden', !isCollapsed);
-	};
+	}
 
 	handleQuitConfirmation = () => {
 		const returnStepIndex = this.previousStepIndex;
@@ -61,12 +61,12 @@ export default class onboardingWizard {
 		});
 
 		this.tour.show('step-quit-confirmation', true);
-	};
+	}
 
 	navbarVisibilityHandler = (isActive) => {
 		this.navbar.classList.toggle('d-none', !isActive);
 		this.navbar.setAttribute('aria-hidden', !isActive);
-	};
+	}
 
 	navbarProgressHandler = () => {
 		const currentStepProgress =
@@ -82,7 +82,7 @@ export default class onboardingWizard {
 				navBarItem.classList.remove('onboarding-wizard__step--current');
 			}
 		});
-	};
+	}
 
 	restartTourListener = () => {
 		const restartTourTrigger = document.querySelector('.js-restart-tour');
@@ -91,7 +91,7 @@ export default class onboardingWizard {
 			this.tour.start();
 			this.navbar.classList.toggle('d-none');
 		});
-	};
+	}
 
 	initTour() {
 		if (this.navbar) {

@@ -58,6 +58,6 @@ export const updateTourCompletition = async () => {
 		});
 		const complete = await response.json();
 	} catch (error) {
-		console.log(error);
+		console.error(error);
 	}
 };

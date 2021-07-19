@@ -12,7 +12,7 @@ const handleTourShow = async () => {
 			tour.disableTour();
 		}
 	} catch {
-		console.log(error);
+		console.error(error);
 	}
 };
 

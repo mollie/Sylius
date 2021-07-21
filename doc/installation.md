@@ -317,6 +317,9 @@ imports:
 
 bitbag_sylius_mollie_plugin:
     resource: "@BitBagSyliusMolliePlugin/Resources/config/routing.yaml"
+    
+_bazinga_jstranslation:
+  resource: "@BazingaJsTranslationBundle/Resources/config/routing/routing.yml"
 ```
 
 8.Add image dir parameter in `config/pacakges/_sylius.yaml`

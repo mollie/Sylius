@@ -1,0 +1,7 @@
+sylius_resource:
+  resources:
+    bitbag_sylius_mollie_plugin.credit_memo:
+      driver: doctrine/orm
+      classes:
+        model: Sylius\RefundPlugin\Entity\CreditMemo
+        repository: BitBag\SyliusMolliePlugin\Repository\CreditMemoRepository

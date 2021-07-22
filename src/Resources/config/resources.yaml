@@ -10,4 +10,5 @@ imports:
     - { resource: "@BitBagSyliusMolliePlugin/Resources/config/resources/product_type.yaml" }
     - { resource: "@BitBagSyliusMolliePlugin/Resources/config/resources/payment_method.yaml" }
     - { resource: "@BitBagSyliusMolliePlugin/Resources/config/resources/onboarding_wizard_status.yaml" }
+    - { resource: "@BitBagSyliusMolliePlugin/Resources/config/resources/credit_memo.yaml" }
     - { resource: "@SyliusRefundPlugin/Resources/config/app/config.yml" }

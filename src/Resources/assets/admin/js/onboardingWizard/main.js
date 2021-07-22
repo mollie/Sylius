@@ -23,7 +23,7 @@ const handleTourShow = async () => {
                 tour.next();
             }
         } else if (!status && currentSavedStep) {
-            tour.skipTo('step-env', true)
+            tour.skipTo('step-env', true);
         }
     } catch (error) {
         console.error(error);

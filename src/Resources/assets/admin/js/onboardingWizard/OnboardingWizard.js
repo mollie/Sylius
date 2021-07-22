@@ -7,130 +7,130 @@ import stepFactory from './helpers/stepFactory';
 import wizardTranslations from './config/wizardTranslations';
 
 export default class onboardingWizard {
-	constructor(
-		tourSteps = steps,
-		tourConfig = shepherdConfig,
-		tourQuitConfirmation = stepQuitConfirmation
-	) {
-		this.steps = stepFactory(tourSteps);
-		this.stepQuitConfirmation = stepFactory(tourQuitConfirmation)[0];
-		this.tourConfig = tourConfig;
-		this.navbar = document.querySelector('.js-onboarding-wizard');
-		this.navBarItems = [
-			...this.navbar.querySelectorAll('.js-onboarding-wizard-progress'),
-		];
-		this.previousStepIndex = 0;
-	}
+    constructor(
+        tourSteps = steps,
+        tourConfig = shepherdConfig,
+        tourQuitConfirmation = stepQuitConfirmation
+    ) {
+        this.steps = stepFactory(tourSteps);
+        this.stepQuitConfirmation = stepFactory(tourQuitConfirmation)[0];
+        this.tourConfig = tourConfig;
+        this.navbar = document.querySelector('.js-onboarding-wizard');
+        this.navBarItems = [
+            ...this.navbar.querySelectorAll('.js-onboarding-wizard-progress'),
+        ];
+        this.previousStepIndex = 0;
+    }
 
-	modalCollapseHandler = () => {
-		const currentStep = this.tour.currentStep.el;
-		const buttonCollapse = currentStep.querySelector('.js-tour-collapse');
-		const isCollapsed = [...currentStep.classList].includes(
-			'shepherd-element--collapsed'
-		);
+    modalCollapseHandler() {
+        const currentStep = this.tour.currentStep.el;
+        const buttonCollapse = currentStep.querySelector('.js-tour-collapse');
+        const isCollapsed = [...currentStep.classList].includes(
+            'shepherd-element--collapsed'
+        );
 
-		const expandButton = document.createElement('span');
-		expandButton.classList.add('shepherd-button__open');
-		expandButton.classList.add('js-shepherd-expand');
-		expandButton.textContent = _get(wizardTranslations, 'common.open');
+        const expandButton = document.createElement('span');
+        expandButton.classList.add('shepherd-button__open');
+        expandButton.classList.add('js-shepherd-expand');
+        expandButton.textContent = _get(wizardTranslations, 'common.open');
 
-		const textOpen = buttonCollapse.querySelector('.js-shepherd-expand');
+        const textOpen = buttonCollapse.querySelector('.js-shepherd-expand');
 
-		if (isCollapsed) {
-			buttonCollapse.removeChild(textOpen);
-		} else {
-			buttonCollapse.appendChild(expandButton);
-		}
+        if (isCollapsed) {
+            buttonCollapse.removeChild(textOpen);
+        } else {
+            buttonCollapse.appendChild(expandButton);
+        }
 
-		currentStep.classList.toggle(
-			'shepherd-element--collapsed',
-			!isCollapsed
-		);
-		currentStep.setAttribute('aria-hidden', !isCollapsed);
-	}
+        currentStep.classList.toggle(
+            'shepherd-element--collapsed',
+            !isCollapsed
+        );
+        currentStep.setAttribute('aria-hidden', !isCollapsed);
+    }
 
-	handleQuitConfirmation = () => {
-		const returnStepIndex = this.previousStepIndex;
+    handleQuitConfirmation() {
+        const returnStepIndex = this.previousStepIndex;
 
-		this.tour.addStep({
-			...this.stepQuitConfirmation,
-			buttons: this.stepQuitConfirmation.stepButtons(
-				this,
-				returnStepIndex
-			),
-		});
+        this.tour.addStep({
+            ...this.stepQuitConfirmation,
+            buttons: this.stepQuitConfirmation.stepButtons(
+                this,
+                returnStepIndex
+            ),
+        });
 
-		this.tour.show('step-quit-confirmation', true);
-	}
+        this.tour.show('step-quit-confirmation', true);
+    }
 
-	navbarVisibilityHandler = (isActive) => {
-		this.navbar.classList.toggle('d-none', !isActive);
-		this.navbar.setAttribute('aria-hidden', !isActive);
-	}
+    navbarVisibilityHandler(isActive) {
+        this.navbar.classList.toggle('d-none', !isActive);
+        this.navbar.setAttribute('aria-hidden', !isActive);
+    }
 
-	navbarProgressHandler = () => {
-		const currentStepProgress =
-			this.tour.getCurrentStep().options.highlightClass;
+    navbarProgressHandler() {
+        const currentStepProgress =
+            this.tour.getCurrentStep().options.highlightClass;
 
-		this.navBarItems.forEach((navBarItem) => {
-			if (
-				navBarItem.getAttribute('data-navigation-step') ===
-				currentStepProgress
-			) {
-				navBarItem.classList.add('onboarding-wizard__step--current');
-			} else {
-				navBarItem.classList.remove('onboarding-wizard__step--current');
-			}
-		});
-	}
+        this.navBarItems.forEach((navBarItem) => {
+            if (
+                navBarItem.getAttribute('data-navigation-step') ===
+                currentStepProgress
+            ) {
+                navBarItem.classList.add('onboarding-wizard__step--current');
+            } else {
+                navBarItem.classList.remove('onboarding-wizard__step--current');
+            }
+        });
+    }
 
-	restartTourListener = () => {
-		const restartTourTrigger = document.querySelector('.js-restart-tour');
+    restartTourListener() {
+        const restartTourTrigger = document.querySelector('.js-restart-tour');
 
-		restartTourTrigger.addEventListener('click', () => {
-			this.tour.start();
-			this.navbar.classList.toggle('d-none');
-		});
-	}
+        restartTourTrigger.addEventListener('click', () => {
+            this.tour.start();
+            this.navbar.classList.toggle('d-none');
+        });
+    }
 
-	initTour() {
-		if (this.navbar) {
-			this.tour = new Shepherd.Tour({
-				...this.tourConfig,
-			});
-			this.steps.forEach((step, stepIndex) => {
-				this.tour.addStep({
-					...step,
-					buttons: step.stepButtons(this, stepIndex),
-					when: {
-						show: () => {
-							this.previousStepIndex =
-								this.tour.getCurrentStep().id;
-							this.navbarProgressHandler();
-						},
-					},
-				});
-			});
+    initTour() {
+        if (this.navbar) {
+            this.tour = new Shepherd.Tour({
+                ...this.tourConfig,
+            });
+            this.steps.forEach((step, stepIndex) => {
+                this.tour.addStep({
+                    ...step,
+                    buttons: step.stepButtons(this, stepIndex),
+                    when: {
+                        show: () => {
+                            this.previousStepIndex =
+                                this.tour.getCurrentStep().id;
+                            this.navbarProgressHandler();
+                        },
+                    },
+                });
+            });
 
-			this.tour.on('complete', () => {
-				this.navbarVisibilityHandler(false);
-			});
+            this.tour.on('complete', () => {
+                this.navbarVisibilityHandler(false);
+            });
 
-			this.tour.start();
+            this.tour.start();
 
-			this.restartTourListener();
-		}
-	}
+            this.restartTourListener();
+        }
+    }
 
-	disableTour() {
-		this.tour.complete();
-	}
+    disableTour() {
+        this.tour.complete();
+    }
 
-	skipTo(element = 'step-start', bool = true) {
-		this.tour.show(element, bool);
-	}
+    skipTo(element = 'step-start', bool = true) {
+        this.tour.show(element, bool);
+    }
 
-	next() {
-		this.tour.next();
-	}
+    next() {
+        this.tour.next();
+    }
 }

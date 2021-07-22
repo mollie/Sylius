@@ -5,6 +5,8 @@
 /node_modules/
 /composer.lock
 
+/src/public/bitbag/manifest.json
+
 /etc/build/*
 !/etc/build/.gitkeep
 

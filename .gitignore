@@ -5,8 +5,8 @@
 /node_modules/
 /composer.lock
 
-# /src/Resources/public/bitbag/manifest.json
-# /public/bitbag/entrypoints.json
+/src/Resources/public/bitbag/manifest.json
+/public/bitbag/entrypoints.json
 
 /etc/build/*
 !/etc/build/.gitkeep

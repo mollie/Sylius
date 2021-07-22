@@ -56,6 +56,7 @@ bitbag_sylius_mollie_plugin:
     splitting_shipment_for_order: 'Lieferung für Auftrag #%number% teilen'
     split_shipment: 'Lieferung teilen'
     partially_ship: 'Teillieferung'
+    create_methods_before_loading: 'Um Zahlungsmethoden zu konfigurieren, füllen Sie bitte die erforderlichen Felder aus und klicken Sie auf die Schaltfläche "Erstellen".'
     no_methods_found_message: 'Keine Methoden gefunden. Geben Sie Ihre Profil-ID und den API-Schlüssel ein und klicken Sie auf den Button "Methoden laden".'
     paymentlink_generate: 'Zahlungslink erstellen'
     paymentlink_generate_subtitle: 'Zahlungslink erstellen und an Kunden senden'
@@ -145,6 +146,11 @@ bitbag_sylius_mollie_plugin:
   subscription:
     cancel: 'Abonnement erfolgreich gekündigt.'
   onboardingMollie:
+    navigation:
+        intro: 'Einführung'
+        api_settings: 'API-Einstellungen'
+        store_settings: 'Einstellungen speichern'
+        payment_settings: 'Zahlungseinstellungen'
     btnBack: 'Zurück'
     btnNext: 'Weiter'
     step_1:

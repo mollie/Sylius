@@ -1,0 +1,20 @@
+{
+  "entrypoints": {
+    "mollie/admin": {
+      "css": [
+        "/bitbag/mollie/admin.css"
+      ],
+      "js": [
+        "/bitbag/mollie/admin.js"
+      ]
+    },
+    "mollie/shop": {
+      "css": [
+        "/bitbag/mollie/shop.css"
+      ],
+      "js": [
+        "/bitbag/mollie/shop.js"
+      ]
+    }
+  }
+}

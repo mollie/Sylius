@@ -116,13 +116,21 @@ export default class onboardingWizard {
 				this.navbarVisibilityHandler(false);
 			});
 
-			this.tour.start()
+			this.tour.start();
 
 			this.restartTourListener();
 		}
 	}
 
 	disableTour() {
-		this.tour.complete()
+		this.tour.complete();
+	}
+
+	skipTo(element = 'step-start', bool = true) {
+		this.tour.show(element, bool);
+	}
+
+	next() {
+		this.tour.next();
 	}
 }

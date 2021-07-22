@@ -56,6 +56,7 @@ bitbag_sylius_mollie_plugin:
     splitting_shipment_for_order: "Fractionner l'envoi de la commande nº #%number%"
     split_shipment: "Expédition fractionnée"
     partially_ship: "Envoi partiel"
+    create_methods_before_loading: 'Pour configurer les méthodes de paiement, veuillez remplir les champs requis et cliquez sur le bouton "créer".'
     no_methods_found_message: "Aucun moyen trouvé. Cliquez sur « Charger les moyens de paiement », entrez au préalable votre identifiant et votre clé API."
     paymentlink_generate: "Générer un lien de paiement"
     paymentlink_generate_subtitle: "Générer un lien de paiement et l'envoyer au client"
@@ -129,9 +130,9 @@ bitbag_sylius_mollie_plugin:
     payment_methods:
       payment_description: "Description"
       payment_description_help: "La description à utiliser pour les transactions. Ces variables sont disponibles:\n
-                                                      <b>{numérodecommande}:</b> Le numéro de commande pour cette transaction \n
-                                                      <b>{nomdumagasin}:</b> Le nom du magasin  \n\n
-                                                      Note: cela fonctionne uniquement lorsque le moyen de paiement est réglé sur API de paiement)"
+        <b>{numérodecommande}:</b> Le numéro de commande pour cette transaction \n
+        <b>{nomdumagasin}:</b> Le nom du magasin  \n\n
+        Note: cela fonctionne uniquement lorsque le moyen de paiement est réglé sur API de paiement)"
     product_type: "Type de produit (requis pour les titres-restaurant)"
     product_type_default: "Sélectionner la catégorie de produit par défaut"
     product_type_default_help: "La catégorie choisie sera utilisée pour tous les produits de votre boutique en ligne"
@@ -145,6 +146,11 @@ bitbag_sylius_mollie_plugin:
   subscription:
     cancel: "L'abonnement a été correctement annulé."
   onboardingMollie:
+    navigation:
+        intro: 'Introduction'
+        api_settings: "Paramètres de l'API"
+        store_settings: 'Paramètres du magasin'
+        payment_settings: 'Paramètres de paiement'
     btnBack: 'Retour'
     btnNext: 'Suivant'
     step_1:

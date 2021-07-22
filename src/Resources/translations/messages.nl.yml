@@ -56,6 +56,7 @@ bitbag_sylius_mollie_plugin:
     splitting_shipment_for_order: 'Verzending opsplitsen voor Bestelnr. #%number%'
     split_shipment: 'Verzending opsplitsen'
     partially_ship: 'Gedeeltelijk verzenden'
+    create_methods_before_loading: 'Om betalingsmethoden te configureren, vult u de vereiste velden in en klikt u op de knop "creëren"'
     no_methods_found_message: 'Geen betaalmethodes gevonden. Klik op de knop "Methodes inladen", maar voer eerst je profiel-ID en API-sleutel in.'
     paymentlink_generate: 'Betaallink aanmaken'
     paymentlink_generate_subtitle: 'Betaallink aanmaken en naar de klant sturen'
@@ -145,6 +146,11 @@ bitbag_sylius_mollie_plugin:
   subscription:
     cancel: 'Abonnement is succesvol opgezegd.'
   onboardingMollie:
+    navigation:
+        intro: 'Intro'
+        api_settings: 'API-instellingen'
+        store_settings: 'Instellingen opslaan'
+        payment_settings: 'Betalingsinstellingen'
     btnBack: 'Ga terug'
     btnNext: 'Volgende'
     step_1:

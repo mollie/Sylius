@@ -56,6 +56,7 @@ bitbag_sylius_mollie_plugin:
         splitting_shipment_for_order: 'Splitting shipment for Order no. #%number%'
         split_shipment: 'Split shipment'
         partially_ship: 'Partial ship'
+        create_methods_before_loading: 'To configure Payment Methods, please fill in required fields and click "create" button.'
         no_methods_found_message: 'No methods found. Click the button "Load methods", but first insert You profile Id and API key.'
         paymentlink_generate: 'Generate payment link'
         paymentlink_generate_subtitle: 'Generate payment link and send it to customer'
@@ -145,6 +146,11 @@ bitbag_sylius_mollie_plugin:
     subscription:
         cancel: 'Subscription has been successfully canceled.'
     onboardingMollie:
+        navigation:
+            intro: 'Intro'
+            api_settings: 'API settings'
+            store_settings: 'Store settings'
+            payment_settings: 'Payment settings'
         btnBack: 'Go back'
         btnNext: 'Next'
         step_1:

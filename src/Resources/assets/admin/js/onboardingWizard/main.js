@@ -1,21 +1,35 @@
 import OnboardingWizard from './OnboardingWizard';
 
 const handleTourShow = async () => {
-	const tour = new OnboardingWizard();
-	const url = '/admin/onboarding-wizard/status';
-	try {
-		const response = await fetch(url);
-		const data = await response.json();
+    const tour = new OnboardingWizard();
+    const url = '/admin/onboarding-wizard/status';
+    const status = document.querySelector('#mollie-payment-form').dataset
+        .status;
+    const paymentMethodsNotLoaded = document.querySelector(
+        '.js-payment-method-not-loaded'
+    );
+    const currentSavedStep = window.localStorage.getItem('step');
 
-		tour.initTour();
-		if (data.completed === true) {
-			tour.disableTour();
-		}
-	} catch {
-		console.error(error);
-	}
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        tour.initTour();
+        if (data.completed === true && !currentSavedStep) {
+            tour.disableTour();
+        } else if (currentSavedStep && status) {
+            tour.skipTo(currentSavedStep, true);
+            if (!paymentMethodsNotLoaded) {
+                tour.next();
+            }
+        } else if (!status && currentSavedStep) {
+            tour.skipTo('step-env', true)
+        }
+    } catch (error) {
+        console.error(error);
+    }
 };
 
 if (document.querySelector('.js-onboarding-wizard')) {
-	handleTourShow();
+    handleTourShow();
 }

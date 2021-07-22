@@ -3,6 +3,9 @@ import {
 	methodLoadIndicator,
 	currentStepValidator,
 	updateTourCompletition,
+	getStatusInfo,
+	saveStep,
+	clearStorage,
 } from '../helpers/filterMethod';
 
 const paymentMethodPaymentApi = 'PAYMENT_API';
@@ -135,6 +138,7 @@ export const steps = [
 	},
 	{
 		showOn: function () {
+			clearStorage('step');
 			currentStepValidator(
 				'.js-onboardingWizard-profile-api',
 				'.pushable'
@@ -199,6 +203,22 @@ export const steps = [
 	},
 	{
 		showOn: function () {
+			saveStep(this.id);
+			return getStatusInfo();
+		},
+		id: 'create',
+		text: 'stepSave.text',
+		classes: 'step-13 shepherd-element--align-right',
+		highlightClass: 'store-settings',
+		btnNextClass: 'd-none',
+		attachTo: {
+			element: '.ui.buttons:not(.js-header-btn)',
+			on: 'top-start',
+		},
+	},
+	{
+		showOn: function () {
+			saveStep(this.id);
 			currentStepValidator(
 				'.js-onboardingWizard-load-methods',
 				'.pushable'
@@ -341,6 +361,7 @@ export const steps = [
 	{
 		showOn: function () {
 			updateTourCompletition();
+			clearStorage('step');
 			return true;
 		},
 		id: 'save',
@@ -363,5 +384,5 @@ export const steps = [
 		btnNextText: 'stepButtons.finishWizard',
 		btnCollapseClass: 'd-none',
 		btnCloseClass: 'd-none',
-	}
+	},
 ];

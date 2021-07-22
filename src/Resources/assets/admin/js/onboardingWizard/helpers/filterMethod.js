@@ -61,3 +61,19 @@ export const updateTourCompletition = async () => {
 		console.error(error);
 	}
 };
+
+export const getStatusInfo = () => {
+	const status = document.querySelector('#mollie-payment-form').dataset
+		.status;
+	if (status === '') {
+		return true;
+	}
+};
+
+export const saveStep = (stepId) => {
+	window.localStorage.setItem('step', `${stepId}`);
+};
+
+export const clearStorage = (key) => {
+	window.localStorage.removeItem(`${key}`);
+};

@@ -45,6 +45,7 @@
                                 {{ form_widget(field) }}
                                 {{ form_errors(field) }}
                         </div>
+                    </div>
             {% elseif field.vars.name == 'api_key_test' %}
                 {% include 'bundles/SyliusAdminBundle/PaymentMethod/_api_test_key.html.twig' %}
             {% elseif field.vars.name == 'api_key_live' %}

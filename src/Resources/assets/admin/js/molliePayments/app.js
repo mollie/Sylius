@@ -147,8 +147,8 @@ const handleSubmitBtn = () => {
     const submitBtn = document.querySelector('button[type="submit"]')
     const randomId = Math.floor(Math.random() * 10000)
 
-    submitBtn.addEventListener('click',(e)=>{
-        e.preventDefault()
+    submitBtn.addEventListener('click',(event)=>{
+        event.preventDefault()
         if (nameInput && nameInput.value === ""){
             nameInput.value = "mollie";
         }
@@ -159,4 +159,6 @@ const handleSubmitBtn = () => {
     })
 }
 
-handleSubmitBtn()
+if (document.querySelector('.js-onboarding-wizard')){
+    handleSubmitBtn()
+}

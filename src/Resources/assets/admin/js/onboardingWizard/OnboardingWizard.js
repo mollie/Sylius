@@ -30,8 +30,10 @@ export default class onboardingWizard {
         );
 
         const expandButton = document.createElement('span');
-        expandButton.classList.add('shepherd-button__open');
-        expandButton.classList.add('js-shepherd-expand');
+        expandButton.classList.add(
+            'shepherd-button__open',
+            'js-shepherd-expand'
+        );
         expandButton.textContent = _get(wizardTranslations, 'common.open');
 
         const textOpen = buttonCollapse.querySelector('.js-shepherd-expand');

@@ -120,6 +120,7 @@ bitbag_sylius_mollie_plugin:
     enabled_buy_now_button: 'Activer le bouton Acheter maintenant'
     developed_by: 'Développé par'
     you_can_fin_info_about: "Vous trouverez plus d'informations nous concernant sur"
+    restart_tour: 'Recommencer la tournée'
     sylius_bundle: 'Visiter le lot Sylius'
     contact_bitbag: 'Contacter Bitbag'
     contact_mollie: 'Contacter Mollie'

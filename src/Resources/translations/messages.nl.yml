@@ -120,6 +120,7 @@ bitbag_sylius_mollie_plugin:
     enabled_buy_now_button: 'Schakel "Koop nu" knop in'
     developed_by: 'Ontwikkeld door'
     you_can_fin_info_about: 'Meer informatie over ons vindt u op'
+    restart_tour: 'Herstart tour  '
     sylius_bundle: 'Bezoek de Sylius-bundel'
     contact_bitbag: 'Neem contact op met Bitbag'
     contact_mollie: 'Neem contact op met Mollie'

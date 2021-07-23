@@ -1,6 +1,13 @@
+import Translator from '../helpers/translations';
+
+// export const Translator
+
+// Translator.trans('bitbag_sylius_mollie_plugin.onboardingMollie.step_1.title')
 export default {
     stepStart: {
-        title: 'Let me help you',
+        title: Translator.trans(
+            'bitbag_sylius_mollie_plugin.onboardingMollie.step_1.title'
+        ),
         text: 'Thank you for installing Mollie for payment services. This guide will take you through the configuration set-up.',
     },
     stepMollieConnect: {

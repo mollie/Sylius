@@ -31,5 +31,6 @@ const handleTourShow = async () => {
 };
 
 if (document.querySelector('.js-onboarding-wizard')) {
+    
     handleTourShow();
 }

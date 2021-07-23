@@ -1,6 +1,5 @@
 import Shepherd from 'shepherd.js';
 import _get from 'lodash.get';
-
 import {steps, stepQuitConfirmation} from './config/steps';
 import shepherdConfig from './config/shepherdConfig';
 import stepFactory from './helpers/stepFactory';

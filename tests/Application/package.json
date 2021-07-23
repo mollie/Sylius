@@ -2,7 +2,9 @@
 	"dependencies": {
 		"babel-polyfill": "^6.26.0",
 		"babel-preset-env": "^1.7.0",
+		"bazinga-translator": "^4.0.1",
 		"chart.js": "^2.9.3",
+		"intl-messageformat": "^9.8.0",
 		"jquery": "^3.2.0",
 		"jquery.dirtyforms": "^2.0.0",
 		"lightbox2": "^2.9.0",

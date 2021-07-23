@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@symfony/webpack-encore": "^1.5.0",
+    "bazinga-translator": "^4.0.1",
+    "intl-messageformat": "^9.8.0",
     "lodash.get": "^4.4.2",
     "node-sass": "^4.14.1",
     "sass-loader": "^9.0.1",

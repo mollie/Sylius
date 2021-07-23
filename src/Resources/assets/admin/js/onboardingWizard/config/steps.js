@@ -13,42 +13,6 @@ const paymentMethodOrderApi = 'ORDER_API';
 const enviromentTest = '0';
 const enviromentLive = '1';
 
-export const stepPaymentType = {
-    id: 'step-payment-type',
-    text: 'stepPaymentType.text',
-    classes: 'shepherd-element--align-right',
-    highlightClass: 'payment-settings',
-    attachTo: {
-        element: '.js-onboardingWizard-paymentType',
-        on: 'top-start',
-    },
-    btnNextClass: 'shepherd-button--arrow-down',
-};
-
-export const stepPaymentDescription = {
-    id: 'step-payment-description',
-    text: 'stepPaymentDescription.text',
-    classes: 'shepherd-element--align-right',
-    attachTo: {
-        element: '.js-onboardingWizard-paymentDescription',
-        on: 'top-start',
-    },
-    highlightClass: 'payment-settings',
-    btnNextClass: 'shepherd-button--arrow-down',
-};
-
-export const stepOrderApi = {
-    id: 'step-order-api',
-    highlightClass: 'payment-settings',
-    classes: 'shepherd-element--align-right',
-    text: 'stepOrderApi.text',
-    attachTo: {
-        element: '.js-onboardingWizard-paymentType',
-        on: 'top-start',
-    },
-    btnNextClass: 'shepherd-button--arrow-down',
-};
-
 export const stepQuitConfirmation = [
     {
         id: 'step-quit-confirmation',
@@ -320,7 +284,7 @@ export const steps = [
             );
         },
         id: 'step-order-number',
-        text: 'stepOrderNumber.text',
+        text: 'stepPaymentType.text',
         classes: 'step-12 shepherd-element--align-right',
         highlightClass: 'payment-settings',
         btnNextClass: 'shepherd-button--arrow-down',

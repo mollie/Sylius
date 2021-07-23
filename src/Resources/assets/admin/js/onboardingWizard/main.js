@@ -14,7 +14,7 @@ const handleTourShow = async () => {
         const response = await fetch(url);
         const data = await response.json();
 
-        tour.initTour();
+        const dupa = await tour.initTour();
         if (data.completed === true && !currentSavedStep) {
             tour.disableTour();
         } else if (currentSavedStep && status) {

@@ -1,6 +1,7 @@
 import Shepherd from 'shepherd.js';
 import _get from 'lodash.get';
 import {steps, stepQuitConfirmation} from './config/steps';
+import Translator from './helpers/translations';
 import shepherdConfig from './config/shepherdConfig';
 import stepFactory from './helpers/stepFactory';
 import wizardTranslations from './config/wizardTranslations';
@@ -89,20 +90,23 @@ export default class onboardingWizard {
         const restartTourTrigger = document.querySelector('.js-restart-tour');
 
         restartTourTrigger.addEventListener('click', () => {
-            this.tour.start();
+            this.initTour();
             this.navbar.classList.toggle('d-none');
         });
     }
 
-    initTour() {
+    async initTour() {
         if (this.navbar) {
+            const translations = await Translator;
             this.tour = new Shepherd.Tour({
                 ...this.tourConfig,
             });
             this.steps.forEach((step, stepIndex) => {
                 this.tour.addStep({
                     ...step,
-                    buttons: step.stepButtons(this, stepIndex),
+                    title: translations.trans(step.title),
+                    text: translations.trans(step.text),
+                    buttons: step.stepButtons(this, stepIndex, translations),
                     when: {
                         show: () => {
                             this.previousStepIndex =

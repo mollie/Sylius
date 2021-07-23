@@ -1,103 +1,79 @@
-import Translator from '../helpers/translations';
-
-// export const Translator
-
-// Translator.trans('bitbag_sylius_mollie_plugin.onboardingMollie.step_1.title')
 export default {
     stepStart: {
-        title: Translator.trans(
-            'bitbag_sylius_mollie_plugin.onboardingMollie.step_1.title'
-        ),
-        text: 'Thank you for installing Mollie for payment services. This guide will take you through the configuration set-up.',
+        title: 'bitbag_sylius_mollie_plugin.onboardingMollie.step_1.title',
+        text: 'bitbag_sylius_mollie_plugin.onboardingMollie.step_1.text',
     },
     stepMollieConnect: {
-        title: 'Connect to your Mollie account',
-        text: "To sync the Mollie plugin to your webshop you'll need Mollie API keys and Profile ID.",
+        title: 'bitbag_sylius_mollie_plugin.onboardingMollie.step_2.title',
+        text: 'bitbag_sylius_mollie_plugin.onboardingMollie.step_2.text',
     },
     stepEnv: {
-        text: "Now that you're connected to Mollie we will configure the environment and credentials.<br><br>Test will be the default environment in the plugin.<br><br>You only need to do the configuration once to have TEST + LIVE environments available. Try easily togging between the two.",
+        text: 'bitbag_sylius_mollie_plugin.onboardingMollie.step_3.text',
     },
     stepApiKey: {
-        text: 'Fill in your correct details and click "TEST API Key" this will return a successful or failed result for both the LIVE and TEST environments',
+        text: 'bitbag_sylius_mollie_plugin.onboardingMollie.step_4.text',
     },
     stepCheckoutConfig: {
-        text: "Next, we'll set-up key settings for the checkout screen display on your webshop.",
+        text: 'bitbag_sylius_mollie_plugin.onboardingMollie.step_5.text',
     },
     stepMollieComponents: {
-        text: `Enabling components, allows you to add the fields needed for credit card holder data to your own checkout.<br><br>If you select NO, customers will be redirected to the Mollie checkout page.<br><br>Learn more about Mollie components <a target="_blank" href="https://www.mollie.com/en/news/post/better-checkout-flows-with-mollie-components">here</a>.`,
+        text: `bitbag_sylius_mollie_plugin.onboardingMollie.step_6.text`,
     },
     stepMolliePayments: {
-        text: `Enabling single click payments remembers your consumer's payment preferences in order to expedite follow-up payments. Your consumer does not have to perform any additional actions to enjoy quick and easy payments.<br><br>Learn more about single click payments <a target="_blank" href="https://help.mollie.com/hc/en-us/articles/115000671249-What-are-single-click-payments-and-how-does-it-work-">here</a>.`,
+        text: `bitbag_sylius_mollie_plugin.onboardingMollie.step_7.text`,
     },
     stepMethodConfig: {
-        text: "Now it's time to customize features for individual payment methods.<br><br>First, select the load methods button. Only the methods that are enabled in your Mollie account will display here.<br><br>Then you use the enable/disable selector to control which will show on your webshop checkout.<br><br>NOTE: It is not possible to continue the guided onboarding without loading payment methods.",
-    },
-    stepMethodRequired: {
-        text: 'The loaded methods are required to complete onboard wizard and move forward, please load methods by clicking "Load Methods" button and come back to complete this tutorial',
-    },
-    stepErrorTitle: {
-        text: 'Onboarding Assistant Wizard - Ended Up',
-    },
-    stepErrorDescription: {
-        text: 'The required action was not performed',
+        text: 'bitbag_sylius_mollie_plugin.onboardingMollie.step_8.text',
     },
     stepPaymentTitle: {
-        text: 'For each method, you can enter a custom title here. It will be displayed on your webshop checkout page.',
+        text: 'bitbag_sylius_mollie_plugin.onboardingMollie.step_9.text',
     },
     stepImageUpload: {
-        text: 'Try uploading a custom image for the payment method icon. This will be shown in the webshop checkout page.',
+        text: 'bitbag_sylius_mollie_plugin.onboardingMollie.step_10.text',
     },
     stepCountryRestriction: {
-        text: 'Here you can create filters for country specific payment methods - for example, if you want iDEAL only to show for Netherlands customers you choose "Select Countries" and select Netherlands.',
+        text: 'bitbag_sylius_mollie_plugin.onboardingMollie.step_11.text',
     },
     stepPaymentMethod: {
-        text: 'Per method, you can select which Mollie API to use to create payments. Click <a target="_blank" href="https://docs.mollie.com/orders/why-use-orders">here</a> to read about the differences between Orders and Payments API.',
+        text: 'bitbag_sylius_mollie_plugin.onboardingMollie.step_12.text',
     },
-    stepOrderNumber: {
-        text: 'When using Payments API you may want additional details to help you match payments with customer orders -- you can enter those values here but make sure to use the correct tags provided in the text below',
+    stepPaymentType: {
+        text: 'bitbag_sylius_mollie_plugin.onboardingMollie.step_13.1.2.text',
     },
     stepOrdersAPI: {
-        text: 'This is Mollie suggested API to use for webshops because it allows you to create “orders”. An order contains the personal information of a customer (e.g. address) and products that the customer ordered. When an order is made, a corresponding payment will be created automatically.',
+        text: 'bitbag_sylius_mollie_plugin.onboardingMollie.step_13.2.2.text',
     },
     stepPaymentsAPI: {
-        text: 'Payments API <br>Note: Payments API can not be used for methods such as Klarna',
+        text: 'bitbag_sylius_mollie_plugin.onboardingMollie.step_13.1.1.text',
     },
     stepFees: {
         text: 'In case you have fees that you are passing on to the consumer, you can add them <a target="_blank" href="https://help.mollie.com/hc/en-us/articles/360012564454-Can-I-pass-over-the-costs-for-the-use-of-a-payment-method-to-my-customers-">here</a>',
     },
     stepSave: {
-        text: 'Remeber to save your configurations. ',
+        text: 'bitbag_sylius_mollie_plugin.onboardingMollie.step_15.text',
     },
     stepFinishWizard: {
-        title: '<i class="icon check circle"></i> You\'re all set!',
-        text: 'You can now attempt a customer order on your website.',
+        title: 'bitbag_sylius_mollie_plugin.onboardingMollie.step_16.title',
+        text: 'bitbag_sylius_mollie_plugin.onboardingMollie.step_16.text',
     },
     stepQuitConfirmation: {
         title: 'Are you sure you want to quit ?',
         text: "You're all done, you can now attempt a consumer order or your website",
     },
-    stepPaymentType: {
-        text: 'When using Payments API you may want additional details to help you match payments with customer orders -- you can enter those values here but make sure to use the correct tags provide in the text below',
-    },
-    stepPaymentDescription: {
-        text: 'Choose Payments API Learn about the difference between Orders API or the Payments API',
-    },
-    stepOrderApi: {
-        text:
-            'Select Orders API - this is Mollie\n' +
-            'suggested API to use for webshops b/c it allows you to create “orders”. An order contains the personal information of a customer (e.g. address) and products that the customer ordered. When an order is made, a corresponding payment will be created automatically.',
-    },
     stepButtons: {
-        goBack: 'Go back',
-        skipWizard: 'Skip this, I know how it works',
+        goBack: 'bitbag_sylius_mollie_plugin.onboardingMollie.btnBack',
+        skipWizard:
+            'bitbag_sylius_mollie_plugin.onboardingMollie.step_1.btnBack',
         startWizard:
-            'Start onboarding assistant <i class="icon angle right"></i>',
-        loginMollieAccount: 'Login to my account',
+            'bitbag_sylius_mollie_plugin.onboardingMollie.step_1.btnNext',
+        loginMollieAccount:
+            'bitbag_sylius_mollie_plugin.onboardingMollie.step_2.btnLogin',
         nextWithArrow: 'Next <i class="icon angle right"></i>',
-        next: 'Next',
+        next: 'bitbag_sylius_mollie_plugin.onboardingMollie.btnNext',
         createMollieAccount:
-            'Create a Mollie account <i class="icon angle right"></i>',
-        finishWizard: 'Start using Mollie <i class="icon angle right"></i>',
+            'bitbag_sylius_mollie_plugin.onboardingMollie.step_2.btnRegister',
+        finishWizard:
+            'bitbag_sylius_mollie_plugin.onboardingMollie.step_16.btnNext',
         quitConfirm: 'Quit the onboarding assistant',
         quitCancel: 'Continue onboarding <i class="icon angle right"></i>',
     },

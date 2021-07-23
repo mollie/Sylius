@@ -71,3 +71,21 @@ export const saveStep = (stepId) => {
 export const clearStorage = (key) => {
     window.localStorage.removeItem(`${key}`);
 };
+
+export const handleSubmit = () => {
+    const nameInput = document.querySelector(
+        '#sylius_payment_method_translations_en_US_name'
+    );
+    const keyInput = document.querySelector('#sylius_payment_method_code');
+    const submitBtn = document.querySelector('button[type="submit"]');
+    const randomId = Math.floor(Math.random() * 10000);
+
+    submitBtn.addEventListener('click', (event) => {
+        if (nameInput && nameInput.value === '') {
+            nameInput.value = 'mollie';
+        }
+        if (keyInput && keyInput.value === '') {
+            keyInput.value = 'mollie' + randomId;
+        }
+    });
+};

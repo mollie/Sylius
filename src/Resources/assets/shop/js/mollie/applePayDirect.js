@@ -3,21 +3,33 @@ $(function () {
         const version = 3;
         const divider = 100;
 
-        const applePayButton = document.getElementById('mollie_applepay_button');
+        const applePayButton = document.getElementById(
+            'mollie_applepay_button'
+        );
 
-        const bitbagMollieValidateMerchantUrl = applePayButton.dataset.urlValidate;
+        const bitbagMollieValidateMerchantUrl =
+            applePayButton.getAttribute('data-url-validate');
+        const bitbagMolliePaymentUrl =
+            applePayButton.getAttribute('data-url-payment');
+        const bitbagMollieCurrency = applePayButton.getAttribute(
+            'data-currency-order'
+        );
+        const bitbagMollieMerchantName =
+            applePayButton.getAttribute('data-merchant-name');
 
-        const bitbagMolliePaymentUrl = applePayButton.dataset.urlPayment;
-        const bitbagMollieCurrency = applePayButton.dataset.dataCurrencyOrder;
-        const bitbagMollieMerchantName = applePayButton.dataset.dataMerchantName;
-
-        let bitbagMollieTotalOrder = applePayButton.dataset.dataTotalOrder;
+        let bitbagMollieTotalOrder =
+            applePayButton.getAttribute('data-total-order');
         bitbagMollieTotalOrder = bitbagMollieTotalOrder / divider;
         bitbagMollieTotalOrder = bitbagMollieTotalOrder.toString();
 
         const session = new ApplePaySession(
             version,
-            request('US', bitbagMollieCurrency, bitbagMollieMerchantName, bitbagMollieTotalOrder)
+            request(
+                'US',
+                bitbagMollieCurrency,
+                bitbagMollieMerchantName,
+                bitbagMollieTotalOrder
+            )
         );
 
         session.onvalidatemerchant = (applePayValidateMerchantEvent) => {
@@ -29,7 +41,9 @@ $(function () {
                 },
                 success: (merchantSession) => {
                     if (merchantSession.success === true) {
-                        session.completeMerchantValidation(JSON.parse(merchantSession.data));
+                        session.completeMerchantValidation(
+                            JSON.parse(merchantSession.data)
+                        );
                     } else {
                         session.abort();
                     }
@@ -69,14 +83,20 @@ $(function () {
         session.begin();
     };
 
-    const applePayMethodElement = document.querySelector('#mollie_applepay_button');
+    const applePayMethodElement = document.querySelector(
+        '#mollie_applepay_button'
+    );
 
-    const canShowButton = applePayMethodElement && ApplePaySession && ApplePaySession.canMakePayments();
+    const canShowButton =
+        applePayMethodElement &&
+        ApplePaySession &&
+        ApplePaySession.canMakePayments();
     if (canShowButton) {
         applePayMethodElement.style.display = 'block';
     }
-
-    document.querySelector('#mollie_applepay_button').addEventListener('click', (evt) => {
-        applePaySession();
-    });
+    if (applePayMethodElement) {
+        applePayMethodElement.addEventListener('click', (evt) => {
+            applePaySession();
+        });
+    }
 });

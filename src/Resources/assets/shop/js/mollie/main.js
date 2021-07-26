@@ -1,3 +1,3 @@
 import './app';
-import './applePayDirect';
 import './applePayRequest';
+import './applePayDirect';

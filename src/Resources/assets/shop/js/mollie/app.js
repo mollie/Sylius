@@ -1,27 +1,27 @@
 $(function () {
     let selectedValue = false;
-    let mollieData = $(".online-online-payment__container");
+    let mollieData = $('.online-online-payment__container');
     const initialOrderTotal = $('#sylius-summary-grand-total').text();
-    const cardActiveClass = "online-payment__item--active";
+    const cardActiveClass = 'online-payment__item--active';
     const orderTotalRow = $('#sylius-summary-grand-total');
     const components = Boolean(mollieData.data('components'));
 
     $('input[id*="sylius_checkout_select_payment_"][type=radio]').on('change', ({currentTarget}) => {
         if (!currentTarget.classList.contains('mollie-payments')) {
-            restoreOrderTotalValue()
-            $(`.${cardActiveClass} input[type="radio"]`).prop('checked', false)
-            $(`.${cardActiveClass}`).removeClass(cardActiveClass)
+            restoreOrderTotalValue();
+            $(`.${cardActiveClass} input[type="radio"]`).prop('checked', false);
+            $(`.${cardActiveClass}`).removeClass(cardActiveClass);
         }
-    })
+    });
 
-    $(".online-payment__input").on('change', ({currentTarget}) => {
+    $('.online-payment__input').on('change', ({currentTarget}) => {
         let currentItem = $(currentTarget).parent('.online-payment__item');
         currentItem.siblings().removeClass('online-payment__item--active');
         currentItem.addClass('online-payment__item--active');
         selectedValue = currentTarget.value;
 
         if (!$('.mollie-payments').prop('checked')) {
-            $('.mollie-payments').prop('checked', true)
+            $('.mollie-payments').prop('checked', true);
         }
 
         if (currentItem.data('feeurl')) {
@@ -31,25 +31,25 @@ $(function () {
 
     function getPaymentFee(url) {
         fetch(url)
-            .then(response => response.json())
-            .then(data => {
+            .then((response) => response.json())
+            .then((data) => {
                 const paymentFeeRow = $('#bitbag-paymentFee-row');
 
                 if (paymentFeeRow.length && data.view) {
-                    paymentFeeRow.replaceWith(data.view)
-                    orderTotalRow.text(data.orderTotal)
+                    paymentFeeRow.replaceWith(data.view);
+                    orderTotalRow.text(data.orderTotal);
                 } else if (data.view) {
-                    $('#sylius-checkout-subtotal .ui.large.header').before(data.view)
-                    orderTotalRow.text(data.orderTotal)
+                    $('#sylius-checkout-subtotal .ui.large.header').before(data.view);
+                    orderTotalRow.text(data.orderTotal);
                 } else {
-                    restoreOrderTotalValue()
+                    restoreOrderTotalValue();
                 }
-            })
+            });
     }
 
     function restoreOrderTotalValue() {
-        $('#bitbag-paymentFee-row').replaceWith('')
-        orderTotalRow.text(initialOrderTotal)
+        $('#bitbag-paymentFee-row').replaceWith('');
+        orderTotalRow.text(initialOrderTotal);
     }
 
     if (mollieData.length > 0 && true === components) {
@@ -64,69 +64,66 @@ $(function () {
             testmode = false;
         }
 
-        const mollie = Mollie(
-            mollieData.data('profile_id'),
-            {
-                locale: mollieData.data('locale'),
-                testmode: testmode
-            }
-        );
+        const mollie = Mollie(mollieData.data('profile_id'), {
+            locale: mollieData.data('locale'),
+            testmode: testmode,
+        });
 
-        const form = document.getElementsByName("sylius_checkout_select_payment")[0];
+        const form = document.getElementsByName('sylius_checkout_select_payment')[0];
 
-        const formError = document.getElementById("form-error");
-        const submitButton = document.getElementById("next-step") || document.getElementById("sylius-pay-link");
+        const formError = document.getElementById('form-error');
+        const submitButton = document.getElementById('next-step') || document.getElementById('sylius-pay-link');
         const tokenField = document.querySelector('[id*="_details_cartToken"]');
 
-        const cardHolder = mollie.createComponent("cardHolder");
+        const cardHolder = mollie.createComponent('cardHolder');
 
-        cardHolder.mount("#card-holder");
+        cardHolder.mount('#card-holder');
 
-        const cardHolderError = document.getElementById("card-holder-error");
-        cardHolder.addEventListener("change", event => {
+        const cardHolderError = document.getElementById('card-holder-error');
+        cardHolder.addEventListener('change', (event) => {
             if (event.error && event.touched) {
                 cardHolderError.textContent = event.error;
             } else {
-                cardHolderError.textContent = "";
+                cardHolderError.textContent = '';
             }
         });
 
-        const cardNumber = mollie.createComponent("cardNumber");
-        cardNumber.mount("#card-number");
+        const cardNumber = mollie.createComponent('cardNumber');
+        cardNumber.mount('#card-number');
 
-        const cardNumberError = document.getElementById("card-number-error");
+        const cardNumberError = document.getElementById('card-number-error');
 
-        cardNumber.addEventListener("change", event => {
+        cardNumber.addEventListener('change', (event) => {
             if (event.error && event.touched) {
                 cardNumberError.textContent = event.error;
             } else {
-                cardNumberError.textContent = "";
+                cardNumberError.textContent = '';
             }
         });
 
-        const expiryDate = mollie.createComponent("expiryDate");
-        expiryDate.mount("#expiry-date");
+        const expiryDate = mollie.createComponent('expiryDate');
+        expiryDate.mount('#expiry-date');
 
-        const expiryDateError = document.getElementById("expiry-date-error");
+        const expiryDateError = document.getElementById('expiry-date-error');
 
-        expiryDate.addEventListener("change", event => {
+        expiryDate.addEventListener('change', (event) => {
             if (event.error && event.touched) {
                 expiryDateError.textContent = event.error;
             } else {
-                expiryDateError.textContent = "";
+                expiryDateError.textContent = '';
             }
         });
 
-        const verificationCode = mollie.createComponent("verificationCode");
-        verificationCode.mount("#verification-code");
+        const verificationCode = mollie.createComponent('verificationCode');
+        verificationCode.mount('#verification-code');
 
-        const verificationCodeError = document.getElementById("verification-code-error");
+        const verificationCodeError = document.getElementById('verification-code-error');
 
-        verificationCode.addEventListener("change", event => {
+        verificationCode.addEventListener('change', (event) => {
             if (event.error && event.touched) {
                 verificationCodeError.textContent = event.error;
             } else {
-                verificationCodeError.textContent = "";
+                verificationCodeError.textContent = '';
             }
         });
 
@@ -138,12 +135,12 @@ $(function () {
             submitButton.disabled = false;
         }
 
-        form.addEventListener("submit", async event => {
-            if ($(".online-payment__input:checked").val() === 'creditcard') {
+        form.addEventListener('submit', async (event) => {
+            if ($('.online-payment__input:checked').val() === 'creditcard') {
                 event.preventDefault();
                 disableForm();
 
-                formError.textContent = "";
+                formError.textContent = '';
 
                 const {token, error} = await mollie.createToken();
 
@@ -155,10 +152,10 @@ $(function () {
                     return;
                 }
 
-                const tokenInput = document.createElement("input");
-                tokenInput.setAttribute("name", "token");
-                tokenInput.setAttribute("type", "hidden");
-                tokenInput.setAttribute("value", token);
+                const tokenInput = document.createElement('input');
+                tokenInput.setAttribute('name', 'token');
+                tokenInput.setAttribute('type', 'hidden');
+                tokenInput.setAttribute('value', token);
 
                 form.appendChild(tokenInput);
                 tokenField.value = token;
@@ -168,11 +165,11 @@ $(function () {
         });
     }
 
-    const applePay = document.getElementById("applepay");
+    const applePay = document.getElementById('applepay');
 
     if (applePay) {
         if (window.ApplePaySession || ApplePaySession.canMakePayments()) {
-            applePay.style.display = "block";
+            applePay.style.display = 'block';
         }
     }
 });

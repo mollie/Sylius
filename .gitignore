@@ -6,6 +6,7 @@
 /composer.lock
 
 /src/Resources/public/bitbag/manifest.json
+/src/Resources/public/bitbag/mollie/admin.js.LICENSE.txt
 /public/bitbag/entrypoints.json
 
 /etc/build/*

@@ -18,7 +18,7 @@ export const methodLoadIndicator = (item, messageContainer) => {
 
 export const validateFields = (elements, messageContainer) => {
     const errors = [];
-	
+
     elements.forEach((item) => !item.value && errors.push(item));
     if (errors.every((el) => el === null)) {
         messageContainer.classList.remove('step-next-disabled');
@@ -58,8 +58,7 @@ export const updateTourCompletition = async () => {
 };
 
 export const getStatusInfo = () => {
-    const status = document.querySelector('#mollie-payment-form').dataset
-        .status;
+    const status = document.querySelector('#mollie-payment-form').dataset.status;
     if (status === '') {
         return true;
     }

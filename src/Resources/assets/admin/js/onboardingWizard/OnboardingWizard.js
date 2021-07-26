@@ -7,33 +7,22 @@ import stepFactory from './helpers/stepFactory';
 import wizardTranslations from './config/wizardTranslations';
 
 export default class onboardingWizard {
-    constructor(
-        tourSteps = steps,
-        tourConfig = shepherdConfig,
-        tourQuitConfirmation = stepQuitConfirmation
-    ) {
+    constructor(tourSteps = steps, tourConfig = shepherdConfig, tourQuitConfirmation = stepQuitConfirmation) {
         this.steps = stepFactory(tourSteps);
         this.stepQuitConfirmation = stepFactory(tourQuitConfirmation)[0];
         this.tourConfig = tourConfig;
         this.navbar = document.querySelector('.js-onboarding-wizard');
-        this.navBarItems = [
-            ...this.navbar.querySelectorAll('.js-onboarding-wizard-progress'),
-        ];
+        this.navBarItems = [...this.navbar.querySelectorAll('.js-onboarding-wizard-progress')];
         this.previousStepIndex = 0;
     }
 
     modalCollapseHandler() {
         const currentStep = this.tour.currentStep.el;
         const buttonCollapse = currentStep.querySelector('.js-tour-collapse');
-        const isCollapsed = [...currentStep.classList].includes(
-            'shepherd-element--collapsed'
-        );
+        const isCollapsed = [...currentStep.classList].includes('shepherd-element--collapsed');
 
         const expandButton = document.createElement('span');
-        expandButton.classList.add(
-            'shepherd-button__open',
-            'js-shepherd-expand'
-        );
+        expandButton.classList.add('shepherd-button__open', 'js-shepherd-expand');
         expandButton.textContent = _get(wizardTranslations, 'common.open');
 
         const textOpen = buttonCollapse.querySelector('.js-shepherd-expand');
@@ -44,10 +33,7 @@ export default class onboardingWizard {
             buttonCollapse.appendChild(expandButton);
         }
 
-        currentStep.classList.toggle(
-            'shepherd-element--collapsed',
-            !isCollapsed
-        );
+        currentStep.classList.toggle('shepherd-element--collapsed', !isCollapsed);
         currentStep.setAttribute('aria-hidden', !isCollapsed);
     }
 
@@ -56,10 +42,7 @@ export default class onboardingWizard {
 
         this.tour.addStep({
             ...this.stepQuitConfirmation,
-            buttons: this.stepQuitConfirmation.stepButtons(
-                this,
-                returnStepIndex
-            ),
+            buttons: this.stepQuitConfirmation.stepButtons(this, returnStepIndex, this.translations),
         });
 
         this.tour.show('step-quit-confirmation', true);
@@ -71,14 +54,10 @@ export default class onboardingWizard {
     }
 
     navbarProgressHandler() {
-        const currentStepProgress =
-            this.tour.getCurrentStep().options.highlightClass;
+        const currentStepProgress = this.tour.getCurrentStep().options.highlightClass;
 
         this.navBarItems.forEach((navBarItem) => {
-            if (
-                navBarItem.getAttribute('data-navigation-step') ===
-                currentStepProgress
-            ) {
+            if (navBarItem.getAttribute('data-navigation-step') === currentStepProgress) {
                 navBarItem.classList.add('onboarding-wizard__step--current');
             } else {
                 navBarItem.classList.remove('onboarding-wizard__step--current');
@@ -97,7 +76,8 @@ export default class onboardingWizard {
 
     async initTour() {
         if (this.navbar) {
-            const translations = await Translator;
+            const translations = await Translator();
+            this.translations = translations;
             this.tour = new Shepherd.Tour({
                 ...this.tourConfig,
             });
@@ -109,8 +89,7 @@ export default class onboardingWizard {
                     buttons: step.stepButtons(this, stepIndex, translations),
                     when: {
                         show: () => {
-                            this.previousStepIndex =
-                                this.tour.getCurrentStep().id;
+                            this.previousStepIndex = this.tour.getCurrentStep().id;
                             this.navbarProgressHandler();
                         },
                     },

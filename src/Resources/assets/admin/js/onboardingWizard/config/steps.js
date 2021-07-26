@@ -63,10 +63,7 @@ export const steps = [
     },
     {
         showOn: function () {
-            currentStepValidator(
-                '.js-onboardingWizard-environment',
-                '.pushable'
-            );
+            currentStepValidator('.js-onboardingWizard-environment', '.pushable');
             return true;
         },
         id: 'step-env',
@@ -81,14 +78,8 @@ export const steps = [
     },
     {
         showOn: function () {
-            currentStepValidator(
-                '.js-two-fields-test .required.field',
-                '.pushable'
-            );
-            return paymentTypeIndicator(
-                '.js-onboardingWizard-environment',
-                enviromentTest
-            );
+            currentStepValidator('.js-two-fields-test .required.field', '.pushable');
+            return paymentTypeIndicator('.js-onboardingWizard-environment', enviromentTest);
         },
         id: 'step-api-key-test',
         text: 'stepApiKey.text',
@@ -103,14 +94,8 @@ export const steps = [
     {
         showOn: function () {
             clearStorage('step');
-            currentStepValidator(
-                '.js-onboardingWizard-profile-api',
-                '.pushable'
-            );
-            return paymentTypeIndicator(
-                '.js-onboardingWizard-environment',
-                enviromentLive
-            );
+            currentStepValidator('.js-onboardingWizard-profile-api', '.pushable');
+            return paymentTypeIndicator('.js-onboardingWizard-environment', enviromentLive);
         },
         id: 'step-api-key-live',
         text: 'stepApiKey.text',
@@ -131,10 +116,7 @@ export const steps = [
     },
     {
         showOn: function () {
-            currentStepValidator(
-                '.js-onboardingWizard-mollieComponents',
-                '.pushable'
-            );
+            currentStepValidator('.js-onboardingWizard-mollieComponents', '.pushable');
             return true;
         },
         id: 'step-mollie-components',
@@ -149,10 +131,7 @@ export const steps = [
     },
     {
         showOn: function () {
-            currentStepValidator(
-                '.js-onboardingWizard-singleClick',
-                '.pushable'
-            );
+            currentStepValidator('.js-onboardingWizard-singleClick', '.pushable');
             return true;
         },
         id: 'step-mollie-payments',
@@ -183,10 +162,7 @@ export const steps = [
     {
         showOn: function () {
             saveStep(this.id);
-            currentStepValidator(
-                '.js-onboardingWizard-load-methods',
-                '.pushable'
-            );
+            currentStepValidator('.js-onboardingWizard-load-methods', '.pushable');
             methodLoadIndicator('.js-payment-method-not-loaded', '.pushable');
             return true;
         },
@@ -202,10 +178,7 @@ export const steps = [
     },
     {
         showOn: function () {
-            currentStepValidator(
-                '.js-onboardingWizard-paymentName',
-                '.pushable'
-            );
+            currentStepValidator('.js-onboardingWizard-paymentName', '.pushable');
             return true;
         },
         id: 'step-payment-title',
@@ -220,10 +193,7 @@ export const steps = [
     },
     {
         showOn: function () {
-            currentStepValidator(
-                '.js-onboardingWizard-customizeMethodImage',
-                '.pushable'
-            );
+            currentStepValidator('.js-onboardingWizard-customizeMethodImage', '.pushable');
             return true;
         },
         id: 'step-image-upload',
@@ -238,10 +208,7 @@ export const steps = [
     },
     {
         showOn: function () {
-            currentStepValidator(
-                '.js-onboardingWizard-countryRestriction',
-                '.pushable'
-            );
+            currentStepValidator('.js-onboardingWizard-countryRestriction', '.pushable');
             return true;
         },
         id: 'step-country-restriction',
@@ -256,10 +223,7 @@ export const steps = [
     },
     {
         showOn: function () {
-            currentStepValidator(
-                '.js-onboardingWizard-PaymentMethod',
-                '.pushable'
-            );
+            currentStepValidator('.js-onboardingWizard-PaymentMethod', '.pushable');
             return true;
         },
         id: 'step-payment-method',
@@ -274,10 +238,7 @@ export const steps = [
     },
     {
         showOn: function () {
-            currentStepValidator(
-                '.js-onboardingWizard-order-number',
-                '.pushable'
-            );
+            currentStepValidator('.js-onboardingWizard-order-number', '.pushable');
             return paymentTypeIndicator(
                 '#sylius_payment_method_gatewayConfig_mollieGatewayConfig_0_paymentType',
                 paymentMethodPaymentApi

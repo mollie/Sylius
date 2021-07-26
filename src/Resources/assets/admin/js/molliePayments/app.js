@@ -1,67 +1,66 @@
-
 $(function () {
-    const mollieFormIncluded = document.getElementById("mollie-payment-form");
+    const mollieFormIncluded = document.getElementById('mollie-payment-form');
 
     if (!mollieFormIncluded) {
         return;
     }
 
-    $("#get_methods").on('click', function () {
-        let form = $(".ui.form");
+    $('#get_methods').on('click', function () {
+        let form = $('.ui.form');
         form.addClass('loading');
 
         $.ajax({
-            type: "GET",
+            type: 'GET',
             url: $(this).data('url'),
             success: function (data) {
                 location.reload();
             },
             error: function () {
                 location.reload();
-            }
+            },
         });
     });
 
     $('.ui.dropdown').dropdown();
 
-    $(".form_button--delete-img").each(function (index, value) {
+    $('.form_button--delete-img').each(function (index, value) {
         $(this).on('click', function () {
-            let form = $(".ui.form");
+            let form = $('.ui.form');
             let value = $(this).data('value');
             form.addClass('loading');
 
             $.ajax({
                 data: {method: value},
-                type: "DELETE",
+                type: 'DELETE',
                 url: $(this).data('url'),
                 success: function (data) {
                     location.reload();
                 },
                 error: function () {
                     form.removeClass('loading');
-                }
+                },
             });
-        })
+        });
     });
 
-    $(".bitbag-mollie-components").change(function () {
+    $('.bitbag-mollie-components').change(function () {
         if ($(this).is(':checked')) {
             $('.bitbag-single-click-payment').prop('checked', !$(this).is(':checked'));
         }
-    })
+    });
 
-    $(".bitbag-single-click-payment").change(function () {
+    $('.bitbag-single-click-payment').change(function () {
         if ($(this).is(':checked')) {
             $('.bitbag-mollie-components').prop('checked', !$(this).is(':checked'));
         }
-    })
+    });
 
     $('[id$="_paymentType"]').each(function (index) {
         setPaymentDescription($(this), index);
 
         $(this).on('change', function (event) {
             setPaymentDescription($(event.target), index);
-        })
+        });
     });
 
     function setPaymentDescription(select) {
@@ -78,46 +77,48 @@ $(function () {
         }
     }
 
-
     $('[id$="_paymentSurchargeFee_type"]').each(function (index) {
-        const value = $(this).find(":selected").val();
+        const value = $(this).find(':selected').val();
         setPaymentFeeFields(value, index);
 
         $(this).on('change', function () {
             const value = $(this).val();
             setPaymentFeeFields(value, index);
-        })
+        });
     });
 
     function setPaymentFeeFields(value, index) {
-        const fixedAmount = 'sylius_payment_method_gatewayConfig_mollieGatewayConfig_'+ index +'_paymentSurchargeFee_fixedAmount';
-        const percentage = 'sylius_payment_method_gatewayConfig_mollieGatewayConfig_'+ index +'_paymentSurchargeFee_percentage';
-        const surchargeLimit = 'sylius_payment_method_gatewayConfig_mollieGatewayConfig_'+ index +'_paymentSurchargeFee_surchargeLimit';
+        const fixedAmount =
+            'sylius_payment_method_gatewayConfig_mollieGatewayConfig_' + index + '_paymentSurchargeFee_fixedAmount';
+        const percentage =
+            'sylius_payment_method_gatewayConfig_mollieGatewayConfig_' + index + '_paymentSurchargeFee_percentage';
+        const surchargeLimit =
+            'sylius_payment_method_gatewayConfig_mollieGatewayConfig_' + index + '_paymentSurchargeFee_surchargeLimit';
 
         if (value === 'no_fee') {
-            $('label[for='+fixedAmount+'], input#'+fixedAmount+'').hide();
-            $('label[for='+percentage+'], input#'+percentage+'').hide();
-            $('label[for='+surchargeLimit+'], input#'+surchargeLimit+'').hide();
+            $('label[for=' + fixedAmount + '], input#' + fixedAmount + '').hide();
+            $('label[for=' + percentage + '], input#' + percentage + '').hide();
+            $('label[for=' + surchargeLimit + '], input#' + surchargeLimit + '').hide();
         }
         if (value === 'percentage') {
-            $('label[for='+percentage+'], input#'+percentage+'').show();
-            $('label[for='+surchargeLimit+'], input#'+surchargeLimit+'').show();
-            $('label[for='+fixedAmount+'], input#'+fixedAmount+'').hide();
+            $('label[for=' + percentage + '], input#' + percentage + '').show();
+            $('label[for=' + surchargeLimit + '], input#' + surchargeLimit + '').show();
+            $('label[for=' + fixedAmount + '], input#' + fixedAmount + '').hide();
         }
         if (value === 'fixed_fee') {
-            $('label[for='+fixedAmount+'], input#'+fixedAmount+'').show();
-            $('label[for='+percentage+'], input#'+percentage+'').hide();
-            $('label[for='+surchargeLimit+'], input#'+surchargeLimit+'').hide();
+            $('label[for=' + fixedAmount + '], input#' + fixedAmount + '').show();
+            $('label[for=' + percentage + '], input#' + percentage + '').hide();
+            $('label[for=' + surchargeLimit + '], input#' + surchargeLimit + '').hide();
         }
         if (value === 'fixed_fee_and_percentage') {
-            $('label[for='+fixedAmount+'], input#'+fixedAmount+'').show();
-            $('label[for='+percentage+'], input#'+percentage+'').show();
-            $('label[for='+surchargeLimit+'], input#'+surchargeLimit+'').show();
+            $('label[for=' + fixedAmount + '], input#' + fixedAmount + '').show();
+            $('label[for=' + percentage + '], input#' + percentage + '').show();
+            $('label[for=' + surchargeLimit + '], input#' + surchargeLimit + '').show();
         }
     }
 
     $('[id$="_country_restriction"]').each(function (index) {
-        const value = $(this).find(":selected").val();
+        const value = $(this).find(':selected').val();
         setCountryRestriction(value, index);
 
         $(this).on('change', function () {
@@ -142,23 +143,23 @@ $(function () {
 });
 
 const handleSubmitBtn = () => {
-    const nameInput = document.querySelector('#sylius_payment_method_translations_en_US_name')
-    const keyInput = document.querySelector('#sylius_payment_method_code')
-    const submitBtn = document.querySelector('button[type="submit"]')
-    const randomId = Math.floor(Math.random() * 10000)
+    const nameInput = document.querySelector('#sylius_payment_method_translations_en_US_name');
+    const keyInput = document.querySelector('#sylius_payment_method_code');
+    const submitBtn = document.querySelector('button[type="submit"]');
+    const randomId = Math.floor(Math.random() * 10000);
 
-    submitBtn.addEventListener('click',(event)=>{
-        event.preventDefault()
-        if (nameInput && nameInput.value === ""){
-            nameInput.value = "mollie";
+    submitBtn.addEventListener('click', (event) => {
+        event.preventDefault();
+        if (nameInput && nameInput.value === '') {
+            nameInput.value = 'mollie';
         }
-        if (keyInput && keyInput.value === ""){
-            keyInput.value = "mollie" + randomId;
+        if (keyInput && keyInput.value === '') {
+            keyInput.value = 'mollie' + randomId;
         }
-        submitBtn.closest('form').submit()
-    })
-}
+        submitBtn.closest('form').submit();
+    });
+};
 
-if (document.querySelector('.js-onboarding-wizard')){
-    handleSubmitBtn()
+if (document.querySelector('.js-onboarding-wizard')) {
+    handleSubmitBtn();
 }

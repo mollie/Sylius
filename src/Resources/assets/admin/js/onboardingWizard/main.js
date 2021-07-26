@@ -3,18 +3,15 @@ import OnboardingWizard from './OnboardingWizard';
 const handleTourShow = async () => {
     const tour = new OnboardingWizard();
     const url = '/admin/onboarding-wizard/status';
-    const status = document.querySelector('#mollie-payment-form').dataset
-        .status;
-    const paymentMethodsNotLoaded = document.querySelector(
-        '.js-payment-method-not-loaded'
-    );
+    const status = document.querySelector('#mollie-payment-form').dataset.status;
+    const paymentMethodsNotLoaded = document.querySelector('.js-payment-method-not-loaded');
     const currentSavedStep = window.localStorage.getItem('step');
 
     try {
         const response = await fetch(url);
         const data = await response.json();
-
-        const dupa = await tour.initTour();
+        const startWizard = await tour.initTour();
+        
         if (data.completed === true && !currentSavedStep) {
             tour.disableTour();
         } else if (currentSavedStep && status) {
@@ -31,6 +28,5 @@ const handleTourShow = async () => {
 };
 
 if (document.querySelector('.js-onboarding-wizard')) {
-    
     handleTourShow();
 }

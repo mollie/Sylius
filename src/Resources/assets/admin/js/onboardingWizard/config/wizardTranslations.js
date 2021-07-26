@@ -62,20 +62,15 @@ export default {
     },
     stepButtons: {
         goBack: 'bitbag_sylius_mollie_plugin.onboardingMollie.btnBack',
-        skipWizard:
-            'bitbag_sylius_mollie_plugin.onboardingMollie.step_1.btnBack',
-        startWizard:
-            'bitbag_sylius_mollie_plugin.onboardingMollie.step_1.btnNext',
-        loginMollieAccount:
-            'bitbag_sylius_mollie_plugin.onboardingMollie.step_2.btnLogin',
+        skipWizard: 'bitbag_sylius_mollie_plugin.onboardingMollie.step_1.btnBack',
+        startWizard: 'bitbag_sylius_mollie_plugin.onboardingMollie.step_1.btnNext',
+        loginMollieAccount: 'bitbag_sylius_mollie_plugin.onboardingMollie.step_2.btnLogin',
         nextWithArrow: 'Next <i class="icon angle right"></i>',
         next: 'bitbag_sylius_mollie_plugin.onboardingMollie.btnNext',
-        createMollieAccount:
-            'bitbag_sylius_mollie_plugin.onboardingMollie.step_2.btnRegister',
-        finishWizard:
-            'bitbag_sylius_mollie_plugin.onboardingMollie.step_16.btnNext',
+        createMollieAccount: 'bitbag_sylius_mollie_plugin.onboardingMollie.step_2.btnRegister',
+        finishWizard: 'bitbag_sylius_mollie_plugin.onboardingMollie.step_16.btnNext',
         quitConfirm: 'Quit the onboarding assistant',
-        quitCancel: 'Continue onboarding <i class="icon angle right"></i>',
+        quitCancel: 'Continue onboarding',
     },
     common: {
         open: 'Open',

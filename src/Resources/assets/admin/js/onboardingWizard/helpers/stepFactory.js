@@ -5,9 +5,6 @@ import wizardTranslations from '../config/wizardTranslations';
 
 const handleStepButtons = (onboardingWizard, stepIndex, step, translator) => {
     if (step.customButtons) {
-        const cd = _get(wizardTranslations, customButton.text);
-        console.log(cd);
-        console.log(translator.trans(cd));
         return step.customButtons.map((customButton) => ({
             ...customButton,
             text: translator.trans(_get(wizardTranslations, customButton.text)),
@@ -26,16 +23,12 @@ const handleStepButtons = (onboardingWizard, stepIndex, step, translator) => {
         {
             text: '<i class="arrow down icon"></i>',
             action: () => onboardingWizard.modalCollapseHandler(),
-            classes: `shepherd-button--collapse js-tour-collapse ${
-                step.btnCollapseClass || ''
-            }`,
+            classes: `shepherd-button--collapse js-tour-collapse ${step.btnCollapseClass || ''}`,
         },
         {
             text: step.btnBackText
                 ? translator.trans(_get(wizardTranslations, step.btnBackText))
-                : translator.trans(
-                      _get(wizardTranslations, 'stepButtons.goBack')
-                  ),
+                : translator.trans(_get(wizardTranslations, 'stepButtons.goBack')),
             secondary: true,
             classes: `${step.btnBackClass || ''}`,
             action() {
@@ -58,9 +51,7 @@ const handleStepButtons = (onboardingWizard, stepIndex, step, translator) => {
         {
             text: step.btnNextText
                 ? translator.trans(_get(wizardTranslations, step.btnNextText))
-                : translator.trans(
-                      _get(wizardTranslations, 'stepButtons.nextWithArrow')
-                  ),
+                : translator.trans(_get(wizardTranslations, 'stepButtons.nextWithArrow')),
             classes: `${step.btnNextClass || ''}`,
             action() {
                 const tour = onboardingWizard.tour;

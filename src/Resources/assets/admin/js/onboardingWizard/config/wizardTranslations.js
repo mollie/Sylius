@@ -41,7 +41,7 @@ export default {
         text: 'bitbag_sylius_mollie_plugin.onboardingMollie.step_13.1.2.text',
     },
     stepOrdersAPI: {
-        text: 'bitbag_sylius_mollie_plugin.onboardingMollie.step_13.2.2.text',
+        text: 'bitbag_sylius_mollie_plugin.onboardingMollie.step_13.2.text',
     },
     stepPaymentsAPI: {
         text: 'bitbag_sylius_mollie_plugin.onboardingMollie.step_13.1.1.text',

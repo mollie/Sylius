@@ -1,4 +1,5 @@
 import OnboardingWizard from './OnboardingWizard';
+import {handleSubmit} from './helpers/filterMethod';
 
 const handleTourShow = async () => {
     const tour = new OnboardingWizard();
@@ -11,7 +12,7 @@ const handleTourShow = async () => {
         const response = await fetch(url);
         const data = await response.json();
         const startWizard = await tour.initTour();
-        
+
         if (data.completed === true && !currentSavedStep) {
             tour.disableTour();
         } else if (currentSavedStep && status) {
@@ -28,5 +29,6 @@ const handleTourShow = async () => {
 };
 
 if (document.querySelector('.js-onboarding-wizard')) {
+    handleSubmit();
     handleTourShow();
 }

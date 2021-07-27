@@ -9,7 +9,7 @@
         <id name="id" column="id" type="integer">
             <generator strategy="AUTO"/>
         </id>
-        <one-to-one field="adminUser" target-entity="Sylius\Component\Core\Model\AdminUser">
+        <one-to-one field="adminUser" target-entity="Sylius\Component\Core\Model\AdminUserInterface">
             <join-column name="user_id" referenced-column-name="id" />
         </one-to-one>
         <field name="completed" column="completed" type="boolean" />

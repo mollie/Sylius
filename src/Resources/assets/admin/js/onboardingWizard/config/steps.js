@@ -6,6 +6,7 @@ import {
     getStatusInfo,
     saveStep,
     clearStorage,
+    checkForExistance,
 } from '../helpers/filterMethod';
 
 const paymentMethodPaymentApi = 'PAYMENT_API';
@@ -63,7 +64,7 @@ export const steps = [
     {
         showOn: function () {
             currentStepValidator('.js-onboardingWizard-environment', '.pushable');
-            return true;
+            return checkForExistance(this.attachTo.element);
         },
         id: 'step-env',
         text: 'stepEnv.text',
@@ -116,7 +117,7 @@ export const steps = [
     {
         showOn: function () {
             currentStepValidator('.js-onboardingWizard-mollieComponents', '.pushable');
-            return true;
+            return checkForExistance(this.attachTo.element);
         },
         id: 'step-mollie-components',
         text: 'stepMollieComponents.text',
@@ -131,7 +132,7 @@ export const steps = [
     {
         showOn: function () {
             currentStepValidator('.js-onboardingWizard-singleClick', '.pushable');
-            return true;
+            return checkForExistance(this.attachTo.element);
         },
         id: 'step-mollie-payments',
         text: 'stepMolliePayments.text',
@@ -163,7 +164,7 @@ export const steps = [
             saveStep(this.id);
             currentStepValidator('.js-onboardingWizard-load-methods', '.pushable');
             methodLoadIndicator('.js-payment-method-not-loaded', '.pushable');
-            return true;
+            return checkForExistance(this.attachTo.element);
         },
         id: 'step-payments-api',
         text: 'stepMethodConfig.text',
@@ -177,8 +178,8 @@ export const steps = [
     },
     {
         showOn: function () {
-            currentStepValidator('.js-onboardingWizard-paymentName', '.pushable');
-            return true;
+            currentStepValidator('.content.active .js-onboardingWizard-paymentName', '.pushable');
+            return checkForExistance(this.attachTo.element);
         },
         id: 'step-payment-title',
         text: 'stepPaymentTitle.text',
@@ -186,14 +187,14 @@ export const steps = [
         highlightClass: 'payment-settings',
         btnNextClass: 'shepherd-button--arrow-down',
         attachTo: {
-            element: '.js-onboardingWizard-paymentName',
+            element: '.content.active .js-onboardingWizard-paymentName',
             on: 'top-start',
         },
     },
     {
         showOn: function () {
-            currentStepValidator('.js-onboardingWizard-customizeMethodImage', '.pushable');
-            return true;
+            currentStepValidator('.content.active .js-onboardingWizard-customizeMethodImage', '.pushable');
+            return checkForExistance(this.attachTo.element);
         },
         id: 'step-image-upload',
         text: 'stepImageUpload.text',
@@ -201,14 +202,14 @@ export const steps = [
         highlightClass: 'payment-settings',
         btnNextClass: 'shepherd-button--arrow-down',
         attachTo: {
-            element: '.js-onboardingWizard-customizeMethodImage input',
+            element: '.content.active .js-onboardingWizard-customizeMethodImage input',
             on: 'top-start',
         },
     },
     {
         showOn: function () {
-            currentStepValidator('.js-onboardingWizard-countryRestriction', '.pushable');
-            return true;
+            currentStepValidator('.content.active .js-onboardingWizard-countryRestriction', '.pushable');
+            return checkForExistance(this.attachTo.element);
         },
         id: 'step-country-restriction',
         text: 'stepCountryRestriction.text',
@@ -216,14 +217,14 @@ export const steps = [
         highlightClass: 'payment-settings',
         btnNextClass: 'shepherd-button--arrow-down',
         attachTo: {
-            element: '.js-onboardingWizard-countryRestrictions',
+            element: '.content.active .js-onboardingWizard-countryRestrictions',
             on: 'top-start',
         },
     },
     {
         showOn: function () {
-            currentStepValidator('.js-onboardingWizard-PaymentMethod', '.pushable');
-            return true;
+            currentStepValidator('.content.active .js-onboardingWizard-PaymentMethod', '.pushable');
+            return checkForExistance(this.attachTo.element);
         },
         id: 'step-payment-method',
         text: 'stepPaymentMethod.text',
@@ -231,15 +232,14 @@ export const steps = [
         highlightClass: 'payment-settings',
         btnNextClass: 'shepherd-button--arrow-down',
         attachTo: {
-            element: '.js-onboardingWizard-PaymentMethod',
+            element: '.content.active .js-onboardingWizard-PaymentMethod',
             on: 'top-start',
         },
     },
     {
         showOn: function () {
-            currentStepValidator('.js-onboardingWizard-order-number', '.pushable');
             return paymentTypeIndicator(
-                '#sylius_payment_method_gatewayConfig_mollieGatewayConfig_0_paymentType',
+                '.content.active .js-onboardingWizard-PaymentMethod select',
                 paymentMethodPaymentApi
             );
         },
@@ -249,14 +249,14 @@ export const steps = [
         highlightClass: 'payment-settings',
         btnNextClass: 'shepherd-button--arrow-down',
         attachTo: {
-            element: '.js-onboardingWizard-order-number',
+            element: '.content.active .js-onboardingWizard-order-number',
             on: 'top-start',
         },
     },
     {
         showOn: function () {
             return paymentTypeIndicator(
-                '#sylius_payment_method_gatewayConfig_mollieGatewayConfig_0_paymentType',
+                '.content.active .js-onboardingWizard-PaymentMethod select',
                 paymentMethodOrderApi
             );
         },
@@ -266,19 +266,22 @@ export const steps = [
         highlightClass: 'payment-settings',
         btnNextClass: 'shepherd-button--arrow-down',
         attachTo: {
-            element: '.js-onboardingWizard-PaymentMethod',
+            element: '.content.active .js-onboardingWizard-PaymentMethod',
             on: 'top-start',
         },
     },
 
     {
+        showOn: function () {
+            return checkForExistance(this.attachTo.element);
+        },
         id: 'step-fees',
         text: 'stepFees.text',
         classes: 'step-13 shepherd-element--align-right',
         highlightClass: 'payment-settings',
         btnNextClass: 'shepherd-button--arrow-down',
         attachTo: {
-            element: '.js-onboardingWizard-paymentFee',
+            element: '.content.active .js-onboardingWizard-paymentFee',
             on: 'top-start',
         },
     },
@@ -286,7 +289,7 @@ export const steps = [
         showOn: function () {
             updateTourCompletition();
             clearStorage('step');
-            return true;
+            return checkForExistance(this.attachTo.element);
         },
         id: 'save',
         text: 'stepSave.text',

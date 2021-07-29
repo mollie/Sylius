@@ -2,7 +2,7 @@ export default {
     useModalOverlay: true,
     confirmCancel: false,
     keyboardNavigation: false,
-    exitOnEsc: false,
+    exitOnEsc: true,
     defaultStepOptions: {
         class: 'onboardingWizard-popup',
         arrow: false,

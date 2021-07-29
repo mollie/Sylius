@@ -1,6 +1,6 @@
 export const paymentTypeIndicator = (item, expectedValue) => {
     const indicatedItem = document.querySelector(item);
-    const indicatedItemValue = indicatedItem.value;
+    const indicatedItemValue = indicatedItem?.value;
 
     return indicatedItemValue === expectedValue;
 };
@@ -86,4 +86,12 @@ export const handleSubmit = () => {
             keyInput.value = 'mollie' + randomId;
         }
     });
+};
+
+export const checkForExistance = (highlightClass) => {
+    if (document.querySelectorAll(`${highlightClass}`)) {
+        return true;
+    } else {
+        return false;
+    }
 };

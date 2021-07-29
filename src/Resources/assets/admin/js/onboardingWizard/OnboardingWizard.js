@@ -71,7 +71,7 @@ export default class onboardingWizard {
         restartTourTrigger.addEventListener('click', () => {
             this.tour.start();
 
-            this.navbar.classList.toggle('d-none');
+            this.navbar.classList.remove('d-none');
         });
     }
 

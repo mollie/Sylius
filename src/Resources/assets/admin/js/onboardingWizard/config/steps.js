@@ -41,6 +41,10 @@ export const stepQuitConfirmation = [
 
 export const steps = [
     {
+        showOn: function () {
+            clearStorage();
+            return true;
+        },
         id: 'step-start',
         title: 'stepStart.title',
         text: 'stepStart.text',

@@ -5,6 +5,7 @@ import Translator from './helpers/translations';
 import shepherdConfig from './config/shepherdConfig';
 import stepFactory from './helpers/stepFactory';
 import wizardTranslations from './config/wizardTranslations';
+import {clearStorage} from './helpers/filterMethod';
 
 export default class onboardingWizard {
     constructor(tourSteps = steps, tourConfig = shepherdConfig, tourQuitConfirmation = stepQuitConfirmation) {
@@ -69,8 +70,8 @@ export default class onboardingWizard {
         const restartTourTrigger = document.querySelector('.js-restart-tour');
 
         restartTourTrigger.addEventListener('click', () => {
+            clearStorage();
             this.tour.start();
-
             this.navbar.classList.remove('d-none');
         });
     }

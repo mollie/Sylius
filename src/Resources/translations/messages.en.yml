@@ -56,7 +56,7 @@ bitbag_sylius_mollie_plugin:
         splitting_shipment_for_order: 'Splitting shipment for Order no. #%number%'
         split_shipment: 'Split shipment'
         partially_ship: 'Partial ship'
-        create_methods_before_loading: 'To configure Payment Methods, please fill in required fields and click "create" button.'
+        create_methods_before_loading: 'To configure Payment Methods, please fill in the required fields and click "create" button.'
         no_methods_found_message: 'No methods found. Click the button "Load methods", but first insert You profile Id and API key.'
         paymentlink_generate: 'Generate payment link'
         paymentlink_generate_subtitle: 'Generate payment link and send it to customer'
@@ -175,11 +175,11 @@ bitbag_sylius_mollie_plugin:
         step_7:
             text: "Enabling single click payments remembers your consumer's payment preferences in order to expedite follow-up payments. Your consumer does not have to perform any additional actions to enjoy quick and easy payments.<br><br>Learn more about single click payments <a href='https://help.mollie.com/hc/en-us/articles/115000671249-What-are-single-click-payments-and-how-does-it-work' target='_blank'>here</a>."
         step_8:
-            text: "Now time to customize features for individual payment methods.<br><br>First select the load methods button. Only the methods that are enabled in your Mollie account will display here.<br><br>Then you use the enable/disable selector to control which will show on your webshop checkout."
+            text: "Now it's time to customize features for individual payment methods.<br><br>First select the load methods button. Only the methods that are enabled in your Mollie account will display here.<br><br>Then you use the enable/disable selector to control which will show on your webshop checkout."
         step_9:
             text: 'For each method you can enter a custom title here - it will be displayed on your webshop checkout page.'
         step_10:
-            text: "Try uploading a custom image for the payment method icon. This will be shown in the wenshop checkout page."
+            text: "Try uploading a custom image for the payment method icon. This will be shown in the webshop checkout page."
         step_11:
             text: 'Here you can create filters for country specific payment methods - for example if you want iDEAL only to show for Netherlands customers you choose "Select Countries" and select Netherlands.'
         step_12:
@@ -193,8 +193,9 @@ bitbag_sylius_mollie_plugin:
             2:
                 text: 'Orders API<br><br>This is Mollie suggested API to use for webshops because it allows you to create “orders”. An order contains the personal information of a customer (e.g. address) and products that the customer ordered. When an order is made'
         step_15:
-            text: 'Remeber to save your configurations.'
+            text: 'Remember to save your configurations.'
         step_16:
             title: "You're all set!"
             text: "You can now attempt a customer order on your website."
             btnNext: 'Start using Mollie'
+        create: 'Before configuring individual payment methods, click "create" to save Mollie as a Payment Method in Sylius Admin Panel.'

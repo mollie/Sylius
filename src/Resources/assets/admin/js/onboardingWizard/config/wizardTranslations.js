@@ -58,7 +58,9 @@ export default {
     },
     stepQuitConfirmation: {
         title: 'Are you sure you want to quit ?',
-        text: "You're all done, you can now attempt a consumer order or your website",
+    },
+    stepCreate: {
+        text: 'bitbag_sylius_mollie_plugin.onboardingMollie.create',
     },
     stepButtons: {
         goBack: 'bitbag_sylius_mollie_plugin.onboardingMollie.btnBack',

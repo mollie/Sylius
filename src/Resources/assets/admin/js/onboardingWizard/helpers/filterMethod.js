@@ -73,9 +73,7 @@ export const clearStorage = (key) => {
 };
 
 export const handleSubmit = () => {
-    const nameInput = document.querySelector(
-        '#sylius_payment_method_translations_en_US_name'
-    );
+    const nameInput = document.querySelector('#sylius_payment_method_translations_en_US_name');
     const keyInput = document.querySelector('#sylius_payment_method_code');
     const submitBtn = document.querySelector('button[type="submit"]');
     const randomId = Math.floor(Math.random() * 10000);
@@ -88,4 +86,12 @@ export const handleSubmit = () => {
             keyInput.value = 'mollie' + randomId;
         }
     });
+};
+
+export const checkExistance = (item) => {
+    if (document.querySelector(`${item}`)) {
+        return true;
+    } else {
+        return false;
+    }
 };

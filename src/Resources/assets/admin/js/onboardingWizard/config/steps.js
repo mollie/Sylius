@@ -6,6 +6,7 @@ import {
     getStatusInfo,
     saveStep,
     clearStorage,
+    checkExistance
 } from '../helpers/filterMethod';
 
 const paymentMethodPaymentApi = 'PAYMENT_API';
@@ -150,7 +151,7 @@ export const steps = [
             return getStatusInfo();
         },
         id: 'create',
-        text: 'stepSave.text',
+        text: 'stepCreate.text',
         classes: 'step-13 shepherd-element--align-right',
         highlightClass: 'store-settings',
         btnNextClass: 'd-none',

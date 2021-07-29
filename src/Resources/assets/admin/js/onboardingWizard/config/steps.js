@@ -6,7 +6,6 @@ import {
     getStatusInfo,
     saveStep,
     clearStorage,
-    checkExistance
 } from '../helpers/filterMethod';
 
 const paymentMethodPaymentApi = 'PAYMENT_API';
@@ -18,7 +17,6 @@ export const stepQuitConfirmation = [
     {
         id: 'step-quit-confirmation',
         title: 'stepQuitConfirmation.title',
-        text: 'stepQuitConfirmation.text',
         highlightClass: 'intro',
         customButtons: [
             {

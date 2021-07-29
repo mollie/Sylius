@@ -69,7 +69,8 @@ export default class onboardingWizard {
         const restartTourTrigger = document.querySelector('.js-restart-tour');
 
         restartTourTrigger.addEventListener('click', () => {
-            this.initTour();
+            this.tour.start();
+
             this.navbar.classList.toggle('d-none');
         });
     }

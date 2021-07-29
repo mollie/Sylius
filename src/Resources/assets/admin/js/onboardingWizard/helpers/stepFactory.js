@@ -1,4 +1,5 @@
 import _get from 'lodash.get';
+import {deleteTourElements} from './filterMethod';
 
 import {steps} from '../config/steps';
 import wizardTranslations from '../config/wizardTranslations';
@@ -36,6 +37,7 @@ const handleStepButtons = (onboardingWizard, stepIndex, step, translator) => {
 
                 if (stepIndex === 0) {
                     tour.complete();
+
                 } else {
                     if (step.urlMollie) {
                         window.open(`${step.urlMollie}/signin`, '_blank');

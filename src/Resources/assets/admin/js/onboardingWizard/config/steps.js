@@ -7,7 +7,7 @@ import {
     saveStep,
     clearStorage,
     checkForExistance,
-} from '../helpers/filterMethod';
+} from '../helpers';
 
 const paymentMethodPaymentApi = 'PAYMENT_API';
 const paymentMethodOrderApi = 'ORDER_API';
@@ -63,7 +63,7 @@ export const steps = [
     },
     {
         showOn: function () {
-            clearStorage();
+            clearStorage('step');
             currentStepValidator('.js-onboardingWizard-environment', '.pushable');
             return checkForExistance(this.attachTo.element);
         },
@@ -75,7 +75,7 @@ export const steps = [
             element: '.js-onboardingWizard-environment',
             on: 'top-start',
         },
-        btnNextClass: 'shepherd-button--arrow-down',
+        btnNextClass: 'shepherd-button',
     },
     {
         showOn: function () {
@@ -86,7 +86,7 @@ export const steps = [
         text: 'stepApiKey.text',
         classes: 'shepherd-element--align-right',
         highlightClass: 'api-settings',
-        btnNextClass: 'shepherd-button--arrow-down',
+        btnNextClass: 'shepherd-button',
         attachTo: {
             element: '.js-onboardingWizard-profile-api',
             on: 'top-start',
@@ -102,7 +102,7 @@ export const steps = [
         text: 'stepApiKey.text',
         classes: 'shepherd-element--align-right',
         highlightClass: 'api-settings',
-        btnNextClass: 'shepherd-button--arrow-down',
+        btnNextClass: 'shepherd-button',
         attachTo: {
             element: '.js-onboardingWizard-profile-api',
             on: 'top-start',
@@ -124,7 +124,7 @@ export const steps = [
         text: 'stepMollieComponents.text',
         classes: 'shepherd-element--align-right',
         highlightClass: 'store-settings',
-        btnNextClass: 'shepherd-button--arrow-down',
+        btnNextClass: 'shepherd-button',
         attachTo: {
             element: '.js-onboardingWizard-mollieComponents',
             on: 'top-start',
@@ -139,7 +139,7 @@ export const steps = [
         text: 'stepMolliePayments.text',
         classes: 'shepherd-element--align-right',
         highlightClass: 'store-settings',
-        btnNextClass: 'shepherd-button--arrow-down',
+        btnNextClass: 'shepherd-button',
         attachTo: {
             element: '.js-onboardingWizard-singleClick',
             on: 'top-start',
@@ -186,7 +186,7 @@ export const steps = [
         text: 'stepPaymentTitle.text',
         classes: 'step-9 shepherd-element--align-right',
         highlightClass: 'payment-settings',
-        btnNextClass: 'shepherd-button--arrow-down',
+        btnNextClass: 'shepherd-button',
         attachTo: {
             element: '.content.active .js-onboardingWizard-paymentName',
             on: 'top-start',
@@ -201,7 +201,7 @@ export const steps = [
         text: 'stepImageUpload.text',
         classes: 'step-14 shepherd-element--align-right',
         highlightClass: 'payment-settings',
-        btnNextClass: 'shepherd-button--arrow-down',
+        btnNextClass: 'shepherd-button',
         attachTo: {
             element: '.content.active .js-onboardingWizard-customizeMethodImage input',
             on: 'top-start',
@@ -216,7 +216,7 @@ export const steps = [
         text: 'stepCountryRestriction.text',
         classes: 'step-12 shepherd-element--align-right',
         highlightClass: 'payment-settings',
-        btnNextClass: 'shepherd-button--arrow-down',
+        btnNextClass: 'shepherd-button',
         attachTo: {
             element: '.content.active .js-onboardingWizard-countryRestrictions',
             on: 'top-start',
@@ -231,7 +231,7 @@ export const steps = [
         text: 'stepPaymentMethod.text',
         classes: 'step-12 shepherd-element--align-right',
         highlightClass: 'payment-settings',
-        btnNextClass: 'shepherd-button--arrow-down',
+        btnNextClass: 'shepherd-button',
         attachTo: {
             element: '.content.active .js-onboardingWizard-PaymentMethod',
             on: 'top-start',
@@ -248,7 +248,7 @@ export const steps = [
         text: 'stepPaymentType.text',
         classes: 'step-12 shepherd-element--align-right',
         highlightClass: 'payment-settings',
-        btnNextClass: 'shepherd-button--arrow-down',
+        btnNextClass: 'shepherd-button',
         attachTo: {
             element: '.content.active .js-onboardingWizard-order-number',
             on: 'top-start',
@@ -265,7 +265,7 @@ export const steps = [
         text: 'stepOrdersAPI.text',
         classes: 'step-12 shepherd-element--align-right',
         highlightClass: 'payment-settings',
-        btnNextClass: 'shepherd-button--arrow-down',
+        btnNextClass: 'shepherd-button',
         attachTo: {
             element: '.content.active .js-onboardingWizard-PaymentMethod',
             on: 'top-start',
@@ -280,7 +280,7 @@ export const steps = [
         text: 'stepFees.text',
         classes: 'step-13 shepherd-element--align-right',
         highlightClass: 'payment-settings',
-        btnNextClass: 'shepherd-button--arrow-down',
+        btnNextClass: 'shepherd-button',
         attachTo: {
             element: '.content.active .js-onboardingWizard-paymentFee',
             on: 'top-start',
@@ -296,7 +296,7 @@ export const steps = [
         text: 'stepSave.text',
         classes: 'step-13 shepherd-element--align-right',
         highlightClass: 'payment-settings',
-        btnNextClass: 'shepherd-button--arrow-down',
+        btnNextClass: 'shepherd-button',
         attachTo: {
             element: '.ui.buttons:not(.js-header-btn)',
             on: 'top-start',

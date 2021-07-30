@@ -1,11 +1,9 @@
 import Shepherd from 'shepherd.js';
 import _get from 'lodash.get';
 import {steps, stepQuitConfirmation} from './config/steps';
-import Translator from './helpers/translations';
 import shepherdConfig from './config/shepherdConfig';
-import stepFactory from './helpers/stepFactory';
 import wizardTranslations from './config/wizardTranslations';
-import {clearStorage} from './helpers/filterMethod';
+import {clearStorage, stepFactory, Translator} from './helpers';
 
 export default class onboardingWizard {
     constructor(tourSteps = steps, tourConfig = shepherdConfig, tourQuitConfirmation = stepQuitConfirmation) {
@@ -70,7 +68,7 @@ export default class onboardingWizard {
         const restartTourTrigger = document.querySelector('.js-restart-tour');
 
         restartTourTrigger.addEventListener('click', () => {
-            clearStorage();
+            clearStorage('step');
             this.tour.start();
             this.navbar.classList.remove('d-none');
         });

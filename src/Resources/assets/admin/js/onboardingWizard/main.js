@@ -1,5 +1,5 @@
 import OnboardingWizard from './OnboardingWizard';
-import {handleSubmit} from './helpers/filterMethod';
+import {handleSubmit} from './helpers';
 
 const handleTourShow = async () => {
     const tour = new OnboardingWizard();

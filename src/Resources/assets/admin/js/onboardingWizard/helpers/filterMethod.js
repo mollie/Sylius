@@ -73,7 +73,7 @@ export const clearStorage = (key) => {
 };
 
 export const handleSubmit = () => {
-    const nameInput = document.querySelector('#sylius_payment_method_translations_en_US_name');
+    const nameInput = document.querySelector('.content.active [id*="sylius_payment_method_translations_"]');
     const keyInput = document.querySelector('#sylius_payment_method_code');
     const submitBtn = document.querySelector('button[type="submit"]');
     const randomId = Math.floor(Math.random() * 10000);
@@ -88,10 +88,6 @@ export const handleSubmit = () => {
     });
 };
 
-export const checkForExistance = (highlightClass) => {
-    if (document.querySelectorAll(`${highlightClass}`)) {
-        return true;
-    } else {
-        return false;
-    }
-};
+export const checkForExistance = (highlightClass) => document.querySelector(highlightClass) != undefined;
+
+console.log(checkForExistance('#body1234123'));

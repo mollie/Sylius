@@ -89,5 +89,3 @@ export const handleSubmit = () => {
 };
 
 export const checkForExistance = (highlightClass) => document.querySelector(highlightClass) != undefined;
-
-console.log(checkForExistance('#body1234123'));

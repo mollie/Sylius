@@ -44,7 +44,7 @@ export default {
         text: 'bitbag_sylius_mollie_plugin.onboardingMollie.step_13.2.text',
     },
     stepFees: {
-        text: 'In case you have fees that you are passing on to the consumer, you can add them <a target="_blank" href="https://help.mollie.com/hc/en-us/articles/360012564454-Can-I-pass-over-the-costs-for-the-use-of-a-payment-method-to-my-customers-">here</a>',
+        text: 'bitbag_sylius_mollie_plugin.onboardingMollie.step_14.text',
     },
     stepSave: {
         text: 'bitbag_sylius_mollie_plugin.onboardingMollie.step_15.text',

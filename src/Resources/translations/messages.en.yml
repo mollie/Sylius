@@ -190,6 +190,8 @@ bitbag_sylius_mollie_plugin:
                     text: 'When using Payments API you may want additional details to help you match payments with customer orders -- you can enter those values here but make sure to use the correct tags provided in the text below.'
             2:
                 text: 'This is Mollie suggested API to use for webshops because it allows you to create “orders”. An order contains the personal information of a customer (e.g. address) and products that the customer ordered. When an order is made, a corresponding payment will be created automatically.'
+        step_14:
+            text: 'In case you have fees that you are passing on to the consumer, you can add them <a href="https://help.mollie.com/hc/en-us/articles/360012564454-Can-I-pass-over-the-costs-for-the-use-of-a-payment-method-to-my-customers-" target="_blank">here</a>. '
         step_15:
             text: 'Remember to save your configurations.'
         step_16:

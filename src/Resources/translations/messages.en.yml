@@ -175,7 +175,7 @@ bitbag_sylius_mollie_plugin:
         step_7:
             text: "Enabling single click payments remembers your consumer's payment preferences in order to expedite follow-up payments. Your consumer does not have to perform any additional actions to enjoy quick and easy payments.<br><br>Learn more about single click payments <a href='https://help.mollie.com/hc/en-us/articles/115000671249-What-are-single-click-payments-and-how-does-it-work' target='_blank'>here</a>."
         step_8:
-            text: "Now it's time to customize features for individual payment methods.<br><br>First select the load methods button. Only the methods that are enabled in your Mollie account will display here.<br><br>Then you use the enable/disable selector to control which will show on your webshop checkout."
+            text: "Now it's time to customize features for individual payment methods.<br><br>First select the load methods button. Only the methods that are enabled in your Mollie account will display here.<br><br>Then you use the enable/disable selector to control which will show on your webshop checkout.<br><br>NOTE: It is not possible to continue the guided onboarding without loading payment methods"
         step_9:
             text: 'For each method you can enter a custom title here - it will be displayed on your webshop checkout page.'
         step_10:
@@ -183,7 +183,7 @@ bitbag_sylius_mollie_plugin:
         step_11:
             text: 'Here you can create filters for country specific payment methods - for example if you want iDEAL only to show for Netherlands customers you choose "Select Countries" and select Netherlands.'
         step_12:
-            text: 'Per method you can select which Mollie API to use to create payments. Click here to read about the differences between Orders and Payments API. https://docs.mollie.com/orders/why-use-orders'
+            text: 'Per method you can select which Mollie API to use to create payments. Click <a href="https://docs.mollie.com/orders/why-use-orders" target="_blank">here</a> to read about the differences between Orders and Payments API.'
         step_13:
             1:
                 1:

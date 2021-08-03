@@ -167,7 +167,7 @@ bitbag_sylius_mollie_plugin:
         step_3:
             text: "Now that you're connected to Mollie we will configure the environment and credentials.<br><br>Test will be the default environment in the plugin.<br><br>You only need to do the configuration once to have TEST + LIVE environments available. Try easily togging between the two."
         step_4:
-            text: 'Fill in your correct details and click "TEST API Key" this will return a successful or failed result for both the LIVE and TEST environments'
+            text: 'Fill in your correct details and click "TEST API Key" this will return a successful or failed result for both the LIVE and TEST environments.'
         step_5:
             text: "Next, we'll set-up key settings for the checkout screen display on your webshop."
         step_6:
@@ -175,7 +175,7 @@ bitbag_sylius_mollie_plugin:
         step_7:
             text: "Enabling single click payments remembers your consumer's payment preferences in order to expedite follow-up payments. Your consumer does not have to perform any additional actions to enjoy quick and easy payments.<br><br>Learn more about single click payments <a href='https://help.mollie.com/hc/en-us/articles/115000671249-What-are-single-click-payments-and-how-does-it-work' target='_blank'>here</a>."
         step_8:
-            text: "Now it's time to customize features for individual payment methods.<br><br>First select the load methods button. Only the methods that are enabled in your Mollie account will display here.<br><br>Then you use the enable/disable selector to control which will show on your webshop checkout.<br><br>NOTE: It is not possible to continue the guided onboarding without loading payment methods"
+            text: "Now it's time to customize features for individual payment methods.<br><br>First select the load methods button. Only the methods that are enabled in your Mollie account will display here.<br><br>Then you use the enable/disable selector to control which will show on your webshop checkout.<br><br>NOTE: It is not possible to continue the guided onboarding without loading payment methods."
         step_9:
             text: 'For each method you can enter a custom title here - it will be displayed on your webshop checkout page.'
         step_10:
@@ -186,10 +186,8 @@ bitbag_sylius_mollie_plugin:
             text: 'Per method you can select which Mollie API to use to create payments. Click <a href="https://docs.mollie.com/orders/why-use-orders" target="_blank">here</a> to read about the differences between Orders and Payments API.'
         step_13:
             1:
-                1:
-                    text: 'Payments API<br><br>Note: Payments API can not be used for methods such as Klarna'
                 2:
-                    text: 'When using Payments API you may want additional details to help you match payments with customer orders -- you can enter those values here but make sure to use the correct tags provided in the text below'
+                    text: 'When using Payments API you may want additional details to help you match payments with customer orders -- you can enter those values here but make sure to use the correct tags provided in the text below.'
             2:
                 text: 'This is Mollie suggested API to use for webshops because it allows you to create “orders”. An order contains the personal information of a customer (e.g. address) and products that the customer ordered. When an order is made, a corresponding payment will be created automatically.'
         step_15:

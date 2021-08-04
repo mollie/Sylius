@@ -57,7 +57,7 @@
                     <img class="ui mini avatar image" src="{{ methodImage }}">
                     {{ methodForm.vars.value.name }}
                 </div>
-                <div class="content{% if loop.index0 == 0 %} active{% endif %}">
+                <div class="content{% if loop.index0 == 0 %} active{% endif %}" data-method-id="{{methodForm.vars.name}}">
                     {{ form_row(methodForm.name, { 'attr': { 'class': 'js-onboardingWizard-paymentName' } }) }}
                     {% if methodForm.vars.value.methodId == mealvouchersId %}
                         <div class="field">
@@ -137,6 +137,7 @@
                         {{ 'bitbag_sylius_mollie_plugin.ui.payment_fee'|trans }}
                     </h4>
                     {{ form_row(methodForm.paymentSurchargeFee, { 'attr': { 'class': 'js-onboardingWizard-paymentFee' } }) }}
+                    
                 </div>
             </div>
         {% else %}
@@ -147,3 +148,5 @@
     </div>
 {% endif %}
 </div>
+
+

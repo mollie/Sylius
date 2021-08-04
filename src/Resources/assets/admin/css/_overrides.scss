@@ -1,261 +1,262 @@
 .pushable {
-	height: fit-content;
+    height: fit-content;
 }
 
 .draggable {
-	position: relative;
+    position: relative;
 }
 
 .draggable-button-enable {
-	position: absolute;
-	top: 20px;
-	right: 20px;
+    position: absolute;
+    top: 20px;
+    right: 20px;
 }
 
 .d-none {
-	display: none !important;
+    display: none !important;
 }
 
 .mr-auto {
-	margin-right: auto !important;
+    margin-right: auto !important;
 }
 
 .ml-auto {
-	margin-left: auto;
+    margin-left: auto;
 }
 
 .shepherd-header,
 .shepherd-footer {
-	padding: 0;
+    padding: 0;
 }
 
 .shepherd-header {
-	margin-bottom: 30px;
+    margin-bottom: 30px;
 }
 
 .shepherd-text {
-	padding: $spacing;
+    padding: $spacing;
 }
 
 .shepherd-element:not(.shepherd-has-title) {
-	.shepherd-header {
-		margin-bottom: 0;
-	}
+    .shepherd-header {
+        margin-bottom: 0;
+    }
 }
 
 .shepherd-element--first {
-	.shepherd-header {
-		&.shepherd-header {
-			flex-direction: column;
+    .shepherd-header {
+        &.shepherd-header {
+            flex-direction: column;
 
-			.shepherd-title {
-				display: block;
-				text-align: center;
-			}
-		}
+            .shepherd-title {
+                display: block;
+                text-align: center;
+            }
+        }
 
-		&:before {
-			content: '';
-			width: 120px;
-			height: 26px;
-			margin-bottom: 20px;
-			background-repeat: no-repeat;
-			background-size: contain;
-			background-image: url('https://sylius.com/wp-content/uploads/2018/06/mollie.png');
-		}
-	}
+        &:before {
+            content: '';
+            width: 120px;
+            height: 26px;
+            margin-bottom: 20px;
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-image: url('https://sylius.com/wp-content/uploads/2018/06/mollie.png');
+        }
+    }
 }
 
 #step-finish-wizard-error-label {
-	i {
-		display: none;
-	}
+    i {
+        display: none;
+    }
 }
 
 .shepherd-element--align-right {
-	position: fixed !important;
-	top: auto !important;
-	left: auto !important;
-	bottom: 100px !important;
-	right: 50px !important;
-	transform: none !important;
+    position: fixed !important;
+    top: auto !important;
+    left: auto !important;
+    bottom: 100px !important;
+    right: 50px !important;
+    transform: none !important;
 }
 
 .shepherd-element--collapsed {
-	width: 100px;
-	height: 50px;
+    width: 100px;
+    height: 50px;
 
-	.shepherd-header,
-	.shepherd-button,
-	.shepherd-text {
-		opacity: 0;
-	}
+    .shepherd-header,
+    .shepherd-button,
+    .shepherd-text {
+        opacity: 0;
+    }
 
-	.shepherd-button--collapse {
-		top: 10px;
-		left: 10px;
-		background-color: $c-primary;
-		opacity: 1;
+    .shepherd-button--collapse {
+        top: 10px;
+        left: 10px;
+        background-color: $c-primary;
+        opacity: 1;
 
-		.icon {
-			color: $c-white;
-			transform: rotate(180deg);
-		}
-	}
+        .icon {
+            color: $c-white;
+            transform: rotate(180deg);
+        }
+    }
 }
 
 .shepherd-centered:not(.shepherd-element--align-right) {
-	.shepherd-footer {
-		flex-direction: column-reverse;
-		padding: 0 $spacing $spacing;
-	}
+    .shepherd-footer {
+        flex-direction: column-reverse;
+        padding: 0 $spacing $spacing;
+    }
 
-	.shepherd-button:not(.shepherd-button__open):not(.shepherd-button--close) {
-		border-radius: 25px !important;
-	}
+    .shepherd-button:not(.shepherd-button__open):not(.shepherd-button--close) {
+        border-radius: 25px !important;
+    }
 }
 
 .shepherd-button {
-	position: relative;
-	margin-right: 0;
-	padding: 15px 25px;
-	border-radius: 0 0 4px 0;
-	background-color: $c-primary;
-	color: $c-white;
-	font-weight: 600;
+    position: relative;
+    margin-right: 0;
+    padding: 15px 25px;
+    border-radius: 0 0 4px 0;
+    background-color: $c-primary;
+    color: $c-white;
+    font-weight: 600;
 
-	.icon.right {
-		margin-left: 15px;
-	}
+    .icon.right {
+        margin-left: 15px;
+    }
 }
 
 .shepherd-button__open {
-	display: flex;
-	align-items: center;
-	position: absolute;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	padding-left: 35px;
-	color: $c-black;
-	font-weight: 600;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding-left: 35px;
+    color: $c-black;
+    font-weight: 600;
 }
 
 .shepherd-button-secondary {
-	color: $c-secondary;
-	background-color: transparent;
+    color: $c-secondary;
+    background-color: transparent;
 }
 
 .shepherd-button--close,
 .shepherd-button--collapse {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	position: absolute;
-	top: -40px;
-	width: 28px;
-	height: 28px;
-	padding: 1px !important;
-	border-radius: 50%;
-	background: $c-white;
-	color: $c-black;
-	filter: drop-shadow(0 0 2px rgba($c-black, 0.3));
-	transition: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: -40px;
+    width: 28px;
+    height: 28px;
+    padding: 1px !important;
+    border-radius: 50%;
+    background: $c-white;
+    color: $c-black;
+    filter: drop-shadow(0 0 2px rgba($c-black, 0.3));
+    transition: none;
 
-	.icon {
-		margin: 0;
-	}
+    .icon {
+        margin: 0;
+    }
 
-	&:hover {
-		background-color: $c-primary;
-		color: $c-white;
-	}
+    &:hover {
+        background-color: $c-primary;
+        color: $c-white;
+    }
 }
 
 .shepherd-button--close {
-	right: 0;
+    right: 0;
 }
 
 .shepherd-button--collapse {
-	right: 40px;
+    right: 40px;
 }
 
 .shepherd-button--arrow-down {
-	&:after {
-		content: '';
-		position: absolute;
-		bottom: -10px;
-		right: 15px;
-		width: 0;
-		height: 0;
-		border-color: $c-primary transparent transparent transparent;
-		border-style: solid;
-		border-width: 10px 10px 0 10px;
-		transition: border-color 0.5s ease;
-	}
+    &:after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        right: 15px;
+        width: 0;
+        height: 0;
+        border-color: $c-primary transparent transparent transparent;
+        border-style: solid;
+        border-width: 10px 10px 0 10px;
+        transition: border-color 0.5s ease;
+    }
 
-	&:hover:after {
-		border-top-color: #196fcc;
-	}
+    &:hover:after {
+        border-top-color: #196fcc;
+    }
 }
 
 .shepherd-has-title {
-	.shepherd-title {
-		width: 100%;
-		font-size: 30px;
-		font-weight: 600;
-	}
+    .shepherd-title {
+        width: 100%;
+        font-size: 30px;
+        font-weight: 600;
+    }
 
-	.shepherd-title {
-		.icon {
-			color: $c-success;
-		}
-	}
+    .shepherd-title {
+        .icon {
+            color: $c-success;
+        }
+    }
 
-	.shepherd-text {
-		padding: 0 $spacing $spacing;
-	}
+    .shepherd-text {
+        padding: 0 $spacing $spacing;
+    }
 
-	.shepherd-content .shepherd-header {
-		position: relative;
-		width: 100%;
-		padding: $spacing $spacing 0;
-		background-color: $c-white;
-		color: $c-black;
-	}
+    .shepherd-content .shepherd-header {
+        position: relative;
+        width: 100%;
+        padding: $spacing $spacing 0;
+        background-color: $c-white;
+        color: $c-black;
+    }
 }
 
 #mollie-payment-form {
-	.ui.dropdown.selection {
-		.menu {
-			position: static;
-			margin: 10px 0 -12px -15px;
-			width: calc(100% + 45px);
-			border-radius: 0;
-		}
-	}
+    .ui.dropdown.selection {
+        .menu {
+            position: static;
+            margin: 10px 0 -12px -15px;
+            width: calc(100% + 45px);
+            border-radius: 0;
+        }
+    }
 }
 
 .shepherd-content {
-	a {
-		color: $c-primary;
-	}
+    a {
+        color: $c-primary;
+    }
 }
 
 .js-onboardingWizard-singleClick,
 .js-onboardingWizard-mollieComponents {
-	padding: 4px 0;
+    padding: 4px 0;
 }
 
 .step-next-disabled {
-	.shepherd-button--arrow-down {
-		pointer-events: none;
-		background-color: $c-secondary;
-		user-select: none;
+    .shepherd-button--arrow-down,
+    .shepherd-button-next {
+        pointer-events: none;
+        background-color: $c-secondary;
+        user-select: none;
 
-		&:hover{
-			background-color: darken($c-secondary, 10%);
-		}
-	}
+        &:hover {
+            background-color: darken($c-secondary, 10%);
+        }
+    }
 }

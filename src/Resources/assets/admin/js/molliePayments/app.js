@@ -81,7 +81,8 @@ $(function () {
         const value = $(this).find(':selected').val();
         setPaymentFeeFields(value, index);
 
-        $(this).on('change', function () {
+        $(this).on('change', () => {
+            const index = $('.content.active[data-method-id]').data('method-id');
             const value = $(this).val();
             setPaymentFeeFields(value, index);
         });
@@ -94,26 +95,33 @@ $(function () {
             'sylius_payment_method_gatewayConfig_mollieGatewayConfig_' + index + '_paymentSurchargeFee_percentage';
         const surchargeLimit =
             'sylius_payment_method_gatewayConfig_mollieGatewayConfig_' + index + '_paymentSurchargeFee_surchargeLimit';
+        const fixedAmountItems = $('label[for=' + fixedAmount + '], input#' + fixedAmount + '');
+        const percentageItems = $('label[for=' + percentage + '], input#' + percentage + '');
+        const surchargeLimitItems = $('label[for=' + surchargeLimit + '], input#' + surchargeLimit + '');
 
-        if (value === 'no_fee') {
-            $('label[for=' + fixedAmount + '], input#' + fixedAmount + '').hide();
-            $('label[for=' + percentage + '], input#' + percentage + '').hide();
-            $('label[for=' + surchargeLimit + '], input#' + surchargeLimit + '').hide();
-        }
-        if (value === 'percentage') {
-            $('label[for=' + percentage + '], input#' + percentage + '').show();
-            $('label[for=' + surchargeLimit + '], input#' + surchargeLimit + '').show();
-            $('label[for=' + fixedAmount + '], input#' + fixedAmount + '').hide();
-        }
-        if (value === 'fixed_fee') {
-            $('label[for=' + fixedAmount + '], input#' + fixedAmount + '').show();
-            $('label[for=' + percentage + '], input#' + percentage + '').hide();
-            $('label[for=' + surchargeLimit + '], input#' + surchargeLimit + '').hide();
-        }
-        if (value === 'fixed_fee_and_percentage') {
-            $('label[for=' + fixedAmount + '], input#' + fixedAmount + '').show();
-            $('label[for=' + percentage + '], input#' + percentage + '').show();
-            $('label[for=' + surchargeLimit + '], input#' + surchargeLimit + '').show();
+        switch (value) {
+            case 'no_fee':
+                fixedAmountItems.hide();
+                percentageItems.hide();
+                surchargeLimitItems.hide();
+                break;
+            case 'percentage':
+                fixedAmountItems.show();
+                percentageItems.show();
+                surchargeLimitItems.hide();
+                break;
+            case 'fixed_fee':
+                fixedAmountItems.show();
+                percentageItems.hide();
+                surchargeLimitItems.hide();
+                break;
+            case 'fixed_fee_and_percentage':
+                fixedAmountItems.show();
+                percentageItems.show();
+                surchargeLimitItems.show();
+                break;
+            default:
+                break;
         }
     }
 

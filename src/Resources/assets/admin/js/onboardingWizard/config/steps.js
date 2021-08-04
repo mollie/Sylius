@@ -11,6 +11,8 @@ import {
 
 const paymentMethodPaymentApi = 'PAYMENT_API';
 const paymentMethodOrderApi = 'ORDER_API';
+const enviromentTest = '0';
+const enviromentLive = '1';
 
 export const stepQuitConfirmation = [
     {
@@ -77,10 +79,27 @@ export const steps = [
     },
     {
         showOn: function () {
+            clearStorage('step');
             currentStepValidator('.js-two-fields-test .required.field', '.pushable');
-            return true;
+            return paymentTypeIndicator('.js-onboardingWizard-environment', enviromentTest);
         },
         id: 'step-api-key-test',
+        text: 'stepApiKey.text',
+        classes: 'shepherd-element--align-right',
+        highlightClass: 'api-settings',
+        btnNextClass: 'shepherd-button-next',
+        attachTo: {
+            element: '.js-onboardingWizard-profile-api',
+            on: 'top-start',
+        },
+    },
+    {
+        showOn: function () {
+            clearStorage('step');
+            currentStepValidator('.js-onboardingWizard-profile-api', '.pushable');
+            return paymentTypeIndicator('.js-onboardingWizard-environment', enviromentLive);
+        },
+        id: 'step-api-key-live',
         text: 'stepApiKey.text',
         classes: 'shepherd-element--align-right',
         highlightClass: 'api-settings',

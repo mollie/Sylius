@@ -5,7 +5,7 @@
     <services>
         <defaults public="true" />
         <service id="bitbag_sylius_mollie_plugin.checker.refund.duplicate_refund_the_same_amount_checker" class="BitBag\SyliusMolliePlugin\Checker\Refund\DuplicateRefundTheSameAmountChecker">
-            <argument type="service" id="bitbag_sylius_mollie_plugin.repository.credit_memo"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.repository.credit_memo_repository"/>
             <argument type="service" id="sylius.repository.order"/>
         </service>
     </services>

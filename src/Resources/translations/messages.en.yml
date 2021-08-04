@@ -156,7 +156,7 @@ bitbag_sylius_mollie_plugin:
         btnNext: 'Next'
         step_1:
             title: 'Let me help you'
-            text: 'Thank you for installing Mollie for payment services. This guide will take your through the configuration set-up.'
+            text: 'Thank you for installing Mollie for payment services. This guide will take you through the configuration set-up.'
             btnNext: 'Start onboarding assistant'
             btnBack: 'Skip, I know how it works'
         step_2:

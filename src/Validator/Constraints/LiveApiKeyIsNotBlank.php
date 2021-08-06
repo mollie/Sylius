@@ -15,8 +15,10 @@ use Symfony\Component\Validator\Constraint;
 
 final class LiveApiKeyIsNotBlank extends Constraint
 {
+    /** @var string $message */
     public $message = 'bitbag_sylius_mollie_plugin.api_key.not_blank';
 
+    /** @var string $field */
     public $field;
 
     public function getTargets(): string

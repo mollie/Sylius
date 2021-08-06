@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 final class LiveApiKeyIsNotBlankValidator extends ConstraintValidator
 {
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof LiveApiKeyIsNotBlank) {
             throw new UnexpectedTypeException($constraint, LiveApiKeyIsNotBlank::class);
@@ -35,7 +35,8 @@ final class LiveApiKeyIsNotBlankValidator extends ConstraintValidator
         if (true === $value['environment'] && empty($value['api_key_live'])) {
             $this->context->buildViolation($constraint->message)
                 ->atPath(sprintf('[%s]', $constraint->field))
-                ->addViolation();
+                ->addViolation()
+            ;
         }
     }
 }

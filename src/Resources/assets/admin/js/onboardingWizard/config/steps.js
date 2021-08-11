@@ -25,6 +25,7 @@ export const stepQuitConfirmation = [
                 action: (onboardingWizard) => {
                     onboardingWizard.tour.removeStep('step-quit-confirmation');
                     onboardingWizard.tour.complete();
+                    clearStorage('step');
                 },
                 secondary: true,
             },

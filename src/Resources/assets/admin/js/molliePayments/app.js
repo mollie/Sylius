@@ -106,9 +106,9 @@ $(function () {
                 surchargeLimitItems.hide();
                 break;
             case 'percentage':
-                fixedAmountItems.show();
+                fixedAmountItems.hide();
                 percentageItems.show();
-                surchargeLimitItems.hide();
+                surchargeLimitItems.show();
                 break;
             case 'fixed_fee':
                 fixedAmountItems.show();
@@ -148,4 +148,35 @@ $(function () {
             allowCountries.show();
         }
     }
+
+    const addRequired = (child) => {
+        $(child).closest('.field').addClass('required');
+    };
+
+    const removeRequired = (child) => {
+        $(child).closest('.field').removeClass('required');
+    };
+
+    const conditionalFieldHandler = (handledField, expectedValue, requiredField) => {
+        if (handledField.val() == expectedValue) {
+            addRequired(requiredField);
+        } else if (handledField.val() !== expectedValue) {
+            removeRequired(requiredField);
+        }
+    };
+
+    const turnOnHandlers = () => {
+        const environmentField = $('#sylius_payment_method_gatewayConfig_config_environment');
+        const liveApiValue = 1;
+        const liveApiFieldIndicator = '#sylius_payment_method_gatewayConfig_config_api_key_live';
+
+        if (environmentField) {
+            conditionalFieldHandler(environmentField, liveApiValue, liveApiFieldIndicator);
+            environmentField.on('change', () => {
+                conditionalFieldHandler(environmentField, liveApiValue, liveApiFieldIndicator);
+            });
+        }
+    };
+
+    turnOnHandlers();
 });

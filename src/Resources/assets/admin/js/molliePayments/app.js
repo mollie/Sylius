@@ -1,5 +1,6 @@
 $(function () {
     const mollieFormIncluded = document.getElementById('mollie-payment-form');
+    const liveApiValue = '1';
 
     if (!mollieFormIncluded) {
         return;
@@ -156,8 +157,6 @@ $(function () {
     const removeRequired = (child) => {
         $(child).closest('.field').removeClass('required');
     };
-
-    const liveApiValue = '1';
 
     const conditionalFieldHandler = (handledField, expectedValue, requiredField) => {
         if (handledField.val() === expectedValue) {

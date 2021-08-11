@@ -157,8 +157,10 @@ $(function () {
         $(child).closest('.field').removeClass('required');
     };
 
+    const liveApiValue = '1';
+
     const conditionalFieldHandler = (handledField, expectedValue, requiredField) => {
-        if (handledField.val() == expectedValue) {
+        if (handledField.val() === expectedValue) {
             addRequired(requiredField);
         } else if (handledField.val() !== expectedValue) {
             removeRequired(requiredField);
@@ -167,7 +169,6 @@ $(function () {
 
     const turnOnHandlers = () => {
         const environmentField = $('#sylius_payment_method_gatewayConfig_config_environment');
-        const liveApiValue = 1;
         const liveApiFieldIndicator = '#sylius_payment_method_gatewayConfig_config_api_key_live';
 
         if (environmentField) {

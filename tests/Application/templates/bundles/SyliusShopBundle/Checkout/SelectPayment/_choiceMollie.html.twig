@@ -13,7 +13,7 @@
 						<p>{{ method.description }}</p>
 					</div>
 				{% endif %}
-				{% include 'BitBagSyliusMolliePlugin:Shop/PaymentMollie:_form.html.twig' with {'gatewayConfig': method.gatewayConfig} %}
+				{% include '@BitBagSyliusMolliePlugin/Shop/PaymentMollie/_form.html.twig' with {'gatewayConfig': method.gatewayConfig} %}
 			</div>
 		</div>
 	{% endif %}

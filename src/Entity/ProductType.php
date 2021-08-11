@@ -22,7 +22,7 @@ class ProductType implements ProductTypeInterface
     /** @var MollieGatewayConfigInterface|null */
     protected $mollieGatewayConfig;
 
-    public function __toString(): ?string
+    public function __toString(): string
     {
         return $this->name;
     }

@@ -15,12 +15,4 @@ sylius_order:
     order:
       classes:
         model: Tests\BitBag\SyliusMolliePlugin\Entity\Order
-    adjustment:
-      classes:
-        model: Tests\BitBag\SyliusMolliePlugin\Entity\Adjustment
 
-sylius_shipping:
-  resources:
-    shipment:
-      classes:
-        model: Tests\BitBag\SyliusMolliePlugin\Entity\Shipment

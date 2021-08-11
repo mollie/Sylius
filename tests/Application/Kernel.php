@@ -20,13 +20,6 @@ final class Kernel extends BaseKernel
 
     private const CONFIG_EXTS = '.{php,xml,yaml,yml}';
 
-    private const IGNORED_SERVICES_DURING_CLEANUP = [
-        'kernel',
-        'http_kernel',
-        'liip_imagine.mime_type_guesser',
-        'liip_imagine.extension_guesser',
-    ];
-
     public function getCacheDir(): string
     {
         return $this->getProjectDir() . '/var/cache/' . $this->environment;
@@ -40,14 +33,22 @@ final class Kernel extends BaseKernel
     public function registerBundles(): iterable
     {
         foreach ($this->getConfigurationDirectories() as $confDir) {
-            yield from $this->registerBundlesFromFile($confDir . '/bundles.php');
+            $bundlesFile = $confDir . '/bundles.php';
+            if (false === is_file($bundlesFile)) {
+                continue;
+            }
+            yield from $this->registerBundlesFromFile($bundlesFile);
         }
     }
 
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader): void
     {
         foreach ($this->getConfigurationDirectories() as $confDir) {
-            $container->addResource(new FileResource($confDir . '/bundles.php'));
+            $bundlesFile = $confDir . '/bundles.php';
+            if (false === is_file($bundlesFile)) {
+                continue;
+            }
+            $container->addResource(new FileResource($bundlesFile));
         }
 
         $container->setParameter('container.dumper.inline_class_loader', true);
@@ -112,6 +113,13 @@ final class Kernel extends BaseKernel
     private function getConfigurationDirectories(): iterable
     {
         yield $this->getProjectDir() . '/config';
-        yield $this->getProjectDir() . '/config/sylius/' . SyliusKernel::MAJOR_VERSION . '.' . SyliusKernel::MINOR_VERSION;
+        $syliusConfigDir = $this->getProjectDir() . '/config/sylius/' . SyliusKernel::MAJOR_VERSION . '.' . SyliusKernel::MINOR_VERSION;
+        if (is_dir($syliusConfigDir)) {
+            yield $syliusConfigDir;
+        }
+        $symfonyConfigDir = $this->getProjectDir() . '/config/symfony/' . BaseKernel::MAJOR_VERSION . '.' . BaseKernel::MINOR_VERSION;
+        if (is_dir($symfonyConfigDir)) {
+            yield $symfonyConfigDir;
+        }
     }
 }

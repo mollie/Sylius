@@ -78,13 +78,15 @@ $(function () {
         }
     }
 
-    $('[id$="_paymentSurchargeFee_type"]').each(function (index) {
-        const value = $(this).find(':selected').val();
+    $('[id$="_paymentSurchargeFee_type"]').each(function () {
+        const value = $(this).val();
+        const index = $(this).closest('[data-method-id]').data('method-id');
+
         setPaymentFeeFields(value, index);
 
         $(this).on('change', () => {
-            const index = $('.content.active[data-method-id]').data('method-id');
             const value = $(this).val();
+            const index = $('.content.active[data-method-id]').data('method-id');
             setPaymentFeeFields(value, index);
         });
     });

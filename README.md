@@ -19,7 +19,7 @@ At BitBag we do believe in open source. However, we are able to do it just becau
   * [Customization](#customization)
   * [Testing](#testing)
   * [Recurring subscription](#recurring-subscription)
-  * [Frontend part](#frontend-part)
+  * [Frontend part](#frontend)
 * [About us](#about-us)
     * [Community](#community)
 * [Demo Sylius shop](#demo-sylius-shop)

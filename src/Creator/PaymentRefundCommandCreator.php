@@ -66,7 +66,7 @@ final class PaymentRefundCommandCreator implements PaymentRefundCommandCreatorIn
         $order = $this->orderRepository->findOneBy(['id' => $orderId]);
         Assert::notNull($order, sprintf('Cannot find order id with id %s', $orderId));
 
-        $allRefunded = $this->refundUnitsRepository->findBy(['orderNumber' => $order->getNumber()]);
+        $allRefunded = $this->refundUnitsRepository->findBy(['order' => $order->getId()]);
 
         $refunded = $this->getSumOfAmountExistingRefunds($allRefunded);
         $mollieRefund = (float) $payment->amountRefunded->value * 100;

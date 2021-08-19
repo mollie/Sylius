@@ -31,7 +31,7 @@ final class PaymentRefundedGenerator implements PaymentRefundedGeneratorInterfac
     public function generate(OrderInterface $order): PartialRefundItems
     {
         $refundedUnits = $this->refundUnitsRepository->findBy([
-            'orderNumber' => $order->getNumber(),
+            'order' => $order->getId(),
             'type' => RefundType::orderItemUnit(),
         ]);
 

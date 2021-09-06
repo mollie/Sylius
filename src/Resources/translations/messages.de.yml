@@ -56,7 +56,7 @@ bitbag_sylius_mollie_plugin:
     splitting_shipment_for_order: 'Lieferung für Auftrag #%number% teilen'
     split_shipment: 'Lieferung teilen'
     partially_ship: 'Teillieferung'
-    create_methods_before_loading: 'Um Zahlungsmethoden zu konfigurieren, füllen Sie bitte die erforderlichen Felder aus und klicken Sie auf die Schaltfläche "Erstellen".'
+    create_methods_before_loading: 'Füllen Sie die verpflichtenden Felder aus und klicken Sie auf die Schaltfläche „Erstellen“, um Zahlungsmethoden zu konfigurieren.'
     no_methods_found_message: 'Keine Methoden gefunden. Geben Sie Ihre Profil-ID und den API-Schlüssel ein und klicken Sie auf den Button "Methoden laden".'
     paymentlink_generate: 'Zahlungslink erstellen'
     paymentlink_generate_subtitle: 'Zahlungslink erstellen und an Kunden senden'
@@ -147,11 +147,6 @@ bitbag_sylius_mollie_plugin:
   subscription:
     cancel: 'Abonnement erfolgreich gekündigt.'
   onboardingMollie:
-    navigation:
-        intro: 'Einführung'
-        api_settings: 'API-Einstellungen'
-        store_settings: 'Einstellungen speichern'
-        payment_settings: 'Zahlungseinstellungen'
     btnBack: 'Zurück'
     btnNext: 'Weiter'
     step_1:
@@ -165,18 +160,17 @@ bitbag_sylius_mollie_plugin:
       btnLogin: 'Anmelden'
       btnRegister: 'Mollie-Konto erstellen'
     step_3:
-      title: 'Nachdem Sie sich mit Mollie verbunden haben, konfigurieren wir im nächsten Schritt die Umgebung und die Zugangsdaten.'
-      text: 'Die Standardumgebung des Plugins ist die Testumgebung. Sie müssen die Konfiguration nur einmal durchführen, um auf TEST- und LIVE-Umgebung zugreifen zu können. Sie können bequem zwischen den beiden Umgebungen umschalten.'
+      text: 'Nachdem Sie sich mit Mollie verbunden haben, konfigurieren wir im nächsten Schritt die Umgebung und die Zugangsdaten.<br><br>Die Standardumgebung des Plugins ist die Testumgebung.<br><br>Sie müssen die Konfiguration nur einmal durchführen, um auf TEST- und LIVE-Umgebung zugreifen zu können. Sie können bequem zwischen den beiden Umgebungen umschalten.'
     step_4:
       text: 'Vervollständigen Sie die Angaben und klicken Sie auf „API-Schlüssel testen“. Sie erhalten daraufhin sowohl für die LIVE- als auch für die TEST-Umgebung ein positives oder negatives Testergebnis.'
     step_5:
       text: 'Als nächstes nehmen wir die Schlüsseleinstellungen für den Bezahlbildschirm Ihres Onlineshops vor.'
     step_6:
-      text: 'Aktivieren Sie Komponenten, um die notwendigen Felder für die Kreditkartendaten auf dem Bezahlbildschirm einzurichten. Wenn Sie NEIN wählen, werden die Nutzer zur Bezahlseite von Mollie weitergeleitet. Erfahren Sie hier mehr über die Mollie-Komponenten. [Link] https://www.mollie.com/en/news/post/better-checkout-flows-with-mollie-components'
+      text: 'Aktivieren Sie Komponenten, um die notwendigen Felder für die Kreditkartendaten auf dem Bezahlbildschirm einzurichten.<br><br>Wenn Sie NEIN wählen, werden die Nutzer zur Bezahlseite von Mollie weitergeleitet.<br><br>Erfahren Sie hier mehr über die Mollie-Komponenten. [Link] https://www.mollie.com/en/news/post/better-checkout-flows-with-mollie-components'
     step_7:
-      text: 'Wenn Sie Ein-Klick-Bezahlvorgänge aktivieren, werden die Bezahldaten Ihrer Kunden gespeichert, um weitere Zahlungen zu beschleunigen. Ihre Kunden müssen dann keine Anpassungen mehr vornehmen und können einfach und schnell bezahlen. Erfahren Sie hier mehr über die Ein-Klick-Bezahlvorgänge. [Link] https://help.mollie.com/hc/en-us/articles/115000671249-What-are-single-click-payments-and-how-does-it-work'
+      text: 'Wenn Sie Ein-Klick-Bezahlvorgänge aktivieren, werden die Bezahldaten Ihrer Kunden gespeichert, um weitere Zahlungen zu beschleunigen. Ihre Kunden müssen dann keine Anpassungen mehr vornehmen und können einfach und schnell bezahlen.<br><br>Erfahren Sie hier mehr über die Ein-Klick-Bezahlvorgänge. [Link] https://help.mollie.com/hc/en-us/articles/115000671249-What-are-single-click-payments-and-how-does-it-work'
     step_8:
-      text: 'Kommen wir nun zur Anpassung der Funktionen für individuelle Bezahlmethoden. Wählen Sie zunächst die Schaltfläche „Methoden laden“. Hier werden nur die Methoden angezeigt, die Sie in Ihrem Mollie-Konto aktiviert haben. Verwenden Sie dann die Auswahl „Aktivieren/deaktivieren“, um zu steuern, welche Methoden auf der Bezahlseite Ihres Onlineshops angezeigt werden.'
+      text: 'Kommen wir nun zur Anpassung der Funktionen für individuelle Bezahlmethoden.<br><br>Wählen Sie zunächst die Schaltfläche „Methoden laden“. Hier werden nur die Methoden angezeigt, die Sie in Ihrem Mollie-Konto aktiviert haben.<br><br>Verwenden Sie dann die Auswahl „Aktivieren/deaktivieren“, um zu steuern, welche Methoden auf der Bezahlseite Ihres Onlineshops angezeigt werden.<br><br>Hinweis: Sie müssen Bezahlmethoden laden, um mit dem Onboarding fortzufahren.'
     step_9:
       text: 'Hier können Sie für jede Methode einen eigenen Titel eingeben – dieser wird auf der Bezahlseite Ihres Onlineshops angezeigt.'
     step_10:
@@ -194,10 +188,24 @@ bitbag_sylius_mollie_plugin:
           text: 'Wenn Sie bei der Verwendung der Payments API weitere Details erfassen möchten, um Zahlungsvorgänge mit Kundenbestellungen zu verknüpfen, können Sie diese Werte hier eintragen. Achten Sie aber darauf, dass Sie die richtigen Tags aus dem Text unten verwende'
       2:
         title: 'Orders API'
-        text: 'Mollie empfiehlt die Verwendung dieser API für Onlineshops, da damit Bestellungen („Orders“) erstellt werden können. Eine Bestellung enthält die personenbezogenen Daten der Kunden (z. B. Adressen) und die Produkte, die sie bestellt haben. Nach der Aufgabe'
+        text: 'Mollie empfiehlt die Verwendung dieser API für Onlineshops, da damit Bestellungen („Orders“) erstellt werden können. Eine Bestellung enthält die personenbezogenen Daten der Kunden (z.B. Adressen) und die Produkte, die sie bestellt haben. Nach der Aufgabe einer Bestellung wird der dazugehörige Bezahlvorgang automatisch erstellt.'
+    step_14:
+      text: 'Falls Sie Gebühren an den Kunden übertragen, können Sie diese hier hinzufügen. Mehr Informationen zu Gebühren finden Sie <a href=""https://help.mollie.com/hc/en-us/articles/360012564454-Can-I-pass-over-the-costs-for-the-use-of-a-payment-method-to-my-customers-"" target=""_blank"">hier</a>.'
     step_15:
       text: 'Denken Sie daran, Ihre Einstellungen zu speichern.'
     step_16:
       title: 'Und schon sind Sie fertig!'
       text: 'Jetzt können Sie testweise eine Kundenbestellung über Ihren Onlineshop ausführen.'
       btnNext: 'Jetzt Mollie verwenden'
+    step_nav:
+      1: 'Einführung'
+      2: 'API-Einstellungen'
+      3: 'Einstellungen zum Onlineshop'
+      4: 'Einstellungen zum Zahlungsvorgang'
+    step_quit:
+      title: 'Sind Sie sicher, dass Sie das Onboarding verlassen möchten?'
+      confirm: 'Onboarding-Assistenten verlassen'
+      cancel: 'Onboarding fortführen'
+    step_open: 'Offen'
+    create: 'Bevor Sie individuelle Zahlungsmethoden konfigurieren, klicken Sie auf „Erstellen“, um Mollie als Zahlungsmethode im Sylius-Adminbereich zu speichern.'
+

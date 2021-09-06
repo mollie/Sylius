@@ -56,7 +56,7 @@ bitbag_sylius_mollie_plugin:
     splitting_shipment_for_order: 'Verzending opsplitsen voor Bestelnr. #%number%'
     split_shipment: 'Verzending opsplitsen'
     partially_ship: 'Gedeeltelijk verzenden'
-    create_methods_before_loading: 'Om betalingsmethoden te configureren, vult u de vereiste velden in en klikt u op de knop "creëren"'
+    create_methods_before_loading: 'Vul de benodigde velden in en klik op de knop ''Creëren'' om de betalingsmethoden te configureren.'
     no_methods_found_message: 'Geen betaalmethodes gevonden. Klik op de knop "Methodes inladen", maar voer eerst je profiel-ID en API-sleutel in.'
     paymentlink_generate: 'Betaallink aanmaken'
     paymentlink_generate_subtitle: 'Betaallink aanmaken en naar de klant sturen'
@@ -147,16 +147,11 @@ bitbag_sylius_mollie_plugin:
   subscription:
     cancel: 'Abonnement is succesvol opgezegd.'
   onboardingMollie:
-    navigation:
-        intro: 'Intro'
-        api_settings: 'API-instellingen'
-        store_settings: 'Instellingen opslaan'
-        payment_settings: 'Betalingsinstellingen'
     btnBack: 'Ga terug'
     btnNext: 'Volgende'
     step_1:
       title: 'Laat mij u helpen'
-      text: 'Bedankt voor het installeren van Mollie voor uw betalingsdiensten. Deze handleiding leidt u door de configuratie-instellingen'
+      text: 'Bedankt voor het installeren van Mollie voor uw betalingsdiensten. Deze handleiding leidt u door de configuratie-instellingen.'
       btnNext: 'Start introductie'
       btnBack: 'Sla over, ik weet hoe het werkt'
     step_2:
@@ -165,18 +160,17 @@ bitbag_sylius_mollie_plugin:
       btnLogin: 'Log in op mijn account'
       btnRegister: 'Maak een Mollie account aan'
     step_3:
-      title: 'Nu u met Mollie bent verbonden, configureren wij de omgeving en de inloggegevens.'
-      text: 'Test is de standaardomgeving in de plug-in.U hoeft slecht één keer te configureren om over TEST + LIVE-omgevingen te kunnen beschikken. Probeer eenvoudig van de een naar de ander over te schakelen.'
+      text: 'Nu u met Mollie bent verbonden, configureren wij de omgeving en de inloggegevens.<br><br>Test is de standaardomgeving in de plug-in.<br><br>U hoeft slecht één keer te configureren om over TEST + LIVE-omgevingen te kunnen beschikken. Probeer eenvoudig van de een naar de ander over te schakelen.'
     step_4:
       text: 'Vul uw juiste details in en klik op "Test API-sleutel", dit levert een geslaagd of mislukt resultaat op voor zowel de LIVE- als de Test-omgevingen'
     step_5:
       text: 'Vervolgens richten we de sleutelinstellingen voor de weergave van het betalingsscherm van uw webshop in.'
     step_6:
-      text: 'Het inschakelen van componenten staat u toe om velden voor creditcardhoudergegevens toe te voegen aan uw eigen betalingspagina. Wanneer u NEE selecteert, worden gebruikers doorverwezen naar de Mollie-betalingspagina. Meer informatie over Mollie-componenten vindt u hier. [link] https://www.mollie.com/en/news/post/better-checkout-flows-with-mollie-components'
+      text: 'Het inschakelen van componenten staat u toe om velden voor creditcardhoudergegevens toe te voegen aan uw eigen betalingspagina.<br><br>Wanneer u NEE selecteert, worden gebruikers doorverwezen naar de Mollie-betalingspagina.<br><br>Meer informatie over Mollie-componenten vindt u hier. [link] https://www.mollie.com/en/news/post/better-checkout-flows-with-mollie-components'
     step_7:
-      text: 'Het inschakelen van "Betalen met één klik" onthoudt de betalingsvoorkeuren van uw klant om volgende betalingen te versnellen. Uw klant hoeft geen verdere acties uit te voeren om te kunnen genieten van snelle en gemakkelijke betalingen. Meer informatie over betalen met één klik vindt u hier. [link] https://help.mollie.com/hc/en-us/articles/115000671249-What-are-single-click-payments-and-how-does-it-work'
+      text: 'Het inschakelen van "Betalen met één klik" onthoudt de betalingsvoorkeuren van uw klant om volgende betalingen te versnellen. Uw klant hoeft geen verdere acties uit te voeren om te kunnen genieten van snelle en gemakkelijke betalingen.<br><br>Meer informatie over betalen met één klik vindt u hier. [link] https://help.mollie.com/hc/en-us/articles/115000671249-What-are-single-click-payments-and-how-does-it-work'
     step_8:
-      text: 'Het is nu tijd om functies aan te passen voor individuele betalingsmethoden.De eerste stap is het selecteren van de knop "Laad betalingsmethoden". Alleen betalingsmethoden die in uw Mollie-account zijn geactiveerd, worden hier getoond. Gebruik vervolgens de activeer/deactiveer keuzemogelijkheid om in te stellen wat er op de betalingspagina van uw webshop wordt getoond.'
+      text: 'Het is nu tijd om functies aan te passen voor individuele betalingsmethoden.<br><br>De eerste stap is het selecteren van de knop "Laad betalingsmethoden". Alleen betalingsmethoden die in uw Mollie-account zijn geactiveerd, worden hier getoond.<br><br>Gebruik vervolgens de activeer/deactiveer keuzemogelijkheid om in te stellen wat er op de betalingspagina van uw webshop wordt getoond.<br><br>Opmerking: zonder het laden van de betalingsmethoden kan de introductiehulp niet worden voortgezet.'
     step_9:
       text: 'Voor elke betalingsmethode kunt u zelf een titel invoeren. Deze wordt getoond op de betalingspagina van uw webshop.'
     step_10:
@@ -194,10 +188,23 @@ bitbag_sylius_mollie_plugin:
           text: 'Wanneer u de Payments API gebruikt kan het zijn dat u aanvullende informatie wilt om de betalingen te koppelen aan de bestellingen van de klant -- u kunt deze waarden hier invoeren, maar zorg ervoor dat u de juiste tags uit de onderstaande tekst gebruikt'
       2:
         title: 'Orders API'
-        text: 'Dit is de door Mollie aangeraden API voor het gebruik voor webshops, omdat hij de mogelijkheid biedt om "orders" te creëren. Een bestelling bevat de persoonlijke gegevens van een klant (bijv. het adres) en de producten die de klant heeft besteld. Wannee'
+        text: 'Dit is de door Mollie aangeraden API voor het gebruik voor webshops, omdat hij de mogelijkheid biedt om ''orders'' te creëren. Een bestelling bevat de persoonlijke gegevens van een klant (bijv. het adres) en de producten die de klant heeft besteld. Wanneer er een bestelling is geplaatst, wordt er automatisch een corresponderende betaling gecreëerd.'
+    step_14:
+      text: 'Wanneer u onkosten heeft, die u wilt doorbelasten aan de klant, kunt u deze hier toevoegen. Lees <a href=""https://help.mollie.com/hc/en-us/articles/360012564454-Can-I-pass-over-the-costs-for-the-use-of-a-payment-method-to-my-customers-"" target=""_blank"">hier</a> meer over onkosten.'
     step_15:
       text: 'Vergeet niet om uw configuraties op te slaan.'
     step_16:
       title: 'U bent klaar!'
       text: 'Nu kunt u proberen een klantbestelling te plaatsen op uw website.'
       btnNext: 'Ga aan de slag met Mollie'
+    step_nav:
+      1: 'Intro'
+      2: 'API instellingen'
+      3: 'Winkelinstellingen'
+      4: 'Betalingsinstellingen'
+    step_quit:
+      title: 'Weet u zeker dat u wilt stoppen?'
+      confirm: 'Verlaat de introductiehulp'
+      cancel: 'Ga verder met de introductie'
+    step_open: 'Open'
+    create: "Klik op ''Creëren'' voordat u individuele betalingsmethoden configureert. Hiermee wordt Mollie als betalingsmethode opgeslagen in het Sylius administratiepaneel."

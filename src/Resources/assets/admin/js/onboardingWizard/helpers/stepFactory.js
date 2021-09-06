@@ -51,7 +51,7 @@ const handleStepButtons = (onboardingWizard, stepIndex, step, translator) => {
         {
             text: step.btnNextText
                 ? translator.trans(_get(wizardTranslations, step.btnNextText))
-                : translator.trans(_get(wizardTranslations, 'stepButtons.nextWithArrow')),
+                : translator.trans(_get(wizardTranslations, 'stepButtons.next')),
             classes: `${step.btnNextClass || ''}`,
             action() {
                 const tour = onboardingWizard.tour;

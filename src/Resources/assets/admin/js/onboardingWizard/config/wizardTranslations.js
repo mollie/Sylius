@@ -54,7 +54,7 @@ export default {
         text: 'bitbag_sylius_mollie_plugin.onboardingMollie.step_16.text',
     },
     stepQuitConfirmation: {
-        title: 'Are you sure you want to quit ?',
+        title: 'bitbag_sylius_mollie_plugin.onboardingMollie.step_quit.title',
     },
     stepCreate: {
         text: 'bitbag_sylius_mollie_plugin.onboardingMollie.create',
@@ -64,12 +64,11 @@ export default {
         skipWizard: 'bitbag_sylius_mollie_plugin.onboardingMollie.step_1.btnBack',
         startWizard: 'bitbag_sylius_mollie_plugin.onboardingMollie.step_1.btnNext',
         loginMollieAccount: 'bitbag_sylius_mollie_plugin.onboardingMollie.step_2.btnLogin',
-        nextWithArrow: 'Next <i class="icon angle right"></i>',
         next: 'bitbag_sylius_mollie_plugin.onboardingMollie.btnNext',
         createMollieAccount: 'bitbag_sylius_mollie_plugin.onboardingMollie.step_2.btnRegister',
         finishWizard: 'bitbag_sylius_mollie_plugin.onboardingMollie.step_16.btnNext',
-        quitConfirm: 'Quit the onboarding assistant',
-        quitCancel: 'Continue onboarding',
+        quitConfirm: 'bitbag_sylius_mollie_plugin.onboardingMollie.step_quit.confirm',
+        quitCancel: 'bitbag_sylius_mollie_plugin.onboardingMollie.step_quit.cancel',
     },
     common: {
         open: 'Open',

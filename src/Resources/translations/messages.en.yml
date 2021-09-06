@@ -147,11 +147,6 @@ bitbag_sylius_mollie_plugin:
     subscription:
         cancel: 'Subscription has been successfully canceled.'
     onboardingMollie:
-        navigation:
-            intro: 'Intro'
-            api_settings: 'API settings'
-            store_settings: 'Store settings'
-            payment_settings: 'Payment settings'
         btnBack: 'Go back'
         btnNext: 'Next'
         step_1:
@@ -179,7 +174,7 @@ bitbag_sylius_mollie_plugin:
         step_9:
             text: 'For each method you can enter a custom title here - it will be displayed on your webshop checkout page.'
         step_10:
-            text: "Try uploading a custom image for the payment method icon. This will be shown in the webshop checkout page."
+            text: 'Try uploading a custom image for the payment method icon. This will be shown in the webshop checkout page.'
         step_11:
             text: 'Here you can create filters for country specific payment methods - for example if you want iDEAL only to show for Netherlands customers you choose "Select Countries" and select Netherlands.'
         step_12:
@@ -198,4 +193,16 @@ bitbag_sylius_mollie_plugin:
             title: "You're all set!"
             text: "You can now attempt a customer order on your website."
             btnNext: 'Start using Mollie'
+        step_nav:
+            1: 'Intro'
+            2: 'Api Settings'
+            3: 'Store settings'
+            4: 'Payment settings'
+        step_quit:
+            title: 'Are you sure you want to quit?'
+            confirm: 'Quit the onboarding assistant'
+            cancel: 'Continue onboarding'
+        step_open: 'Open'
         create: 'Before configuring individual payment methods, click "create" to save Mollie as a Payment Method in Sylius Admin Panel.'
+
+

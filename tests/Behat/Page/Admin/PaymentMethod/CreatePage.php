@@ -28,6 +28,14 @@ final class CreatePage extends BaseCreatePage implements CreatePageInterface
     /**
      * {@inheritdoc}
      */
+    public function setProfileId(string $profileId): void
+    {
+        $this->getDocument()->fillField('Profile ID', $profileId);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setTimes(int $times): void
     {
         $this->getDocument()->fillField('Times', $times);

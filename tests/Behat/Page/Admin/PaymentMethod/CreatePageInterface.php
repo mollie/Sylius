@@ -22,6 +22,11 @@ interface CreatePageInterface extends BaseCreatePageInterface
     public function setApiKey(string $apiKey): void;
 
     /**
+     * @param string $profileId
+     */
+    public function setProfileId(string $profileId): void;
+
+    /**
      * @param int $times
      */
     public function setTimes(int $times): void;

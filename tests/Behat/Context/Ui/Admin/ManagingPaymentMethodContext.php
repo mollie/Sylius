@@ -48,6 +48,14 @@ final class ManagingPaymentMethodContext implements Context
     }
 
     /**
+     * @When I fill the Profile ID with :profileId
+     */
+    public function iConfigureProfileId(string $profileId): void
+    {
+        $this->createPage->setProfileId($profileId);
+    }
+
+    /**
      * @Then I should be notified that :fields fields cannot be blank
      */
     public function iShouldBeNotifiedThatCannotBeBlank(string $fields): void

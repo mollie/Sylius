@@ -13,6 +13,7 @@ Feature: Adding a new mollie recurring subscription
         Given I want to create a new Mollie recurring subscription
         When I name it "Mollie Recurring Subscription" in "English (United States)"
         And I specify its code as "mollie_recurring_subscription_test"
+        And I fill the Profile ID with "pfl_6nBFHppqBs"
         And I fill the API key with "test_jdqkCbp55GRnfb9nFRz7R555pJMW444"
         And I fill the times with "3"
         And I fill the interval with "1 months"

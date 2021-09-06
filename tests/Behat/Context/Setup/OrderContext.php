@@ -13,8 +13,8 @@ declare(strict_types=1);
 namespace Tests\BitBag\SyliusMolliePlugin\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
-use BitBag\SyliusMolliePlugin\MollieGatewayFactory;
-use Doctrine\Common\Persistence\ObjectManager;
+use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
+use Doctrine\ORM\EntityManager;
 use Payum\Core\Payum;
 use Payum\Core\Registry\RegistryInterface;
 use SM\Factory\FactoryInterface as StateMachineFactoryInterface;
@@ -25,9 +25,9 @@ use Sylius\Component\Payment\PaymentTransitions;
 final class OrderContext implements Context
 {
     /**
-     * @var ObjectManager
+     * @var EntityManager
      */
-    private $objectManager;
+    private $entityManager;
 
     /**
      * @var StateMachineFactoryInterface
@@ -40,16 +40,16 @@ final class OrderContext implements Context
     private $payum;
 
     /**
-     * @param ObjectManager $objectManager
+     * @param EntityManager $entityManager
      * @param StateMachineFactoryInterface $stateMachineFactory
      * @param RegistryInterface $payum
      */
     public function __construct(
-        ObjectManager $objectManager,
+        EntityManager $entityManager,
         StateMachineFactoryInterface $stateMachineFactory,
         RegistryInterface $payum
     ) {
-        $this->objectManager = $objectManager;
+        $this->entityManager = $entityManager;
         $this->stateMachineFactory = $stateMachineFactory;
         $this->payum = $payum;
     }
@@ -61,7 +61,7 @@ final class OrderContext implements Context
     {
         $this->applyMolliePaymentTransitionOnOrder($order, PaymentTransitions::TRANSITION_COMPLETE);
 
-        $this->objectManager->flush();
+        $this->entityManager->flush();
     }
 
     /**

@@ -13,14 +13,13 @@ declare(strict_types=1);
 namespace Tests\BitBag\SyliusMolliePlugin\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
-use BitBag\SyliusMolliePlugin\MollieGatewayFactory;
-use BitBag\SyliusMolliePlugin\MollieSubscriptionGatewayFactory;
-use Doctrine\Common\Persistence\ObjectManager;
+use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
+use BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
+use Doctrine\ORM\EntityManager;
 use Sylius\Behat\Service\SharedStorageInterface;
 use Sylius\Bundle\CoreBundle\Fixture\Factory\ExampleFactoryInterface;
 use Sylius\Component\Core\Model\PaymentMethodInterface;
 use Sylius\Component\Core\Repository\PaymentMethodRepositoryInterface;
-use Sylius\Component\Resource\Factory\FactoryInterface;
 
 final class MollieContext implements Context
 {
@@ -40,12 +39,7 @@ final class MollieContext implements Context
     private $paymentMethodExampleFactory;
 
     /**
-     * @var FactoryInterface
-     */
-    private $paymentMethodTranslationFactory;
-
-    /**
-     * @var ObjectManager
+     * @var EntityManager
      */
     private $paymentMethodManager;
 
@@ -53,20 +47,17 @@ final class MollieContext implements Context
      * @param SharedStorageInterface $sharedStorage
      * @param PaymentMethodRepositoryInterface $paymentMethodRepository
      * @param ExampleFactoryInterface $paymentMethodExampleFactory
-     * @param FactoryInterface $paymentMethodTranslationFactory
-     * @param ObjectManager $paymentMethodManager
+     * @param EntityManager $paymentMethodManager
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         PaymentMethodRepositoryInterface $paymentMethodRepository,
         ExampleFactoryInterface $paymentMethodExampleFactory,
-        FactoryInterface $paymentMethodTranslationFactory,
-        ObjectManager $paymentMethodManager
+        EntityManager $paymentMethodManager
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->paymentMethodRepository = $paymentMethodRepository;
         $this->paymentMethodExampleFactory = $paymentMethodExampleFactory;
-        $this->paymentMethodTranslationFactory = $paymentMethodTranslationFactory;
         $this->paymentMethodManager = $paymentMethodManager;
     }
 

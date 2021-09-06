@@ -17,7 +17,7 @@ use FriendsOfBehat\PageObjectExtension\Page\Page;
 use FriendsOfBehat\SymfonyExtension\Mink\MinkParameters;
 use Payum\Core\Security\TokenInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
-use Symfony\Component\BrowserKit\Client;
+use Symfony\Component\BrowserKit\AbstractBrowser;
 
 final class PaymentPage extends Page implements PaymentPageInterface
 {
@@ -27,7 +27,7 @@ final class PaymentPage extends Page implements PaymentPageInterface
     private $securityTokenRepository;
 
     /**
-     * @var Client
+     * @var AbstractBrowser
      */
     private $client;
 
@@ -35,13 +35,13 @@ final class PaymentPage extends Page implements PaymentPageInterface
      * @param Session $session
      * @param MinkParameters $parameters
      * @param RepositoryInterface $securityTokenRepository
-     * @param Client $client
+     * @param AbstractBrowser $client
      */
     public function __construct(
         Session $session,
         MinkParameters $parameters,
         RepositoryInterface $securityTokenRepository,
-        Client $client
+        AbstractBrowser $client
     ) {
         parent::__construct($session, $parameters);
 

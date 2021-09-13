@@ -95,11 +95,13 @@ bitbag_sylius_mollie_plugin:
         selected_countries: 'Selected countries'
         country_level_allow: 'Allow payment from specific countries'
         country_level_exclude: 'Exclude payment from specific countries'
-        you_can_find_you_profile_id: "Profile ID * \n
-                                     You can find your Profile ID in your"
+        you_can_find_you_profile_id: |-
+            Profile ID *
+            You can find your Profile ID in your
         mollie_profile_id: 'Mollie Profile'
-        find_you_api_key: "Test API Key * \n
-                          You can find your API key in your "
+        find_you_api_key: |-
+            Test API Key *
+            You can find your API key in your
         mollie_profile: 'Mollie Profile'
         it_starts_with: 'it starts with test or live.'
         emails:
@@ -130,10 +132,12 @@ bitbag_sylius_mollie_plugin:
         enabled_buy_now_button_help: 'The button is shown on the checkout page'
         payment_methods:
             payment_description: 'Description'
-            payment_description_help: "The description to be used for the transactions. These variables are available:\n
-                <b>{ordernumber}:</b> The order number for this transaction \n
-                <b>{storename}:</b> The name of the store \n\n
-                (Note: this only works when the method is set to Payments API)"
+            payment_description_help: |-
+                The description to be used for the transactions. These variables are available:
+                <strong>{ordernumber}:</strong> The order number for this transaction
+                <strong>{storename}:</strong> The name of the store
+
+                (Note: this only works when the method is set to Payments API)
         product_type: 'Product type (required in meal vouchers)'
         product_type_default: 'Choose default product category'
         product_type_default_help: 'The category selected here will be used for all products in your webshop.'
@@ -151,47 +155,73 @@ bitbag_sylius_mollie_plugin:
         btnNext: 'Next'
         step_1:
             title: 'Let me help you'
-            text: 'Thank you for installing Mollie for payment services. This guide will take you through the configuration set-up.'
+            text: >-
+                <p>Thank you for installing Mollie for payment services. This guide will take you through the configuration set-up.</p>
             btnNext: 'Start onboarding assistant'
             btnBack: 'Skip, I know how it works'
         step_2:
             title: 'Connect to your Mollie account'
-            text: "To sync the Mollie plugin to your webshop you'll need Mollie API keys and Profile ID."
+            text: >-
+                <p>To sync the Mollie plugin to your webshop you'll need Mollie API keys and Profile ID.</p>
             btnLogin: 'Log in to my account'
             btnRegister: 'Create a Mollie account'
         step_3:
-            text: "Now that you're connected to Mollie we will configure the environment and credentials.<br><br>Test will be the default environment in the plugin.<br><br>You only need to do the configuration once to have TEST + LIVE environments available. Try easily toggling between the two."
+            text: >-
+                <p>Now that you're connected to Mollie we will configure the environment and credentials.</p>
+                <p>Test will be the default environment in the plugin.</p>
+                <p>You only need to do the configuration once to have TEST + LIVE environments available. Try easily toggling between the two.</p>
         step_4:
-            text: 'Fill in your correct details and click "TEST API Key" this will return a successful or failed result for both the LIVE and TEST environments.'
+            text: >-
+                <p>Fill in your correct details and click "TEST API Key" this will return a successful or failed result for both the LIVE and TEST environments.</p>
         step_5:
-            text: "Next, we'll set-up key settings for the checkout screen display on your webshop."
+            text: >-
+                <p>Next, we'll set-up key settings for the checkout screen display on your webshop.</p>
         step_6:
-            text: "Enabling components allows you to add the fields needed for credit card holder data to your own checkout.<br><br>If you select NO users will be redirected to the Mollie checkout page.<br><br>Learn more about Mollie components <a href='https://www.mollie.com/en/news/post/better-checkout-flows-with-mollie-components' target='_blank'>here</a>."
+            text: >-
+                <p>Enabling components, allows you to add the fields needed for credit card holder data to your own checkout.</p>
+                <p>If you select NO, users will be redirected to the Mollie checkout page.</p>
+                <p>Learn more about Mollie components <a href="https://www.mollie.com/en/news/post/better-checkout-flows-with-mollie-components" target="_blank">here</a>.</p>
         step_7:
-            text: "Enabling single click payments remembers your consumer's payment preferences in order to expedite follow-up payments. Your consumer does not have to perform any additional actions to enjoy quick and easy payments.<br><br>Learn more about single click payments <a href='https://help.mollie.com/hc/en-us/articles/115000671249-What-are-single-click-payments-and-how-does-it-work' target='_blank'>here</a>."
+            text: >-
+                <p>Enabling single click payments remembers your consumer's payment preferences in order to expedite follow-up payments. Your consumer does not have to perform any additional actions to enjoy quick and easy payments.</p>
+                <p>Learn more about single click payments <a href="https://help.mollie.com/hc/en-us/articles/115000671249-What-are-single-click-payments-and-how-does-it-work-" target="_blank">here</a>.</p>
         step_8:
-            text: "Now it's time to customize features for individual payment methods.<br><br>First select the load methods button. Only the methods that are enabled in your Mollie account will display here.<br><br>Then you use the enable/disable selector to control which will show on your webshop checkout.<br><br>NOTE: It is not possible to continue the guided onboarding without loading payment methods."
+            text: >-
+                <p>Now it's time to customize features for individual payment methods.</p>
+                <p>First, select the load methods button. Only the methods that are enabled in your Mollie account will display here.</p>
+                <p>Then you use the enable/disable selector to control which will show on your webshop checkout.</p>
+                <p>Note: It is not possible to continue the guided onboarding without loading payment methods.</p>
         step_9:
-            text: 'For each method you can enter a custom title here - it will be displayed on your webshop checkout page.'
+            text: >-
+                <p>For each method, you can enter a custom title here - it will be displayed on your webshop checkout page.</p>
         step_10:
-            text: 'Try uploading a custom image for the payment method icon. This will be shown in the webshop checkout page.'
+            text: >-
+                <p>Try uploading a custom image for the payment method icon. This will be shown in the webshop checkout page.</p>
         step_11:
-            text: 'Here you can create filters for country specific payment methods - for example if you want iDEAL only to show for Netherlands customers you choose "Select Countries" and select Netherlands.'
+            text: >-
+                <p>Here you can create filters for country specific payment methods - for example, if you want iDEAL only to show for Netherlands customers you choose "Select Countries" and select Netherlands.</p>
         step_12:
-            text: 'Per method you can select which Mollie API to use to create payments. Click <a href="https://docs.mollie.com/orders/why-use-orders" target="_blank">here</a> to read about the differences between Orders and Payments API.'
+            text: >-
+                <p>Per method, you can select which Mollie API to use to create payments. Click <a href="https://docs.mollie.com/orders/why-use-orders" target="_blank">here</a> to read about the differences between Orders and Payments API.</p>
         step_13:
             1:
-                2:
-                    text: 'When using Payments API you may want additional details to help you match payments with customer orders -- you can enter those values here but make sure to use the correct tags provided in the text below.'
+                title: 'Payments API'
+                text: >-
+                    <p>When using Payments API you may want additional details to help you match payments with customer orders -- you can enter those values here but make sure to use the correct tags provided in the text below.</p>
             2:
-                text: 'This is Mollie suggested API to use for webshops because it allows you to create “orders”. An order contains the personal information of a customer (e.g. address) and products that the customer ordered. When an order is made, a corresponding payment will be created automatically.'
+                title: 'Orders API'
+                text: >-
+                    <p>This is Mollie suggested API to use for webshops because it allows you to create “orders”. An order contains the personal information of a customer (e.g. address) and products that the customer ordered. When an order is made, a corresponding payment will be created automatically.</p>
         step_14:
-            text: 'In case you have fees that you are passing on to the consumer, you can add them here. Read more about fees <a href="https://help.mollie.com/hc/en-us/articles/360012564454-Can-I-pass-over-the-costs-for-the-use-of-a-payment-method-to-my-customers-" target="_blank">here</a>.'
+            text: >-
+                <p>"In case you have fees that you are passing on to the consumer, you can add them here. Read more about fees <a href=""https://help.mollie.com/hc/en-us/articles/360012564454-Can-I-pass-over-the-costs-for-the-use-of-a-payment-method-to-my-customers-"" target=""_blank"">here</a>.</p>
         step_15:
-            text: 'Remember to save your configurations.'
+            text: >-
+                <p>Remember to save your configurations.</p>
         step_16:
             title: "You're all set!"
-            text: "You can now attempt a customer order on your website."
+            text: >-
+                <p>You can now attempt a customer order on your website.</p>
             btnNext: 'Start using Mollie'
         step_nav:
             1: 'Intro'

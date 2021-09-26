@@ -89,8 +89,8 @@ $(function () {
 
     const canShowButton =
         applePayMethodElement &&
-        ApplePaySession &&
-        ApplePaySession.canMakePayments();
+        window.ApplePaySession &&
+        ApplePaySession?.canMakePayments();
     if (canShowButton) {
         applePayMethodElement.style.display = 'block';
     }

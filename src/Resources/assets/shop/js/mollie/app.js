@@ -1,3 +1,5 @@
+const { Mollie } = window;
+
 $(function () {
     let selectedValue = false;
     let mollieData = $('.online-online-payment__container');
@@ -168,7 +170,7 @@ $(function () {
     const applePay = document.getElementById('applepay');
 
     if (applePay) {
-        if (window.ApplePaySession || ApplePaySession.canMakePayments()) {
+        if (window.ApplePaySession && ApplePaySession.canMakePayments()) {
             applePay.style.display = 'block';
         }
     }

@@ -170,7 +170,7 @@ $(function () {
     const applePay = document.getElementById('applepay');
 
     if (applePay) {
-        if (window.ApplePaySession && ApplePaySession.canMakePayments()) {
+        if (window.ApplePaySession && (ApplePaySession && ApplePaySession.canMakePayments())) {
             applePay.style.display = 'block';
         }
     }

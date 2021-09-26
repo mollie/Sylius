@@ -12,8 +12,9 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Entity;
 
 use BitBag\SyliusMolliePlugin\Payments\Methods\MethodInterface;
+use Sylius\Component\Resource\Model\TranslatableInterface;
 
-interface MollieGatewayConfigInterface extends MethodInterface
+interface MollieGatewayConfigInterface extends MethodInterface, TranslatableInterface
 {
     public const ALL_COUNTRIES = 'ALL_COUNTRIES';
 

@@ -14,12 +14,14 @@ namespace BitBag\SyliusMolliePlugin\Form\Type;
 use BitBag\SyliusMolliePlugin\Documentation\DocumentationLinksInterface;
 use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
 use BitBag\SyliusMolliePlugin\Entity\ProductType;
+use BitBag\SyliusMolliePlugin\Form\Type\Translation\MollieGatewayConfigTranslationType;
 use BitBag\SyliusMolliePlugin\Options\Country\Options as CountryOptions;
 use BitBag\SyliusMolliePlugin\Payments\Methods\AbstractMethod;
 use BitBag\SyliusMolliePlugin\Payments\PaymentTerms\Options;
 use BitBag\SyliusMolliePlugin\Validator\Constraints\PaymentSurchargeType;
 use Sylius\Bundle\ProductBundle\Form\Type\ProductType as ProductFormType;
 use Sylius\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
+use Sylius\Bundle\ResourceBundle\Form\Type\ResourceTranslationsType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -58,15 +60,9 @@ final class MollieGatewayConfigType extends AbstractResourceType
                 'empty_data' => null,
                 'help' => 'bitbag_sylius_mollie_plugin.form.product_type_default_help',
             ])
-            ->add('name', TextType::class, [
-                'required' => true,
+            ->add('translations', ResourceTranslationsType::class, [
                 'label' => 'bitbag_sylius_mollie_plugin.ui.payment_name',
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'bitbag_sylius_mollie_plugin.payment_method.not_blank',
-                        'groups' => ['sylius'],
-                    ]),
-                ],
+                'entry_type' => MollieGatewayConfigTranslationType::class,
             ])
             ->add('paymentType', ChoiceType::class, [
                 'label' => 'bitbag_sylius_mollie_plugin.ui.payment_type',

@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Resolver;
 
 use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
+use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfigTranslationInterface;
 
 final class MollieCountriesRestrictionResolver implements MollieCountriesRestrictionResolverInterface
 {
@@ -57,7 +58,9 @@ final class MollieCountriesRestrictionResolver implements MollieCountriesRestric
 
     private function setData(array $methods, MollieGatewayConfigInterface $paymentMethod): array
     {
-        $methods['data'][$paymentMethod->getName()] = $paymentMethod->getMethodId();
+        /** @var MollieGatewayConfigTranslationInterface $translation */
+        $translation = $paymentMethod->getTranslation();
+        $methods['data'][$translation->getName() ?? $paymentMethod->getName()] = $paymentMethod->getMethodId();
         $methods['image'][$paymentMethod->getMethodId()] = $this->imageResolver->resolve($paymentMethod);
         $methods['issuers'][$paymentMethod->getMethodId()] = $paymentMethod->getIssuers();
         $methods['paymentFee'][$paymentMethod->getMethodId()] = $paymentMethod->getPaymentSurchargeFee()->getType()

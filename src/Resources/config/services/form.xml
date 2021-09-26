@@ -79,5 +79,9 @@
             <argument>%bitbag_sylius_mollie_plugin.model.template_mollie_email_translation.class%</argument>
             <tag name="form.type" />
         </service>
+        <service id="bitbag_sylius_mollie_plugin.form.type.translation.payment_method_translation" class="BitBag\SyliusMolliePlugin\Form\Type\Translation\MollieGatewayConfigTranslationType">
+            <argument>%bitbag_sylius_mollie_plugin.model.mollie_gateway_config_translation.class%</argument>
+            <tag name="form.type" />
+        </service>
     </services>
 </container>

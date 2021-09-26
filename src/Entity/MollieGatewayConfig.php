@@ -13,9 +13,16 @@ namespace BitBag\SyliusMolliePlugin\Entity;
 
 use BitBag\SyliusMolliePlugin\Payments\Methods\AbstractMethod;
 use Sylius\Component\Resource\Model\ResourceInterface;
+use Sylius\Component\Resource\Model\TranslatableTrait;
+use Sylius\Component\Resource\Model\TranslationInterface;
 
 class MollieGatewayConfig extends AbstractMethod implements ResourceInterface, MollieGatewayConfigInterface
 {
+    use TranslatableTrait {
+        __construct as private initializeTranslationsCollection;
+        getTranslation as private doGetTranslation;
+    }
+
     /** @var int */
     protected $id;
 
@@ -57,6 +64,11 @@ class MollieGatewayConfig extends AbstractMethod implements ResourceInterface, M
 
     /** @var int|null */
     protected $position;
+
+    public function __construct()
+    {
+        $this->initializeTranslationsCollection();
+    }
 
     public function getId(): int
     {
@@ -196,5 +208,18 @@ class MollieGatewayConfig extends AbstractMethod implements ResourceInterface, M
     public function setPosition(?int $position): void
     {
         $this->position = $position;
+    }
+
+    protected function createTranslation(): TranslationInterface
+    {
+        return new MollieGatewayConfigTranslation();
+    }
+
+    public function getTranslation(?string $locale = null): MollieGatewayConfigTranslationInterface
+    {
+        /** @var MollieGatewayConfigTranslationInterface $translation */
+        $translation = $this->doGetTranslation($locale);
+
+        return $translation;
     }
 }

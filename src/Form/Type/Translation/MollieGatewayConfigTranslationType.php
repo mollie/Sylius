@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Form\Type\Translation;
 
 use BitBag\SyliusMolliePlugin\Documentation\DocumentationLinksInterface;
+use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
 use BitBag\SyliusMolliePlugin\Payments\PaymentTerms\Options;
 use BitBag\SyliusMolliePlugin\Validator\Constraints\LiveApiKeyIsNotBlank;
 use Sylius\Bundle\ResourceBundle\Form\Type\AbstractResourceType;

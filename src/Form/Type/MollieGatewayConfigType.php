@@ -13,6 +13,7 @@ namespace BitBag\SyliusMolliePlugin\Form\Type;
 
 use BitBag\SyliusMolliePlugin\Documentation\DocumentationLinksInterface;
 use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
+use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfigTranslationInterface;
 use BitBag\SyliusMolliePlugin\Entity\ProductType;
 use BitBag\SyliusMolliePlugin\Form\Type\Translation\MollieGatewayConfigTranslationType;
 use BitBag\SyliusMolliePlugin\Options\Country\Options as CountryOptions;
@@ -30,17 +31,24 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class MollieGatewayConfigType extends AbstractResourceType
 {
     /** @var DocumentationLinksInterface */
     private $documentationLinks;
 
-    public function __construct(string $dataClass, array $validationGroups = [], DocumentationLinksInterface $documentationLinks)
-    {
+    /** @var string */
+    private $defaultLocale;
+
+    public function __construct(
+        string $dataClass,
+        array $validationGroups = [],
+        DocumentationLinksInterface $documentationLinks,
+        string $defaultLocale
+    ) {
         parent::__construct($dataClass, $validationGroups);
         $this->documentationLinks = $documentationLinks;
+        $this->defaultLocale = $defaultLocale;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -119,6 +127,16 @@ final class MollieGatewayConfigType extends AbstractResourceType
                 'label' => 'bitbag_sylius_mollie_plugin.ui.debug_level_log',
                 'choices' => Options::getDebugLevels(),
             ])
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+                /** @var MollieGatewayConfigInterface $object */
+                $object = $event->getData();
+
+                if (false === $object->hasTranslationLocale($this->defaultLocale)) {
+                    /** @var MollieGatewayConfigTranslationInterface $translation */
+                    $translation = $object->getTranslation($this->defaultLocale);
+                    $translation->setName($object->getName());
+                }
+            })
             ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
                 /** @var MollieGatewayConfigInterface $object */
                 $object = $event->getForm()->getData();

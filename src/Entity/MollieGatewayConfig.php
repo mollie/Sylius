@@ -222,4 +222,9 @@ class MollieGatewayConfig extends AbstractMethod implements ResourceInterface, M
 
         return $translation;
     }
+
+    public function hasTranslationLocale(string $localeCode): bool
+    {
+        return $this->translations->containsKey($localeCode);
+    }
 }

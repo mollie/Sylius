@@ -73,4 +73,6 @@ interface MollieGatewayConfigInterface extends MethodInterface, TranslatableInte
     public function getPosition(): ?int;
 
     public function setPosition(?int $position): void;
+
+    public function hasTranslationLocale(string $localeCode): bool;
 }

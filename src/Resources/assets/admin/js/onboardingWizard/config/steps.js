@@ -7,6 +7,7 @@ import {
     saveStep,
     clearStorage,
     checkForExistance,
+    expandDisabled
 } from '../helpers';
 
 const paymentMethodPaymentApi = 'PAYMENT_API';
@@ -181,7 +182,9 @@ export const steps = [
     },
     {
         showOn: function () {
-            currentStepValidator('.content.active .js-onboardingWizard-paymentName', '.pushable');
+            expandDisabled('.js-onboardingWizard-paymentName', '[data-payment-method]', '.title');
+            currentStepValidator('.js-onboardingWizard-paymentName', '.pushable');
+            
             return checkForExistance(this.attachTo.element);
         },
         id: 'step-payment-title',
@@ -190,7 +193,7 @@ export const steps = [
         highlightClass: 'payment-settings',
         btnNextClass: 'shepherd-button-next',
         attachTo: {
-            element: '.content.active .js-onboardingWizard-paymentName',
+            element: '.js-onboardingWizard-paymentName',
             on: 'top-start',
         },
     },

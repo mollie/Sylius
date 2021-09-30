@@ -89,3 +89,13 @@ export const handleSubmit = () => {
 };
 
 export const checkForExistance = (highlightClass) => document.querySelector(highlightClass) != undefined;
+
+export const expandDisabled = (child, parent, target) => {
+    const element = document.querySelector(child);
+    const container = element.closest(parent);
+    const eventTarget = container.querySelector(target);
+
+    if (!eventTarget.classList.contains('active')) {
+        eventTarget.click();
+    }
+};

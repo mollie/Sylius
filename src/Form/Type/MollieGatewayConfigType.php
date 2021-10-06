@@ -42,9 +42,9 @@ final class MollieGatewayConfigType extends AbstractResourceType
 
     public function __construct(
         string $dataClass,
-        array $validationGroups = [],
         DocumentationLinksInterface $documentationLinks,
-        string $defaultLocale
+        string $defaultLocale,
+        array $validationGroups = []
     ) {
         parent::__construct($dataClass, $validationGroups);
         $this->documentationLinks = $documentationLinks;

@@ -40,7 +40,7 @@ final class MolliePaymentsMethodResolver implements MolliePaymentsMethodResolver
     /** @var PaymentMethodRepositoryInterface */
     private $paymentMethodRepository;
 
-    /** @var MollieAllowedMethodsResolver */
+    /** @var MollieAllowedMethodsResolverInterface */
     private $allowedMethodsResolver;
 
     /** @var MollieLoggerActionInterface  */
@@ -52,7 +52,7 @@ final class MolliePaymentsMethodResolver implements MolliePaymentsMethodResolver
         ProductVoucherTypeCheckerInterface $productVoucherTypeChecker,
         PaymentCheckoutOrderResolverInterface $paymentCheckoutOrderResolver,
         PaymentMethodRepositoryInterface $paymentMethodRepository,
-        MollieAllowedMethodsResolver $allowedMethodsResolver,
+        MollieAllowedMethodsResolverInterface $allowedMethodsResolver,
         MollieLoggerActionInterface $loggerAction
     ) {
         $this->mollieGatewayRepository = $mollieGatewayRepository;

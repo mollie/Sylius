@@ -42,7 +42,7 @@ final class MollieAllowedMethodsResolver implements MollieAllowedMethodsResolver
         return $allowedMethodsIds;
     }
 
-    private function createParametersByOrder($order): array
+    private function createParametersByOrder(OrderInterface $order): array
     {
         return array_merge(
             [

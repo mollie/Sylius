@@ -35,8 +35,8 @@ $(function () {
         const updatedPositions = [];
 
         draggables.map((item, index) => {
-            const {paymentMethod} = item.dataset;
-            updatedPositions.push({id: index, name: paymentMethod});
+            const {paymentMethod, paymentId} = item.dataset;
+            updatedPositions.push({id: index, name: paymentMethod, identifier: paymentId});
         });
 
         return updatedPositions;

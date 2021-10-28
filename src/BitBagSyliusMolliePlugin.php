@@ -16,7 +16,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 final class BitBagSyliusMolliePlugin extends Bundle
 {
-    public const VERSION = '3.5.0-beta.1';
+    public const VERSION = '3.5.0';
 
     public const USER_AGENT_TOKEN = 'p5ACCDx8Tbn8vjpr';
 

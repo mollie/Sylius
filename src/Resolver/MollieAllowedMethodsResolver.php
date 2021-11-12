@@ -20,9 +20,16 @@ final class MollieAllowedMethodsResolver implements MollieAllowedMethodsResolver
     /** @var MollieApiClientKeyResolverInterface */
     private $mollieApiClientKeyResolver;
 
-    public function __construct(MollieApiClientKeyResolverInterface $mollieApiClientKeyResolver)
+    /** @var PaymentLocaleResolverInterface */
+    private $paymentLocaleResolver;
+
+    public function __construct(
+        MollieApiClientKeyResolverInterface $mollieApiClientKeyResolver,
+        PaymentLocaleResolverInterface $paymentLocaleResolver
+    )
     {
         $this->mollieApiClientKeyResolver = $mollieApiClientKeyResolver;
+        $this->paymentLocaleResolver = $paymentLocaleResolver;
     }
 
     public function resolve(OrderInterface $order): array
@@ -44,19 +51,24 @@ final class MollieAllowedMethodsResolver implements MollieAllowedMethodsResolver
 
     private function createParametersByOrder(OrderInterface $order): array
     {
-        return array_merge(
+        $parameters =  array_merge(
             [
                 'amount' => [
                     'value' => $this->parseTotalToString($order->getTotal()),
                     'currency' => $order->getCurrencyCode(),
                 ],
-                'locale' => $order->getLocaleCode(),
                 'billingCountry' => null !== $order->getBillingAddress()
                     ? $order->getBillingAddress()->getCountryCode()
                     : null
             ],
             MollieMethodsCreatorInterface::PARAMETERS
         );
+
+        if (null !== ($paymentLocale = $this->paymentLocaleResolver->resolveFromOrder($order))) {
+            $parameters['locale'] = $paymentLocale;
+        }
+
+        return $parameters;
     }
 
     private function parseTotalToString(int $total): string

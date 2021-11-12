@@ -18,6 +18,7 @@ use BitBag\SyliusMolliePlugin\Helper\ConvertOrderInterface;
 use BitBag\SyliusMolliePlugin\Payments\PaymentTerms\Options;
 use BitBag\SyliusMolliePlugin\Provider\Order\OrderPaymentApplePayDirectProvider;
 use BitBag\SyliusMolliePlugin\Resolver\MollieApiClientKeyResolverInterface;
+use BitBag\SyliusMolliePlugin\Resolver\PaymentLocaleResolverInterface;
 use Mollie\Api\Exceptions\ApiException;
 use Mollie\Api\Types\OrderStatus;
 use Mollie\Api\Types\PaymentMethod;
@@ -37,16 +38,21 @@ final class ApplePayDirectApiOrderPaymentResolver implements ApplePayDirectApiOr
     /** @var OrderPaymentApplePayDirectProvider */
     private $paymentApplePayDirectProvider;
 
+    /** @var PaymentLocaleResolverInterface */
+    private $paymentLocaleResolver;
+
     public function __construct(
         MollieApiClient $mollieApiClient,
         MollieApiClientKeyResolverInterface $apiClientKeyResolver,
         ConvertOrderInterface $convertOrder,
-        OrderPaymentApplePayDirectProvider $paymentApplePayDirectProvider
+        OrderPaymentApplePayDirectProvider $paymentApplePayDirectProvider,
+        PaymentLocaleResolverInterface $paymentLocaleResolver
     ) {
         $this->mollieApiClient = $mollieApiClient;
         $this->apiClientKeyResolver = $apiClientKeyResolver;
         $this->convertOrder = $convertOrder;
         $this->paymentApplePayDirectProvider = $paymentApplePayDirectProvider;
+        $this->paymentLocaleResolver = $paymentLocaleResolver;
     }
 
     public function resolve(OrderInterface $order, MollieGatewayConfigInterface $mollieGatewayConfig, array $details): void
@@ -75,25 +81,28 @@ final class ApplePayDirectApiOrderPaymentResolver implements ApplePayDirectApiOr
         ];
 
         try {
-            $response = $this->mollieApiClient->orders->create(
-                [
-                    'method' => PaymentMethod::APPLEPAY,
-                    'payment' => [
-                        'applePayPaymentToken' => $details['applePayDirectToken'],
-                    ],
-                    'amount' => $details['amount'],
-                    'billingAddress' => $details['billingAddress'],
-                    'shippingAddress' => $details['shippingAddress'],
-                    'locale' => $order->getLocaleCode(),
-                    'orderNumber' => $details['orderNumber'],
-                    'redirectUrl' => $details['backurl'],
-                    'lines' => $details['lines'],
-                    'metadata' => $metadata,
-                    'expiresAt' => isset($dateExpired) ?
-                        $dateExpired->format('Y-m-d') :
-                        (new \DateTimeImmutable('now'))->format('Y-m-d'),
-                ]
-            );
+            $requestData = [
+                'method' => PaymentMethod::APPLEPAY,
+                'payment' => [
+                    'applePayPaymentToken' => $details['applePayDirectToken'],
+                ],
+                'amount' => $details['amount'],
+                'billingAddress' => $details['billingAddress'],
+                'shippingAddress' => $details['shippingAddress'],
+                'orderNumber' => $details['orderNumber'],
+                'redirectUrl' => $details['backurl'],
+                'lines' => $details['lines'],
+                'metadata' => $metadata,
+                'expiresAt' => isset($dateExpired) ?
+                    $dateExpired->format('Y-m-d') :
+                    (new \DateTimeImmutable('now'))->format('Y-m-d'),
+            ];
+
+            if (null !== ($paymentLocale = $this->paymentLocaleResolver->resolveFromOrder($order))) {
+                $requestData['locale'] = $paymentLocale;
+            }
+
+            $response = $this->mollieApiClient->orders->create($requestData);
             if ($response->status === OrderStatus::STATUS_PAID) {
                 $this->paymentApplePayDirectProvider->applyRequiredTransition($payment, PaymentInterface::STATE_COMPLETED);
 

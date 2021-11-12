@@ -13,11 +13,11 @@ namespace BitBag\SyliusMolliePlugin\Action;
 
 use BitBag\SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
 use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
-use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactoryInterface;
 use BitBag\SyliusMolliePlugin\Helper\ConvertOrderInterface;
 use BitBag\SyliusMolliePlugin\Helper\PaymentDescriptionInterface;
 use BitBag\SyliusMolliePlugin\Payments\PaymentTerms\Options;
 use BitBag\SyliusMolliePlugin\Request\Api\CreateCustomer;
+use BitBag\SyliusMolliePlugin\Resolver\PaymentLocaleResolverInterface;
 use Mollie\Api\Types\PaymentMethod;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
@@ -52,18 +52,23 @@ final class ConvertPaymentAction extends BaseApiAwareAction implements ActionInt
     /** @var CustomerContext */
     private $customerContext;
 
+    /** @var PaymentLocaleResolverInterface */
+    private $paymentLocaleResolver;
+
     public function __construct(
         PaymentDescriptionInterface $paymentDescription,
         SessionInterface $session,
         RepositoryInterface $mollieMethodsRepository,
         ConvertOrderInterface $orderConverter,
-        CustomerContext $customerContext
+        CustomerContext $customerContext,
+        PaymentLocaleResolverInterface $paymentLocaleResolver
     ) {
         $this->paymentDescription = $paymentDescription;
         $this->session = $session;
         $this->mollieMethodsRepository = $mollieMethodsRepository;
         $this->orderConverter = $orderConverter;
         $this->customerContext = $customerContext;
+        $this->paymentLocaleResolver = $paymentLocaleResolver;
     }
 
     /** @param Convert $request */
@@ -135,7 +140,10 @@ final class ConvertPaymentAction extends BaseApiAwareAction implements ActionInt
         if (false === $this->mollieApiClient->isRecurringSubscription()) {
             $details['customerId'] = $model['customer_mollie_id'] ?? null;
             $details['metadata']['methodType'] = Options::PAYMENT_API;
-            $details['locale'] = true === in_array($order->getLocaleCode(), MollieGatewayFactoryInterface::LOCALES_AVAILABLE) ? $order->getLocaleCode() : 'en_US';
+
+            if (null !== ($paymentLocale = $this->paymentLocaleResolver->resolveFromOrder($order))) {
+                $details['locale'] = $paymentLocale;
+            }
 
             if (array_search($method->getPaymentType(), Options::getAvailablePaymentType()) === Options::ORDER_API) {
                 unset($details['customerId']);

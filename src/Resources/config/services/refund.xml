@@ -5,7 +5,7 @@
     <services>
         <defaults public="true" />
         <service id="bit_bag.sylius_mollie_plugin.refund.payment_refund" class="BitBag\SyliusMolliePlugin\Refund\PaymentRefund">
-            <argument type="service" id="sylius.command_bus" />
+            <argument type="service" id="bitbag.sylius_mollie_plugin.command_bus" />
             <argument type="service" id="bit_bag.sylius_mollie_plugin.creator.payment_refund_command_creator" />
             <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
         </service>

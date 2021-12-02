@@ -72,6 +72,7 @@ final class Options
     public static function getOnlyOrderAPIMethods(): array
     {
         return [
+            PaymentMethod::KLARNA_PAY_NOW,
             PaymentMethod::KLARNA_PAY_LATER,
             PaymentMethod::KLARNA_SLICE_IT,
             MealVoucher::MEAL_VOUCHERS,

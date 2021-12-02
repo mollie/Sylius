@@ -14,6 +14,9 @@ namespace BitBag\SyliusMolliePlugin\Resolver;
 use BitBag\SyliusMolliePlugin\Creator\MollieMethodsCreatorInterface;
 use Mollie\Api\Resources\Method;
 use Sylius\Component\Core\Model\OrderInterface;
+use Sylius\Component\Core\OrderProcessing\OrderPricesRecalculator;
+use Sylius\Component\Currency\Context\CurrencyContextInterface;
+use Sylius\Component\Currency\Converter\CurrencyConverterInterface;
 
 final class MollieAllowedMethodsResolver implements MollieAllowedMethodsResolverInterface
 {

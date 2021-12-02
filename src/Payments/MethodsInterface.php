@@ -22,6 +22,7 @@ use BitBag\SyliusMolliePlugin\Payments\Methods\Giropay;
 use BitBag\SyliusMolliePlugin\Payments\Methods\Ideal;
 use BitBag\SyliusMolliePlugin\Payments\Methods\Kbc;
 use BitBag\SyliusMolliePlugin\Payments\Methods\Klarnapaylater;
+use BitBag\SyliusMolliePlugin\Payments\Methods\KlarnaPayNow;
 use BitBag\SyliusMolliePlugin\Payments\Methods\Klarnasliceit;
 use BitBag\SyliusMolliePlugin\Payments\Methods\MealVoucher;
 use BitBag\SyliusMolliePlugin\Payments\Methods\MyBank;
@@ -44,6 +45,7 @@ interface MethodsInterface
         Kbc::class,
         Klarnapaylater::class,
         Klarnasliceit::class,
+        KlarnaPayNow::class,
         MyBank::class,
         PayPal::class,
         Przelewy24::class,

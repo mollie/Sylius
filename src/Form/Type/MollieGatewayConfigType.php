@@ -31,6 +31,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use function Clue\StreamFilter\fun;
 
 final class MollieGatewayConfigType extends AbstractResourceType
 {
@@ -136,6 +137,27 @@ final class MollieGatewayConfigType extends AbstractResourceType
                     $translation = $object->getTranslation($this->defaultLocale);
                     $translation->setName($object->getName());
                 }
+            })
+            ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event){
+                $form = $event->getForm();
+                /** @var MollieGatewayConfigInterface $object */
+                $object = $form->getData();
+                $data = $event->getData();
+
+                if (in_array($object->getMethodId(), Options::getOnlyOrderAPIMethods())) {
+                    $form->remove('paymentType');
+                    $form->add('paymentType', ChoiceType::class, [
+                        'label' => 'bitbag_sylius_mollie_plugin.ui.payment_type',
+                        'choices' => Options::getAvailablePaymentType(),
+                        'help' => $this->documentationLinks->getPaymentMethodDoc(),
+                        'help_html' => true,
+                        'attr' => [
+                            'disabled' => 'disabled'
+                        ]
+                    ]);
+                }
+
+                $event->setData($data);
             })
             ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
                 /** @var MollieGatewayConfigInterface $object */

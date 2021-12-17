@@ -49,8 +49,7 @@ final class CreatePaymentAction extends BaseApiAwareAction
         $details = ArrayObject::ensureArrayObject($request->getModel());
 
         try {
-            /** @var Payment $payment */
-            $payment = $this->mollieApiClient->payments->create([
+            $paymentDetails = [
                 'method' => $details['metadata']['molliePaymentMethods'] ?: '',
                 'issuer' => $details['metadata']['selected_issuer'] ?? null,
                 'cardToken' => $details['metadata']['cartToken'],
@@ -60,7 +59,14 @@ final class CreatePaymentAction extends BaseApiAwareAction
                 'redirectUrl' => $details['backurl'],
                 'webhookUrl' => $details['webhookUrl'],
                 'metadata' => $details['metadata'],
-            ]);
+            ];
+
+            if (true === isset($details['locale'])) {
+                $paymentDetails['locale'] = $details['locale'];
+            }
+
+            /** @var Payment $payment */
+            $payment = $this->mollieApiClient->payments->create($paymentDetails);
         } catch (ApiException $e) {
             $message = $this->guzzleNegativeResponseParser->parse($e);
             $this->loggerAction->addNegativeLog(sprintf('Error with create payment with: %s', $e->getMessage()));

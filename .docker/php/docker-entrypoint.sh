@@ -23,6 +23,8 @@ if [ "$1" = 'php-fpm' ] || [ "$1" = 'bin/console' ]; then
     echo "Waiting for db to be ready..."
     ATTEMPTS_LEFT_TO_REACH_DATABASE=60
 
+    cd $pluginApplicationDirectory;
+
     until [ $ATTEMPTS_LEFT_TO_REACH_DATABASE -eq 0 ] || DATABASE_ERROR=$(php bin/console dbal:run-sql "SELECT 1" 2>&1); do
         if [ $? -eq 255 ]; then
             # If the Doctrine command exits with 255, an unrecoverable error occurred

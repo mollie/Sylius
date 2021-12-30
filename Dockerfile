@@ -148,5 +148,7 @@ COPY --from=root_php /usr/local/etc/php/php-cli.ini /usr/local/etc/php/php-cli.i
 
 RUN touch tests/Application/.env
 
+WORKDIR /var/www/tests/Application
+
 ENTRYPOINT ["docker-entrypoint"]
 CMD ["php-fpm"]

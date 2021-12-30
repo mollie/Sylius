@@ -13,3 +13,5 @@
 !/etc/build/.gitkeep
 
 /tests/Application/yarn.lock
+
+/public

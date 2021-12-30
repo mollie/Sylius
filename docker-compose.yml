@@ -15,6 +15,7 @@ services:
       - PHP_DATE_TIMEZONE=${PHP_DATE_TIMEZONE:-UTC}
     volumes:
       - .:/var/www:rw
+      - ./tests/Application/public/media:/var/www/tests/Application/public/media:rw
 
   mysql:
     image: percona:5.7

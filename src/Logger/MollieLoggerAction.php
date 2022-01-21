@@ -12,7 +12,6 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Logger;
 
 use BitBag\SyliusMolliePlugin\Entity\GatewayConfigInterface;
-use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
 use BitBag\SyliusMolliePlugin\Factory\MollieLoggerFactoryInterface;
 use BitBag\SyliusMolliePlugin\Resolver\MollieFactoryNameResolverInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
@@ -68,6 +67,12 @@ final class MollieLoggerAction implements MollieLoggerActionInterface
     {
         /** @var GatewayConfigInterface $gatewayConfig */
         $gatewayConfig = $this->gatewayRepository->findOneBy(['factoryName' => $this->mollieFactoryNameResolver->resolve()]);
+
+        if (null === $gatewayConfig) {
+            // @todo - find better solution to resolve gateway
+            return false;
+        }
+
         $level = $gatewayConfig->getConfig()['loggerLevel'];
 
         if ($level === MollieLoggerActionInterface::LOG_EVERYTHING) {

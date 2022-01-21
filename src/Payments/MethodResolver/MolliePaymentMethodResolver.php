@@ -13,9 +13,13 @@ use Sylius\Component\Payment\Resolver\PaymentMethodsResolverInterface;
 
 final class MolliePaymentMethodResolver implements PaymentMethodsResolverInterface
 {
+    private PaymentMethodsResolverInterface $decoratedService;
     private PaymentMethodRepositoryInterface $paymentMethodRepository;
 
-    public function __construct(PaymentMethodRepositoryInterface $paymentMethodRepository)
+    public function __construct(
+        PaymentMethodsResolverInterface $decoratedService,
+        PaymentMethodRepositoryInterface $paymentMethodRepository
+    )
     {
         $this->paymentMethodRepository = $paymentMethodRepository;
     }
@@ -26,23 +30,39 @@ final class MolliePaymentMethodResolver implements PaymentMethodsResolverInterfa
         /** @var OrderInterface $order */
         $order = $subject->getOrder();
         $channel = $order->getChannel();
+        $factoryName = $order->hasRecurringContents(
+        ) ? MollieSubscriptionGatewayFactory::FACTORY_NAME : MollieGatewayFactory::FACTORY_NAME;
 
         $method = $this->paymentMethodRepository->findOneByChannelAndGatewayFactoryName(
             $channel,
-            $order->hasRecurringContents() ? MollieSubscriptionGatewayFactory::FACTORY_NAME : MollieGatewayFactory::FACTORY_NAME
+            $factoryName
         );
 
-        if (null !== $method) {
+        if (null !== $method && MollieSubscriptionGatewayFactory::FACTORY_NAME === $factoryName) {
             return [$method];
         }
 
-        return [];
+        $parentMethods = $this->decoratedService->getSupportedMethods($subject);
+
+        if (null !== $method && MollieGatewayFactory::FACTORY_NAME === $factoryName) {
+            return array_merge([$method], $parentMethods);
+        }
+
+        return $parentMethods;
     }
 
     public function supports(PaymentInterface $subject): bool
     {
-        return $subject instanceof CorePaymentInterface
-            && $subject->getOrder() instanceof OrderInterface
+        if (false === $subject instanceof CorePaymentInterface) {
+            return false;
+        };
+
+        $order = $subject->getOrder();
+        if (false === $order instanceof OrderInterface) {
+            return false;
+        }
+
+        return $order->hasRecurringContents() || $order->hasNonRecurringContents()
             && null !== $subject->getOrder()->getChannel();
     }
 }

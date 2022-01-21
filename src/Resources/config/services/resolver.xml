@@ -50,6 +50,7 @@
             <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
             <argument type="service" id="sylius.repository.payment_method"/>
             <argument type="service" id="sylius.context.channel"/>
+            <argument type="service" id="sylius.context.cart"/>
         </service>
         <service id="bitbag_sylius_mollie_plugin.resolver.address.address_resolver" class="BitBag\SyliusMolliePlugin\Resolver\Address\AddressResolver" >
             <argument type="service" id="bitbag_sylius_mollie_plugin.validator.apple_pay_direct.apple_pay_address_validator"/>

@@ -12,12 +12,15 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Resolver;
 
 use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
+use BitBag\SyliusMolliePlugin\Entity\OrderInterface;
 use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
+use BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
 use BitBag\SyliusMolliePlugin\Form\Type\MollieGatewayConfigurationType;
 use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use BitBag\SyliusMolliePlugin\Repository\PaymentMethodRepositoryInterface;
 use Mollie\Api\Exceptions\ApiException;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
+use Sylius\Component\Order\Context\CartContextInterface;
 use Sylius\Component\Resource\Exception\UpdateHandlingException;
 
 final class MollieApiClientKeyResolver implements MollieApiClientKeyResolverInterface
@@ -34,23 +37,35 @@ final class MollieApiClientKeyResolver implements MollieApiClientKeyResolverInte
     /** @var ChannelContextInterface */
     private $channelContext;
 
+    /** @var CartContextInterface  */
+    private $cartContext;
+
     public function __construct(
         MollieApiClient $mollieApiClient,
         MollieLoggerActionInterface $loggerAction,
         PaymentMethodRepositoryInterface $paymentMethodRepository,
-        ChannelContextInterface $channelContext
+        ChannelContextInterface $channelContext,
+        CartContextInterface $cartContext
     ) {
         $this->mollieApiClient = $mollieApiClient;
         $this->loggerAction = $loggerAction;
         $this->paymentMethodRepository = $paymentMethodRepository;
         $this->channelContext = $channelContext;
+        $this->cartContext = $cartContext;
     }
 
     public function getClientWithKey(): MollieApiClient
     {
+        $factoryName = MollieGatewayFactory::FACTORY_NAME;
+        $order = $this->cartContext->getCart();
+
+        if (true === $order instanceof OrderInterface && true === $order->hasRecurringContents()) {
+            $factoryName = MollieSubscriptionGatewayFactory::FACTORY_NAME;
+        }
+
         $paymentMethod = $this->paymentMethodRepository->findOneByChannelAndGatewayFactoryName(
             $this->channelContext->getChannel(),
-            MollieGatewayFactory::FACTORY_NAME,
+            $factoryName
         );
 
         if (null === $paymentMethod) {

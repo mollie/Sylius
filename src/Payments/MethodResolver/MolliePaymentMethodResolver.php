@@ -21,6 +21,7 @@ final class MolliePaymentMethodResolver implements PaymentMethodsResolverInterfa
         PaymentMethodRepositoryInterface $paymentMethodRepository
     )
     {
+        $this->decoratedService = $decoratedService;
         $this->paymentMethodRepository = $paymentMethodRepository;
     }
 

@@ -103,7 +103,6 @@ final class ConvertMollieSubscriptionPaymentAction extends BaseApiAwareAction im
         $method = $this->mollieMethodsRepository->findOneBy(
             ['methodId' => $paymentMethod, 'gateway' => $payment->getMethod()]
         );
-        $gatewayConfig = $method->getGateway()->getConfig();
 
         $details = [
             'method' => $method->getMethodId(),

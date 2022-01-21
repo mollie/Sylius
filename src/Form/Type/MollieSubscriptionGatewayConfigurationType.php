@@ -23,32 +23,8 @@ final class MollieSubscriptionGatewayConfigurationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder
-            ->add('times', NumberType::class, [
-                'label' => 'bitbag_sylius_mollie_plugin.ui.times',
-                'required' => false,
-                'constraints' => [
-                    new Range([
-                        'min' => 1,
-                        'minMessage' => 'bitbag_sylius_mollie_plugin.times.min_range',
-                        'groups' => ['sylius'],
-                    ]),
-                ],
-            ])
-            ->add('interval', TextType::class, [
-                'label' => 'bitbag_sylius_mollie_plugin.ui.interval',
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'bitbag_sylius_mollie_plugin.interval.not_blank',
-                        'groups' => ['sylius'],
-                    ]),
-                    new Regex([
-                        'message' => 'bitbag_sylius_mollie_plugin.interval.invalid',
-                        'groups' => ['sylius'],
-                        'pattern' => '/^\d{1,} (months|weeks|days)$/',
-                    ]),
-                ],
-            ]);
+        $builder->remove('single_click_enabled');
+        $builder->remove('components');
     }
 
     public function getParent(): string

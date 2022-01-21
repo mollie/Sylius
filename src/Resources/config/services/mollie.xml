@@ -12,6 +12,7 @@
             <argument type="service" id="bitbag_sylius_mollie_plugin.factory.mollie_logger_factory"/>
             <argument type="service" id="bitbag_sylius_mollie_plugin.repository.mollie_logger"/>
             <argument type="service" id="sylius.repository.gateway_config"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.resolver.mollie_factory_name"/>
         </service>
     </services>
 </container>

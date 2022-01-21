@@ -14,6 +14,7 @@ namespace BitBag\SyliusMolliePlugin\Resolver;
 use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
 use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfig;
 use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
+use BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
 use BitBag\SyliusMolliePlugin\Form\Type\MollieGatewayConfigurationType;
 use BitBag\SyliusMolliePlugin\Helper\IntToStringConverter;
 use BitBag\SyliusMolliePlugin\Preparer\PaymentLinkEmailPreparerInterface;
@@ -66,7 +67,7 @@ final class PaymentlinkResolver implements PaymentlinkResolverInterface
         /** @var PaymentMethodInterface $paymentMethod */
         $paymentMethod = $syliusPayment->getMethod();
 
-        if (MollieGatewayFactory::FACTORY_NAME !== $paymentMethod->getGatewayConfig()->getFactoryName()) {
+        if (false === in_array($paymentMethod->getGatewayConfig()->getFactoryName(), [MollieGatewayFactory::FACTORY_NAME, MollieSubscriptionGatewayFactory::FACTORY_NAME])) {
             throw new NotFoundException('No method mollie found in order');
         }
 

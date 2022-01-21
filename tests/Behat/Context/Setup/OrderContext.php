@@ -14,6 +14,7 @@ namespace Tests\BitBag\SyliusMolliePlugin\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
+use BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
 use Doctrine\ORM\EntityManager;
 use Payum\Core\Payum;
 use Payum\Core\Registry\RegistryInterface;
@@ -76,7 +77,7 @@ final class OrderContext implements Context
             /** @var PaymentMethodInterface $paymentMethod */
             $paymentMethod = $payment->getMethod();
 
-            if (MollieGatewayFactory::FACTORY_NAME === $paymentMethod->getGatewayConfig()->getFactoryName()) {
+            if (true === in_array($paymentMethod->getGatewayConfig()->getFactoryName(), [MollieGatewayFactory::FACTORY_NAME, MollieSubscriptionGatewayFactory::FACTORY_NAME], true)) {
                 $refundToken = $this->payum->getTokenFactory()->createRefundToken('mollie', $payment);
 
                 $metadata = [];

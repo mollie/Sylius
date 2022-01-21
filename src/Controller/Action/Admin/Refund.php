@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Controller\Action\Admin;
 
 use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
+use BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
 use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use BitBag\SyliusMolliePlugin\Request\Api\RefundOrder;
 use Doctrine\ORM\EntityManagerInterface;
@@ -86,7 +87,7 @@ final class Refund
         $gatewayConfig = $paymentMethod->getGatewayConfig();
         $factoryName = $gatewayConfig->getFactoryName() ?? null;
 
-        if (MollieGatewayFactory::FACTORY_NAME !== $factoryName) {
+        if (false === in_array($factoryName, [MollieGatewayFactory::FACTORY_NAME, MollieSubscriptionGatewayFactory::FACTORY_NAME], true)) {
             $this->applyStateMachineTransition($payment);
 
             $this->session->getFlashBag()->add('success', 'sylius.payment.refunded');

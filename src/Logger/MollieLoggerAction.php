@@ -14,6 +14,7 @@ namespace BitBag\SyliusMolliePlugin\Logger;
 use BitBag\SyliusMolliePlugin\Entity\GatewayConfigInterface;
 use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
 use BitBag\SyliusMolliePlugin\Factory\MollieLoggerFactoryInterface;
+use BitBag\SyliusMolliePlugin\Resolver\MollieFactoryNameResolverInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -28,14 +29,19 @@ final class MollieLoggerAction implements MollieLoggerActionInterface
     /** @var RepositoryInterface */
     private $gatewayRepository;
 
+    /** @var MollieFactoryNameResolverInterface */
+    private $mollieFactoryNameResolver;
+
     public function __construct(
         MollieLoggerFactoryInterface $loggerFactory,
         RepositoryInterface $repository,
-        RepositoryInterface $gatewayRepository
+        RepositoryInterface $gatewayRepository,
+        MollieFactoryNameResolverInterface $mollieFactoryNameResolver
     ) {
         $this->loggerFactory = $loggerFactory;
         $this->repository = $repository;
         $this->gatewayRepository = $gatewayRepository;
+        $this->mollieFactoryNameResolver = $mollieFactoryNameResolver;
     }
 
     public function addLog(string $message, int $logLevel = self::NOTICE, int $errorCode = Response::HTTP_OK): void
@@ -61,7 +67,7 @@ final class MollieLoggerAction implements MollieLoggerActionInterface
     private function canSaveLog(int $logLevel): bool
     {
         /** @var GatewayConfigInterface $gatewayConfig */
-        $gatewayConfig = $this->gatewayRepository->findOneBy(['factoryName' => MollieGatewayFactory::FACTORY_NAME]);
+        $gatewayConfig = $this->gatewayRepository->findOneBy(['factoryName' => $this->mollieFactoryNameResolver->resolve()]);
         $level = $gatewayConfig->getConfig()['loggerLevel'];
 
         if ($level === MollieLoggerActionInterface::LOG_EVERYTHING) {

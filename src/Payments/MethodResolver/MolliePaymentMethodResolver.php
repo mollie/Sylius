@@ -6,6 +6,7 @@ namespace BitBag\SyliusMolliePlugin\Payments\MethodResolver;
 use BitBag\SyliusMolliePlugin\Entity\OrderInterface;
 use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
 use BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
+use BitBag\SyliusMolliePlugin\Resolver\MollieFactoryNameResolverInterface;
 use Sylius\Component\Core\Model\PaymentInterface as CorePaymentInterface;
 use Sylius\Component\Payment\Model\PaymentInterface;
 use Sylius\Component\Payment\Repository\PaymentMethodRepositoryInterface;
@@ -15,14 +16,17 @@ final class MolliePaymentMethodResolver implements PaymentMethodsResolverInterfa
 {
     private PaymentMethodsResolverInterface $decoratedService;
     private PaymentMethodRepositoryInterface $paymentMethodRepository;
+    private MollieFactoryNameResolverInterface $factoryNameResolver;
 
     public function __construct(
         PaymentMethodsResolverInterface $decoratedService,
-        PaymentMethodRepositoryInterface $paymentMethodRepository
+        PaymentMethodRepositoryInterface $paymentMethodRepository,
+        MollieFactoryNameResolverInterface $factoryNameResolver
     )
     {
         $this->decoratedService = $decoratedService;
         $this->paymentMethodRepository = $paymentMethodRepository;
+        $this->factoryNameResolver = $factoryNameResolver;
     }
 
     public function getSupportedMethods(PaymentInterface $subject): array
@@ -31,8 +35,7 @@ final class MolliePaymentMethodResolver implements PaymentMethodsResolverInterfa
         /** @var OrderInterface $order */
         $order = $subject->getOrder();
         $channel = $order->getChannel();
-        $factoryName = $order->hasRecurringContents(
-        ) ? MollieSubscriptionGatewayFactory::FACTORY_NAME : MollieGatewayFactory::FACTORY_NAME;
+        $factoryName = $this->factoryNameResolver->resolve($order);
 
         $method = $this->paymentMethodRepository->findOneByChannelAndGatewayFactoryName(
             $channel,

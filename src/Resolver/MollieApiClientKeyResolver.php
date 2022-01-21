@@ -37,35 +37,28 @@ final class MollieApiClientKeyResolver implements MollieApiClientKeyResolverInte
     /** @var ChannelContextInterface */
     private $channelContext;
 
-    /** @var CartContextInterface  */
-    private $cartContext;
+    /** @var MollieFactoryNameResolverInterface  */
+    private $factoryNameResolver;
 
     public function __construct(
         MollieApiClient $mollieApiClient,
         MollieLoggerActionInterface $loggerAction,
         PaymentMethodRepositoryInterface $paymentMethodRepository,
         ChannelContextInterface $channelContext,
-        CartContextInterface $cartContext
+        MollieFactoryNameResolverInterface $factoryNameResolver
     ) {
         $this->mollieApiClient = $mollieApiClient;
         $this->loggerAction = $loggerAction;
         $this->paymentMethodRepository = $paymentMethodRepository;
         $this->channelContext = $channelContext;
-        $this->cartContext = $cartContext;
+        $this->factoryNameResolver = $factoryNameResolver;
     }
 
     public function getClientWithKey(): MollieApiClient
     {
-        $factoryName = MollieGatewayFactory::FACTORY_NAME;
-        $order = $this->cartContext->getCart();
-
-        if (true === $order instanceof OrderInterface && true === $order->hasRecurringContents()) {
-            $factoryName = MollieSubscriptionGatewayFactory::FACTORY_NAME;
-        }
-
         $paymentMethod = $this->paymentMethodRepository->findOneByChannelAndGatewayFactoryName(
             $this->channelContext->getChannel(),
-            $factoryName
+            $this->factoryNameResolver->resolve()
         );
 
         if (null === $paymentMethod) {

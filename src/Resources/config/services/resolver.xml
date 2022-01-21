@@ -12,6 +12,7 @@
             <argument type="service" id="sylius.repository.payment_method"/>
             <argument type="service" id="bitbag_sylius_mollie_plugin.resolver.mollie_allowed_methods_resolver"/>
             <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.resolver.mollie_factory_name"/>
         </service>
         <service id="bitbag_sylius_mollie_plugin.resolver.payment_methods_image" class="BitBag\SyliusMolliePlugin\Resolver\MolliePaymentMethodImageResolver">
             <argument>%images_dir%</argument>
@@ -44,13 +45,16 @@
         <service id="bitbag_sylius_mollie_plugin.resolver.mollie_countries_restriction_resolver" class="BitBag\SyliusMolliePlugin\Resolver\MollieCountriesRestrictionResolver">
             <argument type="service" id="bitbag_sylius_mollie_plugin.resolver.payment_methods_image"/>
         </service>
+        <service id="bitbag_sylius_mollie_plugin.resolver.mollie_factory_name" class="BitBag\SyliusMolliePlugin\Resolver\MollieFactoryNameResolver">
+            <argument type="service" id="sylius.context.cart"/>
+        </service>
         <service id="bitbag_sylius_mollie_plugin.resolver.meal_voucher_resolver" class="BitBag\SyliusMolliePlugin\Resolver\MealVoucherResolver"/>
         <service id="bitbag_sylius_mollie_plugin.resolver.mollie_api_client_key_resolver" class="BitBag\SyliusMolliePlugin\Resolver\MollieApiClientKeyResolver">
             <argument type="service" id="bitbag_sylius_mollie_plugin.mollie_api_client"/>
             <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
             <argument type="service" id="sylius.repository.payment_method"/>
             <argument type="service" id="sylius.context.channel"/>
-            <argument type="service" id="sylius.context.cart"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.resolver.mollie_factory_name"/>
         </service>
         <service id="bitbag_sylius_mollie_plugin.resolver.address.address_resolver" class="BitBag\SyliusMolliePlugin\Resolver\Address\AddressResolver" >
             <argument type="service" id="bitbag_sylius_mollie_plugin.validator.apple_pay_direct.apple_pay_address_validator"/>

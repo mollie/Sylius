@@ -15,6 +15,7 @@ use BitBag\SyliusMolliePlugin\Documentation\DocumentationLinksInterface;
 use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
 use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfigTranslationInterface;
 use BitBag\SyliusMolliePlugin\Entity\ProductType;
+use BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
 use BitBag\SyliusMolliePlugin\Form\Type\Translation\MollieGatewayConfigTranslationType;
 use BitBag\SyliusMolliePlugin\Options\Country\Options as CountryOptions;
 use BitBag\SyliusMolliePlugin\Payments\Methods\AbstractMethod;
@@ -31,7 +32,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use function Clue\StreamFilter\fun;
 
 final class MollieGatewayConfigType extends AbstractResourceType
 {
@@ -131,6 +131,23 @@ final class MollieGatewayConfigType extends AbstractResourceType
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
                 /** @var MollieGatewayConfigInterface $object */
                 $object = $event->getData();
+                $form = $event->getForm();
+
+                $gateway = $object->getGateway();
+                $factoryName = $gateway->getFactoryName();
+
+                if (MollieSubscriptionGatewayFactory::FACTORY_NAME === $factoryName) {
+                    $form->remove('paymentType');
+                    $form->add('paymentType', ChoiceType::class, [
+                        'label' => 'bitbag_sylius_mollie_plugin.ui.payment_type',
+                        'choices' => Options::getAvailablePaymentType(),
+                        'help' => $this->documentationLinks->getPaymentMethodDoc(),
+                        'help_html' => true,
+                        'attr' => [
+                            'disabled' => 'disabled'
+                        ]
+                    ]);
+                }
 
                 if (false === $object->hasTranslationLocale($this->defaultLocale)) {
                     /** @var MollieGatewayConfigTranslationInterface $translation */

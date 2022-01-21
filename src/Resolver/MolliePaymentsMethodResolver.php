@@ -48,6 +48,9 @@ final class MolliePaymentsMethodResolver implements MolliePaymentsMethodResolver
     /** @var MollieLoggerActionInterface */
     private $loggerAction;
 
+    /** @var MollieFactoryNameResolverInterface */
+    private $mollieFactoryNameResolver;
+
     public function __construct(
         RepositoryInterface $mollieGatewayRepository,
         MollieCountriesRestrictionResolverInterface $countriesRestrictionResolver,
@@ -55,7 +58,8 @@ final class MolliePaymentsMethodResolver implements MolliePaymentsMethodResolver
         PaymentCheckoutOrderResolverInterface $paymentCheckoutOrderResolver,
         PaymentMethodRepositoryInterface $paymentMethodRepository,
         MollieAllowedMethodsResolverInterface $allowedMethodsResolver,
-        MollieLoggerActionInterface $loggerAction
+        MollieLoggerActionInterface $loggerAction,
+        MollieFactoryNameResolverInterface $mollieFactoryNameResolver
     )
     {
         $this->mollieGatewayRepository = $mollieGatewayRepository;
@@ -65,6 +69,7 @@ final class MolliePaymentsMethodResolver implements MolliePaymentsMethodResolver
         $this->paymentMethodRepository = $paymentMethodRepository;
         $this->allowedMethodsResolver = $allowedMethodsResolver;
         $this->loggerAction = $loggerAction;
+        $this->mollieFactoryNameResolver = $mollieFactoryNameResolver;
     }
 
     public function resolve(): array
@@ -92,13 +97,13 @@ final class MolliePaymentsMethodResolver implements MolliePaymentsMethodResolver
     private function getMolliePaymentOptions(MollieOrderInterface $order, string $countryCode): array
     {
         $allowedMethods = [];
-
         $methods = $this->getDefaultOptions();
+        $factoryName = $this->mollieFactoryNameResolver->resolve($order);
 
         /** @var GatewayConfigInterface $gateway */
         $paymentMethod = $this->paymentMethodRepository->findOneByChannelAndGatewayFactoryName(
             $order->getChannel(),
-            $order->hasRecurringContents() ? MollieSubscriptionGatewayFactory::FACTORY_NAME : MollieGatewayFactory::FACTORY_NAME
+            $factoryName
         );
 
         if (null === $paymentMethod) {

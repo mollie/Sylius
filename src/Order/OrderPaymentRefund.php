@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Order;
 
 use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
+use BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
 use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use BitBag\SyliusMolliePlugin\Request\Api\RefundOrder;
 use Payum\Core\Payum;
@@ -63,7 +64,7 @@ final class OrderPaymentRefund implements OrderPaymentRefundInterface
 
         $factoryName = $paymentMethod->getGatewayConfig()->getFactoryName() ?? null;
 
-        if (MollieGatewayFactory::FACTORY_NAME !== $factoryName) {
+        if (true === in_array($factoryName, [MollieGatewayFactory::FACTORY_NAME, MollieSubscriptionGatewayFactory::FACTORY_NAME], true)) {
             return;
         }
 

@@ -19,19 +19,19 @@ final class MollieMenuListener
     public function buildMenu(MenuBuilderEvent $menuBuilderEvent): void
     {
         $menu = $menuBuilderEvent->getMenu();
-        $cmsRootMenuItem =
+        $menuItem =
             $menu
                 ->addChild('mollie')
                 ->setLabel('bitbag_sylius_mollie_plugin.ui.mollie_gateway_label');
 
-        $cmsRootMenuItem
+        $menuItem
             ->addChild('mollie_logger', [
                 'route' => 'bitbag_sylius_mollie_plugin_admin_mollie_logger_index',
             ])
             ->setLabel('bitbag_sylius_mollie_plugin.ui.mollie_loggers')
             ->setLabelAttribute('icon', 'tags');
 
-        $cmsRootMenuItem
+        $menuItem
             ->addChild('mollie_product_type', [
                 'route' => 'bitbag_sylius_mollie_plugin_admin_product_type_index',
             ])

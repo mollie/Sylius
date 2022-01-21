@@ -9,10 +9,12 @@ sylius_product:
     product:
       classes:
         model: Tests\BitBag\SyliusMolliePlugin\Entity\Product
+    product_variant:
+      classes:
+        model: Tests\BitBag\SyliusMolliePlugin\Entity\ProductVariant
 
 sylius_order:
   resources:
     order:
       classes:
         model: Tests\BitBag\SyliusMolliePlugin\Entity\Order
-

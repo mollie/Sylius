@@ -26,7 +26,7 @@
             <argument type="service" id="sylius.context.channel"/>
         </service>
         <service id="bitbag_sylius_mollie_plugin.creator.mollie_methods_creator" class="BitBag\SyliusMolliePlugin\Creator\MollieMethodsCreator">
-            <argument type="service" id="bitbag_sylius_mollie_plugin.payments.methods"/>
+            <argument type="service" id="bitbag.sylius_mollie_plugin.factory.methods"/>
             <argument type="service" id="doctrine.orm.default_entity_manager"/>
             <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
             <argument type="service" id="bitbag_sylius_mollie_plugin.mollie_api_client"/>

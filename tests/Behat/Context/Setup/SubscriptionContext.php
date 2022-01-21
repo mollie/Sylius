@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Tests\BitBag\SyliusMolliePlugin\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
+use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
 use BitBag\SyliusMolliePlugin\Entity\SubscriptionInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Component\Core\Model\OrderInterface;
@@ -45,13 +46,13 @@ final class SubscriptionContext implements Context
      */
     public function thisOrderHasAnActiveMollieSubscription(OrderInterface $order): void
     {
-        /** @var SubscriptionInterface $subscription */
+        /** @var MollieSubscriptionInterface $subscription */
         $subscription = $this->subscriptionFactory->createNew();
 
         $subscription->setSubscriptionId('id_1');
         $subscription->setCustomerId('id_1');
-        $subscription->setOrder($order);
-        $subscription->setState(SubscriptionInterface::STATE_ACTIVE);
+        $subscription->addOrder($order);
+        $subscription->setState(MollieSubscriptionInterface::STATE_ACTIVE);
 
         $this->entityManagerSubscription->persist($subscription);
         $this->entityManagerSubscription->flush();

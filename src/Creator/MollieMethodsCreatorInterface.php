@@ -11,6 +11,9 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Creator;
 
+use BitBag\SyliusMolliePlugin\Entity\GatewayConfigInterface;
+use Mollie\Api\Types\PaymentMethod;
+
 interface MollieMethodsCreatorInterface
 {
     /** @var string[] */
@@ -22,8 +25,16 @@ interface MollieMethodsCreatorInterface
 
     /** @var string[] */
     public const UNSUPPORTED_METHODS = [
-        'inghomepay',
+        PaymentMethod::INGHOMEPAY,
+    ];
+
+    /** @var string[] */
+    public const RECURRING_PAYMENT_SUPPORTED_METHODS = [
+        PaymentMethod::DIRECTDEBIT,
+        PaymentMethod::CREDITCARD,
     ];
 
     public function create(): void;
+
+    public function createForGateway(GatewayConfigInterface $gateway): void;
 }

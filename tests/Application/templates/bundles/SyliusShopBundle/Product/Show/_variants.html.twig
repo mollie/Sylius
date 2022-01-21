@@ -1,0 +1,48 @@
+{% import "@SyliusShop/Common/Macro/money.html.twig" as money %}
+
+<table class="ui single line small table" id="sylius-product-variants" {{ sylius_test_html_attribute('product-variants') }}>
+    <thead>
+    <tr>
+        <th>{{ 'sylius.ui.variant'|trans }}</th>
+        <th>{{ 'recurring'|trans }}</th>
+        <th>{{ 'interval'|trans }}</th>
+        <th>{{ 'times'|trans }}</th>
+        <th>{{ 'sylius.ui.price'|trans }}</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for key, variant in product.enabledVariants %}
+        <tr {{ sylius_test_html_attribute('product-variants-row') }}>
+            <td>
+                {{ variant.name }}
+                {% if product.hasOptions() %}
+                    <div class="ui horizontal divided list">
+                        {% for optionValue in variant.optionValues %}
+                            <div class="item">
+                                {{ optionValue.value }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </td>
+            <td class="center aligned">
+                {{ variant.recurring is defined ? ((variant.recurring ? 'bitbag_sylius_mollie_plugin.ui.yes' : 'bitbag_sylius_mollie_plugin.ui.no') | trans) : '-' }}
+            </td>
+            <td class="center aligned">
+                {{ variant.recurring is defined and variant.recurring is same as (true) ? variant.interval : '-' }}
+            </td>
+            <td class="center aligned">
+                {{ variant.recurring is defined and variant.recurring is same as (true) ? 'x ' ~ variant.times : '-' }}
+            </td>
+            <td class="sylius-product-variant-price" {% if variant|sylius_has_discount({'channel': sylius.channel}) %}data-original-price="{{ money.calculateOriginalPrice(variant) }}"{% endif %}>
+                {{ money.calculatePrice(variant) }}
+                {% include "@BitBagSyliusMolliePlugin/Shop/ProductVariant/_recurring_info.html.twig" with {variant: variant} %}
+            </td>
+            <td class="right aligned">
+                {{ form_widget(form.cartItem.variant[key], {'label': false}) }}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

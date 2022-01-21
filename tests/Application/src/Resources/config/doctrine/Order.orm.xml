@@ -6,6 +6,10 @@
                   http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd"
 >
     <mapped-superclass name="Tests\BitBag\SyliusMolliePlugin\Entity\Order" table="sylius_order">
-      <field name="abandonedEmail" type="boolean" column="abandoned_email"/>
+        <field name="abandonedEmail" type="boolean" column="abandoned_email"/>
+        <field name="recurringSequenceIndex" type="integer" nullable="true" column="recurring_sequence_index"/>
+        <many-to-one field="subscription" target-entity="BitBag\SyliusMolliePlugin\Entity\MollieSubscription" inversed-by="orders">
+            <join-column referenced-column-name="id" on-delete="RESTRICT"/>
+        </many-to-one>
     </mapped-superclass>
 </doctrine-mapping>

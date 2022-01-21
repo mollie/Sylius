@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Action\Api;
 
-use BitBag\SyliusMolliePlugin\Entity\SubscriptionInterface;
+use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
 use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use BitBag\SyliusMolliePlugin\Request\Api\CancelRecurringSubscription;
 use Mollie\Api\Exceptions\ApiException;
@@ -39,7 +39,7 @@ final class CancelRecurringSubscriptionAction extends BaseApiAwareAction impleme
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
-        /** @var SubscriptionInterface $subscription */
+        /** @var MollieSubscriptionInterface $subscription */
         $subscription = $request->getModel();
 
         try {
@@ -60,7 +60,7 @@ final class CancelRecurringSubscriptionAction extends BaseApiAwareAction impleme
     {
         return
             $request instanceof CancelRecurringSubscription &&
-            $request->getModel() instanceof SubscriptionInterface
+            $request->getModel() instanceof MollieSubscriptionInterface
             ;
     }
 }

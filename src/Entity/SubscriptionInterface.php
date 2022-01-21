@@ -14,6 +14,7 @@ namespace BitBag\SyliusMolliePlugin\Entity;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Resource\Model\ResourceInterface;
 
+/** @deprecated */
 interface SubscriptionInterface extends ResourceInterface
 {
     public const STATE_NEW = 'new';

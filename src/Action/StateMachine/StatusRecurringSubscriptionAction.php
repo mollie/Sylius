@@ -12,10 +12,10 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Action\StateMachine;
 
 use BitBag\SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
-use BitBag\SyliusMolliePlugin\Entity\SubscriptionInterface;
+use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
 use BitBag\SyliusMolliePlugin\Request\Api\CancelRecurringSubscription;
 use BitBag\SyliusMolliePlugin\Request\StateMachine\StatusRecurringSubscription;
-use BitBag\SyliusMolliePlugin\Transitions\SubscriptionTransitions;
+use BitBag\SyliusMolliePlugin\Transitions\MollieSubscriptionTransitions;
 use Doctrine\ORM\EntityManagerInterface;
 use Mollie\Api\Resources\Customer;
 use Mollie\Api\Resources\Subscription;
@@ -46,7 +46,7 @@ final class StatusRecurringSubscriptionAction extends BaseApiAwareAction impleme
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
-        /** @var SubscriptionInterface $subscription */
+        /** @var MollieSubscriptionInterface $subscription */
         $subscription = $request->getModel();
 
         /** @var Customer $customer */
@@ -57,27 +57,27 @@ final class StatusRecurringSubscriptionAction extends BaseApiAwareAction impleme
 
         switch ($subscriptionApiResult->status) {
             case SubscriptionStatus::STATUS_ACTIVE:
-                $this->applyStateMachineTransition($subscription, SubscriptionTransitions::TRANSITION_ACTIVATE);
+                $this->applyStateMachineTransition($subscription, MollieSubscriptionTransitions::TRANSITION_ACTIVATE);
 
                 break;
             case SubscriptionStatus::STATUS_PENDING:
-                $this->applyStateMachineTransition($subscription, SubscriptionTransitions::TRANSITION_PROCESS);
+                $this->applyStateMachineTransition($subscription, MollieSubscriptionTransitions::TRANSITION_PROCESS);
 
                 break;
             case SubscriptionStatus::STATUS_CANCELED:
-                $this->applyStateMachineTransition($subscription, SubscriptionTransitions::TRANSITION_CANCEL);
+                $this->applyStateMachineTransition($subscription, MollieSubscriptionTransitions::TRANSITION_CANCEL);
 
                 break;
             case SubscriptionStatus::STATUS_COMPLETED:
-                $this->applyStateMachineTransition($subscription, SubscriptionTransitions::TRANSITION_COMPLETE);
+                $this->applyStateMachineTransition($subscription, MollieSubscriptionTransitions::TRANSITION_COMPLETE);
 
                 break;
             case SubscriptionStatus::STATUS_SUSPENDED:
-                $this->applyStateMachineTransition($subscription, SubscriptionTransitions::TRANSITION_SUSPEND);
+                $this->applyStateMachineTransition($subscription, MollieSubscriptionTransitions::TRANSITION_SUSPEND);
 
                 break;
             default:
-                $this->applyStateMachineTransition($subscription, SubscriptionTransitions::TRANSITION_FAIL);
+                $this->applyStateMachineTransition($subscription, MollieSubscriptionTransitions::TRANSITION_FAIL);
 
                 break;
         }
@@ -87,13 +87,13 @@ final class StatusRecurringSubscriptionAction extends BaseApiAwareAction impleme
     {
         return
             $request instanceof StatusRecurringSubscription &&
-            $request->getModel() instanceof SubscriptionInterface
+            $request->getModel() instanceof MollieSubscriptionInterface
         ;
     }
 
-    private function applyStateMachineTransition(SubscriptionInterface $subscription, string $transitions): void
+    private function applyStateMachineTransition(MollieSubscriptionInterface $subscription, string $transitions): void
     {
-        $stateMachine = $this->subscriptionSateMachineFactory->get($subscription, SubscriptionTransitions::GRAPH);
+        $stateMachine = $this->subscriptionSateMachineFactory->get($subscription, MollieSubscriptionTransitions::GRAPH);
 
         if (!$stateMachine->can($transitions)) {
             return;

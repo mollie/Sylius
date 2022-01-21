@@ -14,7 +14,9 @@ namespace BitBag\SyliusMolliePlugin\Controller\Action\Admin;
 use BitBag\SyliusMolliePlugin\Creator\MollieMethodsCreatorInterface;
 use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use BitBag\SyliusMolliePlugin\Purifier\MolliePaymentMethodPurifierInterface;
+use BitBag\SyliusMolliePlugin\Repository\MollieGatewayConfigRepositoryInterface;
 use Mollie\Api\Exceptions\ApiException;
+use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 use Sylius\Component\Resource\Exception\UpdateHandlingException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,22 +36,28 @@ final class MethodsAction
     /** @var MolliePaymentMethodPurifierInterface */
     private $methodPurifier;
 
+    /** @var EntityRepository */
+    private $gatewayConfigRepository;
+
     public function __construct(
         MollieLoggerActionInterface $loggerAction,
         Session $session,
         MollieMethodsCreatorInterface $mollieMethodsCreator,
-        MolliePaymentMethodPurifierInterface $methodPurifier
+        MolliePaymentMethodPurifierInterface $methodPurifier,
+        EntityRepository $gatewayConfigRepository
     ) {
         $this->loggerAction = $loggerAction;
         $this->session = $session;
         $this->mollieMethodsCreator = $mollieMethodsCreator;
         $this->methodPurifier = $methodPurifier;
+        $this->gatewayConfigRepository = $gatewayConfigRepository;
     }
 
-    public function __invoke(Request $request): Response
+    public function __invoke(int $id, Request $request): Response
     {
         try {
-            $this->mollieMethodsCreator->create();
+            $gateway = $this->gatewayConfigRepository->find($id);
+            $this->mollieMethodsCreator->createForGateway($gateway);
 
             $this->methodPurifier->removeAllNoLongerSupportedMethods();
 

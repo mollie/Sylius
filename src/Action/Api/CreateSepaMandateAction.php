@@ -68,7 +68,7 @@ final class CreateSepaMandateAction extends BaseApiAwareAction implements Action
         $mandate = $customer->createMandate([
             'consumerAccount' => $directDebitData['iban'] ?? null,
             'consumerName' => $directDebitData['consumerName'] ?? null,
-            'method' => MandateMethod::DIRECTDEBIT,
+            'method' => MandateMethod::PAYPAL,
         ]);
 
         $this->loggerAction->addLog(sprintf('Create mandate with id %s', $mandate->id));

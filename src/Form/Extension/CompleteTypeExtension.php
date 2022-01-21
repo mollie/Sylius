@@ -30,21 +30,21 @@ final class CompleteTypeExtension extends AbstractTypeExtension
         /** @var PaymentMethodInterface|null $method */
         $method = null !== $order->getLastPayment() ? $order->getLastPayment()->getMethod() : null;
 
-        if (
-            null !== $method &&
-            null !== $method->getGatewayConfig() &&
-            MollieSubscriptionGatewayFactory::FACTORY_NAME === $method->getGatewayConfig()->getFactoryName()
-        ) {
-            $builder
-                ->add('directDebit', DirectDebitType::class, [
-                    'mapped' => false,
-                    'validation_groups' => ['sylius'],
-                    'constraints' => [
-                        new Valid(),
-                    ],
-                ])
-            ;
-        }
+//        if (
+//            null !== $method &&
+//            null !== $method->getGatewayConfig() &&
+//            MollieSubscriptionGatewayFactory::FACTORY_NAME === $method->getGatewayConfig()->getFactoryName()
+//        ) {
+//            $builder
+//                ->add('directDebit', DirectDebitType::class, [
+//                    'mapped' => false,
+//                    'validation_groups' => ['sylius'],
+//                    'constraints' => [
+//                        new Valid(),
+//                    ],
+//                ])
+//            ;
+//        }
     }
 
     public static function getExtendedTypes(): array

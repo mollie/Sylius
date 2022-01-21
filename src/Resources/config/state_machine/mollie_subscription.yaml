@@ -1,6 +1,6 @@
 winzou_state_machine:
     mollie_subscription:
-        class: "%bitbag_sylius_mollie_plugin.model.subscription.class%"
+        class: "%bitbag_sylius_mollie_plugin.model.mollie_subscription.class%"
         property_path: state
         graph: mollie_subscription
         state_machine_class: "%sylius.state_machine.class%"

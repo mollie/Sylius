@@ -21,6 +21,8 @@ final class Options
 
     public const PAYMENT_API = 'Payments API';
 
+    public const SUBSCRIPTIONS_API = 'Subscriptions API';
+
     public const PERCENTAGE = 'percentage';
 
     public const FIXED_FEE = 'fixed_fee';

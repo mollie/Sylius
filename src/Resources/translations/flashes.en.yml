@@ -20,3 +20,5 @@ bitbag_sylius_mollie_plugin:
         possible_fraud: 'Possible fraud'
         authentication_failed: 'Authentication failed'
     empty_payment_method_checkout: 'Choose one of mollie payment method'
+    order_checkout:
+        colliding_products: 'There are mixed products (recurring and non-recurring) within your cart. Proceeding with mixed content is forbidden.'

@@ -13,6 +13,7 @@ namespace BitBag\SyliusMolliePlugin\Entity;
 
 use Sylius\Component\Core\Model\OrderInterface;
 
+/** @deprecated */
 class Subscription implements SubscriptionInterface
 {
     /** @var int|null */

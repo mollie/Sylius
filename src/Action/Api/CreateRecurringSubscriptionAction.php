@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Action\Api;
 
-use BitBag\SyliusMolliePlugin\Entity\SubscriptionInterface;
+use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
 use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use BitBag\SyliusMolliePlugin\Request\Api\CreateRecurringSubscription;
 use BitBag\SyliusMolliePlugin\Request\StateMachine\StatusRecurringSubscription;
@@ -93,7 +93,7 @@ final class CreateRecurringSubscriptionAction extends BaseApiAwareAction impleme
             'webhookUrl' => $model['webhookUrl'],
         ]);
 
-        /** @var SubscriptionInterface $subscription */
+        /** @var MollieSubscriptionInterface $subscription */
         $subscription = $this->subscriptionFactory->createNew();
 
         /** @var OrderInterface $order */
@@ -101,7 +101,7 @@ final class CreateRecurringSubscriptionAction extends BaseApiAwareAction impleme
 
         $subscription->setSubscriptionId($subscriptionApiResult->id);
         $subscription->setCustomerId($model['customer_mollie_id']);
-        $subscription->setOrder($order);
+        $subscription->addOrder($order);
 
         $this->subscriptionManager->persist($subscription);
 

@@ -26,5 +26,18 @@
                  decorates="bitbag_sylius_mollie_plugin.factory.onboarding_wizard_status">
             <argument type="service" id="bitbag.sylius_mollie_plugin.factory.onboarding_wizard.status_factory.inner"/>
         </service>
+        <service id="bitbag_sylius_mollie_plugin.custom_factory.mollie_subscription"
+                 class="BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionFactory"
+                 decorates="bitbag_sylius_mollie_plugin.factory.mollie_subscription">
+            <argument type="service" id="bitbag_sylius_mollie_plugin.custom_factory.mollie_subscription.inner"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.custom_factory.mollie_subscription_schedule"/>
+        </service>
+        <service id="bitbag_sylius_mollie_plugin.custom_factory.mollie_subscription_schedule"
+                 class="BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionScheduleFactory"
+                 decorates="bitbag_sylius_mollie_plugin.factory.mollie_subscription_schedule">
+            <argument type="service" id="bitbag_sylius_mollie_plugin.custom_factory.mollie_subscription_schedule.inner"/>
+        </service>
+        <service id="bitbag.sylius_mollie_plugin.factory.methods" class="BitBag\SyliusMolliePlugin\Factory\MethodsFactory"/>
+        <service id="bitbag.sylius_mollie_plugin.factory.date_periods" class="BitBag\SyliusMolliePlugin\Factory\DatePeriodFactory"/>
     </services>
 </container>

@@ -17,7 +17,7 @@ use BitBag\SyliusMolliePlugin\Action\StateMachine\StatusRecurringSubscriptionAct
 use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
 use BitBag\SyliusMolliePlugin\Entity\SubscriptionInterface;
 use BitBag\SyliusMolliePlugin\Request\StateMachine\StatusRecurringSubscription;
-use BitBag\SyliusMolliePlugin\Transitions\SubscriptionTransitions;
+use BitBag\SyliusMolliePlugin\Transitions\MollieSubscriptionTransitions;
 use Doctrine\ORM\EntityManagerInterface;
 use Mollie\Api\Endpoints\CustomerEndpoint;
 use Mollie\Api\Resources\Customer;
@@ -72,9 +72,9 @@ final class StatusRecurringSubscriptionActionSpec extends ObjectBehavior
         Subscription $subscriptionApi
     ): void {
         $this->setApi($mollieApiClient);
-        $stateMachine->can(SubscriptionTransitions::TRANSITION_ACTIVATE)->willReturn();
+        $stateMachine->can(MollieSubscriptionTransitions::TRANSITION_ACTIVATE)->willReturn();
         $subscriptionApi->status = SubscriptionStatus::STATUS_ACTIVE;
-        $subscriptionSateMachineFactory->get($subscription, SubscriptionTransitions::GRAPH)->willReturn($stateMachine);
+        $subscriptionSateMachineFactory->get($subscription, MollieSubscriptionTransitions::GRAPH)->willReturn($stateMachine);
         $subscription->getSubscriptionId()->willReturn('id_1');
         $subscription->getCustomerId()->willReturn('id_1');
         $customer->getSubscription('id_1')->willReturn($subscriptionApi);

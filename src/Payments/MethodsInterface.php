@@ -16,6 +16,7 @@ use BitBag\SyliusMolliePlugin\Payments\Methods\Bancontact;
 use BitBag\SyliusMolliePlugin\Payments\Methods\BankTransfer;
 use BitBag\SyliusMolliePlugin\Payments\Methods\Belfius;
 use BitBag\SyliusMolliePlugin\Payments\Methods\CreditCard;
+use BitBag\SyliusMolliePlugin\Payments\Methods\DirectDebit;
 use BitBag\SyliusMolliePlugin\Payments\Methods\Eps;
 use BitBag\SyliusMolliePlugin\Payments\Methods\GiftCard;
 use BitBag\SyliusMolliePlugin\Payments\Methods\Giropay;
@@ -51,5 +52,6 @@ interface MethodsInterface
         Przelewy24::class,
         SofortBanking::class,
         MealVoucher::class,
+        DirectDebit::class
     ];
 }

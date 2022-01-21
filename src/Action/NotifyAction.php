@@ -13,9 +13,9 @@ namespace BitBag\SyliusMolliePlugin\Action;
 
 use BitBag\SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
 use BitBag\SyliusMolliePlugin\Action\StateMachine\SetStatusOrderAction;
-use BitBag\SyliusMolliePlugin\Entity\SubscriptionInterface;
+use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
 use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
-use BitBag\SyliusMolliePlugin\Repository\SubscriptionRepositoryInterface;
+use BitBag\SyliusMolliePlugin\Repository\MollieSubscriptionRepositoryInterface;
 use BitBag\SyliusMolliePlugin\Request\StateMachine\StatusRecurringSubscription;
 use Mollie\Api\Exceptions\ApiException;
 use Payum\Core\Action\ActionInterface;
@@ -36,7 +36,7 @@ final class NotifyAction extends BaseApiAwareAction implements ActionInterface, 
     /** @var GetHttpRequest */
     private $getHttpRequest;
 
-    /** @var SubscriptionRepositoryInterface */
+    /** @var MollieSubscriptionRepositoryInterface */
     private $subscriptionRepository;
 
     /** @var SetStatusOrderAction */
@@ -47,7 +47,7 @@ final class NotifyAction extends BaseApiAwareAction implements ActionInterface, 
 
     public function __construct(
         GetHttpRequest $getHttpRequest,
-        SubscriptionRepositoryInterface $subscriptionRepository,
+        MollieSubscriptionRepositoryInterface $subscriptionRepository,
         SetStatusOrderAction $setStatusOrderAction,
         MollieLoggerActionInterface $loggerAction
     ) {
@@ -86,7 +86,7 @@ final class NotifyAction extends BaseApiAwareAction implements ActionInterface, 
         }
 
         if (true === isset($details['subscription_mollie_id'])) {
-            /** @var SubscriptionInterface $subscription */
+            /** @var MollieSubscriptionInterface $subscription */
             $subscription = $this->subscriptionRepository->findOneByOrderId($details['metadata']['order_id']);
 
             $this->gateway->execute(new StatusRecurringSubscription($subscription));

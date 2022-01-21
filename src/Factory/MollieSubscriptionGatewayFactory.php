@@ -15,6 +15,7 @@ use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
 use BitBag\SyliusMolliePlugin\Form\Type\MollieGatewayConfigurationType;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\GatewayFactory;
+use Sylius\Bundle\CoreBundle\Application\Kernel;
 
 final class MollieSubscriptionGatewayFactory extends GatewayFactory
 {
@@ -39,6 +40,7 @@ final class MollieSubscriptionGatewayFactory extends GatewayFactory
                 'api_key' => null,
                 'interval' => null,
                 'times' => null,
+                'method' => null
             ];
 
             $config->defaults($config['payum.default_options']);
@@ -56,9 +58,13 @@ final class MollieSubscriptionGatewayFactory extends GatewayFactory
                 $mollieApiClient->setApiKey($config[$environment]);
                 $mollieApiClient->setConfig($config->toUnsafeArray());
                 $mollieApiClient->setIsRecurringSubscription(true);
+                $mollieApiClient->addVersionString(\sprintf('Sylius/%s', Kernel::VERSION));
+                $mollieApiClient->addVersionString(\sprintf('BitBagSyliusMolliePlugin/%s', $mollieApiClient->getVersion()));
+                $mollieApiClient->addVersionString(\sprintf('uap/%s', $mollieApiClient->getUserAgentToken()));
 
                 return $mollieApiClient;
             };
+
         }
     }
 }

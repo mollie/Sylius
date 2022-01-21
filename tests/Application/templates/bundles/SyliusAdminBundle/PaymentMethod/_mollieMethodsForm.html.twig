@@ -24,7 +24,7 @@
             </div>
             <div class="right aligned column">
                 <div class="ui buttons js-header-btn">
-                    <a href="#" id="get_methods" data-url="{{ path('bitbag_admin_methods') }}"
+                    <a href="#" id="get_methods" data-url="{{ path('bitbag_admin_methods', {id: resource.id}) }}"
                        class="ui button primary">{{ 'bitbag_sylius_mollie_plugin.ui.load_methods_button'|trans }}</a>
                 </div>
             </div>

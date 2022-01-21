@@ -14,6 +14,7 @@ namespace BitBag\SyliusMolliePlugin\Repository;
 use BitBag\SyliusMolliePlugin\Entity\SubscriptionInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 
+/** @deprecated  */
 interface SubscriptionRepositoryInterface extends RepositoryInterface
 {
     public function findOneByOrderId($orderId): ?SubscriptionInterface;

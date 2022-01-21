@@ -1,0 +1,64 @@
+winzou_state_machine:
+    sylius_payment:
+        callbacks:
+            after:
+                sylius_process_subscription:
+                    on: ["complete"]
+                    do: ["@bitbag_sylius_mollie_plugin.payment_processing.subscription_payment_handler", "process"]
+                    args: ["object"]
+
+    bitbag_mollie_subscription:
+        class: "%bitbag_sylius_mollie_plugin.model.mollie_subscription.class%"
+        property_path: state
+        graph: mollie_subscription_payment_graph
+        state_machine_class: "%sylius.state_machine.class%"
+        states:
+            new: ~
+            active: ~
+            processing: ~
+            paused: ~
+            canceled: ~
+            completed: ~
+
+        transitions:
+            activate:
+                from: [ new ]
+                to: active
+            begin_processing:
+                from: [ active ]
+                to: processing
+            finish_processing:
+                from: [ processing ]
+                to: active
+            cancel:
+                from: [ active, processing ]
+                to: canceled
+            complete:
+                from: [ active ]
+                to: completed
+        callbacks: ~
+
+    bitbag_mollie_subscription_manual:
+        class: "%bitbag_sylius_mollie_plugin.model.mollie_subscription.class%"
+        property_path: state
+        graph: mollie_subscription_payment_graph_manual
+        state_machine_class: "%sylius.state_machine.class%"
+        states:
+            new: ~
+            active: ~
+            processing: ~
+            paused: ~
+            canceled: ~
+            completed: ~
+
+        transitions:
+            pause:
+                from: [ active ]
+                to: paused
+            resume:
+                from: [ paused ]
+                to: active
+            cancel:
+                from: [ active, processing ]
+                to: canceled
+        callbacks: ~

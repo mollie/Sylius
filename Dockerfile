@@ -14,7 +14,6 @@ WORKDIR /var/www
 ARG APP_ENV=prod
 
 # copy only specifically what we need
-COPY migrations migrations/
 COPY src src/
 COPY tests/Application/Kernel.php tests/Application/Kernel.php
 COPY composer.json ./
@@ -132,7 +131,6 @@ RUN { \
 WORKDIR /var/www
 
 COPY --from=root_php /var/www/src src/
-COPY --from=root_php /var/www/migrations migrations/
 COPY --from=root_php /var/www/vendor vendor/
 COPY --from=root_php /var/www/tests/Application/bin tests/Application/bin/
 COPY --from=root_php /var/www/tests/Application/config tests/Application/config/

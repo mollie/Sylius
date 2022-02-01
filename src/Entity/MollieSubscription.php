@@ -177,7 +177,7 @@ class MollieSubscription implements MollieSubscriptionInterface
         return $this->recentFailedPaymentsCount;
     }
 
-    public function addFailedPayment(): void
+    public function incrementFailedPaymentCounter(): void
     {
         $this->recentFailedPaymentsCount++;
     }

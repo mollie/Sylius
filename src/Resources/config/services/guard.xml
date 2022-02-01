@@ -6,6 +6,6 @@
 >
     <services>
         <defaults public="true" />
-        <service id="bitbag_sylius_mollie_plugin.guard.subscription_completable" class="BitBag\SyliusMolliePlugin\Guard\SubscriptionCompleteGuard"/>
+        <service id="bitbag_sylius_mollie_plugin.guard.subscription" class="BitBag\SyliusMolliePlugin\Guard\SubscriptionGuard"/>
     </services>
 </container>

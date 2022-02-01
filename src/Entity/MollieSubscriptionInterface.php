@@ -26,6 +26,7 @@ interface MollieSubscriptionInterface extends ResourceInterface
     public const STATE_PAUSED = 'paused';
     public const STATE_CANCELED = 'canceled';
     public const STATE_COMPLETED = 'completed';
+    public const STATE_ABORTED = 'aborted';
 
     public const PROCESSING_STATE_NONE = 'none';
     public const PROCESSING_STATE_PENDING = 'pending';
@@ -85,7 +86,7 @@ interface MollieSubscriptionInterface extends ResourceInterface
 
     public function getRecentFailedPaymentsCount(): int;
 
-    public function addFailedPayment(): void;
+    public function incrementFailedPaymentCounter(): void;
 
     public function resetFailedPaymentCount();
 

@@ -24,6 +24,7 @@ winzou_state_machine:
             paused: ~
             canceled: ~
             completed: ~
+            aborted: ~
 
         transitions:
             activate:
@@ -41,11 +42,18 @@ winzou_state_machine:
             complete:
                 from: [ active ]
                 to: completed
+            abort_due_of_failed_payments:
+                from: [ processing ]
+                to: aborted
         callbacks:
             guard:
+                guard_for_abort_due_of_payments:
+                    on: 'complete'
+                    do: [ '@bitbag_sylius_mollie_plugin.guard.subscription', 'isEligibleForPaymentsAbort' ]
+                    args: [ 'object' ]
                 guard_for_complete:
                     on: 'complete'
-                    do: [ '@bitbag_sylius_mollie_plugin.guard.subscription_completable', 'isCompletable' ]
+                    do: [ '@bitbag_sylius_mollie_plugin.guard.subscription', 'isCompletable' ]
                     args: [ 'object' ]
             after:
                 after_finish_processing:

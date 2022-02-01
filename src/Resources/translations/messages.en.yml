@@ -33,6 +33,7 @@ bitbag_sylius_mollie_plugin:
                 active: 'Active'
                 processing: 'Processing'
                 canceled: 'Canceled'
+                aborted: 'Aborted due of too many payment failures'
                 completed: 'Completed'
                 paused: 'Paused'
             payment_state:

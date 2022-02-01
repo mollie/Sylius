@@ -20,6 +20,8 @@ final class MollieRecurringTransitions
 
     public const TRANSITION_CANCEL = 'cancel';
 
+    public const TRANSITION_ABORT_DUE_OF_FAILED_PAYMENTS = 'abort_due_of_failed_payments';
+
     public const TRANSITION_COMPLETE = 'complete';
 
     private function __construct()

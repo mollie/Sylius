@@ -35,7 +35,7 @@ final class SubscriptionPaymentCompletedHandler
     public function handleSuccess(PaymentInterface $payment): void
     {
         $subscriptions = $this->subscriptionRepository->findByPayment($payment);
-sleep(20);
+
         foreach ($subscriptions as $subscription) {
             $graph = $this->graphFactory->get($subscription, MollieRecurringTransitions::GRAPH);
             $processingGraph = $this->graphFactory->get($subscription, MollieSubscriptionProcessingTransitions::GRAPH);
@@ -46,6 +46,7 @@ sleep(20);
 
             if ($paymentGraph->can(MollieSubscriptionPaymentProcessingTransitions::TRANSITION_SUCCESS)) {
                 $paymentGraph->apply(MollieSubscriptionPaymentProcessingTransitions::TRANSITION_SUCCESS);
+                $subscription->resetFailedPaymentCount();
             }
 
             if ($graph->can(MollieRecurringTransitions::TRANSITION_ACTIVATE)) {
@@ -86,7 +87,6 @@ sleep(20);
                 $this->subscriptionRepository->add($subscription);
             }
 
-
             if ($graph->can(MollieRecurringTransitions::TRANSITION_COMPLETE)) {
                 $graph->apply(MollieRecurringTransitions::TRANSITION_COMPLETE);
 
@@ -109,6 +109,12 @@ sleep(20);
 
             if ($paymentGraph->can(MollieSubscriptionPaymentProcessingTransitions::TRANSITION_FAILURE)) {
                 $paymentGraph->apply(MollieSubscriptionPaymentProcessingTransitions::TRANSITION_FAILURE);
+            }
+
+            $subscription->incrementFailedPaymentCounter();
+
+            if ($graph->can(MollieRecurringTransitions::TRANSITION_ABORT_DUE_OF_FAILED_PAYMENTS)) {
+                $graph->apply(MollieRecurringTransitions::TRANSITION_ABORT_DUE_OF_FAILED_PAYMENTS);
             }
 
             $this->subscriptionRepository->add($subscription);

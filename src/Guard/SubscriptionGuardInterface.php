@@ -5,7 +5,7 @@ namespace BitBag\SyliusMolliePlugin\Guard;
 
 use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
 
-interface SubscriptionCompleteGuardInterface
+interface SubscriptionGuardInterface
 {
     public function isCompletable(MollieSubscriptionInterface $subscription): bool;
 }

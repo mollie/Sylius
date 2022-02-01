@@ -38,16 +38,13 @@ final class MollieSubscriptionGatewayFactory extends GatewayFactory
         if (false === (bool) $config['payum.api']) {
             $config['payum.default_options'] = [
                 'api_key' => null,
-                'interval' => null,
-                'times' => null,
                 'method' => null
             ];
 
             $config->defaults($config['payum.default_options']);
 
             $config['payum.required_options'] = [
-                $environment,
-                'interval',
+                $environment
             ];
 
             $config['payum.api'] = function (ArrayObject $config) use ($environment) {

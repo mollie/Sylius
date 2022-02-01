@@ -35,5 +35,22 @@ winzou_state_machine:
             before:
                 bitbag_sylius_adyen_plugin_cancel_recurring_subscription_process:
                     on: ["cancel"]
-                    do: ["@bitbag_sylius_mollie_plugin.payment_processing.cancel_recurring_subscription", "process"]
+                    do: ["@bitbag_sylius_mollie_plugin.processor.subscription_schedule_processor", "process"]
                     args: ["object"]
+
+    mollie_subscription_processing:
+        class: "%bitbag_sylius_mollie_plugin.model.mollie_subscription.class%"
+        property_path: processingState
+        graph: mollie_subscription_processing_graph
+        state_machine_class: "%sylius.state_machine.class%"
+        states:
+            none: ~
+            pending: ~
+            processing: ~
+        transitions:
+            process:
+                from: [none, pending]
+                to: processing
+            schedule:
+                from: [processing, none]
+                to: pending

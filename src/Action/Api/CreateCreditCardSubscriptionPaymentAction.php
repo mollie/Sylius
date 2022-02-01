@@ -25,7 +25,7 @@ use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Reply\HttpRedirect;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-final class CreateCreditCardSubscriptionAction extends BaseApiAwareAction implements ActionInterface, GatewayAwareInterface, ApiAwareInterface
+final class CreateCreditCardSubscriptionPaymentAction extends BaseApiAwareAction implements ActionInterface, GatewayAwareInterface, ApiAwareInterface
 {
     use GatewayAwareTrait;
 
@@ -65,7 +65,7 @@ final class CreateCreditCardSubscriptionAction extends BaseApiAwareAction implem
                 'redirectUrl' => $details['backurl'],
                 'webhookUrl' => $details['webhookUrl'],
                 'metadata' => $details['metadata'],
-                'sequenceType' => 'first',
+                'sequenceType' => 'recurring',
             ];
             /** @var Payment $payment */
             $payment = $this->mollieApiClient->payments->create($paymentSettings);
@@ -93,12 +93,6 @@ final class CreateCreditCardSubscriptionAction extends BaseApiAwareAction implem
         $details['payment_mollie_id'] = $payment->id;
 
         $this->loggerAction->addLog(sprintf('Create payment in mollie with id: %s', $payment->id));
-
-        if (null === $payment->getCheckoutUrl()) {
-            throw new HttpRedirect($details['backurl']);
-        }
-
-        throw new HttpRedirect($payment->getCheckoutUrl());
     }
 
     public function supports($request): bool
@@ -110,6 +104,6 @@ final class CreateCreditCardSubscriptionAction extends BaseApiAwareAction implem
         }
         $details = ArrayObject::ensureArrayObject($request->getModel());
 
-        return 'first' === ($details['metadata']['sequenceType'] ?? 'first');
+        return 'recurring' === ($details['metadata']['sequenceType'] ?? 'first');
     }
 }

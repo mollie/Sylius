@@ -20,7 +20,6 @@
         <service id="bitbag_sylius_mollie_plugin.action.create_internal_subscription" class="BitBag\SyliusMolliePlugin\Action\Api\CreateInternalSubscriptionAction">
             <argument type="service" id="bitbag_sylius_mollie_plugin.repository.mollie_subscription"/>
             <argument type="service" id="bitbag_sylius_mollie_plugin.custom_factory.mollie_subscription"/>
-            <argument type="service" id="sylius.factory.order"/>
             <argument type="service" id="sylius.repository.order"/>
             <tag name="payum.action" factory="mollie_subscription" alias="payum.action.create_internal_subscription"/>
         </service>
@@ -88,6 +87,12 @@
             <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
             <argument type="service" id="bitbag_sylius_mollie_plugin.parser.response.guzzle_negative_response_parser"/>
             <tag name="payum.action" factory="mollie_subscription" alias="payum.action.api.create_credit_card_subscription"/>
+        </service>
+        <service id="bitbag_sylius_mollie_plugin.payum_action.api.create_credit_card_subscription_payment" class="BitBag\SyliusMolliePlugin\Action\Api\CreateCreditCardSubscriptionPaymentAction">
+            <argument type="service" id="session"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.parser.response.guzzle_negative_response_parser"/>
+            <tag name="payum.action" factory="mollie_subscription" alias="payum.action.api.create_credit_card_subscription_payment"/>
         </service>
         <service id="bitbag_sylius_mollie_plugin.payum_action.api.create_recurring_subscription" class="BitBag\SyliusMolliePlugin\Action\Api\CreateRecurringSubscriptionAction">
             <argument type="service" id="bitbag_sylius_mollie_plugin.factory.mollie_subscription"/>

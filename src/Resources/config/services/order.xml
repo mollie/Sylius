@@ -9,5 +9,14 @@
             <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
             <argument type="service" id="payum"/>
         </service>
+        <service id="bitbag_sylius_mollie_plugin.order.order_item_cloner" class="BitBag\SyliusMolliePlugin\Order\OrderItemCloner">
+            <argument type="service" id="sylius.factory.order_item"/>
+            <argument type="service" id="sylius.factory.order_item_unit"/>
+        </service>
+        <service id="bitbag_sylius_mollie_plugin.order.order_cloner" class="BitBag\SyliusMolliePlugin\Order\SubscriptionOrderCloner">
+            <argument type="service" id="bitbag_sylius_mollie_plugin.order.order_item_cloner"/>
+            <argument type="service" id="sylius.factory.order"/>
+            <argument type="service" id="sylius.random_generator"/>
+        </service>
     </services>
 </container>

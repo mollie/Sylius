@@ -10,37 +10,39 @@
     <tbody>
 
     {% for item in mollie_subscription.payments %}
-        <td>
-            {{ item.createdAt | date ('d-m-Y H:i:s') }}
-        </td>
-        <td>
-            <a href="{{ path('sylius_admin_order_show', {id: item.order.id}) }}"
-               target="_blank">#{{ item.order.number }}</a>
-        </td>
+        <tr>
+            <td>
+                {{ item.createdAt | date ('d-m-Y H:i:s') }}
+            </td>
+            <td>
+                <a href="{{ path('sylius_admin_order_show', {id: item.order.id}) }}"
+                   target="_blank">#{{ item.order.number }}</a>
+            </td>
 
-        <td>
-            {% include '@SyliusAdmin/Common/Label/paymentState.html.twig' with {'data': item.state} %}
-        </td>
-        <td>
-            {% include "@SyliusUi/Grid/Action/applyTransition.html.twig" with {
-                data: item,
-                options: {
-                    transition: 'complete',
-                    graph: 'sylius_payment',
-                    link: {
-                        route: 'sylius_admin_payment_complete',
-                        parameters: {
-                            id: item.id
-                        }
+            <td>
+                {% include '@SyliusAdmin/Common/Label/paymentState.html.twig' with {'data': item.state} %}
+            </td>
+            <td>
+                {% include "@SyliusUi/Grid/Action/applyTransition.html.twig" with {
+                    data: item,
+                    options: {
+                        transition: 'complete',
+                        graph: 'sylius_payment',
+                        link: {
+                            route: 'sylius_admin_payment_complete',
+                            parameters: {
+                                id: item.id
+                            }
+                        },
+                        class: 'teal',
                     },
-                    class: 'teal',
-                },
-                action: {
-                    label: 'sylius.ui.complete',
-                    icon: 'payment'
-                }
-            } %}
-        </td>
+                    action: {
+                        label: 'sylius.ui.complete',
+                        icon: 'payment'
+                    }
+                } %}
+            </td>
+        </tr>
     {% endfor %}
     </tbody>
 </table>

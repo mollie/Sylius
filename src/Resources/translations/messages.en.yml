@@ -26,6 +26,8 @@ bitbag_sylius_mollie_plugin:
                 started_at: 'Started at'
                 interval: 'Interval'
                 orders: 'Orders'
+                recent_failed_payments_count: 'Recent failed payments count'
+                payment_state: 'Recent payment state'
             state:
                 new: 'New'
                 active: 'Active'
@@ -33,6 +35,10 @@ bitbag_sylius_mollie_plugin:
                 canceled: 'Canceled'
                 completed: 'Completed'
                 paused: 'Paused'
+            payment_state:
+                pending: 'Pending'
+                fail: 'Failed'
+                ok: 'Ok'
             grid:
                 filters:
                     created_at: 'Created at'

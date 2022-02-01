@@ -2,10 +2,15 @@ winzou_state_machine:
     sylius_payment:
         callbacks:
             after:
-                sylius_process_subscription:
-                    on: ["complete"]
-                    do: ["@bitbag_sylius_mollie_plugin.payment_processing.subscription_payment_handler", "process"]
-                    args: ["object"]
+                sylius_process_subscription_fail:
+                    on: [ "fail" ]
+                    do: [ "@bitbag_sylius_mollie_plugin.payment_processing.subscription_payment_handler", "handleFailed" ]
+                    args: [ "object" ]
+
+                sylius_process_subscription_success:
+                    on: [ "complete" ]
+                    do: [ "@bitbag_sylius_mollie_plugin.payment_processing.subscription_payment_handler", "handleSuccess" ]
+                    args: [ "object" ]
 
     bitbag_mollie_subscription:
         class: "%bitbag_sylius_mollie_plugin.model.mollie_subscription.class%"
@@ -36,7 +41,17 @@ winzou_state_machine:
             complete:
                 from: [ active ]
                 to: completed
-        callbacks: ~
+        callbacks:
+            guard:
+                guard_for_complete:
+                    on: 'complete'
+                    do: [ '@bitbag_sylius_mollie_plugin.guard.subscription_completable', 'isCompletable' ]
+                    args: [ 'object' ]
+            after:
+                after_finish_processing:
+                    on: [ "finish_processing" ]
+                    do: [ "@bitbag_sylius_mollie_plugin.processor.subscription_schedule_processor", "process" ]
+                    args: [ "object" ]
 
     bitbag_mollie_subscription_manual:
         class: "%bitbag_sylius_mollie_plugin.model.mollie_subscription.class%"
@@ -62,3 +77,23 @@ winzou_state_machine:
                 from: [ active, processing ]
                 to: canceled
         callbacks: ~
+
+    mollie_subscription_payment_state_graph:
+        class: "%bitbag_sylius_mollie_plugin.model.mollie_subscription.class%"
+        property_path: paymentState
+        graph: mollie_subscription_payment_state_graph
+        state_machine_class: "%sylius.state_machine.class%"
+        states:
+            pending: ~
+            ok: ~
+            fail: ~
+        transitions:
+            begin:
+                from: [ ok, fail ]
+                to: pending
+            success:
+                from: [ pending ]
+                to: ok
+            failure:
+                from: [ pending ]
+                to: ok

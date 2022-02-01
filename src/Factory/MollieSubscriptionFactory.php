@@ -8,18 +8,20 @@ use BitBag\SyliusMolliePlugin\Entity\OrderInterface;
 use BitBag\SyliusMolliePlugin\Entity\ProductVariantInterface;
 use Sylius\Component\Core\Model\OrderItemInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
+use Symfony\Component\Routing\RouterInterface;
 
 final class MollieSubscriptionFactory implements MollieSubscriptionFactoryInterface
 {
     private FactoryInterface $decoratedFactory;
-    private MollieSubscriptionScheduleFactoryInterface $subscriptionScheduleFactory;
+    private RouterInterface $router;
 
     public function __construct(
         FactoryInterface $decoratedFactory,
-        MollieSubscriptionScheduleFactoryInterface $subscriptionScheduleFactory
+        RouterInterface $router
     )
     {
         $this->decoratedFactory = $decoratedFactory;
+        $this->router = $router;
     }
 
     public function createNew(): MollieSubscriptionInterface
@@ -44,9 +46,11 @@ final class MollieSubscriptionFactory implements MollieSubscriptionFactoryInterf
         return $subscriptionTemplate;
     }
 
-    public function createFromFirstOrderWithOrderItem(
+    public function createFromFirstOrderWithOrderItemAndPaymentConfiguration(
         OrderInterface $order,
-        OrderItemInterface $orderItem
+        OrderItemInterface $orderItem,
+        array $paymentConfiguration = [],
+        string $mandateId = null
     ): MollieSubscriptionInterface
     {
         $variant = $orderItem->getVariant();
@@ -55,10 +59,16 @@ final class MollieSubscriptionFactory implements MollieSubscriptionFactoryInterf
                 sprintf('Variant should be instance of "%s::class".', ProductVariantInterface::class)
             );
         }
+        $routerContext = $this->router->getContext();
+        $hostname = $routerContext->getHost();
 
         $subscriptionTemplate = $this->createFromFirstOrder($order);
-        $subscriptionTemplate->setInterval($variant->getInterval());
-        $subscriptionTemplate->setNumberOfRepetitions($variant->getTimes());
+        $configuration = $subscriptionTemplate->getSubscriptionConfiguration();
+        $configuration->setInterval($variant->getInterval());
+        $configuration->setNumberOfRepetitions($variant->getTimes());
+        $configuration->setPaymentDetailsConfiguration($paymentConfiguration);
+        $configuration->setMandateId($mandateId);
+        $configuration->setHostName($hostname);
         $subscriptionTemplate->setOrderItem($orderItem);
 
         return $subscriptionTemplate;

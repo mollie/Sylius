@@ -16,6 +16,7 @@ use BitBag\SyliusMolliePlugin\Entity\GatewayConfigInterface;
 use BitBag\SyliusMolliePlugin\Factory\MethodsFactoryInterface;
 use BitBag\SyliusMolliePlugin\Factory\MollieGatewayConfigFactoryInterface;
 use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
+use BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
 use BitBag\SyliusMolliePlugin\Form\Type\MollieGatewayConfigurationType;
 use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use BitBag\SyliusMolliePlugin\Payments\Methods\MethodInterface;
@@ -99,11 +100,8 @@ final class MollieMethodsCreator implements MollieMethodsCreatorInterface
                 continue;
             }
 
-            $config = $gateway->getConfig();
-
             if (
-                true === array_key_exists('times', $config)
-                && true === array_key_exists('interval', $config)
+                MollieSubscriptionGatewayFactory::FACTORY_NAME === $gateway->getFactoryName()
                 && false === in_array($mollieMethod->id, self::RECURRING_PAYMENT_SUPPORTED_METHODS)
             ) {
                 continue;

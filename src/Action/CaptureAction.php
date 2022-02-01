@@ -29,6 +29,7 @@ use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Capture;
 use Payum\Core\Security\GenericTokenFactoryInterface;
 use Payum\Core\Security\TokenInterface;
+use Symfony\Component\Routing\RouterInterface;
 
 final class CaptureAction extends BaseApiAwareAction implements CaptureActionInterface
 {
@@ -80,7 +81,7 @@ final class CaptureAction extends BaseApiAwareAction implements CaptureActionInt
             $this->gateway->execute(new CreateCustomer($details));
             $this->gateway->execute(new CreateInternalRecurring($details));
 
-            switch($details['method']){
+            switch ($details['method']) {
                 case PaymentMethod::DIRECTDEBIT:
                     $this->gateway->execute(new CreateSepaMandate($details));
                     break;
@@ -115,7 +116,6 @@ final class CaptureAction extends BaseApiAwareAction implements CaptureActionInt
     {
         return
             $request instanceof Capture &&
-            $request->getModel() instanceof \ArrayAccess
-            ;
+            $request->getModel() instanceof \ArrayAccess;
     }
 }

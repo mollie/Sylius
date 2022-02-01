@@ -7,6 +7,8 @@ use BitBag\SyliusMolliePlugin\Factory\DatePeriodFactoryInterface;
 use BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionScheduleFactoryInterface;
 use BitBag\SyliusMolliePlugin\Repository\MollieSubscriptionRepositoryInterface;
 use BitBag\SyliusMolliePlugin\Transitions\MollieRecurringTransitions;
+use BitBag\SyliusMolliePlugin\Transitions\MollieSubscriptionPaymentProcessingTransitions;
+use BitBag\SyliusMolliePlugin\Transitions\MollieSubscriptionProcessingTransitions;
 use SM\Factory\Factory;
 use Sylius\Component\Core\Model\PaymentInterface;
 
@@ -30,21 +32,33 @@ final class SubscriptionPaymentCompletedHandler
         $this->scheduleFactory = $scheduleFactory;
     }
 
-    public function process(PaymentInterface $payment): void
+    public function handleSuccess(PaymentInterface $payment): void
     {
         $subscriptions = $this->subscriptionRepository->findByPayment($payment);
-
+sleep(20);
         foreach ($subscriptions as $subscription) {
             $graph = $this->graphFactory->get($subscription, MollieRecurringTransitions::GRAPH);
+            $processingGraph = $this->graphFactory->get($subscription, MollieSubscriptionProcessingTransitions::GRAPH);
+            $paymentGraph = $this->graphFactory->get(
+                $subscription,
+                MollieSubscriptionPaymentProcessingTransitions::GRAPH
+            );
+
+            if ($paymentGraph->can(MollieSubscriptionPaymentProcessingTransitions::TRANSITION_SUCCESS)) {
+                $paymentGraph->apply(MollieSubscriptionPaymentProcessingTransitions::TRANSITION_SUCCESS);
+            }
+
             if ($graph->can(MollieRecurringTransitions::TRANSITION_ACTIVATE)) {
                 $graph->apply(MollieRecurringTransitions::TRANSITION_ACTIVATE);
+
                 $startedAt = new \DateTime();
                 $subscription->setStartedAt($startedAt);
+                $configuration = $subscription->getSubscriptionConfiguration();
 
                 $datePeriods = $this->datePeriodFactory->createForSubscriptionConfiguration(
                     $startedAt,
-                    $subscription->getNumberOfRepetitions(),
-                    $subscription->getInterval()
+                    $configuration->getNumberOfRepetitions(),
+                    $configuration->getInterval()
                 );
 
                 foreach ($datePeriods as $index => $date) {
@@ -64,9 +78,40 @@ final class SubscriptionPaymentCompletedHandler
 
             if ($graph->can(MollieRecurringTransitions::TRANSITION_FINISH_PROCESSING)) {
                 $graph->apply(MollieRecurringTransitions::TRANSITION_FINISH_PROCESSING);
+
+                if ($processingGraph->can(MollieSubscriptionProcessingTransitions::TRANSITION_SCHEDULE)) {
+                    $processingGraph->apply(MollieSubscriptionProcessingTransitions::TRANSITION_SCHEDULE);
+                }
+
                 $this->subscriptionRepository->add($subscription);
-                continue;
             }
+
+
+            if ($graph->can(MollieRecurringTransitions::TRANSITION_COMPLETE)) {
+                $graph->apply(MollieRecurringTransitions::TRANSITION_COMPLETE);
+
+                $this->subscriptionRepository->add($subscription);
+            }
+        }
+    }
+
+    public function handleFailed(PaymentInterface $payment): void
+    {
+        $subscriptions = $this->subscriptionRepository->findByPayment($payment);
+
+        foreach ($subscriptions as $subscription) {
+            $graph = $this->graphFactory->get($subscription, MollieRecurringTransitions::GRAPH);
+            $processingGraph = $this->graphFactory->get($subscription, MollieSubscriptionProcessingTransitions::GRAPH);
+            $paymentGraph = $this->graphFactory->get(
+                $subscription,
+                MollieSubscriptionPaymentProcessingTransitions::GRAPH
+            );
+
+            if ($paymentGraph->can(MollieSubscriptionPaymentProcessingTransitions::TRANSITION_FAILURE)) {
+                $paymentGraph->apply(MollieSubscriptionPaymentProcessingTransitions::TRANSITION_FAILURE);
+            }
+
+            $this->subscriptionRepository->add($subscription);
         }
     }
 }

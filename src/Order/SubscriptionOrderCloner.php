@@ -5,6 +5,7 @@ namespace BitBag\SyliusMolliePlugin\Order;
 
 use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
 use BitBag\SyliusMolliePlugin\Entity\OrderInterface;
+use BitBag\SyliusMolliePlugin\Factory\PartialShip\ShipmentFactoryInterface;
 use Sylius\Component\Core\Model\OrderItemInterface;
 use Sylius\Component\Core\Model\ShipmentInterface;
 use Sylius\Component\Core\OrderCheckoutStates;
@@ -19,16 +20,22 @@ final class SubscriptionOrderCloner implements SubscriptionOrderClonerInterface
     private OrderItemClonerInterface $orderItemCloner;
     private FactoryInterface $orderFactory;
     private RandomnessGeneratorInterface $generator;
+    private AdjustmentClonerInterface $adjustmentCloner;
+    private ShipmentClonerInterface $shipmentCloner;
 
     public function __construct(
         OrderItemClonerInterface $orderItemCloner,
         FactoryInterface $orderFactory,
-        RandomnessGeneratorInterface $generator
+        RandomnessGeneratorInterface $generator,
+        AdjustmentClonerInterface $adjustmentCloner,
+        ShipmentClonerInterface $shipmentCloner
     )
     {
         $this->orderItemCloner = $orderItemCloner;
         $this->orderFactory = $orderFactory;
         $this->generator = $generator;
+        $this->adjustmentCloner = $adjustmentCloner;
+        $this->shipmentCloner = $shipmentCloner;
     }
 
     public function clone(
@@ -65,17 +72,35 @@ final class SubscriptionOrderCloner implements SubscriptionOrderClonerInterface
         $clonedOrder->setShippingState(OrderShippingStates::STATE_READY);
         $clonedOrder->setTokenValue($this->generator->generateUriSafeString(10));
 
-        foreach ($order->getShipments() as $shipment) {
-            $clonedShipment = clone $shipment;
-            $clonedShipment->setState(ShipmentInterface::STATE_READY);
-            $clonedShipment->setTracking(null);
-            $clonedShipment->setShippedAt(null);
-            $clonedShipment->setOrder($clonedOrder);
-            $clonedOrder->addShipment($clonedShipment);
-        }
-
         $item = $this->orderItemCloner->clone($orderItem, $clonedOrder);
         $clonedOrder->addItem($item);
+
+        foreach ($order->getAdjustments() as $adjustment) {
+            if (\Sylius\Component\Core\Model\AdjustmentInterface::SHIPPING_ADJUSTMENT === $adjustment->getType()) {
+                continue;
+            }
+            $clonedOrderAdjustment = $this->adjustmentCloner->clone($adjustment);
+
+            $clonedOrder->addAdjustment($clonedOrderAdjustment);
+        }
+
+        if ($clonedOrder->isShippingRequired()) {
+            foreach ($order->getShipments() as $shipment) {
+                $clonedShipment = $this->shipmentCloner->clone($shipment);
+                $clonedOrder->addShipment($clonedShipment);
+
+                foreach ($shipment->getAdjustments() as $adjustment) {
+                    /** @var AdjustmentInterface $clonedAdjustment */
+                    $clonedAdjustment = $this->adjustmentCloner->clone($adjustment);
+
+                    $clonedShipment->addAdjustment($clonedAdjustment);
+                    $clonedAdjustment->setShipment($clonedShipment);
+                    $clonedAdjustment->setAdjustable($clonedOrder);
+                }
+            }
+
+        }
+
         $clonedOrder->recalculateAdjustmentsTotal();
         $clonedOrder->recalculateItemsTotal();
 

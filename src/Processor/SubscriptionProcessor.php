@@ -78,10 +78,7 @@ final class SubscriptionProcessor implements SubscriptionProcessorInterface
         $token = $this->paymentRegistry->getTokenFactory()->createToken(
             $details['metadata']['gateway'],
             $payment,
-            'sylius_shop_order_thank_you',
-            [
-                '_locale' => $details['metadata']['_locale']
-            ]
+            'sylius_shop_order_thank_you'
         );
         $gateway->execute(new Capture($token));
     }
@@ -94,7 +91,7 @@ final class SubscriptionProcessor implements SubscriptionProcessorInterface
     {
         /** @var SyliusCorePayment $payment */
         $payment = $this->paymentFactory->createWithAmountAndCurrencyCode(
-            $orderItem->getTotal(),
+            $clonedOrder->getTotal(),
             $clonedOrder->getCurrencyCode()
         );
         $firstOrder = $subscription->getFirstOrder();

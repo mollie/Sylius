@@ -13,10 +13,18 @@
             <argument type="service" id="sylius.factory.order_item"/>
             <argument type="service" id="sylius.factory.order_item_unit"/>
         </service>
+        <service id="bitbag_sylius_mollie_plugin.order.adjustment_cloner" class="BitBag\SyliusMolliePlugin\Order\AdjustmentCloner">
+            <argument type="service" id="sylius.factory.adjustment"/>
+        </service>
+        <service id="bitbag_sylius_mollie_plugin.order.shipment_cloner" class="BitBag\SyliusMolliePlugin\Order\ShipmentCloner">
+            <argument type="service" id="sylius.factory.shipment"/>
+        </service>
         <service id="bitbag_sylius_mollie_plugin.order.order_cloner" class="BitBag\SyliusMolliePlugin\Order\SubscriptionOrderCloner">
             <argument type="service" id="bitbag_sylius_mollie_plugin.order.order_item_cloner"/>
             <argument type="service" id="sylius.factory.order"/>
             <argument type="service" id="sylius.random_generator"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.order.adjustment_cloner"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.order.shipment_cloner"/>
         </service>
     </services>
 </container>

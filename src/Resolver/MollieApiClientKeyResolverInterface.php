@@ -12,8 +12,9 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Resolver;
 
 use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
+use BitBag\SyliusMolliePlugin\Entity\OrderInterface;
 
 interface MollieApiClientKeyResolverInterface
 {
-    public function getClientWithKey(): MollieApiClient;
+    public function getClientWithKey(OrderInterface $order = null): MollieApiClient;
 }

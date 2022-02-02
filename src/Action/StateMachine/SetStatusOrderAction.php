@@ -21,7 +21,7 @@ use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Order\OrderTransitions;
 use Sylius\Component\Shipping\ShipmentTransitions;
 
-final class SetStatusOrderAction
+final class SetStatusOrderAction implements SetStatusOrderActionInterface
 {
     /** @var FactoryInterface */
     private $factory;

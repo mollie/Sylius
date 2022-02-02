@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace spec\BitBag\SyliusMolliePlugin\Controller\Action\Admin;
 
 use BitBag\SyliusMolliePlugin\Controller\Action\Admin\Refund;
+use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Payum\Core\Payum;
 use PhpSpec\ObjectBehavior;
@@ -35,14 +36,16 @@ final class RefundSpec extends ObjectBehavior
         Payum $payum,
         Session $session,
         FactoryInterface $stateMachineFactory,
-        EntityManagerInterface $paymentEntityManager
+        EntityManagerInterface $paymentEntityManager,
+        MollieLoggerActionInterface $loggerAction
     ): void {
         $this->beConstructedWith(
             $paymentRepository,
             $payum,
             $session,
             $stateMachineFactory,
-            $paymentEntityManager
+            $paymentEntityManager,
+            $loggerAction
         );
     }
 

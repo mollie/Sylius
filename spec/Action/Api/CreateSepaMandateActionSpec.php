@@ -15,6 +15,7 @@ namespace spec\BitBag\SyliusMolliePlugin\Action\Api;
 use BitBag\SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
 use BitBag\SyliusMolliePlugin\Action\Api\CreateSepaMandateAction;
 use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
+use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use BitBag\SyliusMolliePlugin\Request\Api\CreateSepaMandate;
 use Mollie\Api\Endpoints\CustomerEndpoint;
 use Mollie\Api\Resources\Customer;
@@ -29,10 +30,11 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 final class CreateSepaMandateActionSpec extends ObjectBehavior
 {
-    function let(SessionInterface $session): void
+    function let(SessionInterface $session, MollieLoggerActionInterface $loggerAction): void
     {
         $this->beConstructedWith(
-            $session
+            $session,
+            $loggerAction
         );
     }
 

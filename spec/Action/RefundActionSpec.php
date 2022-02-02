@@ -14,6 +14,8 @@ namespace spec\BitBag\SyliusMolliePlugin\Action;
 
 use BitBag\SyliusMolliePlugin\Action\RefundAction;
 use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
+use BitBag\SyliusMolliePlugin\Helper\ConvertRefundDataInterface;
+use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
@@ -24,6 +26,14 @@ use PhpSpec\ObjectBehavior;
 
 final class RefundActionSpec extends ObjectBehavior
 {
+    function let(MollieLoggerActionInterface $loggerAction, ConvertRefundDataInterface $convertOrderRefundData): void
+    {
+        $this->beConstructedWith(
+            $loggerAction,
+            $convertOrderRefundData
+        );
+    }
+
     function it_is_initializable(): void
     {
         $this->shouldHaveType(RefundAction::class);

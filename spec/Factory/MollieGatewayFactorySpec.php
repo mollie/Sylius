@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace spec\BitBag\SyliusMolliePlugin\Action;
 
-use BitBag\SyliusMolliePlugin\MollieGatewayFactory;
+use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
 use Payum\Core\GatewayFactory;
 use PhpSpec\ObjectBehavior;
 

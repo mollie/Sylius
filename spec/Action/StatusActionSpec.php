@@ -14,6 +14,10 @@ namespace spec\BitBag\SyliusMolliePlugin\Action;
 
 use BitBag\SyliusMolliePlugin\Action\StatusAction;
 use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
+use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
+use BitBag\SyliusMolliePlugin\Refund\OrderRefundInterface;
+use BitBag\SyliusMolliePlugin\Refund\PaymentRefundInterface;
+use BitBag\SyliusMolliePlugin\Updater\Order\OrderVoucherAdjustmentUpdaterInterface;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayAwareInterface;
@@ -24,6 +28,20 @@ use Sylius\Component\Core\Model\PaymentInterface;
 
 final class StatusActionSpec extends ObjectBehavior
 {
+    function let(
+        PaymentRefundInterface $paymentRefund,
+        OrderRefundInterface $orderRefund,
+        MollieLoggerActionInterface $loggerAction,
+        OrderVoucherAdjustmentUpdaterInterface $orderVoucherAdjustmentUpdater
+    ): void {
+        $this->beConstructedWith(
+            $paymentRefund,
+            $orderRefund,
+            $loggerAction,
+            $orderVoucherAdjustmentUpdater
+        );
+    }
+
     function it_is_initializable(): void
     {
         $this->shouldHaveType(StatusAction::class);
@@ -53,6 +71,7 @@ final class StatusActionSpec extends ObjectBehavior
         $this->setApi($mollieApiClient);
         $this->setGateway($gateway);
         $payment->getDetails()->willReturn([]);
+        $payment->getId()->willReturn(1);
         $request->getModel()->willReturn($payment);
 
         $request->markNew()->shouldBeCalled();

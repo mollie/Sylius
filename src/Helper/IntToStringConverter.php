@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Helper;
 
-final class IntToStringConverter
+final class IntToStringConverter implements IntToStringConverterInterface
 {
     public function convertIntToString(int $value, int $divisor): string
     {

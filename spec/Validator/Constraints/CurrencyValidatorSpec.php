@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace spec\BitBag\SyliusMolliePlugin\Validator\Constraints;
 
-use BitBag\SyliusMolliePlugin\MollieGatewayFactory;
+use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
 use BitBag\SyliusMolliePlugin\Validator\Constraints\Currency;
 use BitBag\SyliusMolliePlugin\Validator\Constraints\CurrencyValidator;
 use Doctrine\Common\Collections\ArrayCollection;

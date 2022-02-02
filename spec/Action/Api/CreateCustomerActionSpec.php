@@ -15,6 +15,7 @@ namespace spec\BitBag\SyliusMolliePlugin\Action\Api;
 use BitBag\SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
 use BitBag\SyliusMolliePlugin\Action\Api\CreateCustomerAction;
 use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
+use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use BitBag\SyliusMolliePlugin\Request\Api\CreateCustomer;
 use Mollie\Api\Endpoints\CustomerEndpoint;
 use Mollie\Api\Resources\Customer;
@@ -22,9 +23,18 @@ use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use PhpSpec\ObjectBehavior;
+use Sylius\Component\Resource\Repository\RepositoryInterface;
 
 final class CreateCustomerActionSpec extends ObjectBehavior
 {
+    function let(MollieLoggerActionInterface $loggerAction, RepositoryInterface $mollieCustomerRepository): void
+    {
+        $this->beConstructedWith(
+            $loggerAction,
+            $mollieCustomerRepository
+        );
+    }
+
     function it_is_initializable(): void
     {
         $this->shouldHaveType(CreateCustomerAction::class);
@@ -32,12 +42,12 @@ final class CreateCustomerActionSpec extends ObjectBehavior
 
     function it_implements_action_interface(): void
     {
-        $this->shouldHaveType(ActionInterface::class);
+        $this->shouldImplement(ActionInterface::class);
     }
 
     function it_implements_api_aware_interface(): void
     {
-        $this->shouldHaveType(ApiAwareInterface::class);
+        $this->shouldImplement(ApiAwareInterface::class);
     }
 
     function it_extends_base_api_aware(): void

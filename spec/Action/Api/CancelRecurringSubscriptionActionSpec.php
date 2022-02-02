@@ -16,6 +16,7 @@ use BitBag\SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
 use BitBag\SyliusMolliePlugin\Action\Api\CancelRecurringSubscriptionAction;
 use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
 use BitBag\SyliusMolliePlugin\Entity\SubscriptionInterface;
+use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use BitBag\SyliusMolliePlugin\Request\Api\CancelRecurringSubscription;
 use Mollie\Api\Endpoints\CustomerEndpoint;
 use Mollie\Api\Resources\Customer;
@@ -25,6 +26,13 @@ use PhpSpec\ObjectBehavior;
 
 final class CancelRecurringSubscriptionActionSpec extends ObjectBehavior
 {
+    function let(MollieLoggerActionInterface $loggerAction): void
+    {
+        $this->beConstructedWith(
+            $loggerAction
+        );
+    }
+
     function it_is_initializable(): void
     {
         $this->shouldHaveType(CancelRecurringSubscriptionAction::class);

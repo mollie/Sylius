@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace spec\BitBag\SyliusMolliePlugin\PaymentProcessing;
 
 use BitBag\SyliusMolliePlugin\Entity\SubscriptionInterface;
-use BitBag\SyliusMolliePlugin\MollieSubscriptionGatewayFactory;
+use BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
 use BitBag\SyliusMolliePlugin\PaymentProcessing\CancelRecurringSubscriptionProcessor;
 use BitBag\SyliusMolliePlugin\PaymentProcessing\CancelRecurringSubscriptionProcessorInterface;
 use Payum\Core\GatewayInterface;

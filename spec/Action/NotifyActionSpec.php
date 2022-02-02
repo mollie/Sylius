@@ -13,8 +13,10 @@ declare(strict_types=1);
 namespace spec\BitBag\SyliusMolliePlugin\Action;
 
 use BitBag\SyliusMolliePlugin\Action\NotifyAction;
+use BitBag\SyliusMolliePlugin\Action\StateMachine\SetStatusOrderActionInterface;
 use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
-use BitBag\SyliusMolliePlugin\Repository\MollieSubscriptionRepositoryInterface;
+use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
+use BitBag\SyliusMolliePlugin\Repository\SubscriptionRepositoryInterface;
 use Mollie\Api\Endpoints\PaymentEndpoint;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
@@ -26,9 +28,18 @@ use PhpSpec\ObjectBehavior;
 
 final class NotifyActionSpec extends ObjectBehavior
 {
-    function let(GetHttpRequest $getHttpRequest, MollieSubscriptionRepositoryInterface $subscriptionRepository): void
-    {
-        $this->beConstructedWith($getHttpRequest, $subscriptionRepository);
+    function let(
+        GetHttpRequest $getHttpRequest,
+        SubscriptionRepositoryInterface $subscriptionRepository,
+        SetStatusOrderActionInterface $setStatusOrderAction,
+        MollieLoggerActionInterface $loggerAction
+    ): void {
+        $this->beConstructedWith(
+            $getHttpRequest,
+            $subscriptionRepository,
+            $setStatusOrderAction,
+            $loggerAction
+        );
     }
 
     function it_is_initializable(): void

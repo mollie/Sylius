@@ -16,6 +16,7 @@ use BitBag\SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
 use BitBag\SyliusMolliePlugin\Action\Api\CreateRecurringSubscriptionAction;
 use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
 use BitBag\SyliusMolliePlugin\Entity\SubscriptionInterface;
+use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use BitBag\SyliusMolliePlugin\Request\Api\CreateRecurringSubscription;
 use Doctrine\ORM\EntityManagerInterface;
 use Mollie\Api\Endpoints\CustomerEndpoint;
@@ -38,13 +39,15 @@ final class CreateRecurringSubscriptionActionSpec extends ObjectBehavior
         FactoryInterface $subscriptionFactory,
         EntityManagerInterface $subscriptionManager,
         SateMachineFactoryInterface $subscriptionSateMachineFactory,
-        OrderRepositoryInterface $orderRepository
+        OrderRepositoryInterface $orderRepository,
+        MollieLoggerActionInterface $loggerAction
     ): void {
         $this->beConstructedWith(
             $subscriptionFactory,
             $subscriptionManager,
             $subscriptionSateMachineFactory,
-            $orderRepository
+            $orderRepository,
+            $loggerAction
         );
     }
 

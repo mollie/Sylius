@@ -16,11 +16,12 @@ use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use BitBag\SyliusMolliePlugin\Request\Api\CreateOrder;
 use BitBag\SyliusMolliePlugin\Resolver\PaymentMethodConfigResolverInterface;
 use Mollie\Api\Exceptions\ApiException;
+use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Reply\HttpRedirect;
 
-final class CreateOrderAction extends BaseApiAwareAction
+final class CreateOrderAction extends BaseApiAwareAction implements ActionInterface
 {
     use GatewayAwareTrait;
 

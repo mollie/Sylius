@@ -26,10 +26,12 @@ use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Convert;
 use Payum\Core\Request\GetCurrency;
+use spec\SM\DummyObject;
 use Sylius\Bundle\CoreBundle\Context\CustomerContext;
 use Sylius\Component\Core\Model\CustomerInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
+use Sylius\Component\Customer\Context\CustomerContextInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -60,7 +62,7 @@ final class ConvertMolliePaymentAction extends BaseApiAwareAction implements Act
         SessionInterface $session,
         RepositoryInterface $mollieMethodsRepository,
         ConvertOrderInterface $orderConverter,
-        CustomerContext $customerContext,
+        CustomerContextInterface $customerContext,
         PaymentLocaleResolverInterface $paymentLocaleResolver
     ) {
         $this->paymentDescription = $paymentDescription;

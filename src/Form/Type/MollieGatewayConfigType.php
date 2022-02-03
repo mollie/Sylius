@@ -137,6 +137,7 @@ final class MollieGatewayConfigType extends AbstractResourceType
                 $gateway = $object->getGateway();
                 $factoryName = $gateway->getFactoryName();
 
+
                 if (MollieSubscriptionGatewayFactory::FACTORY_NAME === $factoryName) {
                     $form->remove('paymentType');
                     $form->add('paymentType', ChoiceType::class, [
@@ -144,6 +145,7 @@ final class MollieGatewayConfigType extends AbstractResourceType
                         'choices' => Options::getAvailablePaymentType(),
                         'help' => $this->documentationLinks->getPaymentMethodDoc(),
                         'help_html' => true,
+                        'empty_data' => Options::PAYMENT_API_VALUE,
                         'attr' => [
                             'disabled' => 'disabled'
                         ]

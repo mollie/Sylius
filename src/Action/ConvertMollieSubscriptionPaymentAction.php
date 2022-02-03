@@ -83,7 +83,9 @@ final class ConvertMollieSubscriptionPaymentAction extends BaseApiAwareAction im
 
         /** @var OrderInterface $order */
         $order = $payment->getOrder();
-        $order->setRecurringSequenceIndex(0);
+        if (null === $order->getRecurringSequenceIndex()) {
+            $order->setRecurringSequenceIndex(0);
+        }
 
         /** @var CustomerInterface $customer */
         $customer = $order->getCustomer();
@@ -97,7 +99,7 @@ final class ConvertMollieSubscriptionPaymentAction extends BaseApiAwareAction im
 
         $paymentMethod = $paymentOptions['molliePaymentMethods'];
         $cartToken = $paymentOptions['cartToken'];
-        $selectedIssuer = $paymentMethod === PaymentMethod::IDEAL ? $paymentOptions['issuers']['id'] : null;
+        $sequenceType = array_key_exists('recurring', $paymentOptions) && true === $paymentOptions['recurring'] ? 'recurring' : 'first';
 
         /** @var MollieGatewayConfigInterface $method */
         $method = $this->mollieMethodsRepository->findOneBy(
@@ -111,19 +113,22 @@ final class ConvertMollieSubscriptionPaymentAction extends BaseApiAwareAction im
                 'currency' => $currency->code,
             ],
             'description' => $this->paymentDescription->getPaymentDescription($payment, $method, $order),
-            'sequenceType' => 'first',
+            'sequenceType' => $sequenceType,
             'metadata' => [
                 'order_id' => $order->getId(),
                 'customer_id' => $customer->getId() ?? null,
                 'molliePaymentMethods' => $paymentMethod ?? null,
                 'cartToken' => $cartToken ?? null,
-                'selected_issuer' => $selectedIssuer ?? null,
+                'selected_issuer' => null,
                 'methodType' => Options::SUBSCRIPTIONS_API,
                 'items' => [],
+                'sequenceType' => $sequenceType,
+                'gateway' => $method->getGateway()->getGatewayName()
             ],
             'full_name' => $customer->getFullName() ?? null,
             'email' => $customer->getEmail() ?? null,
         ];
+        $details['metadata'] = array_merge($details['metadata'], $paymentOptions['metadata'] ?? []);
 
         $this->gateway->execute($mollieCustomer = new CreateCustomer($details));
         $model = $mollieCustomer->getModel();
@@ -142,11 +147,6 @@ final class ConvertMollieSubscriptionPaymentAction extends BaseApiAwareAction im
 
             ];
         }
-
-        $config = $this->mollieApiClient->getConfig();
-
-        $details['times'] = $config['times'];
-        $details['interval'] = $config['interval'];
 
         $request->setResult($details);
     }

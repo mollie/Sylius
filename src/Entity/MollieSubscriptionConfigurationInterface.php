@@ -5,12 +5,6 @@ namespace BitBag\SyliusMolliePlugin\Entity;
 
 interface MollieSubscriptionConfigurationInterface
 {
-    public const SUPPORTED_INTERVAL_STEPS = [
-        'days',
-        'weeks',
-        'months'
-    ];
-
     public function getId(): ?int;
 
     public function getHostName(): string;
@@ -38,8 +32,6 @@ interface MollieSubscriptionConfigurationInterface
     public function setInterval(string $interval): void;
 
     public function setNumberOfRepetitions(int $numberOfRepetitions): void;
-
-    public function getNumberOfRepetitions(): int;
 
     public function setPaymentDetailsConfiguration(array $paymentDetailsConfiguration): void;
 

@@ -10,15 +10,10 @@ use Sylius\Component\Resource\Factory\FactoryInterface;
 final class ShipmentCloner implements ShipmentClonerInterface
 {
     private FactoryInterface $shipmentFactory;
-    private ShipmentUnitClonerInterface $shipmentUnitCloner;
 
-    public function __construct(
-        FactoryInterface $shipmentFactory,
-        ShipmentUnitClonerInterface $shipmentUnitCloner
-    )
+    public function __construct(FactoryInterface $shipmentFactory)
     {
         $this->shipmentFactory = $shipmentFactory;
-        $this->shipmentUnitCloner = $shipmentUnitCloner;
     }
 
     public function clone(ShipmentInterface $shipment): ShipmentInterface
@@ -32,6 +27,14 @@ final class ShipmentCloner implements ShipmentClonerInterface
         $clonedShipment->setMethod($shipment->getMethod());
         $clonedShipment->setCreatedAt(new \DateTime());
         $clonedShipment->setUpdatedAt(new \DateTime());
+
+        foreach ($shipment->getUnits() as $unit) {
+            $clonedUnit = clone $unit;
+            $unit->setShipment($clonedShipment);
+            $unit->setCreatedAt(new \DateTime());
+            $unit->setUpdatedAt(null);
+            $clonedShipment->addUnit($clonedUnit);
+        }
 
         $clonedShipment->recalculateAdjustmentsTotal();
 

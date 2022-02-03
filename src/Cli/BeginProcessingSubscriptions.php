@@ -66,7 +66,6 @@ class BeginProcessingSubscriptions extends Command
             $subscriptions = $this->mollieSubscriptionRepository->findScheduledSubscriptions();
             foreach ($subscriptions as $subscription) {
                 $graph = $this->stateMachineFactory->get($subscription, MollieSubscriptionTransitions::GRAPH);
-
                 if ($graph->can(MollieSubscriptionTransitions::TRANSITION_PROCESS)) {
                     $graph->apply(MollieSubscriptionTransitions::TRANSITION_PROCESS);
 

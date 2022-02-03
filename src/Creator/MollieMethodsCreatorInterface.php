@@ -23,6 +23,11 @@ interface MollieMethodsCreatorInterface
         'resource' => 'orders',
     ];
 
+    public const  PARAMETERS_RECURRING = [
+        'include' => 'issuers',
+        'sequenceType' => 'recurring',
+    ];
+
     /** @var string[] */
     public const UNSUPPORTED_METHODS = [
         PaymentMethod::INGHOMEPAY,

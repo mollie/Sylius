@@ -25,6 +25,7 @@ final class MollieSubscriptionStateGridFilterType extends AbstractType
                     MollieSubscriptionInterface::STATE_PAUSED,
                     MollieSubscriptionInterface::STATE_CANCELED,
                     MollieSubscriptionInterface::STATE_COMPLETED,
+                    MollieSubscriptionInterface::STATE_ABORTED,
                 ],
                 'choice_label' => function (string $value) {
                     return sprintf('bitbag_sylius_mollie_plugin.ui.subscription.state.%s', $value);

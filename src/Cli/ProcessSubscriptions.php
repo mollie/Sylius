@@ -92,6 +92,7 @@ class ProcessSubscriptions extends Command
                 $routerContext->setHost($configuration->getHostName());
                 $firstOrder = $subscription->getFirstOrder();
                 $routerContext->setParameter('_locale', $firstOrder->getLocaleCode());
+
                 $this->subscriptionProcessor->processNextPayment($subscription);
 
                 $processingGraph->apply(MollieSubscriptionProcessingTransitions::TRANSITION_PROCESS);

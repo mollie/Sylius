@@ -99,8 +99,8 @@ final class CreateRecurringSubscriptionAction extends BaseApiAwareAction impleme
         /** @var OrderInterface $order */
         $order = $this->orderRepository->find($model['metadata']['order_id']);
 
-        $subscription->setSubscriptionId($subscriptionApiResult->id);
-        $subscription->setCustomerId($model['customer_mollie_id']);
+        $subscription->getSubscriptionConfiguration()->setSubscriptionId($subscriptionApiResult->id);
+        $subscription->getSubscriptionConfiguration()->setCustomerId($model['customer_mollie_id']);
         $subscription->addOrder($order);
 
         $this->subscriptionManager->persist($subscription);

@@ -13,8 +13,10 @@ interface MollieSubscriptionFactoryInterface extends FactoryInterface
 {
     public function createFromFirstOrder(OrderInterface $order): MollieSubscriptionInterface;
 
-    public function createFromFirstOrderWithOrderItem(
+    public function createFromFirstOrderWithOrderItemAndPaymentConfiguration(
         OrderInterface $order,
-        OrderItemInterface $orderItem
+        OrderItemInterface $orderItem,
+        array $paymentConfiguration = [],
+        string $mandateId = null
     ): MollieSubscriptionInterface;
 }

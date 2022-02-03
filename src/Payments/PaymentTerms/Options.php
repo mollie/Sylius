@@ -19,7 +19,11 @@ final class Options
 {
     public const ORDER_API = 'Orders API';
 
+    public const ORDER_API_VALUE = 'ORDER_API';
+
     public const PAYMENT_API = 'Payments API';
+
+    public const PAYMENT_API_VALUE = 'PAYMENT_API';
 
     public const SUBSCRIPTIONS_API = 'Subscriptions API';
 
@@ -40,8 +44,8 @@ final class Options
     public static function getAvailablePaymentType(): array
     {
         return [
-            self::PAYMENT_API => 'PAYMENT_API',
-            self::ORDER_API => 'ORDER_API',
+            self::PAYMENT_API => self::PAYMENT_API_VALUE,
+            self::ORDER_API => self::ORDER_API_VALUE,
         ];
     }
 

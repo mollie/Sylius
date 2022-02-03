@@ -2,7 +2,7 @@ winzou_state_machine:
     mollie_subscription:
         class: "%bitbag_sylius_mollie_plugin.model.mollie_subscription.class%"
         property_path: state
-        graph: mollie_subscription_graph
+        graph: mollie_subscription
         state_machine_class: "%sylius.state_machine.class%"
         states:
             new: ~
@@ -11,7 +11,7 @@ winzou_state_machine:
             cancelled: ~
             suspended: ~
             completed: ~
-            aborted: ~
+            failed: ~
         transitions:
             process:
                 from: [new, active, suspended, completed]
@@ -28,23 +28,14 @@ winzou_state_machine:
             complete:
                 from: [new, processing, active, suspended]
                 to: completed
-            abort:
+            fail:
                 from: [new, processing, active, suspended, completed]
-                to: aborted
+                to: failed
         callbacks:
-            guard:
-                bitbag_sylius_mollie_plugin_activate_recurring_subscription_guard_for_complete:
-                    on: 'complete'
-                    do: [ '@bitbag_sylius_mollie_plugin.guard.subscription', 'isCompletable' ]
-                    args: [ 'object' ]
-                bitbag_sylius_mollie_plugin_activate_recurring_subscription_guard_for_abort:
-                    on: 'abort'
-                    do: [ '@bitbag_sylius_mollie_plugin.guard.subscription', 'isEligibleForPaymentsAbort' ]
-                    args: [ 'object' ]
-            after:
-                bitbag_sylius_mollie_plugin_activate_recurring_subscription_process:
-                    on: ["activate"]
-                    do: ["@bitbag_sylius_mollie_plugin.processor.subscription_schedule_processor", "processScheduleGeneration"]
+            before:
+                bitbag_sylius_adyen_plugin_cancel_recurring_subscription_process:
+                    on: ["cancel"]
+                    do: ["@bitbag_sylius_mollie_plugin.processor.subscription_schedule_processor", "process"]
                     args: ["object"]
 
     mollie_subscription_processing:

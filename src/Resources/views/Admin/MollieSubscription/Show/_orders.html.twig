@@ -10,26 +10,27 @@
     </tr>
     </thead>
     <tbody>
-
     {% for item in mollie_subscription.orders %}
-        <td>
-            {{ item.createdAt | date ('d-m-Y H:i:s') }}
-        </td>
-        <td>
-            <a href="{{ path('sylius_admin_order_show', {id: item.id}) }}" target="_blank">#{{ item.number }}</a>
-        </td>
-        <td>
-            {% include "@SyliusUi/Grid/Field/state.html.twig" with {data: item.state, options: {vars: {labels: '@SyliusAdmin/Order/Label/State'}}} %}
-        </td>
-        <td>
-            {% include "@SyliusUi/Grid/Field/state.html.twig" with {data: item.paymentState, options: {vars: {labels: '@SyliusAdmin/Order/Label/PaymentState'}}} %}
-        </td>
-        <td>
-            {% include "@SyliusAdmin/Order/Grid/Field/total.html.twig" with {data: item} %}
-        </td>
-        <td>
-            {{ item.currencyCode }}
-        </td>
+        <tr>
+            <td>
+                {{ item.createdAt | date ('d-m-Y H:i:s') }}
+            </td>
+            <td>
+                <a href="{{ path('sylius_admin_order_show', {id: item.id}) }}" target="_blank">#{{ item.number }}</a>
+            </td>
+            <td>
+                {% include "@SyliusUi/Grid/Field/state.html.twig" with {data: item.state, options: {vars: {labels: '@SyliusAdmin/Order/Label/State'}}} %}
+            </td>
+            <td>
+                {% include "@SyliusUi/Grid/Field/state.html.twig" with {data: item.paymentState, options: {vars: {labels: '@SyliusAdmin/Order/Label/PaymentState'}}} %}
+            </td>
+            <td>
+                {% include "@SyliusAdmin/Order/Grid/Field/total.html.twig" with {data: item} %}
+            </td>
+            <td>
+                {{ item.currencyCode }}
+            </td>
+        </tr>
     {% endfor %}
     </tbody>
 </table>

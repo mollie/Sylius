@@ -7,5 +7,4 @@ use Sylius\Bundle\ResourceBundle\Controller\ResourceController;
 
 final class MollieSubscriptionController extends ResourceController
 {
-
 }

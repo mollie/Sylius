@@ -28,47 +28,12 @@ final class MollieSubscriptionRepository extends EntityRepository implements Mol
         return $qb->getQuery()->getOneOrNullResult()
         ;
     }
-    public function findByOrderId($orderId): array
-    {
-        $qb = $this->createQueryBuilder('q');
-
-        $qb->leftJoin('q.orders', 'o');
-        $qb->andWhere('o.id = :orderId');
-        $qb->setParameter('orderId', $orderId);
-
-        return $qb->getQuery()->getResult()
-        ;
-    }
 
     public function findByPayment(PaymentInterface $payment): array
     {
         $qb = $this->createQueryBuilder('q');
         $qb->andWhere(':payment MEMBER OF q.payments');
         $qb->setParameter('payment', $payment);
-
-        return $qb->getQuery()->getResult();
-    }
-
-    public function findScheduledSubscriptions(): array
-    {
-        $qb = $this->createQueryBuilder('q');
-        $qb->andWhere('q.state = :state');
-        $qb->setParameter('state', MollieSubscriptionInterface::STATE_ACTIVE);
-        $qb->leftJoin('q.schedules', 's');
-        $qb->andWhere('s.scheduledDate < :date');
-        $qb->setParameter('date', new \DateTime());
-        $qb->andWhere('s.fulfilledDate IS NULL');
-
-        return $qb->getQuery()->getResult();
-    }
-
-    public function findProcessableSubscriptions(): array
-    {
-        $qb = $this->createQueryBuilder('q');
-        $qb->andWhere('q.state = :state');
-        $qb->setParameter('state', MollieSubscriptionInterface::STATE_PROCESSING);
-        $qb->andWhere('q.processingState = :processingState');
-        $qb->setParameter('processingState', MollieSubscriptionInterface::PROCESSING_STATE_PENDING);
 
         return $qb->getQuery()->getResult();
     }

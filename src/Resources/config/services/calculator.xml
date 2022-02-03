@@ -7,5 +7,13 @@
         <service id="bitbag_sylius_mollie_plugin.calculator.calculate" class="BitBag\SyliusMolliePlugin\Calculator\CalculateTaxAmount">
             <argument type="service" id="bitbag_sylius_mollie_plugin.helper.int_to_string"/>
         </service>
+        <service
+                id="bitbag_sylius_mollie_plugin.calculator.recurring_calculator"
+                class="BitBag\SyliusMolliePlugin\Calculator\RecurringProductVariantCalculator"
+                decorates="sylius.calculator.product_variant_price"
+        >
+            <argument type="service" id="bitbag_sylius_mollie_plugin.calculator.recurring_calculator.inner"/>
+            <tag name="sylius.price_calculator" priority="10"/>
+        </service>
     </services>
 </container>

@@ -1,11 +1,10 @@
 {% set state_to_colors_map = {
     new: 'teal',
     active: 'blue',
-    paused: 'yellow',
+    paused: 'violet',
     processing: 'violet',
     canceled: 'red',
-    completed: 'green',
-    aborted: 'red'
+    completed: 'green'
 } %}
 {% set state_to_icons_map = {
     new: 'eye',
@@ -13,8 +12,7 @@
     paused: 'pause',
     processing: 'sync',
     canceled: 'stop circle',
-    completed: 'check',
-    aborted: 'stop'
+    completed: 'check'
 } %}
 <span class="ui label {{ state_to_colors_map[data] | default('grey') }}{% if attached is defined and attached == true %} top attached{% endif %}">
     <i class="icon {{ state_to_icons_map[data] | default('exclamation') }}"></i>

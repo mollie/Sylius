@@ -12,14 +12,16 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Action;
 
 use BitBag\SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
+use BitBag\SyliusMolliePlugin\Payments\Methods;
 use BitBag\SyliusMolliePlugin\Payments\PaymentTerms\Options;
+use BitBag\SyliusMolliePlugin\Request\Api\CreateCreditCardSubscription;
 use BitBag\SyliusMolliePlugin\Request\Api\CreateCustomer;
 use BitBag\SyliusMolliePlugin\Request\Api\CreateInternalRecurring;
-use BitBag\SyliusMolliePlugin\Request\Api\CreateOnDemandSubscription;
-use BitBag\SyliusMolliePlugin\Request\Api\CreateOnDemandSubscriptionPayment;
 use BitBag\SyliusMolliePlugin\Request\Api\CreateOrder;
 use BitBag\SyliusMolliePlugin\Request\Api\CreatePayment;
-use BitBag\SyliusMolliePlugin\Request\Api\CreateSubscriptionPayment;
+use BitBag\SyliusMolliePlugin\Request\Api\CreateRecurringSubscription;
+use BitBag\SyliusMolliePlugin\Request\Api\CreateSepaMandate;
+use Mollie\Api\Types\PaymentMethod;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\Exception\RuntimeException;
@@ -67,20 +69,24 @@ final class CaptureAction extends BaseApiAwareAction implements CaptureActionInt
         $details['backurl'] = $token->getTargetUrl();
 
         if (true === $this->mollieApiClient->isRecurringSubscription()) {
-            if ('first' === $details['sequenceType']) {
-                $cancelToken = $this->tokenFactory->createToken(
-                    $token->getGatewayName(),
-                    $token->getDetails(),
-                    'bitbag_sylius_mollie_plugin_cancel_subscription_mollie',
-                    ['orderId' => $details['metadata']['order_id']]
-                );
+            $cancelToken = $this->tokenFactory->createToken(
+                $token->getGatewayName(),
+                $token->getDetails(),
+                'bitbag_sylius_mollie_plugin_cancel_subscription_mollie',
+                ['orderId' => $details['metadata']['order_id']]
+            );
 
-                $details['cancel_token'] = $cancelToken->getHash();
-                $this->gateway->execute(new CreateCustomer($details));
-                $this->gateway->execute(new CreateInternalRecurring($details));
-                $this->gateway->execute(new CreateOnDemandSubscription($details));
-            } elseif ('recurring' === $details['sequenceType']) {
-                $this->gateway->execute(new CreateOnDemandSubscriptionPayment($details));
+            $details['cancel_token'] = $cancelToken->getHash();
+            $this->gateway->execute(new CreateCustomer($details));
+            $this->gateway->execute(new CreateInternalRecurring($details));
+
+            switch($details['method']){
+                case PaymentMethod::DIRECTDEBIT:
+                    $this->gateway->execute(new CreateSepaMandate($details));
+                    break;
+                case PaymentMethod::CREDITCARD:
+                    $this->gateway->execute(new CreateCreditCardSubscription($details));
+                    break;
             }
         } else {
             $metadata = $details['metadata'];
@@ -109,6 +115,7 @@ final class CaptureAction extends BaseApiAwareAction implements CaptureActionInt
     {
         return
             $request instanceof Capture &&
-            $request->getModel() instanceof \ArrayAccess;
+            $request->getModel() instanceof \ArrayAccess
+            ;
     }
 }

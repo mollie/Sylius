@@ -15,9 +15,9 @@ namespace spec\BitBag\SyliusMolliePlugin\Action\StateMachine;
 use BitBag\SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
 use BitBag\SyliusMolliePlugin\Action\StateMachine\StatusRecurringSubscriptionAction;
 use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
-use BitBag\SyliusMolliePlugin\Entity\SubscriptionInterface;
+use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
 use BitBag\SyliusMolliePlugin\Request\StateMachine\StatusRecurringSubscription;
-use BitBag\SyliusMolliePlugin\Transitions\SubscriptionTransitions;
+use BitBag\SyliusMolliePlugin\Transitions\MollieSubscriptionTransitions;
 use Doctrine\ORM\EntityManagerInterface;
 use Mollie\Api\Endpoints\CustomerEndpoint;
 use Mollie\Api\Resources\Customer;
@@ -64,7 +64,7 @@ final class StatusRecurringSubscriptionActionSpec extends ObjectBehavior
     function it_executes(
         StatusRecurringSubscription $request,
         MollieApiClient $mollieApiClient,
-        SubscriptionInterface $subscription,
+        MollieSubscriptionInterface $subscription,
         CustomerEndpoint $customerEndpoint,
         Customer $customer,
         FactoryInterface $subscriptionSateMachineFactory,
@@ -72,10 +72,11 @@ final class StatusRecurringSubscriptionActionSpec extends ObjectBehavior
         Subscription $subscriptionApi
     ): void {
         $this->setApi($mollieApiClient);
-        $stateMachine->can(SubscriptionTransitions::TRANSITION_ACTIVATE)->willReturn(true);
-        $stateMachine->apply(SubscriptionTransitions::TRANSITION_ACTIVATE)->willReturn(true);
+
+        $stateMachine->can(MollieSubscriptionTransitions::TRANSITION_ACTIVATE)->willReturn(true);
+        $stateMachine->apply(MollieSubscriptionTransitions::TRANSITION_ACTIVATE)->willReturn(true);
         $subscriptionApi->status = SubscriptionStatus::STATUS_ACTIVE;
-        $subscriptionSateMachineFactory->get($subscription, SubscriptionTransitions::GRAPH)->willReturn($stateMachine);
+        $subscriptionSateMachineFactory->get($subscription, MollieSubscriptionTransitions::GRAPH)->willReturn($stateMachine);
         $subscription->getSubscriptionId()->willReturn('id_1');
         $subscription->getCustomerId()->willReturn('id_1');
         $customer->getSubscription('id_1')->willReturn($subscriptionApi);
@@ -88,7 +89,7 @@ final class StatusRecurringSubscriptionActionSpec extends ObjectBehavior
 
     function it_supports_status_recurring_subscription_request_and_subscription_model(
         StatusRecurringSubscription $request,
-        SubscriptionInterface $subscription
+        MollieSubscriptionInterface $subscription
     ): void {
         $request->getModel()->willReturn($subscription);
 

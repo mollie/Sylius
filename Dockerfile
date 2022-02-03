@@ -14,6 +14,7 @@ WORKDIR /var/www
 ARG APP_ENV=prod
 
 # copy only specifically what we need
+
 COPY src src/
 COPY tests/Application/Kernel.php tests/Application/Kernel.php
 COPY composer.json ./

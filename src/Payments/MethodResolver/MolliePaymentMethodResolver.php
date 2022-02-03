@@ -8,7 +8,6 @@ use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
 use BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
 use BitBag\SyliusMolliePlugin\Resolver\MollieFactoryNameResolverInterface;
 use Sylius\Component\Core\Model\PaymentInterface as CorePaymentInterface;
-use Sylius\Component\Core\Model\PaymentMethodInterface;
 use Sylius\Component\Payment\Model\PaymentInterface;
 use Sylius\Component\Payment\Repository\PaymentMethodRepositoryInterface;
 use Sylius\Component\Payment\Resolver\PaymentMethodsResolverInterface;
@@ -49,16 +48,8 @@ final class MolliePaymentMethodResolver implements PaymentMethodsResolverInterfa
 
         $parentMethods = $this->decoratedService->getSupportedMethods($subject);
 
-        if (true === $order instanceof OrderInterface && false === $order->hasRecurringContents()) {
-            $parentMethods = array_filter($parentMethods, function (PaymentMethodInterface $paymentMethod) {
-                return $paymentMethod->getGatewayConfig()->getFactoryName() !== MollieSubscriptionGatewayFactory::FACTORY_NAME;
-            });
-        }
-
-        if (true === $order instanceof OrderInterface && true === $order->hasRecurringContents()) {
-            $parentMethods = array_filter($parentMethods, function (PaymentMethodInterface $paymentMethod) {
-                return $paymentMethod->getGatewayConfig()->getFactoryName() !== MollieGatewayFactory::FACTORY_NAME;
-            });
+        if (null !== $method && MollieGatewayFactory::FACTORY_NAME === $factoryName) {
+            return array_merge([$method], $parentMethods);
         }
 
         return $parentMethods;

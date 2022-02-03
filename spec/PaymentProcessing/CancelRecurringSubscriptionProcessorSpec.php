@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace spec\BitBag\SyliusMolliePlugin\PaymentProcessing;
 
-use BitBag\SyliusMolliePlugin\Entity\SubscriptionInterface;
+use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
 use BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
 use BitBag\SyliusMolliePlugin\PaymentProcessing\CancelRecurringSubscriptionProcessor;
 use BitBag\SyliusMolliePlugin\PaymentProcessing\CancelRecurringSubscriptionProcessorInterface;
@@ -44,7 +44,7 @@ final class CancelRecurringSubscriptionProcessorSpec extends ObjectBehavior
     }
 
     function it_processes(
-        SubscriptionInterface $subscription,
+        MollieSubscriptionInterface $subscription,
         OrderInterface $order,
         PaymentInterface $payment,
         PaymentMethodInterface $paymentMethod,
@@ -61,7 +61,9 @@ final class CancelRecurringSubscriptionProcessorSpec extends ObjectBehavior
 
         $order->getLastPayment()->willReturn($payment);
 
-        $subscription->getOrder()->willReturn($order);
+        $subscription->getOrderItem()->willReturn($order);
+
+        $subscription->getLastOrder()->willReturn($order);
 
         $payum->getGateway(MollieSubscriptionGatewayFactory::FACTORY_NAME)->willReturn($gateway);
 

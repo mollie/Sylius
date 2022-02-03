@@ -15,4 +15,7 @@ interface ProductVariantInterface extends BaseProductVariantInterface
 
     public function getInterval(): ?string;
     public function setInterval(string $interval): void;
+
+    public function hasCompleteRecurringPrice(): bool;
+    public function setCompleteRecurringPrice(bool $completeRecurringPrice): void;
 }

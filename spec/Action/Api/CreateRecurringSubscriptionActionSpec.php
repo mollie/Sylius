@@ -15,7 +15,7 @@ namespace spec\BitBag\SyliusMolliePlugin\Action\Api;
 use BitBag\SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
 use BitBag\SyliusMolliePlugin\Action\Api\CreateRecurringSubscriptionAction;
 use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
-use BitBag\SyliusMolliePlugin\Entity\SubscriptionInterface;
+use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
 use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use BitBag\SyliusMolliePlugin\Request\Api\CreateRecurringSubscription;
 use Doctrine\ORM\EntityManagerInterface;
@@ -84,7 +84,7 @@ final class CreateRecurringSubscriptionActionSpec extends ObjectBehavior
         Customer $customer,
         Subscription $subscriptionApi,
         FactoryInterface $subscriptionFactory,
-        SubscriptionInterface $subscription,
+        MollieSubscriptionInterface $subscription,
         OrderInterface $order,
         OrderRepositoryInterface $orderRepository,
         GatewayInterface $gateway

@@ -5,7 +5,6 @@ bitbag_sylius_mollie_plugin:
                 recurring: 'Recurring settings'
         breadcrumbs:
             subscriptions: 'Subscriptions'
-        subscription_list: ''
         subscription:
             block_name: 'Subscription'
             contents: 'Subscription contents'
@@ -27,20 +26,13 @@ bitbag_sylius_mollie_plugin:
                 started_at: 'Started at'
                 interval: 'Interval'
                 orders: 'Orders'
-                recent_failed_payments_count: 'Recent failed payments count'
-                payment_state: 'Recent payment state'
             state:
                 new: 'New'
                 active: 'Active'
                 processing: 'Processing'
                 canceled: 'Canceled'
-                aborted: 'Auto-Canceled due to failed payments'
                 completed: 'Completed'
                 paused: 'Paused'
-            payment_state:
-                pending: 'Pending'
-                fail: 'Failed'
-                ok: 'Ok'
             grid:
                 filters:
                     created_at: 'Created at'
@@ -186,14 +178,7 @@ bitbag_sylius_mollie_plugin:
             times: Recurring duration
             times_help: Recurring duration as numeric value describing number of recurrings
             interval: Recurring interval
-            complete_recurring_price: Divide the product price across all payments?
-            interval_configuration:
-                step: 'Interval step unit'
-                amount: 'Interval step'
-                steps:
-                    days: 'Day(s)'
-                    weeks: 'Week(s)'
-                    months: 'Month(s)'
+            complete_recurring_price: Is variant's price considered to be whole subscription price?
 
         payment_methods:
             payment_description: 'Description'
@@ -213,14 +198,6 @@ bitbag_sylius_mollie_plugin:
             tracking_code: 'Tracking Code'
         methods: 'Choose enabled methods'
         expiration_date_time: 'Expiration date time'
-    shop:
-        product_variant:
-            recurring: 'Subscription'
-            times: 'time(s)'
-            every:
-                days: 'every %amount% day(s)'
-                weeks: 'every %amount% week(s)'
-                months: 'every %amount% month(s)'
     subscription:
         cancel: 'Subscription has been successfully canceled.'
     onboardingMollie:

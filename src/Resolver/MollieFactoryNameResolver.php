@@ -19,14 +19,16 @@ final class MollieFactoryNameResolver implements MollieFactoryNameResolverInterf
 
     public function resolve(OrderInterface $order = null): string
     {
+        $factoryName = MollieGatewayFactory::FACTORY_NAME;
+
         if (null === $order) {
             $order = $this->cartContext->getCart();
         }
 
         if (true === $order instanceof OrderInterface && true === $order->hasRecurringContents()) {
-            return MollieSubscriptionGatewayFactory::FACTORY_NAME;
+            $factoryName = MollieSubscriptionGatewayFactory::FACTORY_NAME;
         }
 
-        return MollieGatewayFactory::FACTORY_NAME;
+        return $factoryName;
     }
 }

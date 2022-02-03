@@ -23,12 +23,6 @@ interface MollieMethodsCreatorInterface
         'resource' => 'orders',
     ];
 
-    public const  PARAMETERS_RECURRING = [
-        'include' => 'issuers',
-        'sequenceType' => 'recurring',
-    ];
-
-
     /** @var string[] */
     public const UNSUPPORTED_METHODS = [
         PaymentMethod::INGHOMEPAY,
@@ -38,17 +32,6 @@ interface MollieMethodsCreatorInterface
     public const RECURRING_PAYMENT_SUPPORTED_METHODS = [
         PaymentMethod::DIRECTDEBIT,
         PaymentMethod::CREDITCARD,
-    ];
-
-    public const RECURRING_PAYMENT_INITIAL_METHODS = [
-        PaymentMethod::BANCONTACT,
-        PaymentMethod::BELFIUS,
-        PaymentMethod::EPS,
-        PaymentMethod::GIROPAY,
-        PaymentMethod::IDEAL,
-        PaymentMethod::KBC,
-        PaymentMethod::MYBANK,
-        PaymentMethod::SOFORT,
     ];
 
     public function create(): void;

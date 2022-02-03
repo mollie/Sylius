@@ -16,12 +16,10 @@ use BitBag\SyliusMolliePlugin\Entity\GatewayConfigInterface;
 use BitBag\SyliusMolliePlugin\Factory\MethodsFactoryInterface;
 use BitBag\SyliusMolliePlugin\Factory\MollieGatewayConfigFactoryInterface;
 use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
-use BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
 use BitBag\SyliusMolliePlugin\Form\Type\MollieGatewayConfigurationType;
 use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use BitBag\SyliusMolliePlugin\Payments\Methods\MethodInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Mollie\Api\Resources\Method;
 use Mollie\Api\Resources\MethodCollection;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 
@@ -87,22 +85,8 @@ final class MollieMethodsCreator implements MollieMethodsCreatorInterface
         $client = $this->mollieApiClient->setApiKey($config[$environment]);
         $client->setIsRecurringSubscription($recurring);
 
-        if (MollieSubscriptionGatewayFactory::FACTORY_NAME === $gateway->getFactoryName()) {
-            $baseCollection = $client->methods->allActive(self::PARAMETERS);
-            $recurringCollection = $client->methods->allActive(self::PARAMETERS_RECURRING);
-            foreach ($recurringCollection as $recurringEntry) {
-                $baseCollection->append($recurringEntry);
-            }
-
-            $this->createMethods($baseCollection, $gateway);
-        } elseif (MollieGatewayFactory::FACTORY_NAME === $gateway->getFactoryName()) {
-            $allMollieMethods = $client->methods->allActive(self::PARAMETERS);
-            $this->createMethods($allMollieMethods, $gateway);
-        } else {
-            $this->loggerAction->addLog(sprintf('Unable to download methods for "%s"', $gateway->getGatewayName()));
-
-            return;
-        }
+        $allMollieMethods = $client->methods->allActive(self::PARAMETERS);
+        $this->createMethods($allMollieMethods, $gateway);
 
         $this->loggerAction->addLog(sprintf('Downloaded all methods from mollie API'));
     }
@@ -110,18 +94,17 @@ final class MollieMethodsCreator implements MollieMethodsCreatorInterface
     private function createMethods(MethodCollection $allMollieMethods, GatewayConfigInterface $gateway): void
     {
         $methods = $this->methodsFactory->createNew();
-
         foreach ($allMollieMethods as $mollieMethod) {
             if (in_array($mollieMethod->id, self::UNSUPPORTED_METHODS)) {
                 continue;
             }
 
+            $config = $gateway->getConfig();
+
             if (
-                MollieSubscriptionGatewayFactory::FACTORY_NAME === $gateway->getFactoryName() &&
-                (
-                    false === in_array($mollieMethod->id, self::RECURRING_PAYMENT_SUPPORTED_METHODS) &&
-                    false === in_array($mollieMethod->id, self::RECURRING_PAYMENT_INITIAL_METHODS)
-                )
+                true === array_key_exists('times', $config)
+                && true === array_key_exists('interval', $config)
+                && false === in_array($mollieMethod->id, self::RECURRING_PAYMENT_SUPPORTED_METHODS)
             ) {
                 continue;
             }

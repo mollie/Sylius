@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace spec\BitBag\SyliusMolliePlugin\Action;
 
-use BitBag\SyliusMolliePlugin\Action\ConvertPaymentAction;
+use BitBag\SyliusMolliePlugin\Action\ConvertMolliePaymentAction;
 use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
 use BitBag\SyliusMolliePlugin\Entity\GatewayConfigInterface;
 use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfig;
@@ -32,7 +32,7 @@ use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Tests\BitBag\SyliusMolliePlugin\Entity\GatewayConfig;
 
-final class ConvertPaymentActionSpec extends ObjectBehavior
+final class ConvertMolliePaymentActionSpec extends ObjectBehavior
 {
     function let(
         PaymentDescriptionInterface $paymentDescriptionProvider,
@@ -54,7 +54,7 @@ final class ConvertPaymentActionSpec extends ObjectBehavior
 
     function it_is_initializable(): void
     {
-        $this->shouldHaveType(ConvertPaymentAction::class);
+        $this->shouldHaveType(ConvertMolliePaymentAction::class);
     }
 
     function it_implements_action_interface(): void
@@ -86,35 +86,43 @@ final class ConvertPaymentActionSpec extends ObjectBehavior
         $payment->getOrder()->willReturn($order);
         $payment->getAmount()->willReturn(445535);
         $payment->getCurrencyCode()->willReturn('EUR');
-        $payment->getDetails()->willReturn([
-            'molliePaymentMethods'=>'Przelewy24',
-            'cartToken'=>123
-        ]);
-
-//        $mollieMethodsRepository->findOneBy(['methodId' => 1])->willReturn($method);
-//        $method->getGateway()->willReturn($gatewayConfig);
-//        $gatewayConfig->getConfig()->willReturn([]);
-
 
         $paymentDescriptionProvider->getPaymentDescription($payment, $method, $order)->willReturn('description');
         $request->getSource()->willReturn($payment);
         $request->getTo()->willReturn('array');
 
+        $payment->getDetails()->willReturn([
+            'molliePaymentMethods' => 15,
+            'cartToken' => 'token'
+        ]);
 
         $request->setResult([
             'amount' => [
-                'value' => '445535',
+                'value' => '445535.00',
                 'currency' => 'EUR',
             ],
             'description' => 'description',
-            'locale' => 'en_US',
             'metadata' => [
                 'order_id' => 1,
                 'customer_id' => 1,
+                'molliePaymentMethods' => 15,
+                'cartToken' => 'token',
+                'selected_issuer' => null,
+                'methodType' => 'Payments API',
             ],
             'full_name' => 'Jan Kowalski',
             'email' => 'shop@example.com',
+            'customerId' => null
         ])->shouldBeCalled();
+
+        $request->getSource()->willReturn($payment);
+
+
+
+        $mollieMethodsRepository->findOneBy(['methodId' => 15])->willReturn($method);
+        $method->getPaymentType()->willReturn('payment_type');
+        $method->getGateway()->willReturn($gatewayConfig);
+        $gatewayConfig->getConfig()->willReturn([]);
 
         $this->execute($request);
     }

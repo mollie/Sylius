@@ -54,11 +54,11 @@ final class MollieApiClientKeyResolver implements MollieApiClientKeyResolverInte
         $this->factoryNameResolver = $factoryNameResolver;
     }
 
-    public function getClientWithKey(OrderInterface $order = null): MollieApiClient
+    public function getClientWithKey(): MollieApiClient
     {
         $paymentMethod = $this->paymentMethodRepository->findOneByChannelAndGatewayFactoryName(
             $this->channelContext->getChannel(),
-            $this->factoryNameResolver->resolve($order)
+            $this->factoryNameResolver->resolve()
         );
 
         if (null === $paymentMethod) {

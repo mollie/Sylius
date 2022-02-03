@@ -8,9 +8,11 @@
             <argument type="service" id="payum"/>
             <argument type="service" id="session"/>
         </service>
-        <service id="bitbag_sylius_mollie_plugin.payment_processing.subscription_payment_processor" class="BitBag\SyliusMolliePlugin\PaymentProcessing\SubscriptionPaymentProcessor">
+        <service id="bitbag_sylius_mollie_plugin.payment_processing.subscription_payment_handler" class="BitBag\SyliusMolliePlugin\PaymentProcessing\SubscriptionPaymentCompletedHandler">
             <argument type="service" id="bitbag_sylius_mollie_plugin.repository.mollie_subscription"/>
-            <argument type="service" id="payum"/>
+            <argument type="service" id="sm.factory"/>
+            <argument type="service" id="bitbag.sylius_mollie_plugin.factory.date_periods"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.custom_factory.mollie_subscription_schedule"/>
         </service>
     </services>
 </container>

@@ -55,9 +55,4 @@ class MollieSubscriptionSchedule implements MollieSubscriptionScheduleInterface
     {
         $this->scheduleIndex = $scheduleIndex;
     }
-
-    public function isFulfilled(): bool
-    {
-        return null !== $this->fulfilledDate;
-    }
 }

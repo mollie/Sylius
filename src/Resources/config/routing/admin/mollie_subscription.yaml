@@ -25,6 +25,7 @@ bitbag_sylius_mollie_plugin_mollie_subscription_show:
             permission: true
             template: "@BitBagSyliusMolliePlugin/Admin/MollieSubscription/show.html.twig"
 
+
 bitbag_sylius_mollie_plugin_mollie_subscription_cancel:
     path: /mollie/subscription/{id}/cancel
     methods: [PUT]

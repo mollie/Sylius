@@ -11,14 +11,11 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Repository;
 
-use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
-use Sylius\Component\Core\Model\PaymentInterface;
+use BitBag\SyliusMolliePlugin\Entity\SubscriptionInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 
-interface MollieSubscriptionRepositoryInterface extends RepositoryInterface
+/** @deprecated  */
+interface SubscriptionRepositoryInterface extends RepositoryInterface
 {
-    public function findOneByOrderId($orderId): ?MollieSubscriptionInterface;
-
-    /** @return MollieSubscriptionInterface[] */
-    public function findByPayment(PaymentInterface $payment): array;
+    public function findOneByOrderId($orderId): ?SubscriptionInterface;
 }

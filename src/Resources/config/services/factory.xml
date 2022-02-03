@@ -30,7 +30,7 @@
                  class="BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionFactory"
                  decorates="bitbag_sylius_mollie_plugin.factory.mollie_subscription">
             <argument type="service" id="bitbag_sylius_mollie_plugin.custom_factory.mollie_subscription.inner"/>
-            <argument type="service" id="router"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.custom_factory.mollie_subscription_schedule"/>
         </service>
         <service id="bitbag_sylius_mollie_plugin.custom_factory.mollie_subscription_schedule"
                  class="BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionScheduleFactory"
@@ -39,6 +39,5 @@
         </service>
         <service id="bitbag.sylius_mollie_plugin.factory.methods" class="BitBag\SyliusMolliePlugin\Factory\MethodsFactory"/>
         <service id="bitbag.sylius_mollie_plugin.factory.date_periods" class="BitBag\SyliusMolliePlugin\Factory\DatePeriodFactory"/>
-        <service id="bitbag.sylius_mollie_plugin.factory.payment_details_factory" class="BitBag\SyliusMolliePlugin\Factory\PaymentDetailsFactory"/>
     </services>
 </container>

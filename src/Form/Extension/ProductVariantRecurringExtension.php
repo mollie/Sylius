@@ -4,20 +4,20 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Form\Extension;
 
 use BitBag\SyliusMolliePlugin\Entity\ProductVariantInterface;
-use BitBag\SyliusMolliePlugin\Form\Type\MollieIntervalType;
 use Sylius\Bundle\ProductBundle\Form\Type\ProductVariantType as ProductVariantFormType;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\IsNull;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Range;
 use Symfony\Component\Validator\Constraints\Regex;
-use Symfony\Component\Validator\Constraints\Valid;
 
 final class ProductVariantRecurringExtension extends AbstractTypeExtension
 {
@@ -31,6 +31,11 @@ final class ProductVariantRecurringExtension extends AbstractTypeExtension
                 'constraints' => [
                     new NotNull()
                 ]
+            ])
+            ->add('completeRecurringPrice', CheckboxType::class, [
+                'label' => 'bitbag_sylius_mollie_plugin.form.product_variant.complete_recurring_price',
+                'help' => 'bitbag_sylius_mollie_plugin.form.product_variant.complete_recurring_price_help',
+                'required' => false,
             ])
             ->add('times', NumberType::class, [
                 'label' => 'bitbag_sylius_mollie_plugin.form.product_variant.times',
@@ -47,19 +52,18 @@ final class ProductVariantRecurringExtension extends AbstractTypeExtension
                     ])
                 ]
             ])
-            ->add('interval', MollieIntervalType::class, [
-                'label' => false,
+            ->add('interval', TextType::class, [
+                'label' => 'bitbag_sylius_mollie_plugin.form.product_variant.interval',
                 'required' => false,
-                'attr' => [
-                    'class' => 'inline fields'
-                ],
                 'constraints' => [
-                    new Valid([
-                        'groups' => ['recurring_product_variant'],
-                    ]),
                     new NotBlank([
                         'message' => 'bitbag_sylius_mollie_plugin.interval.not_blank',
                         'groups' => ['recurring_product_variant'],
+                    ]),
+                    new Regex([
+                        'message' => 'bitbag_sylius_mollie_plugin.interval.invalid',
+                        'groups' => ['recurring_product_variant'],
+                        'pattern' => '/^\d{1,} (months|weeks|days)$/',
                     ]),
                 ],
             ])

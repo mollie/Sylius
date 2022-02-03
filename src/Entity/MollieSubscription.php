@@ -22,25 +22,25 @@ class MollieSubscription implements MollieSubscriptionInterface
 {
     protected ?int $id = null;
     protected string $state = MollieSubscriptionInterface::STATE_NEW;
+    protected string $interval = MollieSubscriptionInterface::INTERVAL_DEFAULT;
+    protected int $numberOfRepetitions = 1;
     protected ?CustomerInterface $customer = null;
     protected \DateTime $createdAt;
     protected ?\DateTime $startedAt = null;
+    protected ?string $subscriptionId = null;
+    protected ?string $mandateId = null;
+    protected ?string $customerId = null;
     protected OrderItemInterface $orderItem;
     protected Collection $schedules;
-    protected string $processingState = MollieSubscriptionInterface::PROCESSING_STATE_NONE;
-    protected string $paymentState = MollieSubscriptionInterface::PAYMENT_STATE_PENDING;
-    protected int $recentFailedPaymentsCount = 0;
 
     /** @var Collection<int, PaymentInterface> */
     protected Collection $payments;
 
     /** @var Collection<int, SyliusOrder> */
     protected Collection $orders;
-    protected MollieSubscriptionConfigurationInterface $subscriptionConfiguration;
 
     public function __construct()
     {
-        $this->subscriptionConfiguration = new MollieSubscriptionConfiguration($this);
         $this->payments = new ArrayCollection();
         $this->orders = new ArrayCollection();
         $this->schedules = new ArrayCollection();
@@ -96,6 +96,16 @@ class MollieSubscription implements MollieSubscriptionInterface
         $this->customer = $customer;
     }
 
+    public function getInterval(): string
+    {
+        return $this->interval;
+    }
+
+    public function setInterval(string $interval): void
+    {
+        $this->interval = $interval;
+    }
+
     public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
@@ -111,9 +121,39 @@ class MollieSubscription implements MollieSubscriptionInterface
         $this->startedAt = $startedAt;
     }
 
+    public function getSubscriptionId(): ?string
+    {
+        return $this->subscriptionId;
+    }
+
+    public function setSubscriptionId(?string $subscriptionId = null): void
+    {
+        $this->subscriptionId = $subscriptionId;
+    }
+
+    public function getCustomerId(): ?string
+    {
+        return $this->customerId;
+    }
+
+    public function setCustomerId(?string $customerId = null): void
+    {
+        $this->customerId = $customerId;
+    }
+
     public function getLastOrder(): ?SyliusOrder
     {
         return $this->orders->last();
+    }
+
+    public function getNumberOfRepetitions(): int
+    {
+        return $this->numberOfRepetitions;
+    }
+
+    public function setNumberOfRepetitions(int $numberOfRepetitions): void
+    {
+        $this->numberOfRepetitions = $numberOfRepetitions;
     }
 
     public function getOrderItem(): OrderItemInterface
@@ -124,6 +164,16 @@ class MollieSubscription implements MollieSubscriptionInterface
     public function setOrderItem(OrderItemInterface $orderItem): void
     {
         $this->orderItem = $orderItem;
+    }
+
+    public function getMandateId(): ?string
+    {
+        return $this->mandateId;
+    }
+
+    public function setMandateId(?string $mandateId = null): void
+    {
+        $this->mandateId = $mandateId;
     }
 
     public function addSchedule(MollieSubscriptionScheduleInterface $schedule): void
@@ -144,66 +194,5 @@ class MollieSubscription implements MollieSubscriptionInterface
     public function getSchedules(): Collection
     {
         return $this->schedules;
-    }
-
-    public function getFirstOrder(): ?OrderInterface
-    {
-        /** @var OrderInterface $order */
-        $order = $this->orderItem->getOrder();
-
-        return $order;
-    }
-
-    public function getProcessingState(): string
-    {
-        return $this->processingState;
-    }
-
-    public function setProcessingState(string $processingState): void
-    {
-        $this->processingState = $processingState;
-    }
-
-    public function getScheduleByIndex(int $index): ?MollieSubscriptionScheduleInterface
-    {
-        return $this->schedules
-            ->filter(fn(MollieSubscriptionScheduleInterface $schedule) => $index === $schedule->getScheduleIndex())
-            ->first()
-        ;
-    }
-
-    public function getRecentFailedPaymentsCount(): int
-    {
-        return $this->recentFailedPaymentsCount;
-    }
-
-    public function incrementFailedPaymentCounter(): void
-    {
-        $this->recentFailedPaymentsCount++;
-    }
-
-    public function resetFailedPaymentCount()
-    {
-        $this->recentFailedPaymentsCount = 0;
-    }
-
-    public function getPaymentState(): string
-    {
-        return $this->paymentState;
-    }
-
-    public function setPaymentState(string $paymentState): void
-    {
-        $this->paymentState = $paymentState;
-    }
-
-    public function getSubscriptionConfiguration(): MollieSubscriptionConfigurationInterface
-    {
-        return $this->subscriptionConfiguration;
-    }
-
-    public function getLastPayment(): ?PaymentInterface
-    {
-        return $this->payments->last();
     }
 }

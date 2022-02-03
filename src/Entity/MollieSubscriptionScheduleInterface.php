@@ -19,8 +19,6 @@ interface MollieSubscriptionScheduleInterface extends ResourceInterface
 
     public function setFulfilledDate(?\DateTime $fulfilledDate): void;
 
-    public function isFulfilled(): bool;
-
     public function setScheduleIndex(int $scheduleIndex): void;
 
     public function getScheduleIndex(): int;

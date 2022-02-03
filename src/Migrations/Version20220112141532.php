@@ -20,7 +20,7 @@ final class Version20220112141532 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE bitbag_mollie_subscription_orders (subscription_id INT NOT NULL, order_id INT NOT NULL, INDEX IDX_DCE71BD39A1887DC (subscription_id), INDEX IDX_DCE71BD38D9F6D38 (order_id), PRIMARY KEY(subscription_id, order_id)) DEFAULT CHARACTER SET UTF8 COLLATE `UTF8_unicode_ci` ENGINE = InnoDB');
+//        $this->addSql('CREATE TABLE bitbag_mollie_subscription_orders (subscription_id INT NOT NULL, order_id INT NOT NULL, INDEX IDX_DCE71BD39A1887DC (subscription_id), INDEX IDX_DCE71BD38D9F6D38 (order_id), PRIMARY KEY(subscription_id, order_id)) DEFAULT CHARACTER SET UTF8 COLLATE `UTF8_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE bitbag_mollie_subscription_orders ADD CONSTRAINT FK_DCE71BD39A1887DC FOREIGN KEY (subscription_id) REFERENCES bitbag_mollie_subscription (id)');
         $this->addSql('ALTER TABLE bitbag_mollie_subscription_orders ADD CONSTRAINT FK_DCE71BD38D9F6D38 FOREIGN KEY (order_id) REFERENCES sylius_order (id)');
     }

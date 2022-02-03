@@ -16,7 +16,7 @@ use BitBag\SyliusMolliePlugin\Action\NotifyAction;
 use BitBag\SyliusMolliePlugin\Action\StateMachine\SetStatusOrderActionInterface;
 use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
 use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
-use BitBag\SyliusMolliePlugin\Repository\SubscriptionRepositoryInterface;
+use BitBag\SyliusMolliePlugin\Repository\MollieSubscriptionRepositoryInterface;
 use Mollie\Api\Endpoints\PaymentEndpoint;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
@@ -30,7 +30,7 @@ final class NotifyActionSpec extends ObjectBehavior
 {
     function let(
         GetHttpRequest $getHttpRequest,
-        SubscriptionRepositoryInterface $subscriptionRepository,
+        MollieSubscriptionRepositoryInterface $subscriptionRepository,
         SetStatusOrderActionInterface $setStatusOrderAction,
         MollieLoggerActionInterface $loggerAction
     ): void {

@@ -31,7 +31,6 @@ use Payum\Core\Request\GetCurrency;
 use Sylius\Bundle\CoreBundle\Context\CustomerContext;
 use Sylius\Component\Core\Model\CustomerInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
-use Sylius\Component\Payment\Model\PaymentMethodInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -84,9 +83,7 @@ final class ConvertMollieSubscriptionPaymentAction extends BaseApiAwareAction im
 
         /** @var OrderInterface $order */
         $order = $payment->getOrder();
-        if (null === $order->getRecurringSequenceIndex()) {
-            $order->setRecurringSequenceIndex(0);
-        }
+        $order->setRecurringSequenceIndex(0);
 
         /** @var CustomerInterface $customer */
         $customer = $order->getCustomer();
@@ -98,43 +95,58 @@ final class ConvertMollieSubscriptionPaymentAction extends BaseApiAwareAction im
         $amount = number_format(abs($payment->getAmount() / $divisor), 2, '.', '');
         $paymentOptions = $payment->getDetails();
 
+        $paymentMethod = $paymentOptions['molliePaymentMethods'];
         $cartToken = $paymentOptions['cartToken'];
-        $sequenceType = array_key_exists(
-            'recurring',
-            $paymentOptions
-        ) && true === $paymentOptions['recurring'] ? 'recurring' : 'first';
-
-        if (isset($paymentOptions['metadata'])) {
-            $paymentMethod = $paymentOptions['metadata']['molliePaymentMethods'] ?? null;
-        } else {
-            $paymentMethod = $paymentOptions['molliePaymentMethods'] ?? null;
-        }
         $selectedIssuer = $paymentMethod === PaymentMethod::IDEAL ? $paymentOptions['issuers']['id'] : null;
 
+        /** @var MollieGatewayConfigInterface $method */
+        $method = $this->mollieMethodsRepository->findOneBy(
+            ['methodId' => $paymentMethod, 'gateway' => $payment->getMethod()]
+        );
+
         $details = [
+            'method' => $method->getMethodId(),
             'amount' => [
                 'value' => "$amount",
                 'currency' => $currency->code,
             ],
-            'description' => $order->getNumber(),
-            'sequenceType' => $sequenceType,
+            'description' => $this->paymentDescription->getPaymentDescription($payment, $method, $order),
+            'sequenceType' => 'first',
             'metadata' => [
                 'order_id' => $order->getId(),
                 'customer_id' => $customer->getId() ?? null,
                 'molliePaymentMethods' => $paymentMethod ?? null,
                 'cartToken' => $cartToken ?? null,
-                'sequenceType' => $sequenceType,
-                'gateway' => $request->getToken()->getGatewayName(),
                 'selected_issuer' => $selectedIssuer ?? null,
+                'methodType' => Options::SUBSCRIPTIONS_API,
+                'items' => [],
             ],
             'full_name' => $customer->getFullName() ?? null,
             'email' => $customer->getEmail() ?? null,
         ];
-        $details['metadata'] = array_merge($details['metadata'], $paymentOptions['metadata'] ?? []);
 
         $this->gateway->execute($mollieCustomer = new CreateCustomer($details));
         $model = $mollieCustomer->getModel();
         $details['customerId'] = $model['customer_mollie_id'];
+
+        foreach ($order->getItems() as $item) {
+            /** @var ProductVariantInterface $variant */
+            $variant = $item->getVariant();
+            $details['metadata']['items'][] = [
+                'itemId' => $item->getId(),
+                'variant' => $variant->getId(),
+                'interval' => $variant->getInterval(),
+                'times' => $variant->getTimes(),
+                'total' => $item->getTotal(),
+                'currency' => $order->getCurrencyCode(),
+
+            ];
+        }
+
+        $config = $this->mollieApiClient->getConfig();
+
+        $details['times'] = $config['times'];
+        $details['interval'] = $config['interval'];
 
         $request->setResult($details);
     }

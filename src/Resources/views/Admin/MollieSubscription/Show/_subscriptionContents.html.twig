@@ -15,7 +15,4 @@
     <tbody>
         {% include '@SyliusAdmin/Order/Show/Summary/_item.html.twig' with {item: mollie_subscription.orderItem, order: mollie_subscription.orders.first} %}
     </tbody>
-    <tfoot>
-    {% include '@SyliusAdmin/Order/Show/Summary/_totals.html.twig' with {item: mollie_subscription.orderItem, order: mollie_subscription.orders.last} %}
-    </tfoot>
 </table>

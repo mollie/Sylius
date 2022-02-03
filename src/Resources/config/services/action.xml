@@ -17,20 +17,10 @@
             <tag name="payum.action" factory="mollie" alias="payum.action.create_order"/>
             <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
         </service>
-        <service class="BitBag\SyliusMolliePlugin\Action\Api\CreateOnDemandPaymentAction" id="bitbag.sylius_mollie_plugin.action.api.create_on_demand_payment_action">
-            <argument id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action" type="service"/>
-            <argument id="bitbag_sylius_mollie_plugin.parser.response.guzzle_negative_response_parser" type="service"/>
-            <tag name="payum.action" factory="mollie_subscription" alias="payum.action.create_on_demand_payment_action"/>
-        </service>
-        <service class="BitBag\SyliusMolliePlugin\Action\Api\CreateOnDemandSubscriptionAction" id="bitbag.sylius_mollie_plugin.action.api.create_on_demand_subscription_action">
-            <argument id="session" type="service"/>
-            <argument id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action" type="service"/>
-            <argument id="bitbag_sylius_mollie_plugin.parser.response.guzzle_negative_response_parser" type="service"/>
-            <tag name="payum.action" factory="mollie_subscription" alias="payum.action.create_on_demand_subscription_action"/>
-        </service>
         <service id="bitbag_sylius_mollie_plugin.action.create_internal_subscription" class="BitBag\SyliusMolliePlugin\Action\Api\CreateInternalSubscriptionAction">
             <argument type="service" id="bitbag_sylius_mollie_plugin.repository.mollie_subscription"/>
             <argument type="service" id="bitbag_sylius_mollie_plugin.custom_factory.mollie_subscription"/>
+            <argument type="service" id="sylius.factory.order"/>
             <argument type="service" id="sylius.repository.order"/>
             <tag name="payum.action" factory="mollie_subscription" alias="payum.action.create_internal_subscription"/>
         </service>
@@ -87,6 +77,25 @@
             <argument type="service" id="sylius.context.customer"/>
             <argument type="service" id="bitbag_sylius_mollie_plugin.resolver.payment_locale_resolver"/>
             <tag name="payum.action" factory="mollie_subscription" alias="payum.action.convert_mollie_subscription_payment"/>
+        </service>
+        <service id="bitbag_sylius_mollie_plugin.payum_action.api.create_sepa_mandate" class="BitBag\SyliusMolliePlugin\Action\Api\CreateSepaMandateAction">
+            <argument type="service" id="session"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
+            <tag name="payum.action" factory="mollie_subscription" alias="payum.action.api.create_sepa_mandate"/>
+        </service>
+        <service id="bitbag_sylius_mollie_plugin.payum_action.api.create_credit_card_subscription" class="BitBag\SyliusMolliePlugin\Action\Api\CreateCreditCardSubscriptionAction">
+            <argument type="service" id="session"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.parser.response.guzzle_negative_response_parser"/>
+            <tag name="payum.action" factory="mollie_subscription" alias="payum.action.api.create_credit_card_subscription"/>
+        </service>
+        <service id="bitbag_sylius_mollie_plugin.payum_action.api.create_recurring_subscription" class="BitBag\SyliusMolliePlugin\Action\Api\CreateRecurringSubscriptionAction">
+            <argument type="service" id="bitbag_sylius_mollie_plugin.factory.mollie_subscription"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.manager.mollie_subscription"/>
+            <argument type="service" id="sm.factory"/>
+            <argument type="service" id="sylius.repository.order"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
+            <tag name="payum.action" factory="mollie_subscription" alias="payum.action.api.create_recurring_subscription"/>
         </service>
         <service id="bitbag_sylius_mollie_plugin.payum_action.state_machine.status_recurring_subscription" class="BitBag\SyliusMolliePlugin\Action\StateMachine\StatusRecurringSubscriptionAction">
             <argument type="service" id="bitbag_sylius_mollie_plugin.manager.mollie_subscription"/>

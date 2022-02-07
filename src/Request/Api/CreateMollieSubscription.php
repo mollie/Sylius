@@ -5,7 +5,7 @@ namespace BitBag\SyliusMolliePlugin\Request\Api;
 
 use Payum\Core\Request\Generic;
 
-final class CreateCreditCardSubscription extends Generic
+final class CreateMollieSubscription extends Generic
 {
 
 }

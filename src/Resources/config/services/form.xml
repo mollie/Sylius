@@ -44,6 +44,11 @@
             <argument type="service" id="bitbag_sylius_mollie_plugin.resolver.payment_methods"/>
             <tag name="form.type"/>
         </service>
+        <service id="bitbag_sylius_mollie_plugin.form.transformer.mollie_interval" class="BitBag\SyliusMolliePlugin\Form\Transformer\MollieIntervalTransformer"/>
+        <service id="bitbag_sylius_mollie_plugin.form.type.mollie_interval" class="BitBag\SyliusMolliePlugin\Form\Type\MollieIntervalType">
+            <argument type="service" id="bitbag_sylius_mollie_plugin.form.transformer.mollie_interval"/>
+            <tag name="form.type"/>
+        </service>
         <service id="bitbag_sylius_mollie_plugin.form.extension.payment_method_type" class="BitBag\SyliusMolliePlugin\Form\Extension\GatewayConfigTypeExtension">
             <tag name="form.type_extension" extended_type="Sylius\Bundle\PayumBundle\Form\Type\GatewayConfigType"/>
         </service>

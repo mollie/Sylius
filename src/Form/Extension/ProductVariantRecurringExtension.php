@@ -4,15 +4,14 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Form\Extension;
 
 use BitBag\SyliusMolliePlugin\Entity\ProductVariantInterface;
+use BitBag\SyliusMolliePlugin\Form\Type\MollieIntervalType;
 use Sylius\Bundle\ProductBundle\Form\Type\ProductVariantType as ProductVariantFormType;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\IsNull;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
@@ -52,7 +51,7 @@ final class ProductVariantRecurringExtension extends AbstractTypeExtension
                     ])
                 ]
             ])
-            ->add('interval', TextType::class, [
+            ->add('interval', MollieIntervalType::class, [
                 'label' => 'bitbag_sylius_mollie_plugin.form.product_variant.interval',
                 'required' => false,
                 'constraints' => [

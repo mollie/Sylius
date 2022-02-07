@@ -5,16 +5,22 @@ namespace BitBag\SyliusMolliePlugin\Processor;
 
 use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
 use BitBag\SyliusMolliePlugin\Entity\OrderInterface;
+use BitBag\SyliusMolliePlugin\Generator\SubscriptionScheduleGeneratorInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 
 final class SubscriptionScheduleProcessor implements SubscriptionScheduleProcessorInterface
 {
     private RepositoryInterface $scheduleRepository;
+    private SubscriptionScheduleGeneratorInterface $scheduleGenerator;
 
-    public function __construct(RepositoryInterface $scheduleRepository)
+    public function __construct(
+        RepositoryInterface $scheduleRepository,
+        SubscriptionScheduleGeneratorInterface $scheduleGenerator
+    )
     {
         $this->scheduleRepository = $scheduleRepository;
+        $this->scheduleGenerator = $scheduleGenerator;
     }
 
     public function process(MollieSubscriptionInterface $subscription): void
@@ -28,5 +34,13 @@ final class SubscriptionScheduleProcessor implements SubscriptionScheduleProcess
 
             $this->scheduleRepository->add($schedule);
         }
+    }
+
+    public function processScheduleGeneration(MollieSubscriptionInterface $subscription): void
+    {
+        foreach ($this->scheduleGenerator->generate($subscription) as $schedule) {
+            $subscription->addSchedule($schedule);
+        }
+        $subscription->setStartedAt(new \DateTime());
     }
 }

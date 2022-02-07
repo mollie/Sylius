@@ -185,7 +185,14 @@ bitbag_sylius_mollie_plugin:
             times: Recurring duration
             times_help: Recurring duration as numeric value describing number of recurrings
             interval: Recurring interval
-            complete_recurring_price: Is variant's price considered to be whole subscription price?
+            complete_recurring_price: Divide the product price across all payments?
+            interval_configuration:
+                step: 'Interval step unit'
+                amount: 'Interval step'
+                steps:
+                    days: 'Day(s)'
+                    weeks: 'Week(s)'
+                    months: 'Month(s)'
 
         payment_methods:
             payment_description: 'Description'

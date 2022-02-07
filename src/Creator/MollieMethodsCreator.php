@@ -88,13 +88,18 @@ final class MollieMethodsCreator implements MollieMethodsCreatorInterface
         $client->setIsRecurringSubscription($recurring);
 
         if (MollieSubscriptionGatewayFactory::FACTORY_NAME === $gateway->getFactoryName()) {
-            $allMollieMethods = $client->methods->allActive(self::PARAMETERS_RECURRING);
-            $this->createMethods($allMollieMethods, $gateway);
+            $baseCollection = $client->methods->allActive(self::PARAMETERS);
+            $recurringCollection = $client->methods->allActive(self::PARAMETERS_RECURRING);
+            foreach ($recurringCollection as $recurringEntry) {
+                $baseCollection->append($recurringEntry);
+            }
+
+            $this->createMethods($baseCollection, $gateway);
         } elseif (MollieGatewayFactory::FACTORY_NAME === $gateway->getFactoryName()) {
             $allMollieMethods = $client->methods->allActive(self::PARAMETERS);
             $this->createMethods($allMollieMethods, $gateway);
         } else {
-            $this->loggerAction->addLog(sprintf('Unable to downlaod methods for "%s"', $gateway->getGatewayName()));
+            $this->loggerAction->addLog(sprintf('Unable to download methods for "%s"', $gateway->getGatewayName()));
 
             return;
         }
@@ -112,8 +117,11 @@ final class MollieMethodsCreator implements MollieMethodsCreatorInterface
             }
 
             if (
-                MollieSubscriptionGatewayFactory::FACTORY_NAME === $gateway->getFactoryName()
-                && false === in_array($mollieMethod->id, self::RECURRING_PAYMENT_SUPPORTED_METHODS)
+                MollieSubscriptionGatewayFactory::FACTORY_NAME === $gateway->getFactoryName() &&
+                (
+                    false === in_array($mollieMethod->id, self::RECURRING_PAYMENT_SUPPORTED_METHODS) &&
+                    false === in_array($mollieMethod->id, self::RECURRING_PAYMENT_INITIAL_METHODS)
+                )
             ) {
                 continue;
             }

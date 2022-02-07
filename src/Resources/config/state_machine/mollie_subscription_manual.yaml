@@ -1,0 +1,25 @@
+winzou_state_machine:
+
+    bitbag_mollie_subscription_manual:
+        class: "%bitbag_sylius_mollie_plugin.model.mollie_subscription.class%"
+        property_path: state
+        graph: mollie_subscription_payment_graph_manual
+        state_machine_class: "%sylius.state_machine.class%"
+        states:
+            new: ~
+            active: ~
+            processing: ~
+            paused: ~
+            canceled: ~
+            completed: ~
+
+        transitions:
+            cancel:
+                from: [ new, active, processing ]
+                to: canceled
+        callbacks:
+            before:
+                manual_canceled:
+                    on: [ "cancel" ]
+                    do: [ "@bitbag_sylius_mollie_plugin.processor.mollie_subscription_state", "processCancel" ]
+                    args: [ "object" ]

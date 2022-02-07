@@ -16,6 +16,8 @@ use BitBag\SyliusMolliePlugin\Action\StateMachine\SetStatusOrderAction;
 use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
 use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use BitBag\SyliusMolliePlugin\Repository\MollieSubscriptionRepositoryInterface;
+use BitBag\SyliusMolliePlugin\Request\Api\ConfigureNextOrder;
+use BitBag\SyliusMolliePlugin\Request\Api\CreateMollieSubscription;
 use BitBag\SyliusMolliePlugin\Request\StateMachine\StatusRecurringSubscription;
 use Mollie\Api\Exceptions\ApiException;
 use Payum\Core\Action\ActionInterface;
@@ -50,7 +52,8 @@ final class NotifyAction extends BaseApiAwareAction implements ActionInterface, 
         MollieSubscriptionRepositoryInterface $subscriptionRepository,
         SetStatusOrderAction $setStatusOrderAction,
         MollieLoggerActionInterface $loggerAction
-    ) {
+    )
+    {
         $this->getHttpRequest = $getHttpRequest;
         $this->subscriptionRepository = $subscriptionRepository;
         $this->setStatusOrderAction = $setStatusOrderAction;
@@ -71,13 +74,23 @@ final class NotifyAction extends BaseApiAwareAction implements ActionInterface, 
             try {
                 $payment = $this->mollieApiClient->payments->get($this->getHttpRequest->request['id']);
             } catch (\Exception $e) {
-                $this->loggerAction->addNegativeLog(sprintf('Error with get customer from mollie with: %s', $e->getMessage()));
+                $this->loggerAction->addNegativeLog(
+                    sprintf('Error with get customer from mollie with: %s', $e->getMessage())
+                );
 
                 throw new ApiException(sprintf('Error with get customer from mollie with: %s', $e->getMessage()));
             }
 
             if ($details['metadata']['order_id'] === filter_var($payment->metadata->order_id, \FILTER_VALIDATE_INT)) {
                 $details['payment_mollie_id'] = $this->getHttpRequest->request['id'];
+            }
+
+            if ('first' === $payment->sequenceType) {
+                $this->gateway->execute(new CreateMollieSubscription($details));
+            }
+
+            if ('recurring' === $payment->sequenceType && null !== $payment->subscriptionId) {
+                $this->gateway->execute(new ConfigureNextOrder($details));
             }
 
             $this->loggerAction->addLog(sprintf('Notify payment with id: %s', $payment->id));
@@ -100,7 +113,9 @@ final class NotifyAction extends BaseApiAwareAction implements ActionInterface, 
             try {
                 $order = $this->mollieApiClient->orders->get($this->getHttpRequest->request['id']);
             } catch (\Exception $e) {
-                $this->loggerAction->addNegativeLog(sprintf('Error with get order from mollie with: %s', $e->getMessage()));
+                $this->loggerAction->addNegativeLog(
+                    sprintf('Error with get order from mollie with: %s', $e->getMessage())
+                );
 
                 throw new ApiException('Error to get order with ' . $e->getMessage());
             }
@@ -121,7 +136,6 @@ final class NotifyAction extends BaseApiAwareAction implements ActionInterface, 
     {
         return
             $request instanceof Notify &&
-            $request->getModel() instanceof \ArrayAccess
-            ;
+            $request->getModel() instanceof \ArrayAccess;
     }
 }

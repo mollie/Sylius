@@ -44,6 +44,8 @@ interface MollieSubscriptionInterface extends ResourceInterface
     /** @return Collection<int, PaymentInterface> */
     public function getPayments(): Collection;
 
+    public function getLastPayment(): ?PaymentInterface;
+
     public function addPayment(PaymentInterface $payment): void;
 
     /** @return Collection<int, SyliusOrder> */

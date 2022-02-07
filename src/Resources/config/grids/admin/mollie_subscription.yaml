@@ -25,12 +25,6 @@ sylius_grid:
                     sortable: ~
                     options:
                         template: "@BitBagSyliusMolliePlugin/Admin/MollieSubscription/Grid/Field/state.html.twig"
-                paymentState:
-                    type: twig
-                    label: bitbag_sylius_mollie_plugin.ui.subscription.fields.payment_state
-                    sortable: ~
-                    options:
-                        template: "@BitBagSyliusMolliePlugin/Admin/MollieSubscription/Grid/Field/payment_state.html.twig"
                 orders:
                     type: twig
                     label: bitbag_sylius_mollie_plugin.ui.subscription.fields.orders

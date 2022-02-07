@@ -201,4 +201,9 @@ class MollieSubscription implements MollieSubscriptionInterface
     {
         return $this->subscriptionConfiguration;
     }
+
+    public function getLastPayment(): ?PaymentInterface
+    {
+        return $this->payments->last();
+    }
 }

@@ -124,7 +124,7 @@ final class ConvertMolliePaymentAction extends BaseApiAwareAction implements Act
             'email' => $customer->getEmail() ?? null,
         ];
 
-        if (null !== $this->customerContext->getCustomer() && true === $gatewayConfig['single_click_enabled']) {
+        if (null !== $this->customerContext->getCustomer() && true === ($gatewayConfig['single_click_enabled'] ?? false)) {
             $this->gateway->execute($mollieCustomer = new CreateCustomer($details));
             $model = $mollieCustomer->getModel();
             $details['metadata']['customer_mollie_id'] = $model['customer_mollie_id'];

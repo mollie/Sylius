@@ -17,6 +17,13 @@
         </service>
         <service id="bitbag_sylius_mollie_plugin.processor.subscription_schedule_processor" class="BitBag\SyliusMolliePlugin\Processor\SubscriptionScheduleProcessor">
             <argument type="service" id="bitbag_sylius_mollie_plugin.repository.mollie_subscription_schedule"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.generator.subscription_schedule_generator"/>
+        </service>
+        <service id="bitbag_sylius_mollie_plugin.processor.mollie_subscription_state" class="BitBag\SyliusMolliePlugin\Processor\MollieSubscriptionStateProcessor">
+            <argument type="service" id="bitbag_sylius_mollie_plugin.resolver.mollie_api_client_key_resolver"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.parser.response.guzzle_negative_response_parser"/>
+            <argument type="service" id="session"/>
         </service>
     </services>
 </container>

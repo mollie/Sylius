@@ -37,7 +37,9 @@
             </td>
             <td class="sylius-product-variant-price" {% if variant|sylius_has_discount({'channel': sylius.channel}) %}data-original-price="{{ money.calculateOriginalPrice(variant) }}"{% endif %}>
                 {{ money.calculatePrice(variant) }}
-                {% include "@BitBagSyliusMolliePlugin/Shop/ProductVariant/_recurring_info.html.twig" with {variant: variant} %}
+                {% if variant.recurring is defined and variant.recurring is same as (true) %}
+                    {% include "@BitBagSyliusMolliePlugin/Shop/ProductVariant/_recurring_info.html.twig" with {variant: variant} %}
+                {% endif %}
             </td>
             <td class="right aligned">
                 {{ form_widget(form.cartItem.variant[key], {'label': false}) }}

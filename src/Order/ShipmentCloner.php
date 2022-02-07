@@ -33,14 +33,6 @@ final class ShipmentCloner implements ShipmentClonerInterface
         $clonedShipment->setCreatedAt(new \DateTime());
         $clonedShipment->setUpdatedAt(new \DateTime());
 
-        foreach ($shipment->getUnits() as $unit) {
-            $clonedUnit = $this->shipmentUnitCloner->clone($unit);
-            $clonedUnit->setShipment($clonedShipment);
-            $clonedUnit->setCreatedAt(new \DateTime());
-            $clonedUnit->setUpdatedAt(null);
-            $clonedShipment->addUnit($clonedUnit);
-        }
-
         $clonedShipment->recalculateAdjustmentsTotal();
 
         return $clonedShipment;

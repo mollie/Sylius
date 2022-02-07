@@ -89,6 +89,10 @@ final class SubscriptionOrderCloner implements SubscriptionOrderClonerInterface
                 $clonedShipment = $this->shipmentCloner->clone($shipment);
                 $clonedOrder->addShipment($clonedShipment);
 
+                foreach ($clonedOrder->getItemUnits() as $unit) {
+                    $clonedShipment->addUnit($unit);
+                }
+
                 foreach ($shipment->getAdjustments() as $adjustment) {
                     /** @var AdjustmentInterface $clonedAdjustment */
                     $clonedAdjustment = $this->adjustmentCloner->clone($adjustment);

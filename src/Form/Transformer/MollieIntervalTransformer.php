@@ -10,6 +10,13 @@ final class MollieIntervalTransformer implements DataTransformerInterface
 {
     public function transform($value)
     {
+        if (false === is_string($value)) {
+            return [
+                'amount' => null,
+                'step' => null,
+            ];
+        }
+
         preg_match(
             sprintf(
                 '/^(?<amount>\d{1,})\s(?<step>%s)$/',

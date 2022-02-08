@@ -20,7 +20,6 @@ use BitBag\SyliusMolliePlugin\Helper\PaymentDescriptionInterface;
 use BitBag\SyliusMolliePlugin\Payments\PaymentTerms\Options;
 use BitBag\SyliusMolliePlugin\Request\Api\CreateCustomer;
 use BitBag\SyliusMolliePlugin\Resolver\PaymentLocaleResolverInterface;
-use Mollie\Api\Types\PaymentMethod;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Exception\RequestNotSupportedException;
@@ -101,18 +100,12 @@ final class ConvertMollieSubscriptionPaymentAction extends BaseApiAwareAction im
         $cartToken = $paymentOptions['cartToken'];
         $sequenceType = array_key_exists('recurring', $paymentOptions) && true === $paymentOptions['recurring'] ? 'recurring' : 'first';
 
-        /** @var MollieGatewayConfigInterface $method */
-        $method = $this->mollieMethodsRepository->findOneBy(
-            ['methodId' => $paymentMethod, 'gateway' => $payment->getMethod()]
-        );
-
         $details = [
-            'method' => $method->getMethodId(),
             'amount' => [
                 'value' => "$amount",
                 'currency' => $currency->code,
             ],
-            'description' => $this->paymentDescription->getPaymentDescription($payment, $method, $order),
+            'description' => $order->getNumber(),
             'sequenceType' => $sequenceType,
             'metadata' => [
                 'order_id' => $order->getId(),
@@ -123,7 +116,7 @@ final class ConvertMollieSubscriptionPaymentAction extends BaseApiAwareAction im
                 'methodType' => Options::SUBSCRIPTIONS_API,
                 'items' => [],
                 'sequenceType' => $sequenceType,
-                'gateway' => $method->getGateway()->getGatewayName()
+                'gateway' => $payment->getMethod()->getName()
             ],
             'full_name' => $customer->getFullName() ?? null,
             'email' => $customer->getEmail() ?? null,

@@ -10,8 +10,6 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\GreaterThan;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class MollieIntervalType extends AbstractType
 {
@@ -24,31 +22,15 @@ final class MollieIntervalType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('amount', NumberType::class, [
-            'error_bubbling' => false,
-            'constraints' => [
-                new NotBlank([
-                    'groups' => ['recurring_product_variant'],
-                ]),
-                new GreaterThan([
-                    'value' => 0,
-                    'groups' => ['recurring_product_variant'],
-                ])
-            ]
-        ]);
+        $builder->add('amount', NumberType::class);
         $builder->add('step', ChoiceType::class, [
             'choices' => array_combine(
                 MollieSubscriptionConfigurationInterface::SUPPORTED_INTERVAL_STEPS,
                 MollieSubscriptionConfigurationInterface::SUPPORTED_INTERVAL_STEPS
             ),
-            'label' => false,
-            'error_bubbling' => false,
             'choice_label' => function (string $value) {
-                return sprintf(
-                    'bitbag_sylius_mollie_plugin.form.product_variant.interval_configuration.steps.%s',
-                    $value
-                );
-            },
+                return sprintf('bitbag_sylius_mollie_plugin.form.product_variant.interval_configuration.steps.%s', $value);
+            }
         ]);
         $builder->addViewTransformer($this->transformer);
     }
@@ -58,7 +40,6 @@ final class MollieIntervalType extends AbstractType
         $resolver->setDefaults([
             'compound' => true,
             'label_format' => 'bitbag_sylius_mollie_plugin.form.product_variant.interval_configuration.%name%',
-            'error_bubbling' => true,
         ]);
     }
 }

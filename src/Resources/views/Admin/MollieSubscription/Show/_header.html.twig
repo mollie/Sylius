@@ -9,9 +9,6 @@
                 <div class="item" id="sylius-order-state">
                     {% include "@BitBagSyliusMolliePlugin/Admin/MollieSubscription/_partial/_state.html.twig" with {data: mollie_subscription.state} only %}
                 </div>
-                <div class="item" id="sylius-order-state">
-                    {% include "@BitBagSyliusMolliePlugin/Admin/MollieSubscription/_partial/_payment_state.html.twig" with {data: mollie_subscription.paymentState} only %}
-                </div>
                 <div class="item">
                     {{ 'bitbag_sylius_mollie_plugin.ui.subscription.subscription_duration' | trans({
                         '%times%': mollie_subscription.subscriptionConfiguration.numberOfRepetitions,

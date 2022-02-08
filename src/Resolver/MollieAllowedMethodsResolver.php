@@ -39,7 +39,7 @@ final class MollieAllowedMethodsResolver implements MollieAllowedMethodsResolver
     {
         $allowedMethodsIds = [];
 
-        $client = $this->mollieApiClientKeyResolver->getClientWithKey($order);
+        $client = $this->mollieApiClientKeyResolver->getClientWithKey();
 
         /** API will return only payment methods allowed for order total, currency, billing country */
         $allowedMethods = $client->methods->allActive($this->createParametersByOrder($order));
@@ -54,14 +54,7 @@ final class MollieAllowedMethodsResolver implements MollieAllowedMethodsResolver
 
     private function createParametersByOrder(OrderInterface $order): array
     {
-        $defaultParameters = MollieMethodsCreatorInterface::PARAMETERS;
-        if (
-            true === $order instanceof \BitBag\SyliusMolliePlugin\Entity\OrderInterface
-            && $order->hasRecurringContents()
-        ) {
-            $defaultParameters = MollieMethodsCreatorInterface::PARAMETERS_RECURRING;
-        }
-        $parameters = array_merge(
+        $parameters =  array_merge(
             [
                 'amount' => [
                     'value' => $this->parseTotalToString($order->getTotal()),
@@ -69,9 +62,9 @@ final class MollieAllowedMethodsResolver implements MollieAllowedMethodsResolver
                 ],
                 'billingCountry' => null !== $order->getBillingAddress()
                     ? $order->getBillingAddress()->getCountryCode()
-                    : null,
+                    : null
             ],
-            $defaultParameters
+            MollieMethodsCreatorInterface::PARAMETERS
         );
 
         if (null !== ($paymentLocale = $this->paymentLocaleResolver->resolveFromOrder($order))) {

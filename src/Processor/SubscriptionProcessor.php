@@ -22,6 +22,7 @@ use Webmozart\Assert\Assert;
 final class SubscriptionProcessor implements SubscriptionProcessorInterface
 {
     use GatewayAwareTrait;
+
     private SubscriptionOrderClonerInterface $orderCloner;
     private PaymentFactoryInterface $paymentFactory;
     private OrderRepositoryInterface $orderRepository;
@@ -46,7 +47,7 @@ final class SubscriptionProcessor implements SubscriptionProcessorInterface
         $this->paymentRegistry = $paymentRegistry;
     }
 
-    public function processNextPayment(MollieSubscriptionInterface $subscription): void
+    private function process(MollieSubscriptionInterface $subscription): PaymentInterface
     {
         $orderItem = $subscription->getOrderItem();
         $clonedOrder = $this->orderCloner->clone(
@@ -73,6 +74,18 @@ final class SubscriptionProcessor implements SubscriptionProcessorInterface
         $subscription->addPayment($payment);
         $this->subscriptionRepository->add($subscription);
 
+        return $payment;
+    }
+
+    public function processNextSubscriptionPayment(MollieSubscriptionInterface $subscription): void
+    {
+        $this->process($subscription);
+    }
+
+    public function processNextPayment(MollieSubscriptionInterface $subscription): void
+    {
+        $payment = $this->process($subscription);
+        $details = $payment->getDetails();
         $gateway = $this->paymentRegistry->getGateway($details['metadata']['gateway']);
 
         $token = $this->paymentRegistry->getTokenFactory()->createToken(

@@ -18,6 +18,10 @@
         </service>
         <service id="bitbag_sylius_mollie_plugin.order.shipment_cloner" class="BitBag\SyliusMolliePlugin\Order\ShipmentCloner">
             <argument type="service" id="sylius.factory.shipment"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.order.shipment_unit_cloner"/>
+        </service>
+        <service id="bitbag_sylius_mollie_plugin.order.shipment_unit_cloner" class="BitBag\SyliusMolliePlugin\Order\ShipmentUnitCloner">
+            <argument type="service" id="sylius.factory.shipment_unit"/>
         </service>
         <service id="bitbag_sylius_mollie_plugin.order.order_cloner" class="BitBag\SyliusMolliePlugin\Order\SubscriptionOrderCloner">
             <argument type="service" id="bitbag_sylius_mollie_plugin.order.order_item_cloner"/>

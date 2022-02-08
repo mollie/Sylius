@@ -12,16 +12,12 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Action;
 
 use BitBag\SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
-use BitBag\SyliusMolliePlugin\Payments\Methods;
 use BitBag\SyliusMolliePlugin\Payments\PaymentTerms\Options;
-use BitBag\SyliusMolliePlugin\Request\Api\CreateCreditCardSubscription;
 use BitBag\SyliusMolliePlugin\Request\Api\CreateCustomer;
 use BitBag\SyliusMolliePlugin\Request\Api\CreateInternalRecurring;
 use BitBag\SyliusMolliePlugin\Request\Api\CreateOrder;
 use BitBag\SyliusMolliePlugin\Request\Api\CreatePayment;
-use BitBag\SyliusMolliePlugin\Request\Api\CreateRecurringSubscription;
-use BitBag\SyliusMolliePlugin\Request\Api\CreateSepaMandate;
-use Mollie\Api\Types\PaymentMethod;
+use BitBag\SyliusMolliePlugin\Request\Api\CreateSubscriptionPayment;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\Exception\RuntimeException;
@@ -29,7 +25,6 @@ use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Capture;
 use Payum\Core\Security\GenericTokenFactoryInterface;
 use Payum\Core\Security\TokenInterface;
-use Symfony\Component\Routing\RouterInterface;
 
 final class CaptureAction extends BaseApiAwareAction implements CaptureActionInterface
 {
@@ -80,15 +75,7 @@ final class CaptureAction extends BaseApiAwareAction implements CaptureActionInt
             $details['cancel_token'] = $cancelToken->getHash();
             $this->gateway->execute(new CreateCustomer($details));
             $this->gateway->execute(new CreateInternalRecurring($details));
-
-            switch ($details['method']) {
-                case PaymentMethod::DIRECTDEBIT:
-                    $this->gateway->execute(new CreateSepaMandate($details));
-                    break;
-                case PaymentMethod::CREDITCARD:
-                    $this->gateway->execute(new CreateCreditCardSubscription($details));
-                    break;
-            }
+            $this->gateway->execute(new CreateSubscriptionPayment($details));
         } else {
             $metadata = $details['metadata'];
             $metadata['refund_token'] = $refundToken->getHash();

@@ -49,11 +49,13 @@ final class StatusRecurringSubscriptionAction extends BaseApiAwareAction impleme
         /** @var MollieSubscriptionInterface $subscription */
         $subscription = $request->getModel();
 
+        $configuration = $subscription->getSubscriptionConfiguration();
+
         /** @var Customer $customer */
-        $customer = $this->mollieApiClient->customers->get($subscription->getCustomerId());
+        $customer = $this->mollieApiClient->customers->get($configuration->getCustomerId());
 
         /** @var Subscription $subscriptionApiResult */
-        $subscriptionApiResult = $customer->getSubscription($subscription->getSubscriptionId());
+        $subscriptionApiResult = $customer->getSubscription($configuration->getSubscriptionId());
 
         switch ($subscriptionApiResult->status) {
             case SubscriptionStatus::STATUS_ACTIVE:
@@ -81,6 +83,9 @@ final class StatusRecurringSubscriptionAction extends BaseApiAwareAction impleme
 
                 break;
         }
+
+        $this->subscriptionManager->persist($subscription);
+        $this->subscriptionManager->flush();
     }
 
     public function supports($request): bool

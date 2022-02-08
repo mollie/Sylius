@@ -20,11 +20,10 @@ interface MollieSubscriptionRepositoryInterface extends RepositoryInterface
     public function findOneByOrderId($orderId): ?MollieSubscriptionInterface;
 
     /** @return MollieSubscriptionInterface[] */
+    public function findByOrderId($orderId): array;
+
+    /** @return MollieSubscriptionInterface[] */
     public function findByPayment(PaymentInterface $payment): array;
 
-    /** @return MollieSubscriptionInterface[] */
-    public function findScheduledSubscriptions(): array;
-
-    /** @return MollieSubscriptionInterface[] */
-    public function findProcessableSubscriptions(): array;
+    public function findOneBySubscriptionId(string $subscriptionId): ?MollieSubscriptionInterface;
 }

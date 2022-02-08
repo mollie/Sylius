@@ -30,10 +30,3 @@
         </div>
     </div>
 {% endif %}
-{% if variant.recurring is defined and variant.recurring is same as (true) %}
-    <div class="ui horizontal divided list">
-        <div class="item sylius-product-variant-recurring" {{ sylius_test_html_attribute('product-variant-recurring') }}>
-            {% include "@BitBagSyliusMolliePlugin/Shop/ProductVariant/_recurring_info.html.twig" with {variant: variant} %}
-        </div>
-    </div>
-{% endif %}

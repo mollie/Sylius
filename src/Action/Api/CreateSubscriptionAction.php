@@ -13,8 +13,8 @@ namespace BitBag\SyliusMolliePlugin\Action\Api;
 
 use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use BitBag\SyliusMolliePlugin\Parser\Response\GuzzleNegativeResponseParserInterface;
-use BitBag\SyliusMolliePlugin\Request\Api\CreateCreditCardSubscription;
 use BitBag\SyliusMolliePlugin\Request\Api\CreateSepaMandate;
+use BitBag\SyliusMolliePlugin\Request\Api\CreateSubscriptionPayment;
 use Mollie\Api\Exceptions\ApiException;
 use Mollie\Api\Resources\Payment;
 use Payum\Core\Action\ActionInterface;
@@ -25,7 +25,7 @@ use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Reply\HttpRedirect;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-final class CreateCreditCardSubscriptionPaymentAction extends BaseApiAwareAction implements ActionInterface, GatewayAwareInterface, ApiAwareInterface
+final class CreateSubscriptionAction extends BaseApiAwareAction implements ActionInterface, GatewayAwareInterface, ApiAwareInterface
 {
     use GatewayAwareTrait;
 
@@ -56,7 +56,6 @@ final class CreateCreditCardSubscriptionPaymentAction extends BaseApiAwareAction
 
         try {
             $paymentSettings = [
-                'method' => $details['metadata']['molliePaymentMethods'] ?: '',
                 'issuer' => $details['metadata']['selected_issuer'] ?? null,
                 'cardToken' => $details['metadata']['cartToken'],
                 'amount' => $details['amount'],
@@ -65,7 +64,7 @@ final class CreateCreditCardSubscriptionPaymentAction extends BaseApiAwareAction
                 'redirectUrl' => $details['backurl'],
                 'webhookUrl' => $details['webhookUrl'],
                 'metadata' => $details['metadata'],
-                'sequenceType' => 'recurring',
+                'sequenceType' => 'first',
             ];
             /** @var Payment $payment */
             $payment = $this->mollieApiClient->payments->create($paymentSettings);
@@ -93,17 +92,23 @@ final class CreateCreditCardSubscriptionPaymentAction extends BaseApiAwareAction
         $details['payment_mollie_id'] = $payment->id;
 
         $this->loggerAction->addLog(sprintf('Create payment in mollie with id: %s', $payment->id));
+
+        if (null === $payment->getCheckoutUrl()) {
+            throw new HttpRedirect($details['backurl']);
+        }
+
+        throw new HttpRedirect($payment->getCheckoutUrl());
     }
 
     public function supports($request): bool
     {
         if (
-            false === $request instanceof CreateCreditCardSubscription
+            false === $request instanceof CreateSubscriptionPayment
             || false === $request->getModel() instanceof \ArrayAccess) {
             return false;
         }
         $details = ArrayObject::ensureArrayObject($request->getModel());
 
-        return 'recurring' === ($details['metadata']['sequenceType'] ?? 'first');
+        return 'first' === ($details['metadata']['sequenceType'] ?? 'first');
     }
 }

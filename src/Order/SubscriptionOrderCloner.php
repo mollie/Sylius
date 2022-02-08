@@ -72,8 +72,8 @@ final class SubscriptionOrderCloner implements SubscriptionOrderClonerInterface
         $clonedOrder->setShippingState(OrderShippingStates::STATE_READY);
         $clonedOrder->setTokenValue($this->generator->generateUriSafeString(10));
 
-        $item = $this->orderItemCloner->clone($orderItem, $clonedOrder);
-        $clonedOrder->addItem($item);
+        $clonedItem = $this->orderItemCloner->clone($orderItem, $clonedOrder);
+        $clonedOrder->addItem($clonedItem);
 
         foreach ($order->getAdjustments() as $adjustment) {
             if (\Sylius\Component\Core\Model\AdjustmentInterface::SHIPPING_ADJUSTMENT === $adjustment->getType()) {
@@ -88,6 +88,10 @@ final class SubscriptionOrderCloner implements SubscriptionOrderClonerInterface
             foreach ($order->getShipments() as $shipment) {
                 $clonedShipment = $this->shipmentCloner->clone($shipment);
                 $clonedOrder->addShipment($clonedShipment);
+
+                foreach ($clonedOrder->getItemUnits() as $unit) {
+                    $clonedShipment->addUnit($unit);
+                }
 
                 foreach ($shipment->getAdjustments() as $adjustment) {
                     /** @var AdjustmentInterface $clonedAdjustment */

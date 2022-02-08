@@ -15,6 +15,7 @@ namespace spec\BitBag\SyliusMolliePlugin\Action\Api;
 use BitBag\SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
 use BitBag\SyliusMolliePlugin\Action\Api\CreateRecurringSubscriptionAction;
 use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
+use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionConfigurationInterface;
 use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
 use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use BitBag\SyliusMolliePlugin\Request\Api\CreateRecurringSubscription;
@@ -85,6 +86,7 @@ final class CreateRecurringSubscriptionActionSpec extends ObjectBehavior
         Subscription $subscriptionApi,
         FactoryInterface $subscriptionFactory,
         MollieSubscriptionInterface $subscription,
+        MollieSubscriptionConfigurationInterface $configuration,
         OrderInterface $order,
         OrderRepositoryInterface $orderRepository,
         GatewayInterface $gateway
@@ -96,6 +98,8 @@ final class CreateRecurringSubscriptionActionSpec extends ObjectBehavior
         $customerEndpoint->get('id_1')->willReturn($customer);
         $orderRepository->find(1)->willReturn($order);
         $subscriptionFactory->createNew()->willReturn($subscription);
+        $subscription->getSubscriptionConfiguration()->willReturn($configuration);
+        $subscription->addOrder($order);
         $arrayObject->offsetGet('customer_mollie_id')->willReturn('id_1');
         $arrayObject->offsetGet('interval')->willReturn('3 days');
         $arrayObject->offsetGet('description')->willReturn('');

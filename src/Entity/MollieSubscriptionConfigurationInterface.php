@@ -43,5 +43,7 @@ interface MollieSubscriptionConfigurationInterface
 
     public function setPaymentDetailsConfiguration(array $paymentDetailsConfiguration): void;
 
+    public function getPaymentDetailsConfiguration(): array;
+
     public function getSubscription(): MollieSubscriptionInterface;
 }

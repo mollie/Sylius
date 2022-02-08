@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace spec\BitBag\SyliusMolliePlugin\Entity;
 
 use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionConfiguration;
+use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionConfigurationInterface;
 use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
 use PhpSpec\ObjectBehavior;
 
@@ -22,6 +23,11 @@ final class MollieSubscriptionConfigurationSpec extends ObjectBehavior
     function it_is_initializable(): void
     {
         $this->shouldHaveType(MollieSubscriptionConfiguration::class);
+    }
+
+    function it_should_implements_mollie_subscription_configuration_interface()
+    {
+        $this->shouldImplement(MollieSubscriptionConfigurationInterface::class);
     }
 
     function it_has_null_id_by_default(): void

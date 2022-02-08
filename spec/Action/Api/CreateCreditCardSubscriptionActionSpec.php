@@ -43,7 +43,7 @@ final class CreateCreditCardSubscriptionActionSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldBeAnInstanceOf(CreateCreditCardSubscriptionAction::class);
+        $this->shouldHaveType(CreateCreditCardSubscriptionAction::class);
     }
 
     function it_should_extends()
@@ -73,10 +73,9 @@ final class CreateCreditCardSubscriptionActionSpec extends ObjectBehavior
         Payment $payment,
         BankAccountInterface $bankAccount,
         CreditCardInterface $creditCard,
-        \ArrayObject $arrayObject
+        \Mollie\Api\Resources\Payment $apiPayment
     )
     {
-        $mollieApiClient->payments = $paymentsEndpoint;
         $this->setApi($mollieApiClient);
 
         $bankAccount->setNumber(456-789);
@@ -100,19 +99,34 @@ final class CreateCreditCardSubscriptionActionSpec extends ObjectBehavior
         $payment->setCurrencyCode('PLN');
         $payment->setTotalAmount(420);
 
+
         $details = new \ArrayObject($request->getModel());
 
-        $details->offsetSet('metadata',[
-            'molliePaymentMethods',
-            'selected_issuer',
-            'cartToken',
-            'amount'
-        ]);
-        $details->offsetSet('molliePaymentMethods',[
-            'test_method1',
-            'test_method2',
-        ]);
-        $mollieApiClient->payments->create([
+//        $details = ['metadata'=> [
+//            'molliePaymentMethods'=> 'method',
+//            'selected_issuer',
+//            'cartToken' => 'cart_token',
+//            ],
+//            'amount' => 1,
+//            'customerId' => 5,
+//            'description' => 'test_description',
+//            'backurl' => 'test_url',
+//            'webhookUrl' => 'webhook_url',
+//        ];
+        $details->offsetSet(
+            'metadata', [
+                'molliePaymentMethods'=> 'method',
+                'selected_issuer',
+                'cartToken' => 'cart_token',
+            ]
+        );
+        $details->offsetSet('amount', 1);
+        $details->offsetSet('customerId', 5);
+        $details->offsetSet('description', 'test_description');
+        $details->offsetSet('backurl', 'test_url');
+        $details->offsetSet('webhookUrl', 'webhook_url');
+
+        $paymentsEndpoint->create([
             'method' => $details['metadata']['molliePaymentMethods'] ?: '',
             'issuer' => $details['metadata']['selected_issuer'] ?? null,
             'cardToken' => $details['metadata']['cartToken'],
@@ -123,10 +137,14 @@ final class CreateCreditCardSubscriptionActionSpec extends ObjectBehavior
             'webhookUrl' => $details['webhookUrl'],
             'metadata' => $details['metadata'],
             'sequenceType' => 'first',
-        ]);
-        $this
-            ->shouldThrow(HttpRedirect::class)
-            ->during('execute', [$request])
-        ;
+        ])->willReturn($apiPayment);
+        $mollieApiClient->payments = $paymentsEndpoint;
+
+
+        $apiPayment->getCheckoutUrl()->willReturn('test_checkout_url');
+
+
+
+        $this->execute($request);
     }
 }

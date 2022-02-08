@@ -22,7 +22,7 @@ final class RecurringProductVariantCalculatorSpec extends ObjectBehavior
 
     function it_is_initializable(): void
     {
-        $this->shouldBeAnInstanceOf(RecurringProductVariantCalculator::class);
+        $this->shouldHaveType(RecurringProductVariantCalculator::class);
     }
 
     function it_implements_interface(): void
@@ -33,8 +33,7 @@ final class RecurringProductVariantCalculatorSpec extends ObjectBehavior
     function it_should_calculate_when_is_eligible_for_calculation(
         ProductVariantPricesCalculatorInterface $calculator,
         ProductVariantInterface $variant
-    ): void
-    {
+    ): void {
         $variant->getTimes()->willReturn(3);
         $variant->isRecurring()->willReturn(true);
         $variant->hasCompleteRecurringPrice()->willReturn(true);
@@ -46,8 +45,7 @@ final class RecurringProductVariantCalculatorSpec extends ObjectBehavior
     function it_should_calculate_when_is_not_eligible_for_calculation(
         ProductVariantPricesCalculatorInterface $calculator,
         ProductVariantInterface $variant
-    ): void
-    {
+    ): void {
         $variant->getTimes()->willReturn(3);
         $variant->isRecurring()->willReturn(false);
         $variant->hasCompleteRecurringPrice()->willReturn(true);

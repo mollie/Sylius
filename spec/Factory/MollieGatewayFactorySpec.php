@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusMolliePlugin\Action;
+namespace spec\BitBag\SyliusMolliePlugin\Factory;
 
 use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
 use Payum\Core\GatewayFactory;

@@ -22,7 +22,7 @@ final class CalculateTaxAmountSpec extends ObjectBehavior
 
     function it_is_initializable(): void
     {
-        $this->shouldBeAnInstanceOf(CalculateTaxAmount::class);
+        $this->shouldHaveType(CalculateTaxAmount::class);
     }
 
     function it_should_implement_interface(): void
@@ -32,8 +32,7 @@ final class CalculateTaxAmountSpec extends ObjectBehavior
 
     function it_should_calculate(
         IntToStringConverterInterface $converter
-    ): void
-    {
+    ): void {
         $converter->convertIntToString((int) 2,100)->willReturn('0.02');
 
         $this->calculate(15.5,2)->shouldReturn('0.02');

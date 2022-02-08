@@ -42,7 +42,7 @@ final class MollieMethodsCreatorSpec extends ObjectBehavior
 
     function it_is_initializable(): void
     {
-        $this->shouldBeAnInstanceOf(MollieMethodsCreator::class);
+        $this->shouldHaveType(MollieMethodsCreator::class);
     }
 
     function it_should_implements_mollie_methods_creator_interface(): void

@@ -14,6 +14,8 @@ namespace spec\BitBag\SyliusMolliePlugin\Action;
 
 use BitBag\SyliusMolliePlugin\Action\CaptureAction;
 use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
+use BitBag\SyliusMolliePlugin\Request\Api\CreateInternalRecurring;
+use BitBag\SyliusMolliePlugin\Request\Api\CreatePayment;
 use Mollie\Api\Endpoints\PaymentEndpoint;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
@@ -21,11 +23,11 @@ use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayInterface;
 use Payum\Core\Payum;
-use Payum\Core\Reply\HttpRedirect;
 use Payum\Core\Request\Capture;
 use Payum\Core\Security\GenericTokenFactory;
 use Payum\Core\Security\GenericTokenFactoryAwareInterface;
 use Payum\Core\Security\TokenInterface;
+use Payum\Core\Storage\IdentityInterface;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\PaymentInterface;
 
@@ -62,30 +64,50 @@ final class CaptureActionSpec extends ObjectBehavior
         PaymentInterface $payment,
         TokenInterface $token,
         TokenInterface $notifyToken,
+        TokenInterface $refundToken,
         Payum $payum,
         GenericTokenFactory $genericTokenFactory,
         GatewayInterface $gateway,
         MollieApiClient $mollieApiClient,
-        PaymentEndpoint $paymentEndpoint
+        PaymentEndpoint $paymentEndpoint,
+        IdentityInterface $identity
     ): void {
+        $details = [
+          'metadata' => [
+              'refund_token' => 'refund_token_hash',
+              'method_type' => 'Payments API',
+              'molliePaymentMethods' => '',
+              'subscription_mollie_id' => '',
+              'order_mollie_id' => '',
+          ]
+        ];
+
         $this->setGateway($gateway);
         $mollieApiClient->isRecurringSubscription()->willReturn(false);
         $this->setApi($mollieApiClient);
+
+        $genericTokenFactory->createNotifyToken('test', [])->willReturn($notifyToken);
         $notifyToken->getTargetUrl()->willReturn('url');
         $notifyToken->getHash()->willReturn('test');
+
+        $genericTokenFactory->createRefundToken('test', $identity)->willReturn($refundToken);
+        $refundToken->getHash()->willReturn('refund_token_hash');
+
+        $this->setGenericTokenFactory($genericTokenFactory);
+        $payum->getTokenFactory()->willReturn($genericTokenFactory);
+
+        $arrayObject->toUnsafeArray()->willReturn([]);
+        $request->getModel()->willReturn($arrayObject);
+        $request->getFirstModel()->willReturn($payment);
+        $request->getToken()->willReturn($token);
+
         $token->getTargetUrl()->willReturn('url');
         $token->getAfterUrl()->willReturn('url');
         $token->getGatewayName()->willReturn('test');
         $token->getDetails()->willReturn([]);
         $token->getHash()->willReturn('test');
-        $genericTokenFactory->createNotifyToken('test', [])->willReturn($notifyToken);
-        $genericTokenFactory->createRefundToken('test', [])->willReturn($notifyToken);
-        $this->setGenericTokenFactory($genericTokenFactory);
-        $payum->getTokenFactory()->willReturn($genericTokenFactory);
-        $arrayObject->toUnsafeArray()->willReturn([]);
-        $request->getModel()->willReturn($arrayObject);
-        $request->getFirstModel()->willReturn($payment);
-        $request->getToken()->willReturn($token);
+
+
         $payment = \Mockery::mock('payment');
         $payment->id = 1;
         $payment->shouldReceive('getCheckoutUrl')->andReturn('https://thisisnotanemptyurl.com');
@@ -97,7 +119,6 @@ final class CaptureActionSpec extends ObjectBehavior
             'metadata' => null,
         ])->willReturn($payment);
         $mollieApiClient->payments = $paymentEndpoint;
-
         $arrayObject->offsetGet('description')->shouldBeCalled();
         $arrayObject->offsetGet('webhookUrl')->shouldBeCalled();
         $arrayObject->offsetGet('amount')->shouldBeCalled();
@@ -108,11 +129,14 @@ final class CaptureActionSpec extends ObjectBehavior
         $arrayObject->offsetSet('metadata', ['refund_token' => 'test'])->shouldBeCalled();
         $arrayObject->offsetSet('payment_mollie_id', 1)->shouldBeCalled();
         $arrayObject->offsetSet('webhookUrl', 'url')->shouldBeCalled();
+        $gateway->execute(new CreateInternalRecurring($arrayObject))->shouldBeCalledOnce();
 
-        $this
-            ->shouldThrow(HttpRedirect::class)
-            ->during('execute', [$request])
-        ;
+        $this->execute($request);
+
+//        $this
+//            ->shouldThrow(HttpRedirect::class)
+//            ->during('execute', [$request])
+//        ;
     }
 
     function it_supports_only_capture_request_and_array_access(

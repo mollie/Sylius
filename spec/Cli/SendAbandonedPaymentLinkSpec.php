@@ -23,7 +23,7 @@ final class SendAbandonedPaymentLinkSpec extends ObjectBehavior
 
     function it_is_initializable(): void
     {
-        $this->shouldBeAnInstanceOf(SendAbandonedPaymentLink::class);
+        $this->shouldHaveType(SendAbandonedPaymentLink::class);
     }
 
     function it_should_have_extends_command(): void

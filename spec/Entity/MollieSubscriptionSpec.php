@@ -15,6 +15,7 @@ namespace spec\BitBag\SyliusMolliePlugin\Entity;
 use BitBag\SyliusMolliePlugin\Entity\MollieSubscription;
 use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
 use BitBag\SyliusMolliePlugin\Entity\OrderInterface as MollieOrderInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\CustomerInterface;
@@ -30,7 +31,7 @@ class MollieSubscriptionSpec extends ObjectBehavior
 
     function it_implements_subscription_interface(): void
     {
-        $this->shouldHaveType(MollieSubscriptionInterface::class);
+        $this->shouldImplement(MollieSubscriptionInterface::class);
     }
 
     function it_has_null_id_by_default(): void
@@ -41,7 +42,9 @@ class MollieSubscriptionSpec extends ObjectBehavior
     function it_gets_order(OrderInterface $order): void
     {
         $this->addOrder($order);
-        $this->getOrders()->shouldReturn($order);
+        $this->getOrders()->shouldBeLike(new ArrayCollection([
+            $order->getWrappedObject()
+        ]));
     }
 
     function it_gets_state(): void

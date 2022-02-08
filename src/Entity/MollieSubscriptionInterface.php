@@ -93,4 +93,6 @@ interface MollieSubscriptionInterface extends ResourceInterface
     public function resetFailedPaymentCount();
 
     public function getSubscriptionConfiguration(): MollieSubscriptionConfigurationInterface;
+
+    public function getLastOrder(): ?SyliusOrder;
 }

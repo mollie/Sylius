@@ -10,7 +10,7 @@ use BitBag\SyliusMolliePlugin\Resolver\MollieFactoryNameResolverInterface;
 use Sylius\Component\Core\Model\PaymentInterface as CorePaymentInterface;
 use Sylius\Component\Core\Model\PaymentMethodInterface;
 use Sylius\Component\Payment\Model\PaymentInterface;
-use Sylius\Component\Payment\Repository\PaymentMethodRepositoryInterface;
+use BitBag\SyliusMolliePlugin\Repository\PaymentMethodRepositoryInterface;
 use Sylius\Component\Payment\Resolver\PaymentMethodsResolverInterface;
 
 final class MolliePaymentMethodResolver implements PaymentMethodsResolverInterface
@@ -68,7 +68,7 @@ final class MolliePaymentMethodResolver implements PaymentMethodsResolverInterfa
     {
         if (false === $subject instanceof CorePaymentInterface) {
             return false;
-        };
+        }
 
         $order = $subject->getOrder();
         if (false === $order instanceof OrderInterface) {

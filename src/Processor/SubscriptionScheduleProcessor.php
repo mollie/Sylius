@@ -28,8 +28,14 @@ final class SubscriptionScheduleProcessor implements SubscriptionScheduleProcess
         /** @var OrderInterface $lastOrder */
         $lastOrder = $subscription->getLastOrder();
         $payment = $lastOrder->getLastPayment(PaymentInterface::STATE_COMPLETED);
+
         if (null !== $payment) {
             $schedule = $subscription->getScheduleByIndex($lastOrder->getRecurringSequenceIndex());
+
+            if (true === $schedule->isFulfilled()) {
+                return;
+            }
+
             $schedule->setFulfilledDate($payment->getUpdatedAt());
 
             $this->scheduleRepository->add($schedule);
@@ -38,6 +44,10 @@ final class SubscriptionScheduleProcessor implements SubscriptionScheduleProcess
 
     public function processScheduleGeneration(MollieSubscriptionInterface $subscription): void
     {
+        if (0 !== $subscription->getSchedules()->count()) {
+            return;
+        }
+
         foreach ($this->scheduleGenerator->generate($subscription) as $schedule) {
             $subscription->addSchedule($schedule);
         }

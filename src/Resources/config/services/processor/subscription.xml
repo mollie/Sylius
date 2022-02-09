@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		   xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+	<services>
+		<defaults public="true" />
+		<service id="bitbag_sylius_mollie_plugin.processor.subscription_payment_processor" class="BitBag\SyliusMolliePlugin\Processor\SubscriptionProcessor">
+			<argument type="service" id="bitbag_sylius_mollie_plugin.order.order_cloner"/>
+			<argument type="service" id="sylius.custom_factory.payment"/>
+			<argument type="service" id="sylius.repository.order"/>
+			<argument type="service" id="bitbag.sylius_mollie_plugin.factory.payment_details_factory"/>
+			<argument type="service" id="bitbag_sylius_mollie_plugin.repository.mollie_subscription"/>
+			<argument type="service" id="payum"/>
+			<argument type="service" id="sylius.repository.gateway_config"/>
+		</service>
+		<service id="bitbag_sylius_mollie_plugin.processor.subscription_schedule_processor" class="BitBag\SyliusMolliePlugin\Processor\SubscriptionScheduleProcessor">
+			<argument type="service" id="bitbag_sylius_mollie_plugin.repository.mollie_subscription_schedule"/>
+			<argument type="service" id="bitbag_sylius_mollie_plugin.generator.subscription_schedule_generator"/>
+		</service>
+		<service id="bitbag_sylius_mollie_plugin.processor.mollie_subscription_state" class="BitBag\SyliusMolliePlugin\Processor\MollieSubscriptionStateProcessor">
+			<argument type="service" id="bitbag_sylius_mollie_plugin.resolver.mollie_api_client_key_resolver"/>
+			<argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
+			<argument type="service" id="bitbag_sylius_mollie_plugin.parser.response.guzzle_negative_response_parser"/>
+			<argument type="service" id="session"/>
+		</service>
+	</services>
+</container>

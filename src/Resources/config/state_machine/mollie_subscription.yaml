@@ -2,7 +2,7 @@ winzou_state_machine:
     mollie_subscription:
         class: "%bitbag_sylius_mollie_plugin.model.mollie_subscription.class%"
         property_path: state
-        graph: mollie_subscription
+        graph: mollie_subscription_graph
         state_machine_class: "%sylius.state_machine.class%"
         states:
             new: ~
@@ -33,20 +33,34 @@ winzou_state_machine:
                 to: failed
         callbacks:
             guard:
-                guard_for_abort_due_of_payments:
-                    on: 'complete'
-                    do: [ '@bitbag_sylius_mollie_plugin.guard.subscription', 'isEligibleForPaymentsAbort' ]
-                    args: [ 'object' ]
                 guard_for_complete:
                     on: 'complete'
-                    do: [ '@bitbag_sylius_mollie_plugin.guard.subscription', 'isCompletable' ]
+                    do: [ '@bitbag_sylius_mollie_plugin.guard.subscription_completable', 'isCompletable' ]
                     args: [ 'object' ]
             after:
-                after_activate_generate_schedules:
+                bitbag_sylius_mollie_plugin_activate_recurring_subscription_process:
+                    on: ["activate"]
+                    do: ["@bitbag_sylius_mollie_plugin.processor.subscription_schedule_processor", "processScheduleGeneration"]
+                    args: ["object"]
+
+                bitbag_sylius_mollie_plugin_activate_recurring_subscription_after_process:
                     on: [ "activate" ]
-                    do: [ "@bitbag_sylius_mollie_plugin.processor.subscription_schedule_processor", "processScheduleGeneration" ]
-                    args: [ "object" ]
-                after_finish_processing:
-                    on: [ "finish_processing" ]
                     do: [ "@bitbag_sylius_mollie_plugin.processor.subscription_schedule_processor", "process" ]
                     args: [ "object" ]
+
+    mollie_subscription_processing:
+        class: "%bitbag_sylius_mollie_plugin.model.mollie_subscription.class%"
+        property_path: processingState
+        graph: mollie_subscription_processing_graph
+        state_machine_class: "%sylius.state_machine.class%"
+        states:
+            none: ~
+            pending: ~
+            processing: ~
+        transitions:
+            process:
+                from: [none, pending]
+                to: processing
+            schedule:
+                from: [processing, none]
+                to: pending

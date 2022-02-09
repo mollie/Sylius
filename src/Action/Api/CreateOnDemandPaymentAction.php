@@ -13,8 +13,8 @@ namespace BitBag\SyliusMolliePlugin\Action\Api;
 
 use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use BitBag\SyliusMolliePlugin\Parser\Response\GuzzleNegativeResponseParserInterface;
+use BitBag\SyliusMolliePlugin\Request\Api\CreateOnDemandSubscriptionPayment;
 use BitBag\SyliusMolliePlugin\Request\Api\CreateSepaMandate;
-use BitBag\SyliusMolliePlugin\Request\Api\CreateSubscriptionPayment;
 use Mollie\Api\Exceptions\ApiException;
 use Mollie\Api\Resources\Payment;
 use Payum\Core\Action\ActionInterface;
@@ -22,29 +22,20 @@ use Payum\Core\ApiAwareInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
-use Payum\Core\Reply\HttpRedirect;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-final class CreateSubscriptionAction extends BaseApiAwareAction implements ActionInterface, GatewayAwareInterface, ApiAwareInterface
+final class CreateOnDemandPaymentAction extends BaseApiAwareAction implements ActionInterface, GatewayAwareInterface, ApiAwareInterface
 {
     use GatewayAwareTrait;
 
-    /** @var SessionInterface */
-    private $session;
+    private MollieLoggerActionInterface $loggerAction;
 
-    /** @var MollieLoggerActionInterface */
-    private $loggerAction;
-
-    /** @var GuzzleNegativeResponseParserInterface */
-    private $guzzleNegativeResponseParser;
+    private GuzzleNegativeResponseParserInterface $guzzleNegativeResponseParser;
 
     public function __construct(
-        SessionInterface $session,
         MollieLoggerActionInterface $loggerAction,
         GuzzleNegativeResponseParserInterface $guzzleNegativeResponseParser
     )
     {
-        $this->session = $session;
         $this->loggerAction = $loggerAction;
         $this->guzzleNegativeResponseParser = $guzzleNegativeResponseParser;
     }
@@ -64,7 +55,8 @@ final class CreateSubscriptionAction extends BaseApiAwareAction implements Actio
                 'redirectUrl' => $details['backurl'],
                 'webhookUrl' => $details['webhookUrl'],
                 'metadata' => $details['metadata'],
-                'sequenceType' => 'first',
+                'mandateId' => $details['mandateId'],
+                'sequenceType' => 'recurring',
             ];
             /** @var Payment $payment */
             $payment = $this->mollieApiClient->payments->create($paymentSettings);
@@ -78,10 +70,6 @@ final class CreateSubscriptionAction extends BaseApiAwareAction implements Actio
 
             $details['statusError'] = $message;
 
-            $message = \sprintf('%s%s', 'bitbag_sylius_mollie_plugin.credit_cart_error.', $details['statusError']);
-            $this->session->getFlashBag()->add('info', $message)
-            ;
-
             return;
         } catch (\Exception $e) {
             $this->loggerAction->addNegativeLog(sprintf('Error with create payment with: %s', $e->getMessage()));
@@ -92,23 +80,17 @@ final class CreateSubscriptionAction extends BaseApiAwareAction implements Actio
         $details['payment_mollie_id'] = $payment->id;
 
         $this->loggerAction->addLog(sprintf('Create payment in mollie with id: %s', $payment->id));
-
-        if (null === $payment->getCheckoutUrl()) {
-            throw new HttpRedirect($details['backurl']);
-        }
-
-        throw new HttpRedirect($payment->getCheckoutUrl());
     }
 
     public function supports($request): bool
     {
         if (
-            false === $request instanceof CreateSubscriptionPayment
+            false === $request instanceof CreateOnDemandSubscriptionPayment
             || false === $request->getModel() instanceof \ArrayAccess) {
             return false;
         }
         $details = ArrayObject::ensureArrayObject($request->getModel());
 
-        return 'first' === ($details['metadata']['sequenceType'] ?? 'first');
+        return 'recurring' === ($details['metadata']['sequenceType'] ?? 'first');
     }
 }

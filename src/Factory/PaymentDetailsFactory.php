@@ -16,9 +16,9 @@ final class PaymentDetailsFactory implements PaymentDetailsFactoryInterface
         $originalDetails = $subscriptionConfiguration->getPaymentDetailsConfiguration();
 
         return [
-            'molliePaymentMethods' => $originalDetails['method'],
             'recurring' => true,
             'cartToken' => null,
+            'mandateId' => $subscriptionConfiguration->getMandateId(),
             'metadata' => [
                 'gateway' => $originalDetails['metadata']['gateway']
             ],

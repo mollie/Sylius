@@ -32,6 +32,33 @@ final class MollieSubscriptionStateProcessor implements MollieSubscriptionStateP
         $this->session = $session;
     }
 
+
+    public function processResume(MollieSubscriptionInterface $mollieSubscription): void
+    {
+        try {
+            $subscription = $this->resolveSubscription($mollieSubscription);
+            $client = $this->mollieApiClientKeyResolver->getClientWithKey($mollieSubscription->getFirstOrder());
+            $client->subscriptions->update(
+                $subscription->customerId,
+                $subscription->id,
+                ['status' => SubscriptionStatus::STATUS_ACTIVE]
+            );
+        } catch (ApiException $e) {
+
+        }
+    }
+
+    public function processPause(MollieSubscriptionInterface $mollieSubscription): void
+    {
+        $subscription = $this->resolveSubscription($mollieSubscription);
+        $client = $this->mollieApiClientKeyResolver->getClientWithKey($mollieSubscription->getFirstOrder());
+        $client->subscriptions->update(
+            $subscription->customerId,
+            $subscription->id,
+            ['status' => SubscriptionStatus::STATUS_SUSPENDED]
+        );
+    }
+
     public function processCancel(MollieSubscriptionInterface $mollieSubscription): void
     {
         try {

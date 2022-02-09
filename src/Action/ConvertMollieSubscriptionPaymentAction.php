@@ -30,6 +30,7 @@ use Payum\Core\Request\GetCurrency;
 use Sylius\Bundle\CoreBundle\Context\CustomerContext;
 use Sylius\Component\Core\Model\CustomerInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
+use Sylius\Component\Payment\Model\PaymentMethodInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -96,7 +97,6 @@ final class ConvertMollieSubscriptionPaymentAction extends BaseApiAwareAction im
         $amount = number_format(abs($payment->getAmount() / $divisor), 2, '.', '');
         $paymentOptions = $payment->getDetails();
 
-        $paymentMethod = $paymentOptions['molliePaymentMethods'];
         $cartToken = $paymentOptions['cartToken'];
         $sequenceType = array_key_exists('recurring', $paymentOptions) && true === $paymentOptions['recurring'] ? 'recurring' : 'first';
 
@@ -110,13 +110,10 @@ final class ConvertMollieSubscriptionPaymentAction extends BaseApiAwareAction im
             'metadata' => [
                 'order_id' => $order->getId(),
                 'customer_id' => $customer->getId() ?? null,
-                'molliePaymentMethods' => $paymentMethod ?? null,
                 'cartToken' => $cartToken ?? null,
                 'selected_issuer' => null,
-                'methodType' => Options::SUBSCRIPTIONS_API,
-                'items' => [],
                 'sequenceType' => $sequenceType,
-                'gateway' => $payment->getMethod()->getName()
+                'gateway' => $request->getToken()->getGatewayName()
             ],
             'full_name' => $customer->getFullName() ?? null,
             'email' => $customer->getEmail() ?? null,
@@ -126,20 +123,6 @@ final class ConvertMollieSubscriptionPaymentAction extends BaseApiAwareAction im
         $this->gateway->execute($mollieCustomer = new CreateCustomer($details));
         $model = $mollieCustomer->getModel();
         $details['customerId'] = $model['customer_mollie_id'];
-
-        foreach ($order->getItems() as $item) {
-            /** @var ProductVariantInterface $variant */
-            $variant = $item->getVariant();
-            $details['metadata']['items'][] = [
-                'itemId' => $item->getId(),
-                'variant' => $variant->getId(),
-                'interval' => $variant->getInterval(),
-                'times' => $variant->getTimes(),
-                'total' => $item->getTotal(),
-                'currency' => $order->getCurrencyCode(),
-
-            ];
-        }
 
         $request->setResult($details);
     }

@@ -18,6 +18,8 @@ use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use BitBag\SyliusMolliePlugin\Repository\MollieSubscriptionRepositoryInterface;
 use BitBag\SyliusMolliePlugin\Request\Api\ConfigureNextOrder;
 use BitBag\SyliusMolliePlugin\Request\Api\CreateMollieSubscription;
+use BitBag\SyliusMolliePlugin\Request\Api\CreateOnDemandSubscription;
+use BitBag\SyliusMolliePlugin\Request\Api\CreateOnDemandSubscriptionPayment;
 use BitBag\SyliusMolliePlugin\Request\StateMachine\StatusRecurringSubscription;
 use Mollie\Api\Exceptions\ApiException;
 use Payum\Core\Action\ActionInterface;
@@ -70,7 +72,7 @@ final class NotifyAction extends BaseApiAwareAction implements ActionInterface, 
 
         $details['created_in_mollie'] = true;
 
-        if (true === isset($details['payment_mollie_id'])) {
+        if (true === isset($details['sequenceType'])) {
             try {
                 $payment = $this->mollieApiClient->payments->get($this->getHttpRequest->request['id']);
             } catch (\Exception $e) {
@@ -85,26 +87,14 @@ final class NotifyAction extends BaseApiAwareAction implements ActionInterface, 
                 $details['payment_mollie_id'] = $this->getHttpRequest->request['id'];
             }
 
-            if ('first' === $payment->sequenceType) {
-                $this->gateway->execute(new CreateMollieSubscription($details));
-            }
+            $subscriptions = $this->subscriptionRepository->findByOrderId($details['metadata']['order_id']);
 
-            if ('recurring' === $payment->sequenceType && null !== $payment->subscriptionId) {
-                $this->gateway->execute(new ConfigureNextOrder($details));
+            /** @var MollieSubscriptionInterface $subscription */
+            foreach ($subscriptions as $subscription) {
+                $this->gateway->execute(new StatusRecurringSubscription($subscription, $payment->id));
             }
 
             $this->loggerAction->addLog(sprintf('Notify payment with id: %s', $payment->id));
-
-            throw new HttpResponse(Response::$statusTexts[Response::HTTP_OK], Response::HTTP_OK);
-        }
-
-        if (true === isset($details['subscription_mollie_id'])) {
-            /** @var MollieSubscriptionInterface $subscription */
-            $subscription = $this->subscriptionRepository->findOneByOrderId($details['metadata']['order_id']);
-
-            $this->gateway->execute(new StatusRecurringSubscription($subscription));
-
-            $this->loggerAction->addLog(sprintf('Notify subscription with id: %s', $details['subscription_mollie_id']));
 
             throw new HttpResponse(Response::$statusTexts[Response::HTTP_OK], Response::HTTP_OK);
         }

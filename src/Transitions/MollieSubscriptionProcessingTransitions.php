@@ -11,21 +11,13 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Transitions;
 
-final class MollieSubscriptionTransitions
+final class MollieSubscriptionProcessingTransitions
 {
-    public const GRAPH = 'mollie_subscription_graph';
+    public const GRAPH = 'mollie_subscription_processing_graph';
 
     public const TRANSITION_PROCESS = 'process';
 
-    public const TRANSITION_ACTIVATE = 'activate';
-
-    public const TRANSITION_CANCEL = 'cancel';
-
-    public const TRANSITION_SUSPEND = 'suspend';
-
-    public const TRANSITION_COMPLETE = 'complete';
-
-    public const TRANSITION_FAIL = 'fail';
+    public const TRANSITION_SCHEDULE = 'schedule';
 
     private function __construct()
     {

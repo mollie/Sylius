@@ -35,7 +35,6 @@ winzou_state_machine:
             cancel:
                 from: [ active, processing ]
                 to: canceled
-        callbacks: ~
 
     mollie_subscription_payment_state_graph:
         class: "%bitbag_sylius_mollie_plugin.model.mollie_subscription.class%"
@@ -56,3 +55,9 @@ winzou_state_machine:
             failure:
                 from: [ pending ]
                 to: ok
+        callbacks:
+            before:
+                mollie_subscription_payment_state_after_success:
+                    on: [ "success" ]
+                    do: [ "@bitbag_sylius_mollie_plugin.processor.subscription_schedule_processor", "process" ]
+                    args: [ "object" ]

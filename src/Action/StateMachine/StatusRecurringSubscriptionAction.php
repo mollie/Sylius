@@ -65,6 +65,9 @@ final class StatusRecurringSubscriptionAction extends BaseApiAwareAction impleme
             $this->executeForSubscriptionAndSyliusPayment($subscription, $syliusPayment);
         }
 
+        $this->applyStateMachineTransition($subscription, MollieSubscriptionTransitions::TRANSITION_COMPLETE);
+        $this->applyStateMachineTransition($subscription, MollieSubscriptionTransitions::TRANSITION_ABORT);
+
         $this->subscriptionManager->persist($subscription);
         $this->subscriptionManager->flush();
     }
@@ -97,6 +100,7 @@ final class StatusRecurringSubscriptionAction extends BaseApiAwareAction impleme
 
                 break;
             case PaymentStatus::STATUS_PAID:
+                $subscription->resetFailedPaymentCount();
                 $this->applyStateMachineTransition($subscription, MollieSubscriptionTransitions::TRANSITION_ACTIVATE);
                 $this->applyPaymentStateMachineTransition(
                     $subscription,
@@ -109,6 +113,7 @@ final class StatusRecurringSubscriptionAction extends BaseApiAwareAction impleme
 
                 break;
             default:
+                $subscription->incrementFailedPaymentCounter();
                 $this->applyPaymentStateMachineTransition(
                     $subscription,
                     MollieSubscriptionPaymentProcessingTransitions::TRANSITION_FAILURE
@@ -136,6 +141,7 @@ final class StatusRecurringSubscriptionAction extends BaseApiAwareAction impleme
 
                 break;
             case PaymentInterface::STATE_COMPLETED:
+                $subscription->resetFailedPaymentCount();
                 $this->applyStateMachineTransition($subscription, MollieSubscriptionTransitions::TRANSITION_ACTIVATE);
                 $this->applyPaymentStateMachineTransition(
                     $subscription,
@@ -148,6 +154,7 @@ final class StatusRecurringSubscriptionAction extends BaseApiAwareAction impleme
 
                 break;
             default:
+                $subscription->incrementFailedPaymentCounter();
                 $this->applyPaymentStateMachineTransition(
                     $subscription,
                     MollieSubscriptionPaymentProcessingTransitions::TRANSITION_FAILURE

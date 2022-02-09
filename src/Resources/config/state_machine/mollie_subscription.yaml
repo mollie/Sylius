@@ -11,7 +11,7 @@ winzou_state_machine:
             cancelled: ~
             suspended: ~
             completed: ~
-            failed: ~
+            aborted: ~
         transitions:
             process:
                 from: [new, active, suspended, completed]
@@ -28,25 +28,24 @@ winzou_state_machine:
             complete:
                 from: [new, processing, active, suspended]
                 to: completed
-            fail:
+            abort:
                 from: [new, processing, active, suspended, completed]
-                to: failed
+                to: aborted
         callbacks:
             guard:
-                guard_for_complete:
+                bitbag_sylius_mollie_plugin_activate_recurring_subscription_guard_for_complete:
                     on: 'complete'
-                    do: [ '@bitbag_sylius_mollie_plugin.guard.subscription_completable', 'isCompletable' ]
+                    do: [ '@bitbag_sylius_mollie_plugin.guard.subscription', 'isCompletable' ]
+                    args: [ 'object' ]
+                bitbag_sylius_mollie_plugin_activate_recurring_subscription_guard_for_abort:
+                    on: 'abort'
+                    do: [ '@bitbag_sylius_mollie_plugin.guard.subscription', 'isEligibleForPaymentsAbort' ]
                     args: [ 'object' ]
             after:
                 bitbag_sylius_mollie_plugin_activate_recurring_subscription_process:
                     on: ["activate"]
                     do: ["@bitbag_sylius_mollie_plugin.processor.subscription_schedule_processor", "processScheduleGeneration"]
                     args: ["object"]
-
-                bitbag_sylius_mollie_plugin_activate_recurring_subscription_after_process:
-                    on: [ "activate" ]
-                    do: [ "@bitbag_sylius_mollie_plugin.processor.subscription_schedule_processor", "process" ]
-                    args: [ "object" ]
 
     mollie_subscription_processing:
         class: "%bitbag_sylius_mollie_plugin.model.mollie_subscription.class%"

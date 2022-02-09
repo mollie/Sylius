@@ -6,6 +6,8 @@ namespace BitBag\SyliusMolliePlugin\Processor;
 use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
 use BitBag\SyliusMolliePlugin\Entity\OrderInterface;
 use BitBag\SyliusMolliePlugin\Generator\SubscriptionScheduleGeneratorInterface;
+use BitBag\SyliusMolliePlugin\Transitions\MollieSubscriptionTransitions;
+use SM\Factory\Factory;
 use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 
@@ -25,18 +27,15 @@ final class SubscriptionScheduleProcessor implements SubscriptionScheduleProcess
 
     public function process(MollieSubscriptionInterface $subscription): void
     {
-        /** @var OrderInterface $lastOrder */
-        $lastOrder = $subscription->getLastOrder();
-        $payment = $lastOrder->getLastPayment(PaymentInterface::STATE_COMPLETED);
+        $payment = $subscription->getLastPayment();
 
         if (null !== $payment) {
-            $schedule = $subscription->getScheduleByIndex($lastOrder->getRecurringSequenceIndex());
+            $order = $payment->getOrder();
+            $schedule = $subscription->getScheduleByIndex($order->getRecurringSequenceIndex());
 
-            if (true === $schedule->isFulfilled()) {
-                return;
+            if (false === $schedule->isFulfilled()) {
+                $schedule->setFulfilledDate($payment->getUpdatedAt());
             }
-
-            $schedule->setFulfilledDate($payment->getUpdatedAt());
 
             $this->scheduleRepository->add($schedule);
         }

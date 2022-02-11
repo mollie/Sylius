@@ -1,0 +1,24 @@
+{% if product.isConfigurable() and not product.enabledVariants.empty() %}
+    {% if product.getVariantSelectionMethod() == 'match' %}
+        {% include '@BitBagSyliusMolliePlugin/Shop/Product/_variantRecurringMatch.html.twig' %}
+        {% include '@BitBagSyliusMolliePlugin/Shop/Product/_variantRecurringMatchDetails.html.twig' %}
+    {% endif %}
+    {% if product.getVariantSelectionMethod() == 'choice' %}
+        {% include '@BitBagSyliusMolliePlugin/Shop/Product/_variantRecurringChoice.html.twig' %}
+        {% include '@BitBagSyliusMolliePlugin/Shop/Product/_variantRecurringChoiceDetails.html.twig' %}
+    {% endif %}
+{% endif %}
+
+<script id="sylius-variants-recurring-label" type="text/html">
+    {% include "@BitBagSyliusMolliePlugin/Shop/Product/_variantRecurringLabel.html.twig" %}
+</script>
+
+<script id="sylius-variants-recurring-times-label" type="text/html">
+    {% include "@BitBagSyliusMolliePlugin/Shop/Product/_variantRecurringTimes.html.twig" %}
+</script>
+
+<script id="sylius-variants-recurring-interval-days" type="text/html">{{- 'bitbag_sylius_mollie_plugin.shop.product_variant.every.days' | trans -}}</script>
+<script id="sylius-variants-recurring-interval-weeks" type="text/html">{{- 'bitbag_sylius_mollie_plugin.shop.product_variant.every.weeks' | trans -}}</script>
+<script id="sylius-variants-recurring-interval-months" type="text/html">{{- 'bitbag_sylius_mollie_plugin.shop.product_variant.every.months' | trans -}}</script>
+
+<div class="ui hidden divider"></div>

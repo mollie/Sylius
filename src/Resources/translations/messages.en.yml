@@ -213,6 +213,14 @@ bitbag_sylius_mollie_plugin:
             tracking_code: 'Tracking Code'
         methods: 'Choose enabled methods'
         expiration_date_time: 'Expiration date time'
+    shop:
+        product_variant:
+            recurring: 'Recurring'
+            times: 'time(s)'
+            every:
+                days: 'every %amount% day(s)'
+                weeks: 'every %amount% week(s)'
+                months: 'every %amount% month(s)'
     subscription:
         cancel: 'Subscription has been successfully canceled.'
     onboardingMollie:

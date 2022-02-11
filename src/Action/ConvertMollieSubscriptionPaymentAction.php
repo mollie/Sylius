@@ -99,13 +99,17 @@ final class ConvertMollieSubscriptionPaymentAction extends BaseApiAwareAction im
         $paymentOptions = $payment->getDetails();
 
         $cartToken = $paymentOptions['cartToken'];
-        $sequenceType = array_key_exists('recurring', $paymentOptions) && true === $paymentOptions['recurring'] ? 'recurring' : 'first';
+        $sequenceType = array_key_exists(
+            'recurring',
+            $paymentOptions
+        ) && true === $paymentOptions['recurring'] ? 'recurring' : 'first';
 
         if (isset($paymentOptions['metadata'])) {
             $paymentMethod = $paymentOptions['metadata']['molliePaymentMethods'] ?? null;
         } else {
             $paymentMethod = $paymentOptions['molliePaymentMethods'] ?? null;
         }
+        $selectedIssuer = $paymentMethod === PaymentMethod::IDEAL ? $paymentOptions['issuers']['id'] : null;
 
         $details = [
             'amount' => [
@@ -119,9 +123,9 @@ final class ConvertMollieSubscriptionPaymentAction extends BaseApiAwareAction im
                 'customer_id' => $customer->getId() ?? null,
                 'molliePaymentMethods' => $paymentMethod ?? null,
                 'cartToken' => $cartToken ?? null,
-                'selected_issuer' => null,
                 'sequenceType' => $sequenceType,
-                'gateway' => $request->getToken()->getGatewayName()
+                'gateway' => $request->getToken()->getGatewayName(),
+                'selected_issuer' => $selectedIssuer ?? null,
             ],
             'full_name' => $customer->getFullName() ?? null,
             'email' => $customer->getEmail() ?? null,

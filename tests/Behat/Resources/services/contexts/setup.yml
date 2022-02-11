@@ -22,3 +22,12 @@ services:
         arguments:
             - "@doctrine.orm.default_entity_manager"
             - "@sylius.factory.order"
+
+    bitbag_sylius_mollie_plugin.behat.context.setup.product:
+        class: Tests\BitBag\SyliusMolliePlugin\Behat\Context\Setup\ProductContext
+        public: true
+        arguments:
+            - "@sylius.behat.shared_storage"
+            - "@sylius.repository.product"
+            - "@sylius.repository.product_variant"
+

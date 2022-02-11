@@ -24,8 +24,24 @@ final class DatePeriodFactorySpec extends ObjectBehavior
         $this->shouldImplement(DatePeriodFactoryInterface::class);
     }
 
-    function t_create_for_subscription_configuration(): void
+    function it_create_for_subscription_configuration(): void
     {
+        $interval = '1 months';
+        $times = 3;
+        $startedAt = new \DateTime();
 
+        $dates = [
+            $startedAt
+        ];
+
+        for ($i = 1; $i < $times; $i++) {
+            $dates[] = (clone $dates[$i-1])->modify('1 months');
+        }
+
+        $this->createForSubscriptionConfiguration(
+            $startedAt,
+            $times,
+            $interval
+        )->shouldBeLike($dates);
     }
 }

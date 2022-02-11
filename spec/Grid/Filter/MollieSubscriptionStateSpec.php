@@ -29,13 +29,36 @@ final class MollieSubscriptionStateSpec extends ObjectBehavior
     function it_applies_when_array_key_exists(
         DataSourceInterface $source,
         ExpressionBuilderInterface $builder
-    ): void
-    {
-        $data = ['state'=>[]]
-        ;
+    ): void {
+        $data = ['state' => ['not empty array']];
         $source->getExpressionBuilder()->willReturn($builder);
-        $builder->in('state',$data['state'])->willReturn(true);
+
+        $this->apply($source,'name', $data, []);
 
         $source->restrict($builder->getWrappedObject()->in('state', $data['state']))->shouldBeCalledOnce();
+    }
+
+    function it_returnes_when_array_key_does_not_exists(
+        DataSourceInterface $source,
+        ExpressionBuilderInterface $builder
+    ): void {
+        $data = ['not state' => []];
+        $source->getExpressionBuilder()->willReturn($builder);
+
+        $this->apply($source,'name', $data, []);
+
+        $source->restrict($builder->getWrappedObject()->in('not state', $data['not state']))->shouldNotBeCalled();
+    }
+
+    function it_returnes_when_array_key_has_empty_value(
+        DataSourceInterface $source,
+        ExpressionBuilderInterface $builder
+    ): void {
+        $data = ['state' => []];
+        $source->getExpressionBuilder()->willReturn($builder);
+
+        $this->apply($source,'name', $data, []);
+
+        $source->restrict($builder->getWrappedObject()->in('state', $data['state']))->shouldNotBeCalled();
     }
 }

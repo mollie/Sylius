@@ -23,7 +23,7 @@ use Payum\Core\Request\Capture;
 use Payum\Core\Security\GenericTokenFactoryInterface;
 use Payum\Core\Security\TokenInterface;
 use PhpSpec\ObjectBehavior;
-use Sylius\Component\Core\Model\OrderItem;
+use Sylius\Component\Core\Model\OrderItemInterface;
 use Sylius\Component\Payment\Factory\PaymentFactoryInterface;
 use Sylius\Component\Core\Model\PaymentInterface as SyliusCorePayment;
 use Sylius\Component\Payment\Model\PaymentInterface;
@@ -61,7 +61,7 @@ final class SubscriptionProcessorSpec extends ObjectBehavior
 
     function it_process_next_payment(
         MollieSubscriptionInterface $subscription,
-        OrderItem $orderItem,
+        OrderItemInterface $orderItem,
         OrderInterface $order,
         OrderInterface $clonedOrder,
         SubscriptionOrderClonerInterface $orderCloner,
@@ -81,13 +81,13 @@ final class SubscriptionProcessorSpec extends ObjectBehavior
     ): void
     {
         $subscription->getOrderItem()->willReturn($orderItem);
-        $orderItem->getOrder()->willReturn($order);
-        $subscription->getFirstOrder()->willReturn($order);
+//        $orderItem->getOrder()->willReturn($order);
+        $subscription->getFirstOrder()->willReturn($order, $firstOrder);
         $subscription->getSubscriptionConfiguration()->willReturn($configuration);
-
+//dlaczego zwraca nulla?
         $orderCloner->clone(
             $subscription,
-            $subscription->getFirstOrder(),
+            $order,
             $orderItem
         )->willReturn($clonedOrder);
 
@@ -99,7 +99,6 @@ final class SubscriptionProcessorSpec extends ObjectBehavior
             'EUR'
         )->willReturn($payment);
 
-        $subscription->getFirstOrder()->willReturn($firstOrder);
         $firstOrder->getLastPayment(PaymentInterface::STATE_COMPLETED)->willReturn($lastPayment);
 
         $methodData = [
@@ -140,7 +139,7 @@ final class SubscriptionProcessorSpec extends ObjectBehavior
             'sylius_shop_order_thank_you'
         )->willReturn($token);
 
-        $this->processNextPayment($subscription);
         $gateway->execute(new Capture($token))->shouldBeCalled();
+        $this->processNextPayment($subscription);
     }
 }

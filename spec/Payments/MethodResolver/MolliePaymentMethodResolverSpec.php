@@ -68,7 +68,10 @@ final class MolliePaymentMethodResolverSpec extends ObjectBehavior
 
         $decoratedService->getSupportedMethods($payment)->willReturn($parentMethod);
 
-        $this->getSupportedMethods($subject)->shouldReturn($parentMethod);
+        /** @var $parentMethod PaymentMethodInterface */
+        $methods = $this->getSupportedMethods($subject);
+        $methods->shouldHaveCount(1);
+        $methods[0]->shouldBeAnInstanceOf(PaymentMethodInterface::class);
     }
 
     function it_supports(

@@ -49,7 +49,7 @@ final class SubscriptionContext implements Context
         /** @var MollieSubscriptionInterface $subscription */
         $subscription = $this->subscriptionFactory->createNew();
 
-        $subscription->setSubscriptionId('id_1');
+        $subscription->setSubscription();
         $subscription->setCustomerId('id_1');
         $subscription->addOrder($order);
         $subscription->setState(MollieSubscriptionInterface::STATE_ACTIVE);

@@ -35,12 +35,28 @@ final class StatusRecurringSubscriptionActionSpec extends ObjectBehavior
 {
     function let(
         EntityManagerInterface $subscriptionManager,
-        FactoryInterface $subscriptionSateMachineFactory
+        FactoryInterface $subscriptionSateMachineFactory,
+        StatusRecurringSubscription $request,
+        MollieSubscriptionInterface $subscription,
+        MollieApiClient $mollieApiClient,
+        MollieSubscriptionConfigurationInterface $configuration,
+        CustomerEndpoint $customerEndpoint,
+        Customer $customer,
+        Subscription $subscriptionApi
     ): void {
         $this->beConstructedWith(
             $subscriptionManager,
             $subscriptionSateMachineFactory
         );
+
+        $mollieApiClient->customers = $customerEndpoint;
+        $this->setApi($mollieApiClient);
+        $request->getModel()->willReturn($subscription);
+        $subscription->getSubscriptionConfiguration()->willReturn($configuration);
+        $configuration->getCustomerId()->willReturn('id_1');
+        $configuration->getSubscriptionId()->willReturn('sub_id_1');
+        $customerEndpoint->get('id_1')->willReturn($customer);
+        $customer->getSubscription('sub_id_1')->willReturn($subscriptionApi);
     }
 
     function it_is_initializable(): void
@@ -63,33 +79,137 @@ final class StatusRecurringSubscriptionActionSpec extends ObjectBehavior
         $this->shouldHaveType(BaseApiAwareAction::class);
     }
 
-    function it_executes(
-        CancelRecurringSubscription $request,
-        MollieApiClient $mollieApiClient,
+    function it_executes_status_active_case(
+        StatusRecurringSubscription $request,
         MollieSubscriptionInterface $subscription,
-        MollieSubscriptionConfigurationInterface $configuration,
-        CustomerEndpoint $customerEndpoint,
-        Customer $customer,
         FactoryInterface $subscriptionSateMachineFactory,
         StateMachineInterface $stateMachine,
-        Subscription $subscriptionApi
+        Subscription $subscriptionApi,
+        EntityManagerInterface $subscriptionManager
     ): void {
-        $mollieApiClient->customers = $customerEndpoint;
-        $this->setApi($mollieApiClient);
-
+        $subscriptionApi->status = SubscriptionStatus::STATUS_ACTIVE;
+        $subscriptionSateMachineFactory->get(
+            $subscription->getWrappedObject(),
+            MollieSubscriptionTransitions::GRAPH)
+            ->willReturn($stateMachine);
         $stateMachine->can(MollieSubscriptionTransitions::TRANSITION_ACTIVATE)->willReturn(true);
         $stateMachine->apply(MollieSubscriptionTransitions::TRANSITION_ACTIVATE)->willReturn(true);
-        $subscriptionApi->status = SubscriptionStatus::STATUS_ACTIVE;
-        $subscriptionSateMachineFactory->get($configuration, MollieSubscriptionTransitions::GRAPH)->willReturn($stateMachine);
-        $configuration->getSubscriptionId()->willReturn('id_1');
-        $configuration->getCustomerId()->willReturn('id_1');
-        $customer->getSubscription('id_1')->willReturn($subscriptionApi);
-        $customerEndpoint->get('id_1')->willReturn($customer);
-
-        $request->getModel()->willReturn($configuration);
 
         $this->execute($request);
+
+        $subscriptionManager->persist($subscription)->shouldBeCalled();
+        $subscriptionManager->flush()->shouldBeCalled();
     }
+
+    function it_executes_status_pending_case(
+        StatusRecurringSubscription $request,
+        MollieSubscriptionInterface $subscription,
+        FactoryInterface $subscriptionSateMachineFactory,
+        StateMachineInterface $stateMachine,
+        Subscription $subscriptionApi,
+        EntityManagerInterface $subscriptionManager
+    ): void {
+        $subscriptionApi->status = SubscriptionStatus::STATUS_PENDING;
+        $subscriptionSateMachineFactory->get(
+            $subscription->getWrappedObject(),
+            MollieSubscriptionTransitions::GRAPH)
+            ->willReturn($stateMachine);
+        $stateMachine->can(MollieSubscriptionTransitions::TRANSITION_PROCESS)->willReturn(true);
+        $stateMachine->apply(MollieSubscriptionTransitions::TRANSITION_PROCESS)->willReturn(true);
+
+        $this->execute($request);
+
+        $subscriptionManager->persist($subscription)->shouldBeCalled();
+        $subscriptionManager->flush()->shouldBeCalled();
+    }
+
+    function it_executes_status_canceled_case(
+        StatusRecurringSubscription $request,
+        MollieSubscriptionInterface $subscription,
+        FactoryInterface $subscriptionSateMachineFactory,
+        StateMachineInterface $stateMachine,
+        Subscription $subscriptionApi,
+        EntityManagerInterface $subscriptionManager
+    ): void {
+        $subscriptionApi->status = SubscriptionStatus::STATUS_CANCELED;
+        $subscriptionSateMachineFactory->get(
+            $subscription->getWrappedObject(),
+            MollieSubscriptionTransitions::GRAPH)
+            ->willReturn($stateMachine);
+        $stateMachine->can(MollieSubscriptionTransitions::TRANSITION_CANCEL)->willReturn(true);
+        $stateMachine->apply(MollieSubscriptionTransitions::TRANSITION_CANCEL)->willReturn(true);
+
+        $this->execute($request);
+
+        $subscriptionManager->persist($subscription)->shouldBeCalled();
+        $subscriptionManager->flush()->shouldBeCalled();
+    }
+
+    function it_executes_status_completed_case(
+        StatusRecurringSubscription $request,
+        MollieSubscriptionInterface $subscription,
+        FactoryInterface $subscriptionSateMachineFactory,
+        StateMachineInterface $stateMachine,
+        Subscription $subscriptionApi,
+        EntityManagerInterface $subscriptionManager
+    ): void {
+        $subscriptionApi->status = SubscriptionStatus::STATUS_COMPLETED;
+        $subscriptionSateMachineFactory->get(
+            $subscription->getWrappedObject(),
+            MollieSubscriptionTransitions::GRAPH)
+            ->willReturn($stateMachine);
+        $stateMachine->can(MollieSubscriptionTransitions::TRANSITION_COMPLETE)->willReturn(true);
+        $stateMachine->apply(MollieSubscriptionTransitions::TRANSITION_COMPLETE)->willReturn(true);
+
+        $this->execute($request);
+
+        $subscriptionManager->persist($subscription)->shouldBeCalled();
+        $subscriptionManager->flush()->shouldBeCalled();
+    }
+    function it_executes_status_suspended_case(
+        StatusRecurringSubscription $request,
+        MollieSubscriptionInterface $subscription,
+        FactoryInterface $subscriptionSateMachineFactory,
+        StateMachineInterface $stateMachine,
+        Subscription $subscriptionApi,
+        EntityManagerInterface $subscriptionManager
+    ): void {
+        $subscriptionApi->status = SubscriptionStatus::STATUS_SUSPENDED;
+        $subscriptionSateMachineFactory->get(
+            $subscription->getWrappedObject(),
+            MollieSubscriptionTransitions::GRAPH)
+            ->willReturn($stateMachine);
+        $stateMachine->can(MollieSubscriptionTransitions::TRANSITION_SUSPEND)->willReturn(true);
+        $stateMachine->apply(MollieSubscriptionTransitions::TRANSITION_SUSPEND)->willReturn(true);
+
+        $this->execute($request);
+
+        $subscriptionManager->persist($subscription)->shouldBeCalled();
+        $subscriptionManager->flush()->shouldBeCalled();
+    }
+
+    function it_executes_with_fail(
+        StatusRecurringSubscription $request,
+        MollieSubscriptionInterface $subscription,
+        FactoryInterface $subscriptionSateMachineFactory,
+        StateMachineInterface $stateMachine,
+        Subscription $subscriptionApi,
+        EntityManagerInterface $subscriptionManager
+    ): void {
+        $subscriptionApi->status = SubscriptionStatus::STATUS_ACTIVE;
+        $subscriptionSateMachineFactory->get(
+            $subscription->getWrappedObject(),
+            MollieSubscriptionTransitions::GRAPH)
+            ->willReturn($stateMachine);
+        $stateMachine->can(MollieSubscriptionTransitions::TRANSITION_ACTIVATE)->willReturn(false);
+
+        $this->execute($request);
+
+        $stateMachine->apply(MollieSubscriptionTransitions::TRANSITION_ACTIVATE)->shouldNotBeCalled();
+        $subscriptionManager->persist($subscription)->shouldBeCalled();
+        $subscriptionManager->flush()->shouldBeCalled();
+    }
+
 
     function it_supports_status_recurring_subscription_request_and_subscription_model(
         StatusRecurringSubscription $request,

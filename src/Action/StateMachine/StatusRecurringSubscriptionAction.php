@@ -46,7 +46,7 @@ final class StatusRecurringSubscriptionAction extends BaseApiAwareAction impleme
         $this->subscriptionSateMachineFactory = $subscriptionSateMachineFactory;
     }
 
-    /** @param CancelRecurringSubscription $request */
+    /** @param StatusRecurringSubscription $request */
     public function execute($request): void
     {
         /** @var StatusRecurringSubscription $request */

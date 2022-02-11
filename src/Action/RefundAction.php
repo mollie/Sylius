@@ -52,18 +52,16 @@ final class RefundAction extends BaseApiAwareAction implements ActionInterface, 
 
         if ($details['created_in_mollie']) {
             $this->loggerAction->addLog('Received refund created in Mollie dashboard');
-
             return;
         }
 
         /** @var PaymentInterface $payment */
         $payment = $request->getFirstModel();
-
         try {
             $molliePayment = $this->mollieApiClient->payments->get($details['payment_mollie_id']);
             $refundData = $this->convertOrderRefundData->convert($details['metadata']['refund'], $payment->getCurrencyCode());
-
             if (true === $molliePayment->canBeRefunded()) {
+
                 $molliePayment->refund(['amount' => $refundData]);
                 $this->loggerAction->addLog(sprintf('Refund action with payment id %s', $molliePayment->id));
             } else {

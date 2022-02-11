@@ -9,6 +9,7 @@ Feature: Paying with Mollie Subscription during checkout
         And there is a user "john@bitbag.pl" identified by "password123"
         And the store has a payment method "Mollie Subscription" with a code "mollie_subscription" and Mollie Subscription payment gateway
         And the store has a product "PHP T-Shirt" priced at "€19.99"
+        And the "PHP T-shirt" variant has recurring payment enabled
         And the store ships everywhere for free
         And I am logged in as "john@bitbag.pl"
 

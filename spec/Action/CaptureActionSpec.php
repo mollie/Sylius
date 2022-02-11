@@ -14,7 +14,9 @@ namespace spec\BitBag\SyliusMolliePlugin\Action;
 
 use BitBag\SyliusMolliePlugin\Action\CaptureAction;
 use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
+use BitBag\SyliusMolliePlugin\Payments\PaymentTerms\Options;
 use BitBag\SyliusMolliePlugin\Request\Api\CreateInternalRecurring;
+use BitBag\SyliusMolliePlugin\Request\Api\CreateOrder;
 use BitBag\SyliusMolliePlugin\Request\Api\CreatePayment;
 use Mollie\Api\Endpoints\PaymentEndpoint;
 use Payum\Core\Action\ActionInterface;
@@ -60,7 +62,7 @@ final class CaptureActionSpec extends ObjectBehavior
 
     function it_executes(
         Capture $request,
-        ArrayObject $arrayObject,
+        ArrayObject $details,
         PaymentInterface $payment,
         TokenInterface $token,
         TokenInterface $notifyToken,
@@ -72,21 +74,14 @@ final class CaptureActionSpec extends ObjectBehavior
         PaymentEndpoint $paymentEndpoint,
         IdentityInterface $identity
     ): void {
-        $details = [
-          'metadata' => [
-              'refund_token' => 'refund_token_hash',
-              'method_type' => 'Payments API',
-              'molliePaymentMethods' => '',
-              'subscription_mollie_id' => '',
-              'order_mollie_id' => '',
-          ]
-        ];
-
         $this->setGateway($gateway);
         $mollieApiClient->isRecurringSubscription()->willReturn(false);
         $this->setApi($mollieApiClient);
+        $request->getToken()->willReturn($token);
+        $token->getGatewayName()->willReturn('test');
+        $token->getDetails()->willReturn($identity);
 
-        $genericTokenFactory->createNotifyToken('test', [])->willReturn($notifyToken);
+        $genericTokenFactory->createNotifyToken('test', $identity)->willReturn($notifyToken);
         $notifyToken->getTargetUrl()->willReturn('url');
         $notifyToken->getHash()->willReturn('test');
 
@@ -96,15 +91,12 @@ final class CaptureActionSpec extends ObjectBehavior
         $this->setGenericTokenFactory($genericTokenFactory);
         $payum->getTokenFactory()->willReturn($genericTokenFactory);
 
-        $arrayObject->toUnsafeArray()->willReturn([]);
-        $request->getModel()->willReturn($arrayObject);
+        $details->toUnsafeArray()->willReturn([]);
+        $request->getModel()->willReturn($details);
         $request->getFirstModel()->willReturn($payment);
-        $request->getToken()->willReturn($token);
 
         $token->getTargetUrl()->willReturn('url');
         $token->getAfterUrl()->willReturn('url');
-        $token->getGatewayName()->willReturn('test');
-        $token->getDetails()->willReturn([]);
         $token->getHash()->willReturn('test');
 
 
@@ -119,17 +111,27 @@ final class CaptureActionSpec extends ObjectBehavior
             'metadata' => null,
         ])->willReturn($payment);
         $mollieApiClient->payments = $paymentEndpoint;
-        $arrayObject->offsetGet('description')->shouldBeCalled();
-        $arrayObject->offsetGet('webhookUrl')->shouldBeCalled();
-        $arrayObject->offsetGet('amount')->shouldBeCalled();
-        $arrayObject->offsetExists('subscription_mollie_id')->shouldBeCalled();
-        $arrayObject->offsetExists('payment_mollie_id')->shouldBeCalled();
-        $arrayObject->offsetExists('payment_mollie_id')->shouldBeCalled();
-        $arrayObject->offsetGet('metadata')->shouldBeCalled();
-        $arrayObject->offsetSet('metadata', ['refund_token' => 'test'])->shouldBeCalled();
-        $arrayObject->offsetSet('payment_mollie_id', 1)->shouldBeCalled();
-        $arrayObject->offsetSet('webhookUrl', 'url')->shouldBeCalled();
-        $gateway->execute(new CreateInternalRecurring($arrayObject))->shouldBeCalledOnce();
+//jak w ofsset ustawic nested array              <------------------------------------------------------------
+        $details->offsetGet('metadata')->willReturn([
+            'refund_token' => [
+                'refund_token_hash'
+            ],
+            'methodType' => Options::ORDER_API
+            ]);
+        $details->offsetExists('subscription_mollie_id')->shouldBeCalled();
+        $details->offsetExists('payment_mollie_id')->shouldBeCalled();
+        $details->offsetExists('order_mollie_id')->shouldBeCalled();
+        $details->offsetExists('metadata')->shouldBeCalled();
+        $details->offsetGet('metadata')->shouldBeCalled();
+        $details->offsetSet('webhookUrl', 'url')->shouldBeCalled();
+        $details->offsetSet('backurl', 'url')->shouldBeCalled();
+        $details->offsetSet('metadata', [
+            'refund_token' =>
+                'refund_token_hash'
+            ,
+            'methodType' => Options::ORDER_API
+        ])->shouldBeCalled();
+        $gateway->execute(new CreateOrder($details->getWrappedObject()))->shouldBeCalledOnce();
 
         $this->execute($request);
 

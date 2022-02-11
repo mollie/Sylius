@@ -10,6 +10,7 @@ namespace spec\BitBag\SyliusMolliePlugin\Order;
 
 use BitBag\SyliusMolliePlugin\Order\ShipmentCloner;
 use BitBag\SyliusMolliePlugin\Order\ShipmentClonerInterface;
+use BitBag\SyliusMolliePlugin\Order\ShipmentUnitClonerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\ShipmentInterface;
@@ -19,9 +20,14 @@ use Sylius\Component\Shipping\Model\ShippingMethodInterface;
 
 final class ShipmentClonerSpec extends ObjectBehavior
 {
-    function let(FactoryInterface $shipmentFactory): void
-    {
-        $this->beConstructedWith($shipmentFactory);
+    function let(
+        FactoryInterface $shipmentFactory,
+        ShipmentUnitClonerInterface $shipmentUnitCloner)
+    : void {
+        $this->beConstructedWith(
+            $shipmentFactory,
+            $shipmentUnitCloner
+        );
     }
     function it_is_initializable(): void
     {

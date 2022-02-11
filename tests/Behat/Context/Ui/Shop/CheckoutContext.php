@@ -13,8 +13,12 @@ declare(strict_types=1);
 namespace Tests\BitBag\SyliusMolliePlugin\Behat\Context\Ui\Shop;
 
 use Behat\Behat\Context\Context;
+use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
+use Sylius\Behat\Page\Admin\ProductVariant\CreatePage;
 use Sylius\Behat\Page\Shop\Order\ShowPageInterface;
+use Sylius\Component\Core\Model\OrderInterface;
 use Tests\BitBag\SyliusMolliePlugin\Behat\Mocker\MollieApiMocker;
+use Tests\BitBag\SyliusMolliePlugin\Behat\Page\Admin\PaymentMethod\CreatePageInterface;
 use Tests\BitBag\SyliusMolliePlugin\Behat\Page\External\PaymentPageInterface;
 use Tests\BitBag\SyliusMolliePlugin\Behat\Page\Shop\Checkout\CompletePageInterface;
 
@@ -119,4 +123,14 @@ final class CheckoutContext implements Context
             $this->summaryPage->confirmOrder();
         });
     }
+
+    /**
+     * @Given the product :$productName has recurring payment option available
+     */
+    public function theProductHasRecurringPaymentOptionAvailable($productName)
+    {
+        $this->createPage->open(['/variants']);
+    }
+
+
 }

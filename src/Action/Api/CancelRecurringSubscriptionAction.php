@@ -40,7 +40,7 @@ final class CancelRecurringSubscriptionAction extends BaseApiAwareAction impleme
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
-        /** @var MollieSubscriptionConfigurationInterface $subscription */
+        /** @var MollieSubscriptionInterface $subscription */
         $subscription = $request->getModel();
         $configuration = $subscription->getSubscriptionConfiguration();
 

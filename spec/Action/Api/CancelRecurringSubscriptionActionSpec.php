@@ -57,19 +57,23 @@ final class CancelRecurringSubscriptionActionSpec extends ObjectBehavior
     function it_executes(
         CancelRecurringSubscription $request,
         MollieApiClient $mollieApiClient,
-        MollieSubscriptionConfigurationInterface  $subscription,
+        MollieSubscriptionInterface $subscription,
+        MollieSubscriptionConfigurationInterface $configuration,
         CustomerEndpoint $customerEndpoint,
-        Customer $customer
+        Customer $customer,
+        MollieLoggerActionInterface $loggerAction
     ): void {
         $mollieApiClient->customers = $customerEndpoint;
         $this->setApi($mollieApiClient);
-        $customerEndpoint->get('id_1')->willReturn($customer);
-        $subscription->getSubscriptionId()->willReturn('id_1');
-        $subscription->getCustomerId()->willReturn('id_1');
         $request->getModel()->willReturn($subscription);
+        $subscription->getSubscriptionConfiguration()->willReturn($configuration);
+        $configuration->getCustomerId()->willReturn('id_1');
+        $configuration->getSubscriptionId()->willReturn('sub_id_1');
+        $customerEndpoint->get('id_1')->willReturn($customer);
+        $loggerAction->addLog('Cancel recurring subscription with id:  sub_id_1');
 
 
-        $customer->cancelSubscription('id_1')->shouldBeCalled();
+        $customer->cancelSubscription('sub_id_1')->shouldBeCalled();
 
         $this->execute($request);
     }

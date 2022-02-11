@@ -5,6 +5,7 @@ bitbag_sylius_mollie_plugin:
                 recurring: 'Recurring settings'
         breadcrumbs:
             subscriptions: 'Subscriptions'
+        subscription_list: ''
         subscription:
             block_name: 'Subscription'
             contents: 'Subscription contents'
@@ -33,7 +34,7 @@ bitbag_sylius_mollie_plugin:
                 active: 'Active'
                 processing: 'Processing'
                 canceled: 'Canceled'
-                aborted: 'Aborted due of too many payment failures'
+                aborted: 'Auto-Canceled due to failed payments'
                 completed: 'Completed'
                 paused: 'Paused'
             payment_state:

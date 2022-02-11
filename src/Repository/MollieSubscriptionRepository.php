@@ -49,12 +49,26 @@ final class MollieSubscriptionRepository extends EntityRepository implements Mol
         return $qb->getQuery()->getResult();
     }
 
-    public function findOneBySubscriptionId(string $subscriptionId): ?MollieSubscriptionInterface
+    public function findScheduledSubscriptions(): array
     {
         $qb = $this->createQueryBuilder('q');
-        $qb->leftJoin('q.subscriptionConfiguration', 'sc');
-        $qb->andWhere('sc.subscriptionId = :subscriptionId');
-        $qb->setParameter('subscriptionId', $subscriptionId);
+        $qb->andWhere('q.state = :state');
+        $qb->setParameter('state', MollieSubscriptionInterface::STATE_ACTIVE);
+        $qb->leftJoin('q.schedules', 's');
+        $qb->andWhere('s.scheduledDate < :date');
+        $qb->setParameter('date', new \DateTime());
+        $qb->andWhere('s.fulfilledDate IS NULL');
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findProcessableSubscriptions(): array
+    {
+        $qb = $this->createQueryBuilder('q');
+        $qb->andWhere('q.state = :state');
+        $qb->setParameter('state', MollieSubscriptionInterface::STATE_PROCESSING);
+        $qb->andWhere('q.processingState = :processingState');
+        $qb->setParameter('processingState', MollieSubscriptionInterface::PROCESSING_STATE_PENDING);
 
         return $qb->getQuery()->getResult();
     }

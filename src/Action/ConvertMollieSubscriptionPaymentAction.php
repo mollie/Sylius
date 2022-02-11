@@ -20,6 +20,7 @@ use BitBag\SyliusMolliePlugin\Helper\PaymentDescriptionInterface;
 use BitBag\SyliusMolliePlugin\Payments\PaymentTerms\Options;
 use BitBag\SyliusMolliePlugin\Request\Api\CreateCustomer;
 use BitBag\SyliusMolliePlugin\Resolver\PaymentLocaleResolverInterface;
+use Mollie\Api\Types\PaymentMethod;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Exception\RequestNotSupportedException;
@@ -30,6 +31,7 @@ use Payum\Core\Request\GetCurrency;
 use Sylius\Bundle\CoreBundle\Context\CustomerContext;
 use Sylius\Component\Core\Model\CustomerInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
+use Sylius\Component\Payment\Model\PaymentMethodInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -96,9 +98,18 @@ final class ConvertMollieSubscriptionPaymentAction extends BaseApiAwareAction im
         $amount = number_format(abs($payment->getAmount() / $divisor), 2, '.', '');
         $paymentOptions = $payment->getDetails();
 
-        $paymentMethod = $paymentOptions['molliePaymentMethods'];
         $cartToken = $paymentOptions['cartToken'];
-        $sequenceType = array_key_exists('recurring', $paymentOptions) && true === $paymentOptions['recurring'] ? 'recurring' : 'first';
+        $sequenceType = array_key_exists(
+            'recurring',
+            $paymentOptions
+        ) && true === $paymentOptions['recurring'] ? 'recurring' : 'first';
+
+        if (isset($paymentOptions['metadata'])) {
+            $paymentMethod = $paymentOptions['metadata']['molliePaymentMethods'] ?? null;
+        } else {
+            $paymentMethod = $paymentOptions['molliePaymentMethods'] ?? null;
+        }
+        $selectedIssuer = $paymentMethod === PaymentMethod::IDEAL ? $paymentOptions['issuers']['id'] : null;
 
         $details = [
             'amount' => [
@@ -112,11 +123,9 @@ final class ConvertMollieSubscriptionPaymentAction extends BaseApiAwareAction im
                 'customer_id' => $customer->getId() ?? null,
                 'molliePaymentMethods' => $paymentMethod ?? null,
                 'cartToken' => $cartToken ?? null,
-                'selected_issuer' => null,
-                'methodType' => Options::SUBSCRIPTIONS_API,
-                'items' => [],
                 'sequenceType' => $sequenceType,
-                'gateway' => $payment->getMethod()->getName()
+                'gateway' => $request->getToken()->getGatewayName(),
+                'selected_issuer' => $selectedIssuer ?? null,
             ],
             'full_name' => $customer->getFullName() ?? null,
             'email' => $customer->getEmail() ?? null,
@@ -126,20 +135,6 @@ final class ConvertMollieSubscriptionPaymentAction extends BaseApiAwareAction im
         $this->gateway->execute($mollieCustomer = new CreateCustomer($details));
         $model = $mollieCustomer->getModel();
         $details['customerId'] = $model['customer_mollie_id'];
-
-        foreach ($order->getItems() as $item) {
-            /** @var ProductVariantInterface $variant */
-            $variant = $item->getVariant();
-            $details['metadata']['items'][] = [
-                'itemId' => $item->getId(),
-                'variant' => $variant->getId(),
-                'interval' => $variant->getInterval(),
-                'times' => $variant->getTimes(),
-                'total' => $item->getTotal(),
-                'currency' => $order->getCurrencyCode(),
-
-            ];
-        }
 
         $request->setResult($details);
     }

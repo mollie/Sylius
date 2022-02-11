@@ -17,7 +17,7 @@ final class SubscriptionGuard implements SubscriptionGuardInterface
     {
         foreach ($subscription->getSchedules() as $schedule) {
             /** @var MollieSubscriptionScheduleInterface $schedule */
-            if (null === $schedule->getFulfilledDate()) {
+            if (false === $schedule->isFulfilled()) {
                 return false;
             }
         }

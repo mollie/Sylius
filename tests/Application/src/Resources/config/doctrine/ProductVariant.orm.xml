@@ -6,7 +6,7 @@
                                   http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd"
                   xmlns:gedmo="http://gediminasm.org/schemas/orm/doctrine-extensions-mapping"
 >
-    <entity name="Tests\BitBag\SyliusMolliePlugin\Entity\ProductVariant" table="sylius_product_variant">
+    <mapped-superclass name="Tests\BitBag\SyliusMolliePlugin\Entity\ProductVariant" table="sylius_product_variant">
         <field name="recurring" type="boolean" nullable="false" column="recurring">
             <options>
                 <option name="default">0</option>
@@ -14,10 +14,5 @@
         </field>
         <field name="times" nullable="true" type="integer" column="recurring_times"/>
         <field name="interval" nullable="true" type="string" column="recurring_interval"/>
-        <field name="completeRecurringPrice" type="boolean" nullable="false" column="complete_recurring_price">
-            <options>
-                <option name="default">0</option>
-            </options>
-        </field>
-    </entity>
+    </mapped-superclass>
 </doctrine-mapping>

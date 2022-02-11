@@ -14,7 +14,7 @@
     "bazinga-translator": "^4.0.1",
     "intl-messageformat": "^9.8.0",
     "lodash.get": "^4.4.2",
-    "node-sass": "^4.14.1",
+    "node-sass": "^7.0.0",
     "sass-loader": "^9.0.1",
     "shepherd.js": "^8.3.1"
   }

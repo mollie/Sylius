@@ -31,11 +31,6 @@ final class ProductVariantRecurringExtension extends AbstractTypeExtension
                     new NotNull()
                 ]
             ])
-            ->add('completeRecurringPrice', CheckboxType::class, [
-                'label' => 'bitbag_sylius_mollie_plugin.form.product_variant.complete_recurring_price',
-                'help' => 'bitbag_sylius_mollie_plugin.form.product_variant.complete_recurring_price_help',
-                'required' => false,
-            ])
             ->add('times', NumberType::class, [
                 'label' => 'bitbag_sylius_mollie_plugin.form.product_variant.times',
                 'help' => 'bitbag_sylius_mollie_plugin.form.product_variant.times_help',
@@ -54,6 +49,9 @@ final class ProductVariantRecurringExtension extends AbstractTypeExtension
             ->add('interval', MollieIntervalType::class, [
                 'label' => 'bitbag_sylius_mollie_plugin.form.product_variant.interval',
                 'required' => false,
+                'attr' => [
+                    'class' => 'inline fields'
+                ],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'bitbag_sylius_mollie_plugin.interval.not_blank',

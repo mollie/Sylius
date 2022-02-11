@@ -56,6 +56,7 @@ final class CreateOnDemandSubscriptionAction extends BaseApiAwareAction implemen
 
         try {
             $paymentSettings = [
+                'method' => $details['metadata']['molliePaymentMethods'],
                 'issuer' => $details['metadata']['selected_issuer'] ?? null,
                 'cardToken' => $details['metadata']['cartToken'],
                 'amount' => $details['amount'],

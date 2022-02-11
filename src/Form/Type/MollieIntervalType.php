@@ -28,6 +28,7 @@ final class MollieIntervalType extends AbstractType
                 MollieSubscriptionConfigurationInterface::SUPPORTED_INTERVAL_STEPS,
                 MollieSubscriptionConfigurationInterface::SUPPORTED_INTERVAL_STEPS
             ),
+            'label' => false,
             'choice_label' => function (string $value) {
                 return sprintf('bitbag_sylius_mollie_plugin.form.product_variant.interval_configuration.steps.%s', $value);
             }

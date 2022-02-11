@@ -5,6 +5,7 @@ bitbag_sylius_mollie_plugin:
                 recurring: 'Recurring settings'
         breadcrumbs:
             subscriptions: 'Subscriptions'
+        subscription_list: ''
         subscription:
             block_name: 'Subscription'
             contents: 'Subscription contents'

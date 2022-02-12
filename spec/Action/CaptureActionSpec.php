@@ -31,6 +31,7 @@ use Payum\Core\Security\GenericTokenFactoryAwareInterface;
 use Payum\Core\Security\TokenInterface;
 use Payum\Core\Storage\IdentityInterface;
 use PhpSpec\ObjectBehavior;
+use Psr\Log\InvalidArgumentException;
 use Sylius\Component\Core\Model\PaymentInterface;
 
 final class CaptureActionSpec extends ObjectBehavior
@@ -60,7 +61,7 @@ final class CaptureActionSpec extends ObjectBehavior
         $this->shouldHaveType(GatewayAwareInterface::class);
     }
 
-    function it_executes(
+    function it_executes_order_api(
         Capture $request,
         ArrayObject $details,
         PaymentInterface $payment,
@@ -111,13 +112,15 @@ final class CaptureActionSpec extends ObjectBehavior
             'metadata' => null,
         ])->willReturn($payment);
         $mollieApiClient->payments = $paymentEndpoint;
-//jak w ofsset ustawic nested array              <------------------------------------------------------------
         $details->offsetGet('metadata')->willReturn([
             'refund_token' => [
                 'refund_token_hash'
             ],
             'methodType' => Options::ORDER_API
             ]);
+        $details->offsetExists('metadata')->willReturn(true);
+        $details->offsetExists('methodType')->willReturn(true);
+
         $details->offsetExists('subscription_mollie_id')->shouldBeCalled();
         $details->offsetExists('payment_mollie_id')->shouldBeCalled();
         $details->offsetExists('order_mollie_id')->shouldBeCalled();
@@ -134,11 +137,168 @@ final class CaptureActionSpec extends ObjectBehavior
         $gateway->execute(new CreateOrder($details->getWrappedObject()))->shouldBeCalledOnce();
 
         $this->execute($request);
+    }
 
-//        $this
-//            ->shouldThrow(HttpRedirect::class)
-//            ->during('execute', [$request])
-//        ;
+    function it_executes_payment_api(
+        Capture $request,
+        ArrayObject $details,
+        PaymentInterface $payment,
+        TokenInterface $token,
+        TokenInterface $notifyToken,
+        TokenInterface $refundToken,
+        Payum $payum,
+        GenericTokenFactory $genericTokenFactory,
+        GatewayInterface $gateway,
+        MollieApiClient $mollieApiClient,
+        PaymentEndpoint $paymentEndpoint,
+        IdentityInterface $identity
+    ): void
+    {
+        $this->setGateway($gateway);
+        $mollieApiClient->isRecurringSubscription()->willReturn(false);
+        $this->setApi($mollieApiClient);
+        $request->getToken()->willReturn($token);
+        $token->getGatewayName()->willReturn('test');
+        $token->getDetails()->willReturn($identity);
+
+        $genericTokenFactory->createNotifyToken('test', $identity)->willReturn($notifyToken);
+        $notifyToken->getTargetUrl()->willReturn('url');
+        $notifyToken->getHash()->willReturn('test');
+
+        $genericTokenFactory->createRefundToken('test', $identity)->willReturn($refundToken);
+        $refundToken->getHash()->willReturn('refund_token_hash');
+
+        $this->setGenericTokenFactory($genericTokenFactory);
+        $payum->getTokenFactory()->willReturn($genericTokenFactory);
+
+        $details->toUnsafeArray()->willReturn([]);
+        $request->getModel()->willReturn($details);
+        $request->getFirstModel()->willReturn($payment);
+
+        $token->getTargetUrl()->willReturn('url');
+        $token->getAfterUrl()->willReturn('url');
+        $token->getHash()->willReturn('test');
+
+
+        $payment = \Mockery::mock('payment');
+        $payment->id = 1;
+        $payment->shouldReceive('getCheckoutUrl')->andReturn('https://thisisnotanemptyurl.com');
+        $paymentEndpoint->create([
+            'amount' => null,
+            'description' => null,
+            'redirectUrl' => 'url',
+            'webhookUrl' => null,
+            'metadata' => null,
+        ])->willReturn($payment);
+        $mollieApiClient->payments = $paymentEndpoint;
+        $details->offsetGet('metadata')->willReturn([
+            'refund_token' => [
+                'refund_token_hash'
+            ],
+            'methodType' => Options::PAYMENT_API,
+            'molliePaymentMethods' => 'not_klarna_scenario'
+        ]);
+        $details->offsetExists('metadata')->willReturn(true);
+        $details->offsetExists('methodType')->willReturn(true);
+
+        $details->offsetExists('subscription_mollie_id')->shouldBeCalled();
+        $details->offsetExists('payment_mollie_id')->shouldBeCalled();
+        $details->offsetExists('order_mollie_id')->shouldBeCalled();
+        $details->offsetExists('metadata')->shouldBeCalled();
+        $details->offsetGet('metadata')->shouldBeCalled();
+        $details->offsetSet('webhookUrl', 'url')->shouldBeCalled();
+        $details->offsetSet('backurl', 'url')->shouldBeCalled();
+        $details->offsetSet('metadata', [
+            'refund_token' =>
+                'refund_token_hash'
+            ,
+            'methodType' => Options::PAYMENT_API,
+            'molliePaymentMethods' => 'not_klarna_scenario'
+        ])->shouldBeCalled();
+        $gateway->execute(new CreatePayment($details->getWrappedObject()))->shouldBeCalledOnce();
+
+        $this->execute($request);
+    }
+
+    function it_executes_payment_api_with_klarna_scenario(
+        Capture $request,
+        ArrayObject $details,
+        PaymentInterface $payment,
+        TokenInterface $token,
+        TokenInterface $notifyToken,
+        TokenInterface $refundToken,
+        Payum $payum,
+        GenericTokenFactory $genericTokenFactory,
+        GatewayInterface $gateway,
+        MollieApiClient $mollieApiClient,
+        PaymentEndpoint $paymentEndpoint,
+        IdentityInterface $identity
+    ): void
+    {
+        $this->setGateway($gateway);
+        $mollieApiClient->isRecurringSubscription()->willReturn(false);
+        $this->setApi($mollieApiClient);
+        $request->getToken()->willReturn($token);
+        $token->getGatewayName()->willReturn('test');
+        $token->getDetails()->willReturn($identity);
+
+        $genericTokenFactory->createNotifyToken('test', $identity)->willReturn($notifyToken);
+        $notifyToken->getTargetUrl()->willReturn('url');
+        $notifyToken->getHash()->willReturn('test');
+
+        $genericTokenFactory->createRefundToken('test', $identity)->willReturn($refundToken);
+        $refundToken->getHash()->willReturn('refund_token_hash');
+
+        $this->setGenericTokenFactory($genericTokenFactory);
+        $payum->getTokenFactory()->willReturn($genericTokenFactory);
+
+        $details->toUnsafeArray()->willReturn([]);
+        $request->getModel()->willReturn($details);
+        $request->getFirstModel()->willReturn($payment);
+
+        $token->getTargetUrl()->willReturn('url');
+        $token->getAfterUrl()->willReturn('url');
+        $token->getHash()->willReturn('test');
+
+
+        $payment = \Mockery::mock('payment');
+        $payment->id = 1;
+        $payment->shouldReceive('getCheckoutUrl')->andReturn('https://thisisnotanemptyurl.com');
+        $paymentEndpoint->create([
+            'amount' => null,
+            'description' => null,
+            'redirectUrl' => 'url',
+            'webhookUrl' => null,
+            'metadata' => null,
+        ])->willReturn($payment);
+        $mollieApiClient->payments = $paymentEndpoint;
+        $details->offsetGet('metadata')->willReturn([
+            'refund_token' => [
+                'refund_token_hash'
+            ],
+            'methodType' => Options::PAYMENT_API,
+            'molliePaymentMethods' => 'klarnapaynow',
+        ]);
+        $details->offsetExists('metadata')->willReturn(true);
+        $details->offsetExists('methodType')->willReturn(true);
+
+        $details->offsetExists('subscription_mollie_id')->shouldBeCalled();
+        $details->offsetExists('payment_mollie_id')->shouldBeCalled();
+        $details->offsetExists('order_mollie_id')->shouldBeCalled();
+        $details->offsetExists('metadata')->shouldBeCalled();
+        $details->offsetGet('metadata')->shouldBeCalled();
+        $details->offsetSet('webhookUrl', 'url')->shouldBeCalled();
+        $details->offsetSet('backurl', 'url')->shouldBeCalled();
+        $details->offsetSet('metadata', [
+            'refund_token' =>
+                'refund_token_hash'
+            ,
+            'methodType' => Options::PAYMENT_API,
+            'molliePaymentMethods' => 'klarnapaynow',
+        ])->shouldBeCalled();
+
+        $this->shouldThrow(new InvalidArgumentException('Method klarnapaynow is not allowed to use Payments API'))
+            ->during('execute',[$request->getWrappedObject()]);
     }
 
     function it_supports_only_capture_request_and_array_access(

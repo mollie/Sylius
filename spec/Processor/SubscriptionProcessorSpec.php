@@ -81,10 +81,8 @@ final class SubscriptionProcessorSpec extends ObjectBehavior
     ): void
     {
         $subscription->getOrderItem()->willReturn($orderItem);
-//        $orderItem->getOrder()->willReturn($order);
         $subscription->getFirstOrder()->willReturn($order, $firstOrder);
         $subscription->getSubscriptionConfiguration()->willReturn($configuration);
-//dlaczego zwraca nulla?
         $orderCloner->clone(
             $subscription,
             $order,
@@ -113,7 +111,7 @@ final class SubscriptionProcessorSpec extends ObjectBehavior
 
         $details = [
             'metadata' => [
-                'gateways' => 'test_gateway'
+                'gateway' => 'gateway_id'
             ]
         ];
 
@@ -123,6 +121,7 @@ final class SubscriptionProcessorSpec extends ObjectBehavior
         )->willReturn($details);
 
         $payment->setDetails($details);
+        $payment->getDetails()->willReturn($details);
 
         $clonedOrder->addPayment($payment);
         $orderRepository->add($clonedOrder);
@@ -131,15 +130,97 @@ final class SubscriptionProcessorSpec extends ObjectBehavior
         $subscription->addPayment($payment);
         $subscriptionRepository->add($subscription);
 
-        $paymentRegistry->getGateway('test_gateway')->willReturn($gateway);
+        $paymentRegistry->getGateway('gateway_id')->willReturn($gateway);
         $paymentRegistry->getTokenFactory()->willReturn($tokenFactory);
         $tokenFactory->createToken(
-            'test_gateway',
+            'gateway_id',
             $payment,
             'sylius_shop_order_thank_you'
         )->willReturn($token);
 
-        $gateway->execute(new Capture($token))->shouldBeCalled();
+        $gateway->execute(new Capture($token->getWrappedObject()))->shouldBeCalled();
         $this->processNextPayment($subscription);
+    }
+
+    function it_process_next_subscription_payment(
+        MollieSubscriptionInterface $subscription,
+        OrderItemInterface $orderItem,
+        OrderInterface $order,
+        OrderInterface $clonedOrder,
+        SubscriptionOrderClonerInterface $orderCloner,
+        SyliusCorePayment $payment,
+        SyliusCorePayment $lastPayment,
+        PaymentFactoryInterface $paymentFactory,
+        OrderInterface $firstOrder,
+        PaymentDetailsFactoryInterface $paymentDetailsFactory,
+        MollieSubscriptionConfigurationInterface $configuration,
+        OrderRepositoryInterface $orderRepository,
+        MollieSubscriptionRepositoryInterface $subscriptionRepository,
+        Payum $paymentRegistry,
+        GatewayInterface $gateway,
+        GenericTokenFactoryInterface $tokenFactory,
+        TokenInterface $token,
+        PaymentMethodInterface $method
+    ): void
+    {
+        $subscription->getOrderItem()->willReturn($orderItem);
+        $subscription->getFirstOrder()->willReturn($order, $firstOrder);
+        $subscription->getSubscriptionConfiguration()->willReturn($configuration);
+        $orderCloner->clone(
+            $subscription,
+            $order,
+            $orderItem
+        )->willReturn($clonedOrder);
+
+        $clonedOrder->getTotal()->willReturn(2);
+        $clonedOrder->getCurrencyCode()->willReturn('EUR');
+
+        $paymentFactory->createWithAmountAndCurrencyCode(
+            2,
+            'EUR'
+        )->willReturn($payment);
+
+        $firstOrder->getLastPayment(PaymentInterface::STATE_COMPLETED)->willReturn($lastPayment);
+
+        $methodData = [
+            'metadata' => [
+                'molliePaymentMethods' => 'test_method'
+            ]
+        ];
+        $lastPayment->getDetails()->willReturn($methodData);
+        $lastPayment->getMethod()->willReturn($method);
+        $payment->setMethod($method);
+        $payment->setState(PaymentInterface::STATE_NEW);
+
+        $details = [
+            'metadata' => [
+                'gateway' => 'gateway_id'
+            ]
+        ];
+
+        $paymentDetailsFactory->createForSubscriptionAndOrder(
+            $configuration,
+            $clonedOrder
+        )->willReturn($details);
+
+        $payment->setDetails($details);
+        $payment->getDetails()->willReturn($details);
+
+        $clonedOrder->addPayment($payment);
+        $orderRepository->add($clonedOrder);
+
+        $subscription->addOrder($clonedOrder);
+        $subscription->addPayment($payment);
+        $subscriptionRepository->add($subscription);
+
+        $paymentRegistry->getGateway('gateway_id')->willReturn($gateway);
+        $paymentRegistry->getTokenFactory()->willReturn($tokenFactory);
+        $tokenFactory->createToken(
+            'gateway_id',
+            $payment,
+            'sylius_shop_order_thank_you'
+        )->willReturn($token);
+
+        $this->processNextSubscriptionPayment($subscription);
     }
 }

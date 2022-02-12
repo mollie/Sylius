@@ -42,10 +42,11 @@ final class SubscriptionScheduleGeneratorSpec extends ObjectBehavior
         MollieSubscriptionConfigurationInterface $configuration,
         DatePeriodFactoryInterface $datePeriodFactory,
         MollieSubscriptionScheduleFactoryInterface $scheduleFactory
-    ): void
-    {
+    ): void {
         $startedAt = new \DateTime();
-        $subscription->setStartedAt($startedAt);
+        dump($startedAt);
+//        $subscription->setStartedAt($startedAt);
+        $subscription->getStartedAt()->willReturn($startedAt);
         $subscription->getSubscriptionConfiguration()->willReturn($configuration);
 
         $configuration->getNumberOfRepetitions()->willReturn(5);
@@ -59,15 +60,16 @@ final class SubscriptionScheduleGeneratorSpec extends ObjectBehavior
 
         $datePeriodFactory->createForSubscriptionConfiguration(
             $startedAt,
-            2,
+            5,
             'months'
-        )->willReturn($datePeriods);
+        )->willReturn($startedAt);
 
         $scheduleFactory->createConfiguredForSubscription(
             $subscription,
             $startedAt,
             1
         )->willReturn($schedules);
+
 
         $this->generate($subscription);
     }

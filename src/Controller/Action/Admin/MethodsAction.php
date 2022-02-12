@@ -23,6 +23,9 @@ use Symfony\Component\HttpFoundation\Session\Session;
 
 final class MethodsAction
 {
+    /** @var MollieLoggerActionInterface */
+    private $loggerAction;
+
     /** @var Session */
     private $session;
 
@@ -36,11 +39,13 @@ final class MethodsAction
     private $gatewayConfigRepository;
 
     public function __construct(
+        MollieLoggerActionInterface $loggerAction,
         Session $session,
         MollieMethodsCreatorInterface $mollieMethodsCreator,
         MolliePaymentMethodPurifierInterface $methodPurifier,
         EntityRepository $gatewayConfigRepository
     ) {
+        $this->loggerAction = $loggerAction;
         $this->session = $session;
         $this->mollieMethodsCreator = $mollieMethodsCreator;
         $this->methodPurifier = $methodPurifier;
@@ -49,13 +54,22 @@ final class MethodsAction
 
     public function __invoke(int $id, Request $request): Response
     {
-        $gateway = $this->gatewayConfigRepository->find($id);
-        $this->mollieMethodsCreator->createForGateway($gateway);
+        try {
+            $gateway = $this->gatewayConfigRepository->find($id);
+            $this->mollieMethodsCreator->createForGateway($gateway);
 
-        $this->methodPurifier->removeAllNoLongerSupportedMethods();
+            $this->methodPurifier->removeAllNoLongerSupportedMethods();
 
-        $this->session->getFlashBag()->add('success', 'bitbag_sylius_mollie_plugin.admin.success_got_methods');
+            $this->session->getFlashBag()->add('success', 'bitbag_sylius_mollie_plugin.admin.success_got_methods');
 
-        return new Response('OK', Response::HTTP_OK);
+            return new Response('OK', Response::HTTP_OK);
+        } catch (ApiException $e) {
+            $this->loggerAction->addNegativeLog(sprintf('API call failed: %s', $e->getMessage()));
+
+            $this->session->getFlashBag()->add('error', $e->getMessage());
+
+            throw new UpdateHandlingException(sprintf('API call failed: %s', htmlspecialchars($e->getMessage())));
+        }
     }
 }
+

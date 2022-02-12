@@ -46,11 +46,11 @@ final class MolliePaymentMethodResolver implements PaymentMethodsResolverInterfa
         if (null !== $method && MollieSubscriptionGatewayFactory::FACTORY_NAME === $factoryName) {
             return [$method];
         }
-
         $parentMethods = $this->decoratedService->getSupportedMethods($subject);
 
         if (true === $order instanceof OrderInterface && false === $order->hasRecurringContents()) {
             $parentMethods = array_filter($parentMethods, function (PaymentMethodInterface $paymentMethod) {
+
                 return $paymentMethod->getGatewayConfig()->getFactoryName() !== MollieSubscriptionGatewayFactory::FACTORY_NAME;
             });
         }
@@ -69,7 +69,6 @@ final class MolliePaymentMethodResolver implements PaymentMethodsResolverInterfa
         if (false === $subject instanceof CorePaymentInterface) {
             return false;
         }
-
         $order = $subject->getOrder();
         if (false === $order instanceof OrderInterface) {
             return false;

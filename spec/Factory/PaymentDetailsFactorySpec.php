@@ -31,7 +31,6 @@ final class PaymentDetailsFactorySpec extends ObjectBehavior
         OrderInterface $order
     ): void {
         $details = [
-            'method'=>'test_method',
             'gateway' => [
                 'metadata' => [
                     'gateway'=>'test_gateway'
@@ -43,14 +42,15 @@ final class PaymentDetailsFactorySpec extends ObjectBehavior
         ];
         $subscriptionConfiguration->getPaymentDetailsConfiguration()
             ->willReturn($details);
+        $subscriptionConfiguration->getMandateId()->willReturn(null);
 
         $this->createForSubscriptionAndOrder(
             $subscriptionConfiguration,
             $order
         )->shouldReturn([
-            'molliePaymentMethods' => $details['method'],
             'recurring' => true,
             'cartToken' => null,
+            'mandateId' => null,
             'metadata' => [
                 'gateway' => $details['metadata']['gateway']
             ],

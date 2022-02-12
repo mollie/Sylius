@@ -8,7 +8,7 @@ services:
     depends_on:
       - mysql
     environment:
-      - APP_ENV=test
+      - APP_ENV=dev
       - APP_DEBUG=1
       - APP_SECRET=EDITME
       - DATABASE_URL=mysql://sylius:nopassword@mysql/sylius
@@ -26,7 +26,7 @@ services:
       - MYSQL_PASSWORD=${MYSQL_PASSWORD:-nopassword}
     volumes:
       - mysql-data:/var/lib/mysql:rw
-      # - ./docker/mysql/data:/var/lib/mysql:rw,delegated
+#       - ./docker/mysql/data:/var/lib/mysql:rw,delegated
     ports:
       - "3306:3306"
 

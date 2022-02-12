@@ -25,6 +25,7 @@ use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Capture;
 use Payum\Core\Security\GenericTokenFactoryInterface;
 use Payum\Core\Security\TokenInterface;
+use Psr\Log\InvalidArgumentException;
 
 final class CaptureAction extends BaseApiAwareAction implements CaptureActionInterface
 {
@@ -82,20 +83,17 @@ final class CaptureAction extends BaseApiAwareAction implements CaptureActionInt
             $details['metadata'] = $metadata;
 
             if (isset($details['metadata']['methodType']) && $details['metadata']['methodType'] === Options::PAYMENT_API) {
-                dump('create throw');
                 if (in_array($details['metadata']['molliePaymentMethods'], Options::getOnlyOrderAPIMethods())) {
-                    dump('create throw1');
-                    throw new \sprintf(
+                    throw new InvalidArgumentException( sprintf(
                         'Method %s is not allowed to use %s',
                         $details['metadata']['molliePaymentMethods'],
                         Options::PAYMENT_API
-                    );
+                    ));
                 }
 
                 $this->gateway->execute(new CreatePayment($details));
             }
             if (isset($details['metadata']['methodType']) && $details['metadata']['methodType'] === Options::ORDER_API) {
-                dump('create order');
                 $this->gateway->execute(new CreateOrder($details));
             }
         }

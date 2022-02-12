@@ -20,7 +20,6 @@ final class DatePeriodFactory implements DatePeriodFactoryInterface
         $dates = [
             $start,
         ];
-
         for ($i = 1; $i < $times; $i++) {
             $dates[] = (clone $dates[$i-1])->modify(sprintf('+%s', $interval));
         }

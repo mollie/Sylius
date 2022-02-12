@@ -44,7 +44,7 @@ final class SubscriptionGuardSpec extends ObjectBehavior
            $schedule->getWrappedObject()
         ]));
 
-        $schedule->getFulfilledDate()->willReturn(new \DateTime('now'));
+        $schedule->isFulfilled()->willReturn(true);
 
         $this->isCompletable($subscription)->shouldReturn(true);
     }
@@ -57,7 +57,7 @@ final class SubscriptionGuardSpec extends ObjectBehavior
             $schedule->getWrappedObject()
         ]));
 
-        $schedule->getFulfilledDate()->willReturn(null);
+        $schedule->isFulfilled()->willReturn(false);
 
         $this->isCompletable($subscription)->shouldReturn(false);
     }

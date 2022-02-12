@@ -19,10 +19,14 @@ use BitBag\SyliusMolliePlugin\Repository\OrderRepositoryInterface;
 use BitBag\SyliusMolliePlugin\Request\Api\CreateMollieSubscription;
 use BitBag\SyliusMolliePlugin\Request\Api\CreateMollieSubscriptionInterface;
 use Mollie\Api\Endpoints\CustomerEndpoint;
+use Mollie\Api\Endpoints\PaymentEndpoint;
+use Mollie\Api\Resources\Customer;
+use Mollie\Api\Resources\Payment;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use PhpSpec\ObjectBehavior;
+use Sylius\Component\Core\Model\CustomerInterface;
 
 final class CreateMollieSubscriptionActionSpec extends ObjectBehavior
 {
@@ -76,17 +80,30 @@ final class CreateMollieSubscriptionActionSpec extends ObjectBehavior
         MollieSubscriptionRepositoryInterface $subscriptionRepository,
         MollieSubscriptionInterface $subscription,
         MollieApiClient $mollieApiClient,
-        CustomerEndpoint $customerEndpoint
+        CustomerEndpoint $customerEndpoint,
+        PaymentEndpoint $paymentEndpoint,
+        Customer $customer,
+        Payment $payment
     ): void {
         $request->getModel()->willReturn($model);
         $this->setApi($mollieApiClient);
         $mollieApiClient->customers = $customerEndpoint;
+        $mollieApiClient->payments = $paymentEndpoint;
 
         $model->offsetGet('metadata')->willReturn(['order_id' => 5]);
-        $model->offsetGet('payment_mollie_id')->willReturn(['order_id' => 5]);
+        $model->offsetGet('payment_mollie_id')->willReturn(5);
+        $model->offsetGet('customerId')->willReturn(5);
 
         $subscriptionRepository->findByOrderId(5)->willReturn($subscription);
-        $mollieApiClient->
+
+        /** @var $subscription MollieSubscriptionInterface */
+        $subscriptions = $subscriptionRepository->findByOrderId(5);
+        $subscriptions[0]->shouldBeAnInstanceOf(MollieSubscriptionInterface::class);
+        $customerEndpoint->get(5)->willReturn($customer);
+        $paymentEndpoint->get(5)->willReturn($payment);
+
+//        $subscription
+
         $this->execute($request);
     }
 }

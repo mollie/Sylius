@@ -48,6 +48,7 @@ $(function () {
         const removeRecurringDetailsLabels = () => {
             __recurringContainer.children('#recurring-label').remove();
             __recurringContainer.children('#recurring-times').remove();
+            __productPriceContainer.children('#recurring-interval').remove();
         };
 
         const addRecurringDetailsLabels = () => {

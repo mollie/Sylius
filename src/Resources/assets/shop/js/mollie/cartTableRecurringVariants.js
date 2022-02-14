@@ -20,7 +20,7 @@ export const model = {
         }
 
         if (everyLabel !== '') {
-            const everyLabelElement = $('<span class="ui orange horizontal label"/>').text(everyLabel.replace(/\%amount\%/, amount));
+            const everyLabelElement = $('<span class="ui orange horizontal label" id="recurring-interval"/>').text(everyLabel.replace(/\%amount\%/, amount));
             container.append(everyLabelElement);
         }
 

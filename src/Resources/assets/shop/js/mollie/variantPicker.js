@@ -1,12 +1,9 @@
+import {model} from './cartTableRecurringVariants';
+
 $(function () {
     $(document).ready(function () {
         const __recurringContainer = $('#sylius-product-name').siblings('.ui.text.menu');
         const __productPriceContainer = $('#product-price');
-        const __productNameRecurringPrefix = $('#sylius-variants-recurring-label').html();
-        const __recurringTimes = $('#sylius-variants-recurring-times-label').html();
-        const __everyDaysLabel = $('#sylius-variants-recurring-interval-days').text();
-        const __everyWeeksLabel = $('#sylius-variants-recurring-interval-weeks').text();
-        const __everyMonthsLabel = $('#sylius-variants-recurring-interval-months').text();
 
         const getMatchSelector = () => {
             let selector = '';
@@ -37,7 +34,7 @@ $(function () {
         }
 
         const getInterval = () => {
-            return $('#sylius-variants-recurring-interval').find(resolveSelector()).attr('data-value').trim().split(/\s+/g);
+            return $('#sylius-variants-recurring-interval').find(resolveSelector()).attr('data-value');
         }
 
         const checkRecurringMatch = () => {
@@ -55,35 +52,12 @@ $(function () {
 
         const addRecurringDetailsLabels = () => {
             // recurring label
-            const __prefixLabel = $('<span id="recurring-label" class="item"/>');
-            __prefixLabel.html(__productNameRecurringPrefix);
-            __recurringContainer.append(__prefixLabel);
+            model.appendRecurringLabel(__recurringContainer);
 
             // times label
-            const __recurringTimesLabel = $('<span id="recurring-times" class="item"/>');
-            __recurringTimesLabel.html(__recurringTimes).children().prepend(getTimes() + ' ');
-            __recurringContainer.append(__recurringTimesLabel);
+            model.appendTimesLabel(__recurringContainer, getTimes());
 
-            // interval label
-            const [amount, step] = getInterval();
-            let everyLabel = '';
-
-            switch (step) {
-                case 'days':
-                    everyLabel = __everyDaysLabel;
-                    break;
-                case 'weeks':
-                    everyLabel = __everyWeeksLabel;
-                    break;
-                case 'months':
-                    everyLabel = __everyMonthsLabel;
-                    break;
-            }
-
-            if (everyLabel !== '') {
-                const everyLabelElement = $('<span class="ui blue horizontal label"/>').text(everyLabel.replace(/\%amount\%/, amount));
-                __productPriceContainer.append(everyLabelElement);
-            }
+            model.appendIntervalLabel(__productPriceContainer, getInterval());
         };
 
         const updateProductRecurringLabel = () => {

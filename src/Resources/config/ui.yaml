@@ -1,2 +1,4 @@
 imports:
-    - { resource: "ui/**/*.yaml" }
+    - { resource: "ui/cart_recurring_variants.yaml" }
+    - { resource: "ui/mollie_subscription.yaml" }
+    - { resource: "ui/product_variants_recurring.yaml" }

@@ -52,7 +52,6 @@ final class ProductContext extends RawMinkContext implements Context
     }
 
     /**
-     * TODO:: Move to Product Context
      * @Given the :productName variant has recurring payment enabled
      */
     public function theVariantHasRecurringPaymentEnabled($productName)

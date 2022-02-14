@@ -10,11 +10,14 @@ namespace spec\BitBag\SyliusMolliePlugin\Generator;
 
 use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionConfigurationInterface;
 use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
+use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionSchedule;
+use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionScheduleInterface;
 use BitBag\SyliusMolliePlugin\Factory\DatePeriodFactoryInterface;
 use BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionScheduleFactoryInterface;
 use BitBag\SyliusMolliePlugin\Generator\SubscriptionScheduleGenerator;
 use BitBag\SyliusMolliePlugin\Generator\SubscriptionScheduleGeneratorInterface;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 final class SubscriptionScheduleGeneratorSpec extends ObjectBehavior
 {
@@ -41,36 +44,33 @@ final class SubscriptionScheduleGeneratorSpec extends ObjectBehavior
         MollieSubscriptionInterface $subscription,
         MollieSubscriptionConfigurationInterface $configuration,
         DatePeriodFactoryInterface $datePeriodFactory,
-        MollieSubscriptionScheduleFactoryInterface $scheduleFactory
+        MollieSubscriptionScheduleFactoryInterface $scheduleFactory,
+        MollieSubscriptionScheduleInterface $schedule
     ): void {
         $startedAt = new \DateTime();
-        dump($startedAt);
-//        $subscription->setStartedAt($startedAt);
         $subscription->getStartedAt()->willReturn($startedAt);
         $subscription->getSubscriptionConfiguration()->willReturn($configuration);
 
         $configuration->getNumberOfRepetitions()->willReturn(5);
-        $configuration->getInterval()->willReturn('months');
-
-        $datePeriods = [
-            0 => 'date1',
-            1 => 'date2'
-        ];
-        $schedules = [];
+        $configuration->getInterval()->willReturn('month');
 
         $datePeriodFactory->createForSubscriptionConfiguration(
-            $startedAt,
+            Argument::any(),
             5,
-            'months'
-        )->willReturn($startedAt);
+            'month'
+        )->willReturn([$startedAt]);
 
         $scheduleFactory->createConfiguredForSubscription(
             $subscription,
-            $startedAt,
-            1
-        )->willReturn($schedules);
+            Argument::any(),
+           0,
+            Argument::any()
+        )->willReturn($schedule);
+        $subscription->setStartedAt(Argument::any())->shouldBeCalled();
 
 
-        $this->generate($subscription);
+        $schedules = [$schedule->getWrappedObject()];
+
+        $this->generate($subscription)->shouldReturn($schedules);
     }
 }

@@ -15,8 +15,11 @@ use BitBag\SyliusMolliePlugin\Entity\GatewayConfigInterface;
 use BitBag\SyliusMolliePlugin\Factory\MethodsFactoryInterface;
 use BitBag\SyliusMolliePlugin\Factory\MollieGatewayConfigFactoryInterface;
 use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
+use BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
 use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Mollie\Api\Endpoints\MethodEndpoint;
+use Mollie\Api\Resources\MethodCollection;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 
@@ -54,34 +57,49 @@ final class MollieMethodsCreatorSpec extends ObjectBehavior
         GatewayConfigInterface $gateways,
         GatewayConfigInterface $gateway1,
         GatewayConfigInterface $gateway2,
-        RepositoryInterface $gatewayRepository,
+        RepositoryInterface $gatewayConfigRepository,
         MollieApiClient $mollieApiClient,
         MollieApiClient $client,
         MollieLoggerActionInterface $loggerAction
     ): void {
+
+        $gatewayConfigRepository->findBy(['factoryName' => [
+            MollieGatewayFactory::FACTORY_NAME,
+        ]])->willReturn([$gateways]);
+
         $gateways = [
             $gateway1,
             $gateway2,
         ];
-        $gatewayRepository->findBy(['factoryName' => [
-            MollieGatewayFactory::FACTORY_NAME,
-        ]])->willReturn($gateways);
+        $loggerAction->addLog('Unable to download methods for not_mollie_name')->shouldNotBeCalled();
+        $this->create();
+        $this->createForGateway($gateways[0])->shouldBeCalled();
+    }
 
-//        foreach ($gateways as $gateway) {
-//            $gateway->getConfig()->willReturn([
-//                'api_key_test' => 'test_key'
-//            ]);
-
-            $gateway1->getFactoryName()->willReturn('not_mollie');
-            $gateway1->getGatewayName()->willReturn('not_mollie_name');
-
-
-            $mollieApiClient->setApiKey('api_key_test')->willReturn($client);
-            $client->setIsRecurringSubscription(true);
-
-            $this->create();
-
-            $loggerAction->addLog('Unable to download methods for not_mollie_name')->shouldNotBeCalled();
-        }
+    function it_creates_for_gateway(
+        GatewayConfigInterface $gateway,
+        MollieApiClient $mollieApiClient,
+        MollieApiClient $client,
+        MethodEndpoint $methodEndpoint,
+        MethodCollection $methodCollection,
+        MethodCollection $recurringCollection
+    ): void {
+        $gateway->getConfig()->willReturn([
+            'environment' => 'test',
+            'api_key_test' => 'test_key123',
+            'times' => '5',
+            'interval' => '12 months'
+        ]);
+        $environment = 'api_key_test';
+        $recurring = true;
+        $mollieApiClient->setApiKey('test_key123')->willReturn($client);
+        $client->setIsRecurringSubscription($recurring);
+        $gateway->getFactoryName()->willReturn(MollieSubscriptionGatewayFactory::FACTORY_NAME);
+        $client->methods = $methodEndpoint;
+        $methodEndpoint->allActive(MollieMethodsCreatorInterface::PARAMETERS)->willReturn($methodCollection);
+        $methodEndpoint->allActive(MollieMethodsCreatorInterface::PARAMETERS_RECURRING)->willReturn($recurringCollection);
+//        $methodCollection->append($recurringCollection[0])->shouldBeCalled();
+        $this->createForGateway($gateway);
+    }
 
 }

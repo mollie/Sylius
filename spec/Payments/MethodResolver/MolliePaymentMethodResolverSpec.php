@@ -9,10 +9,15 @@ declare(strict_types=1);
 namespace spec\BitBag\SyliusMolliePlugin\Payments\MethodResolver;
 
 use BitBag\SyliusMolliePlugin\Entity\OrderInterface;
+use BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
+use BitBag\SyliusMolliePlugin\Payments\MethodResolver\MollieMethodFilterInterface;
 use BitBag\SyliusMolliePlugin\Payments\MethodResolver\MolliePaymentMethodResolver;
 use BitBag\SyliusMolliePlugin\Resolver\MollieFactoryNameResolverInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Payum\Core\Model\GatewayConfigInterface;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\PaymentInterface as CorePaymentInterface;
 use Sylius\Component\Core\Model\PaymentMethodInterface;
@@ -24,13 +29,15 @@ final class MolliePaymentMethodResolverSpec extends ObjectBehavior
     function let(
         PaymentMethodsResolverInterface $decoratedService,
         PaymentMethodRepositoryInterface $paymentMethodRepository,
-        MollieFactoryNameResolverInterface $factoryNameResolver
+        MollieFactoryNameResolverInterface $factoryNameResolver,
+        MollieMethodFilterInterface $mollieMethodFilter
     ): void
     {
         $this->beConstructedWith(
             $decoratedService,
             $paymentMethodRepository,
-            $factoryNameResolver
+            $factoryNameResolver,
+            $mollieMethodFilter
         );
     }
 
@@ -73,9 +80,10 @@ final class MolliePaymentMethodResolverSpec extends ObjectBehavior
         MollieFactoryNameResolverInterface $factoryNameResolver,
         PaymentMethodRepositoryInterface $paymentMethodRepository,
         PaymentMethodInterface $method,
-        CorePaymentInterface $parentMethod,
+        PaymentMethodInterface $parentMethod,
         PaymentMethodInterface $paymentMethod,
-        GatewayConfigInterface $gatewayConfig
+        GatewayConfigInterface $gatewayConfig,
+        MollieMethodFilterInterface $mollieMethodFilter
     ): void
     {
         $subject->getOrder()->willReturn($order);
@@ -92,16 +100,12 @@ final class MolliePaymentMethodResolverSpec extends ObjectBehavior
         $decoratedService->getSupportedMethods($subject)->willReturn([$parentMethod]);
 
         $order->hasRecurringContents()->willReturn(false);
-        /** @var $parentMethod PaymentMethodInterface */
-        $methods = $this->getSupportedMethods($subject);
-        $methods->shouldHaveCount(1);
-        $methods[0]->shouldBeAnInstanceOf(PaymentMethodInterface::class);
         $paymentMethod->getGatewayConfig()->willReturn($gatewayConfig);
         $gatewayConfig->getFactoryName()->willReturn('not_mollie_subscription');
 
-        $closure = function(PaymentMethodInterface $paymentMethod){};
+        $mollieMethodFilter->nonRecurringFilter([$parentMethod])->willReturn([$parentMethod]);
 
-        $this->getSupportedMethods($subject);
+        $this->getSupportedMethods($subject)->shouldReturn([$parentMethod]);
     }
 
     function it_gets_supported_methods_and_has_recurring_contents(
@@ -112,9 +116,10 @@ final class MolliePaymentMethodResolverSpec extends ObjectBehavior
         MollieFactoryNameResolverInterface $factoryNameResolver,
         PaymentMethodRepositoryInterface $paymentMethodRepository,
         PaymentMethodInterface $method,
-        CorePaymentInterface $parentMethod,
+        PaymentMethodInterface $parentMethod,
         PaymentMethodInterface $paymentMethod,
-        GatewayConfigInterface $gatewayConfig
+        GatewayConfigInterface $gatewayConfig,
+        MollieMethodFilterInterface $mollieMethodFilter
     ): void
     {
         $subject->getOrder()->willReturn($order);
@@ -131,16 +136,12 @@ final class MolliePaymentMethodResolverSpec extends ObjectBehavior
         $decoratedService->getSupportedMethods($subject)->willReturn([$parentMethod]);
 
         $order->hasRecurringContents()->willReturn(true);
-        /** @var $parentMethod PaymentMethodInterface */
-        $methods = $this->getSupportedMethods($subject);
-        $methods->shouldHaveCount(1);
-        $methods[0]->shouldBeAnInstanceOf(PaymentMethodInterface::class);
         $paymentMethod->getGatewayConfig()->willReturn($gatewayConfig);
         $gatewayConfig->getFactoryName()->willReturn('not_mollie_subscription');
 
-        $closure = function(PaymentMethodInterface $paymentMethod){};
+        $mollieMethodFilter->recurringFilter([$parentMethod])->willReturn([$parentMethod]);
 
-        $this->getSupportedMethods($subject);
+        $this->getSupportedMethods($subject)->shouldReturn([$parentMethod]);
     }
 
     function it_supports(

@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Payments\MethodResolver;
 
 use BitBag\SyliusMolliePlugin\Entity\OrderInterface;
-use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
 use BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
 use BitBag\SyliusMolliePlugin\Resolver\MollieFactoryNameResolverInterface;
 use Sylius\Component\Core\Model\PaymentInterface as CorePaymentInterface;
@@ -18,16 +17,19 @@ final class MolliePaymentMethodResolver implements PaymentMethodsResolverInterfa
     private PaymentMethodsResolverInterface $decoratedService;
     private PaymentMethodRepositoryInterface $paymentMethodRepository;
     private MollieFactoryNameResolverInterface $factoryNameResolver;
+    private MollieMethodFilterInterface $mollieMethodFilter;
 
     public function __construct(
         PaymentMethodsResolverInterface $decoratedService,
         PaymentMethodRepositoryInterface $paymentMethodRepository,
-        MollieFactoryNameResolverInterface $factoryNameResolver
+        MollieFactoryNameResolverInterface $factoryNameResolver,
+        MollieMethodFilterInterface $mollieMethodFilter
     )
     {
         $this->decoratedService = $decoratedService;
         $this->paymentMethodRepository = $paymentMethodRepository;
         $this->factoryNameResolver = $factoryNameResolver;
+        $this->mollieMethodFilter = $mollieMethodFilter;
     }
 
     public function getSupportedMethods(PaymentInterface $subject): array
@@ -49,16 +51,11 @@ final class MolliePaymentMethodResolver implements PaymentMethodsResolverInterfa
         $parentMethods = $this->decoratedService->getSupportedMethods($subject);
 
         if (true === $order instanceof OrderInterface && false === $order->hasRecurringContents()) {
-            $parentMethods = array_filter($parentMethods, function (PaymentMethodInterface $paymentMethod) {
-
-                return $paymentMethod->getGatewayConfig()->getFactoryName() !== MollieSubscriptionGatewayFactory::FACTORY_NAME;
-            });
+            $parentMethods = $this->mollieMethodFilter->nonRecurringFilter($parentMethods);
         }
 
         if (true === $order instanceof OrderInterface && true === $order->hasRecurringContents()) {
-            $parentMethods = array_filter($parentMethods, function (PaymentMethodInterface $paymentMethod) {
-                return $paymentMethod->getGatewayConfig()->getFactoryName() !== MollieGatewayFactory::FACTORY_NAME;
-            });
+            $parentMethods = $this->mollieMethodFilter->recurringFilter($parentMethods);
         }
 
         return $parentMethods;

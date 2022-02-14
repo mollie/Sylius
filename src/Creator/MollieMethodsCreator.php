@@ -70,7 +70,6 @@ final class MollieMethodsCreator implements MollieMethodsCreatorInterface
                 MollieGatewayFactory::FACTORY_NAME,
             ],
         ]);
-
         foreach ($gateways as $gateway) {
             $this->createForGateway($gateway);
         }
@@ -82,14 +81,15 @@ final class MollieMethodsCreator implements MollieMethodsCreatorInterface
         $environment = true === $config['environment'] ?
             MollieGatewayConfigurationType::API_KEY_LIVE :
             MollieGatewayConfigurationType::API_KEY_TEST;
-
         $recurring = array_key_exists('times', $config) && array_key_exists('interval', $config);
         $client = $this->mollieApiClient->setApiKey($config[$environment]);
         $client->setIsRecurringSubscription($recurring);
 
         if (MollieSubscriptionGatewayFactory::FACTORY_NAME === $gateway->getFactoryName()) {
+            dump('aa');
             $baseCollection = $client->methods->allActive(self::PARAMETERS);
             $recurringCollection = $client->methods->allActive(self::PARAMETERS_RECURRING);
+            dump($recurringCollection);
             foreach ($recurringCollection as $recurringEntry) {
                 $baseCollection->append($recurringEntry);
             }

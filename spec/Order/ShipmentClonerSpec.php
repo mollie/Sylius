@@ -13,6 +13,7 @@ use BitBag\SyliusMolliePlugin\Order\ShipmentClonerInterface;
 use BitBag\SyliusMolliePlugin\Order\ShipmentUnitClonerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Sylius\Component\Core\Model\ShipmentInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 use Sylius\Component\Shipping\Model\ShipmentUnitInterface;
@@ -48,36 +49,27 @@ final class ShipmentClonerSpec extends ObjectBehavior
         ShippingMethodInterface $method
     ): void {
         $shipmentFactory->createNew()->willReturn($clonedShipment);
-
-//        $time = new \DateTime();
-//        $time->setDate(2029, 12, 12);
-
-        $shipment->getState()->willReturn(ShipmentInterface::STATE_READY);
-        $shipment->getTracking()->willReturn(null);
-        $shipment->getShippedAt()->willReturn(null);
         $shipment->getMethod()->willReturn($method);
-        $shipment->getCreatedAt()->willReturn(new \DateTime());
-        $shipment->getUpdatedAt()->willReturn(new \DateTime());
 
-        $clonedShipment->setState(ShipmentInterface::STATE_READY);
-        $clonedShipment->setTracking(null);
-        $clonedShipment->setShippedAt(null);
-        $clonedShipment->setMethod($shipment->getWrappedObject()->getMethod());
-        $clonedShipment->setCreatedAt(new \DateTime());
-        $clonedShipment->setUpdatedAt(new \DateTime());
+        $dateTime = new \DateTime();
+        $dateTime->setDate(2050,12,12);
+        $dateTime->setTime(10,48);
+        $clonedShipment->getState()->willReturn(ShipmentInterface::STATE_READY);
+        $clonedShipment->getTracking()->willReturn(null);
+        $clonedShipment->getShippedAt()->willReturn(null);
+        $clonedShipment->getMethod()->willReturn($method);
+        $clonedShipment->getCreatedAt()->willReturn($dateTime);
+        $clonedShipment->getUpdatedAt()->willReturn($dateTime);
 
-        $shipment->getUnits()->willReturn(new ArrayCollection([
-            $unit1->getWrappedObject(),
-        ]));
+        $clonedShipment->setState(ShipmentInterface::STATE_READY)->shouldBeCalled();
+        $clonedShipment->setTracking(null)->shouldBeCalled();
+        $clonedShipment->setShippedAt(null)->shouldBeCalled();
+        $clonedShipment->setMethod($method)->shouldBeCalled();
+        $clonedShipment->setCreatedAt(Argument::any())->shouldBeCalled();
+        $clonedShipment->setUpdatedAt(Argument::any())->shouldBeCalled();
 
-        $clonedUnit = clone $unit1;
-        $unit1->setShipment($clonedShipment);
-        $unit1->setCreatedAt(new \DateTime());
-        $unit1->setUpdatedAt(null);
+        $clonedShipment->recalculateAdjustmentsTotal()->shouldBeCalled();
 
-        $clonedShipment->addUnit($clonedUnit);
-        $clonedShipment->recalculateAdjustmentsTotal();
-
-        $this->clone($shipment);
+        $this->clone($shipment)->shouldReturn($clonedShipment);
     }
 }

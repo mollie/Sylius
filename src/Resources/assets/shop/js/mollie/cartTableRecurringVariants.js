@@ -20,8 +20,11 @@ export const model = {
         }
 
         if (everyLabel !== '') {
-            const everyLabelElement = $('<span class="ui orange horizontal label" id="recurring-interval"/>').text(everyLabel.replace(/\%amount\%/, amount));
-            container.append(everyLabelElement);
+            const __intervalElementContainer = $($('#sylius-variants-recurring-interval-label').html());
+            const __everyLabel = $('<span id="every-label" class="item"/>');
+            __intervalElementContainer.text(everyLabel.replace(/\%amount\%/, amount));
+            __everyLabel.append(__intervalElementContainer);
+            container.append(__everyLabel);
         }
 
     },
@@ -49,5 +52,11 @@ export const model = {
         itemContainer.append(__recurringContainer);
 
         model.appendIntervalLabel(totalContainer, interval);
+    },
+    clearLabels: () => {
+        $('#recurring-label').remove();
+        $('#recurring-times').remove();
+        $('#recurring-interval').remove();
+        $('#every-label').remove();
     }
 }

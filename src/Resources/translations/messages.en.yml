@@ -215,7 +215,7 @@ bitbag_sylius_mollie_plugin:
         expiration_date_time: 'Expiration date time'
     shop:
         product_variant:
-            recurring: 'Recurring'
+            recurring: 'Subscription'
             times: 'time(s)'
             every:
                 days: 'every %amount% day(s)'

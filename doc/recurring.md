@@ -13,7 +13,7 @@ With this functionality added, **CRON** command is required in order to proceed 
 * * * * * /usr/bin/php /path/to/bin/console mollie:subscription:begin-processing
 
 # Process previously marked subscriptions
-* * * * * /usr/bin/php /path/to/bin/console mollie:subscription:processing
+* * * * * /usr/bin/php /path/to/bin/console mollie:subscription:process
 ```
 
 #### 1.2. Gateway configuration

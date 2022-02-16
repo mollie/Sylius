@@ -69,6 +69,7 @@ Check:
 * `vendor/bitbag/mollie-plugin/Resources/views/Shop/_partial/_recurringTranslations.html.twig`
 * `vendor/bitbag/mollie-plugin/Resources/views/Shop/Product`
 * `vendor/bitbag/mollie-plugin/Resources/views/Shop/Cart`
+
 for more templates to customize.
 
 

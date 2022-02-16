@@ -66,9 +66,9 @@ Copy:
 * `vendor/bitbag/mollie-plugin/src/Resources/views/Shop/_partial/_recurringBadge.html.twig` into `templates/SyliusMolliePlugin/Shop/_partial/_recurringBadge.html.twig`
 
 Check:
-* `vendor/bitbag/mollie-plugin/Resources/views/Shop/_partial/_recurringTranslations.html.twig`
-* `vendor/bitbag/mollie-plugin/Resources/views/Shop/Product`
-* `vendor/bitbag/mollie-plugin/Resources/views/Shop/Cart`
+* `vendor/bitbag/mollie-plugin/src/Resources/views/Shop/_partial/_recurringTranslations.html.twig`
+* `vendor/bitbag/mollie-plugin/src/Resources/views/Shop/Product`
+* `vendor/bitbag/mollie-plugin/src/Resources/views/Shop/Cart`
 
 for more templates to customize.
 

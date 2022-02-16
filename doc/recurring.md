@@ -22,21 +22,29 @@ Configuring **Recurring (cron)** subscriptions has to be configured similarly to
 #### 1.3. Configuring product's variants
 In order to use recurring payments there has to be product (variant) that has to exist within order.
 In order to configure one's, access any product's variants, and modify it's **Recurring settings**
+
 ![subscription_admin_variant.png](subscription_admin_variant.png)
 
+
 And then, edit it's settings up to your needs
+
 ![subscription_admin_variant_settings.png](subscription_admin_variant_settings.png)
 
 ### 2. Subscriptions
 Subscriptions can be accessed in admin by selecting proper menu
+
 ![subscription_admin_menu.png](subscription_admin_menu.png)
+
 
 Once accessed, there's grid that shows subscriptions and their states
 ![subscription_admin_grid.png](subscription_admin_grid.png)
 
+
 ### 2.1. Subscription details
 Each subscription contains list of useful information once browsed.
 ![subscription_admin_details.png](subscription_admin_details.png)
+
+
 Here's list of every order "attached" to subscription `NOTE: First order may be shared between multiple subscriptions, as it's source of their contents`, every payment, order content's and `expected` payment schedule, and it's fulfilled date.
 
 Every **active / processing** subscription can be **paused**(and **resumed**) or **canceled**

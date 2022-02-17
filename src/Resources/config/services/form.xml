@@ -22,6 +22,10 @@
             <tag name="sylius.gateway_configuration_type" type="mollie" label="bitbag_sylius_mollie_plugin.ui.mollie_gateway_label"/>
             <tag name="form.type"/>
         </service>
+        <service id="bitbag_sylius_mollie_plugin.form.type.mollie_subscription_gateway_configuration" class="BitBag\SyliusMolliePlugin\Form\Type\MollieSubscriptionGatewayConfigurationType">
+            <tag name="sylius.gateway_configuration_type" type="mollie_subscription" label="bitbag_sylius_mollie_plugin.ui.mollie_subscription_gateway_label"/>
+            <tag name="form.type"/>
+        </service>
         <service id="bitbag_sylius_mollie_plugin.form.type.direct_debit" class="BitBag\SyliusMolliePlugin\Form\Type\DirectDebitType">
             <argument type="service" id="session"/>
             <tag name="form.type"/>

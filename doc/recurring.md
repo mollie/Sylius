@@ -17,7 +17,7 @@ With this functionality added, **CRON** command is required in order to proceed 
 ```
 
 #### 1.2. Gateway configuration
-Configuring **Recurring (cron)** subscriptions has to be configured similarly to "default" Mollie's gateway gateway. 
+Configuring **Recurring (cron)** subscriptions has to be configured similarly to "default" Mollie's gateway. 
 
 #### 1.3. Configuring product's variants
 In order to use recurring payments there has to be product (variant) that has to exist within order.

@@ -1,9 +1,11 @@
 <?php
+
 /*
     This file was created by developers working at BitBag
     Do you need more information about us and what we do? Visit our   website!
     We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
 */
+
 declare(strict_types=1);
 
 namespace spec\BitBag\SyliusMolliePlugin\Action\Api;
@@ -22,6 +24,7 @@ use BitBag\SyliusMolliePlugin\Repository\OrderRepositoryInterface;
 use BitBag\SyliusMolliePlugin\Request\Api\CreateMollieSubscription;
 use BitBag\SyliusMolliePlugin\Request\Api\CreateMollieSubscriptionInterface;
 use BitBag\SyliusMolliePlugin\Request\StateMachine\StatusRecurringSubscription;
+use BitBag\SyliusMolliePlugin\Validator\Constraints\Currency;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mollie\Api\Endpoints\CustomerEndpoint;
 use Mollie\Api\Endpoints\PaymentEndpoint;
@@ -163,10 +166,86 @@ final class CreateMollieSubscriptionActionSpec extends ObjectBehavior
 
         $mollieSubscription->id = '15';
         $payment->id = 'mdt_pXm1g3ND';
+        $currency = new GetCurrency('EUR');
         $configuration->setSubscriptionId('15')->shouldBeCalled();
         $configuration->setMandateId('mdt_pXm1g3ND')->shouldBeCalled();
         $subscriptionRepository->add($subscription)->shouldBeCalled();
-        $this->execute($request);
+        $gateway->execute($currency)->shouldBeCalled();
         $gateway->execute(new StatusRecurringSubscription($subscription->getWrappedObject()))->shouldBeCalled();
+        $this->execute($request);
+    }
+
+    function it_executes_with_not_null_payment_id(
+        CreateMollieSubscriptionInterface $request,
+        ArrayObject $model,
+        MollieSubscriptionRepositoryInterface $subscriptionRepository,
+        MollieSubscriptionInterface $subscription,
+        MollieSubscriptionConfigurationInterface $configuration,
+        MollieApiClient $mollieApiClient,
+        CustomerEndpoint $customerEndpoint,
+        PaymentEndpoint $paymentEndpoint,
+        Customer $customer,
+        Payment $payment,
+        GatewayInterface $gateway
+    ): void {
+        $request->getModel()->willReturn($model);
+        $this->setApi($mollieApiClient);
+        $mollieApiClient->customers = $customerEndpoint;
+        $mollieApiClient->payments = $paymentEndpoint;
+        $customerEndpoint->get(5)->willReturn($customer);
+        $paymentEndpoint->get(5)->willReturn($payment);
+
+        $model->offsetGet('metadata')->willReturn([
+            'order_id' => '5',
+            'gateway' => 'mollie_subscription'
+        ]);
+        $model->offsetGet('payment_mollie_id')->willReturn(5);
+        $model->offsetGet('customerId')->willReturn(5);
+        $model->offsetExists('metadata');
+        $model->offsetExists('payment_mollie_id');
+
+        $subscriptionRepository->findByOrderId(5)->willReturn([$subscription]);
+
+        $subscription->getSubscriptionConfiguration()->willReturn($configuration);
+        $configuration->getSubscriptionId()->willReturn('some_id');
+
+        $this->setGateway($gateway);
+        $gateway->execute(new StatusRecurringSubscription($subscription->getWrappedObject()))->shouldBeCalled();
+        $this->execute($request);
+    }
+
+    function it_executes_with_null_repository(
+        CreateMollieSubscriptionInterface $request,
+        ArrayObject $model,
+        MollieSubscriptionRepositoryInterface $subscriptionRepository,
+        MollieSubscriptionInterface $subscription,
+        MollieApiClient $mollieApiClient,
+        CustomerEndpoint $customerEndpoint,
+        PaymentEndpoint $paymentEndpoint,
+        Customer $customer,
+        Payment $payment,
+        GatewayInterface $gateway
+    ): void {
+        $request->getModel()->willReturn($model);
+        $this->setApi($mollieApiClient);
+        $mollieApiClient->customers = $customerEndpoint;
+        $mollieApiClient->payments = $paymentEndpoint;
+        $customerEndpoint->get(5)->willReturn($customer);
+        $paymentEndpoint->get(5)->willReturn($payment);
+
+        $model->offsetGet('metadata')->willReturn([
+            'order_id' => '5',
+            'gateway' => 'mollie_subscription'
+        ]);
+        $model->offsetGet('payment_mollie_id')->willReturn(5);
+        $model->offsetGet('customerId')->willReturn(5);
+        $model->offsetExists('metadata');
+        $model->offsetExists('payment_mollie_id');
+
+        $subscriptionRepository->findByOrderId(5)->willReturn([]);
+
+        $this->setGateway($gateway);
+        $gateway->execute(new StatusRecurringSubscription($subscription->getWrappedObject()))->shouldNotBeCalled();
+        $this->execute($request);
     }
 }

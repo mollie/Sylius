@@ -77,6 +77,7 @@
             <argument type="service" id="bitbag_sylius_mollie_plugin.payments.order_converter"/>
             <argument type="service" id="sylius.context.customer"/>
             <argument type="service" id="bitbag_sylius_mollie_plugin.resolver.payment_locale_resolver"/>
+            <argument type="service" id="bit_bag.sylius_mollie_plugin.factory.api_customer_factory"/>
             <tag name="payum.action" factory="mollie" alias="payum.action.api.create_customer"/>
         </service>
         <service id="bitbag_sylius_mollie_plugin.action.convert_mollie_subscription_payment" class="BitBag\SyliusMolliePlugin\Action\ConvertMollieSubscriptionPaymentAction">

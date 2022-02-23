@@ -43,8 +43,7 @@ final class CheckoutOrderCollidingProductsListenerSpec extends ObjectBehavior
         RouterInterface $router,
         FlashBagInterface $flashBag,
         TranslatorInterface $translator
-    )
-    {
+    ): void {
         $order->hasNonRecurringContents()->willReturn(true);
         $order->hasRecurringContents()->willReturn(true);
         $router->generate('sylius_shop_cart_summary')->willReturn('/sylius_shop_cart_summary');

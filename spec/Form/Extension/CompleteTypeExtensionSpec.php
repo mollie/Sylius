@@ -56,9 +56,5 @@ final class CompleteTypeExtensionSpec extends ObjectBehavior
                     new Valid(),
                 ],
             ])->shouldBeCalledOnce();
-
-
-
     }
-
 }

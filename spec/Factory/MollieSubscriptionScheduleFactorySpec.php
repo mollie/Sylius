@@ -78,6 +78,5 @@ final class MollieSubscriptionScheduleFactorySpec extends ObjectBehavior
             9,
             $fulfilledDate
         )->shouldReturn($schedule);
-
     }
 }

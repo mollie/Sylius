@@ -20,6 +20,7 @@ use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
 use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use BitBag\SyliusMolliePlugin\Request\Api\CancelRecurringSubscription;
 use Mollie\Api\Endpoints\CustomerEndpoint;
+use Mollie\Api\Exceptions\ApiException;
 use Mollie\Api\Resources\Customer;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
@@ -76,6 +77,30 @@ final class CancelRecurringSubscriptionActionSpec extends ObjectBehavior
         $customer->cancelSubscription('sub_id_1')->shouldBeCalled();
 
         $this->execute($request);
+    }
+
+    function it_executes_and_throws_exception(
+        CancelRecurringSubscription $request,
+        MollieApiClient $mollieApiClient,
+        MollieSubscriptionInterface $subscription,
+        MollieSubscriptionConfigurationInterface $configuration,
+        CustomerEndpoint $customerEndpoint,
+        MollieLoggerActionInterface $loggerAction
+    ): void {
+        $mollieApiClient->customers = $customerEndpoint;
+        $this->setApi($mollieApiClient);
+        $request->getModel()->willReturn($subscription);
+        $subscription->getSubscriptionConfiguration()->willReturn($configuration);
+        $configuration->getCustomerId()->willReturn('id_1');
+        $configuration->getSubscriptionId()->willReturn('sub_id_1');
+        $e = new \Exception();
+        $customerEndpoint->get('id_1')->willThrow($e);
+        $loggerAction->addNegativeLog(sprintf(
+            'Error with get customer in recurring subscription with: %s',
+            $e->getMessage()))->shouldBeCalled();
+
+        $this->shouldThrow(ApiException::class)
+            ->during('execute', [$request]);
     }
 
     function it_supports_cancel_recurring_subscription_request_and_subscription_model(

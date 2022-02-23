@@ -38,7 +38,7 @@ final class MollieSubscriptionStateSpec extends ObjectBehavior
         $source->restrict($builder->getWrappedObject()->in('state', $data['state']))->shouldBeCalledOnce();
     }
 
-    function it_returnes_when_array_key_does_not_exists(
+    function it_returns_when_array_key_does_not_exists(
         DataSourceInterface $source,
         ExpressionBuilderInterface $builder
     ): void {

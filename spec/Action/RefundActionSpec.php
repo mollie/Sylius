@@ -17,6 +17,7 @@ use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
 use BitBag\SyliusMolliePlugin\Helper\ConvertRefundDataInterface;
 use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use Mollie\Api\Endpoints\PaymentEndpoint;
+use Mollie\Api\Exceptions\ApiException;
 use Mollie\Api\Resources\Payment;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
@@ -147,6 +148,33 @@ final class RefundActionSpec extends ObjectBehavior
         $molliePayment->canBeRefunded()->willReturn(false);
         $loggerAction->addNegativeLog(sprintf('Payment %s can not be refunded.', $molliePayment->id))->shouldBeCalled();
         $this->shouldThrow(new UpdateHandlingException(sprintf('Payment %s can not be refunded.', $molliePayment->id)))
+            ->during('execute',[$request]);
+    }
+
+    function it_executes_with_api_exception(
+        Refund $request,
+        MollieApiClient $mollieApiClient,
+        ArrayObject $details,
+        MollieLoggerActionInterface $loggerAction,
+        PaymentInterface $payment,
+        Payment $molliePayment,
+        PaymentEndpoint $paymentEndpoint,
+        ConvertRefundDataInterface $convertOrderRefundData
+    ): void {
+        $this->setApi($mollieApiClient);
+        $request->getModel()->willReturn($details);
+        $request->getFirstModel()->willReturn($payment);
+        $mollieApiClient->payments = $paymentEndpoint;
+        $payment->getCurrencyCode()->willReturn('EUR');
+
+        $details->offsetGet('payment_mollie_id')->willReturn(4);
+        $details->offsetGet('created_in_mollie')->willReturn(null);
+        $details->offsetGet('metadata')->willReturn(['refund' => ['test_refund']]);
+        $e = new ApiException;
+        $paymentEndpoint->get(4)->willThrow($e);
+
+        $loggerAction->addNegativeLog(sprintf('API call failed: %s', htmlspecialchars($e->getMessage())))->shouldBeCalled();
+        $this->shouldThrow(new \Exception(sprintf('API call failed: %s', htmlspecialchars($e->getMessage()))))
             ->during('execute',[$request]);
     }
 

@@ -23,8 +23,7 @@ final class ProductVariantRecurringOptionsListenerSpec extends ObjectBehavior
     function it_adds_recurring_options_menu(
         ProductVariantMenuBuilderEvent $event,
         ItemInterface $menu
-    ): void
-    {
+    ): void {
         $event->getMenu()->willReturn($menu);
         $menu->addChild('recurring')->willReturn($menu);
         $menu->setAttribute(

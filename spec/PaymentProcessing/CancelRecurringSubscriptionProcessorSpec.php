@@ -71,4 +71,64 @@ final class CancelRecurringSubscriptionProcessorSpec extends ObjectBehavior
 
         $this->process($subscription);
     }
+
+    function it_processes_with_last_order_null(
+        MollieSubscriptionInterface $subscription,
+        GatewayInterface $gateway
+    ): void {
+        $subscription->getLastOrder()->willReturn(null);
+
+        $gateway->execute(Argument::any())->shouldNotBeCalled();
+
+        $this->process($subscription);
+    }
+
+    function it_processes_with_last_payment_null(
+        MollieSubscriptionInterface $subscription,
+        OrderInterface $order,
+        GatewayInterface $gateway
+    ): void {
+        $subscription->getLastOrder()->willReturn($order);
+        $order->getLastPayment()->willReturn(null);
+
+        $gateway->execute(Argument::any())->shouldNotBeCalled();
+
+        $this->process($subscription);
+    }
+
+    function it_processes_with_null_config(
+        MollieSubscriptionInterface $subscription,
+        OrderInterface $order,
+        PaymentInterface $payment,
+        PaymentMethodInterface $paymentMethod,
+        GatewayInterface $gateway
+    ): void {
+        $subscription->getLastOrder()->willReturn($order);
+        $order->getLastPayment()->willReturn($payment);
+        $payment->getMethod()->willReturn($paymentMethod);
+        $paymentMethod->getGatewayConfig()->willReturn(null);
+
+        $gateway->execute(Argument::any())->shouldNotBeCalled();
+
+        $this->process($subscription);
+    }
+
+    function it_processes_with_wrong_factory_name(
+        MollieSubscriptionInterface $subscription,
+        OrderInterface $order,
+        PaymentInterface $payment,
+        PaymentMethodInterface $paymentMethod,
+        GatewayConfigInterface $gatewayConfig,
+        GatewayInterface $gateway
+    ): void {
+        $subscription->getLastOrder()->willReturn($order);
+        $order->getLastPayment()->willReturn($payment);
+        $payment->getMethod()->willReturn($paymentMethod);
+        $paymentMethod->getGatewayConfig()->willReturn($gatewayConfig);
+        $gatewayConfig->getFactoryName()->willReturn('not_mollie_subscription');
+
+        $gateway->execute(Argument::any())->shouldNotBeCalled();
+
+        $this->process($subscription);
+    }
 }

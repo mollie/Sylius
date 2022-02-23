@@ -22,5 +22,6 @@
         <service id="bitbag_sylius_mollie_plugin.provider.apple.apple_pay_direct_payment_provider" class="BitBag\SyliusMolliePlugin\Provider\Apple\ApplePayDirectPaymentProvider">
             <argument type="service" id="bitbag_sylius_mollie_plugin.resolver.apple_pay_direct.apple_pay_direct_payment_type_resolver"/>
         </service>
+        <service id="bit_bag.sylius_mollie_plugin.form.extension.resolver_group_provider" class="BitBag\SyliusMolliePlugin\Provider\Form\ResolverGroupProvider"/>
     </services>
 </container>

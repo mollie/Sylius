@@ -17,9 +17,11 @@ use BitBag\SyliusMolliePlugin\Order\SubscriptionOrderCloner;
 use BitBag\SyliusMolliePlugin\Order\SubscriptionOrderClonerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Sylius\Component\Channel\Model\ChannelInterface;
 use Sylius\Component\Core\Model\AddressInterface;
 use Sylius\Component\Core\Model\OrderItemInterface;
+use Sylius\Component\Core\Model\OrderItemUnitInterface;
 use Sylius\Component\Core\Model\ShipmentInterface;
 use Sylius\Component\Core\OrderCheckoutStates;
 use Sylius\Component\Core\OrderPaymentStates;
@@ -58,13 +60,14 @@ final class SubscriptionOrderClonerSpec extends ObjectBehavior
         $this->shouldImplement(SubscriptionOrderClonerInterface::class);
     }
 
-    function iit_clones(
+    function it_clones(
         OrderInterface $order,
         OrderInterface $clonedOrder,
         OrderInterface $rootOrder,
         MollieSubscriptionInterface $subscription,
         OrderItemInterface $orderItem,
-        OrderItemInterface $item,
+        OrderItemInterface $clonedItem,
+        OrderItemUnitInterface $itemUnit,
         FactoryInterface $orderFactory,
         ChannelInterface $channel,
         CustomerInterface $customer,
@@ -75,11 +78,8 @@ final class SubscriptionOrderClonerSpec extends ObjectBehavior
         OrderItemClonerInterface $orderItemCloner,
         AdjustmentInterface $adjustment,
         AdjustmentInterface $clonedOrderAdjustment,
-        \BitBag\SyliusMolliePlugin\Order\AdjustmentInterface $clonedAdjustment,
         AdjustmentClonerInterface $adjustmentCloner,
-        ShipmentInterface $shipment,
-        ShipmentInterface $clonedShipment,
-        ShipmentClonerInterface $shipmentCloner
+        ShipmentInterface $shipment
     ): void {
         $subscription->getFirstOrder()->willReturn($rootOrder);
         $rootOrder->getNumber()->willReturn('#001');
@@ -95,64 +95,61 @@ final class SubscriptionOrderClonerSpec extends ObjectBehavior
         $order->isAbandonedEmail()->willReturn(false);
         $order->getChannel()->willReturn($channel);
         $order->getCustomer()->willReturn($customer);
-        $order->getCurrencyCode()->willReturn('PLN');
+        $order->getCurrencyCode()->willReturn('EUR');
         $order->getCustomerIp()->willReturn('127.0.0.0');
         $order->getLocaleCode()->willReturn('en_US');
         $order->getPromotionCoupon()->willReturn($coupon);
         $order->getShippingAddress()->willReturn($address);
         $order->getBillingAddress()->willReturn($billingAddress);
+        $order->setTokenValue($generator->generateUriSafeString(10));
         $order->getAdjustments()->willReturn(new ArrayCollection([
             $adjustment->getWrappedObject()
         ]));
         $order->getShipments()->willReturn(new ArrayCollection([
             $shipment->getWrappedObject()
         ]));
+        $order->getItemUnits()->willReturn(new ArrayCollection([
+            $itemUnit->getWrappedObject()
+        ]));
 
         $clonedOrder->setNumber(
             sprintf('%s-%d-%d','#001',3,$orderNumberSequence));
 
-        $clonedOrder->setRecurringSequenceIndex($ordersCount);
-        $clonedOrder->setState(SyliusOrderInterface::STATE_NEW);
-        $clonedOrder->setNotes($order->getNotes());
-        $clonedOrder->setAbandonedEmail($order->isAbandonedEmail());
-        $clonedOrder->setChannel($order->getChannel());
-        $clonedOrder->setCheckoutState(OrderCheckoutStates::STATE_COMPLETED);
-        $clonedOrder->setCheckoutCompletedAt(new \DateTime());
-        $clonedOrder->setCustomer($order->getCustomer());
-        $clonedOrder->setCreatedAt(new \DateTime());
-        $clonedOrder->setCurrencyCode($order->getCurrencyCode());
-        $clonedOrder->setCustomerIp($order->getCustomerIp());
-        $clonedOrder->setLocaleCode($order->getLocaleCode());
-        $clonedOrder->setPaymentState(OrderPaymentStates::STATE_AWAITING_PAYMENT);
-        $clonedOrder->setPromotionCoupon($order->getPromotionCoupon());
-        $clonedOrder->setShippingAddress(clone $order->getShippingAddress());
-        $clonedOrder->setBillingAddress(clone $order->getBillingAddress()
-        );
-        $clonedOrder->setShippingState(OrderShippingStates::STATE_READY);
-        $clonedOrder->setTokenValue($generator->generateUriSafeString(10));
+        $clonedOrder->setRecurringSequenceIndex($ordersCount)->shouldBeCalled();
+        $clonedOrder->setState(SyliusOrderInterface::STATE_NEW)->shouldBeCalled();
+        $clonedOrder->setNotes('test_notes')->shouldBeCalled();
+        $clonedOrder->setAbandonedEmail(false)->shouldBeCalled();
+        $clonedOrder->setChannel($channel)->shouldBeCalled();
+        $clonedOrder->setCheckoutState(OrderCheckoutStates::STATE_COMPLETED)->shouldBeCalled();
+        $clonedOrder->setCheckoutCompletedAt(Argument::any())->shouldBeCalled();
+        $clonedOrder->setCustomer($customer)->shouldBeCalled();
+        $clonedOrder->setCurrencyCode('EUR')->shouldBeCalled();
+        $clonedOrder->setCustomerIp('127.0.0.0')->shouldBeCalled();
+        $clonedOrder->setLocaleCode('en_US')->shouldBeCalled();
+        $clonedOrder->setPaymentState(OrderPaymentStates::STATE_AWAITING_PAYMENT)->shouldBeCalled();
+        $clonedOrder->setPromotionCoupon($coupon)->shouldBeCalled();
+        $clonedOrder->setShippingAddress($address)->shouldBeCalled();
+        $clonedOrder->setBillingAddress($billingAddress)->shouldBeCalled();
+        $clonedOrder->setShippingState(OrderShippingStates::STATE_READY)->shouldBeCalled();
+        $clonedOrder->setTokenValue('')->shouldBeCalled();
 
         $shipment->getAdjustments()->willReturn(new ArrayCollection([
             $adjustment->getWrappedObject()
         ]));
+        $clonedOrder->getItemUnits()->willReturn(new ArrayCollection([
+            $itemUnit->getWrappedObject()
+        ]));
 
-        $orderItemCloner->clone($orderItem, $clonedOrder)->willReturn($item);
-        $clonedOrder->addItem($item);
+        $orderItemCloner->clone($orderItem, $clonedOrder)->willReturn($clonedItem);
+        $clonedOrder->addItem($clonedItem);
 
         $adjustment->getType()->willReturn('test_type');
 
         $adjustmentCloner->clone($adjustment->getWrappedObject())->willReturn($clonedOrderAdjustment);
         $clonedOrder->addAdjustment($clonedOrderAdjustment);
-        $clonedOrder->isShippingRequired()->willReturn(true);
-
-        $shipmentCloner->clone($shipment)->willReturn($clonedShipment);
-        $clonedOrder->addShipment($clonedShipment);
-
-        $adjustmentCloner->clone($adjustment->getWrappedObject())->willReturn($clonedAdjustment);
-        $clonedAdjustment->setShipment($clonedShipment);
-        $clonedAdjustment->setAdjustable($clonedOrder);
-
-        $clonedOrder->recalculateAdjustmentsTotal();
-        $clonedOrder->recalculateItemsTotal();
+        $clonedOrder->isShippingRequired()->willReturn(false);
+        $clonedOrder->recalculateAdjustmentsTotal()->shouldBeCalled();
+        $clonedOrder->recalculateItemsTotal()->shouldBeCalled();
 
         $this->clone($subscription, $order, $orderItem)->shouldReturn($clonedOrder);
 

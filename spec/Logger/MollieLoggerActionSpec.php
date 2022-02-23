@@ -78,15 +78,10 @@ final class MollieLoggerActionSpec extends ObjectBehavior
         RepositoryInterface $gatewayRepository,
         GatewayConfigInterface $config
     ): void {
-        $gatewayRepository->findOneBy(['factoryName' => 'mollie_subscription'])->willReturn(null);
         $logLevel = MollieLoggerActionInterface::ERROR;
         $message = 'log_test_message';
         $errorCode = Response::HTTP_OK;
         $loggerFactory->create($message, $logLevel, $errorCode)->willReturn($logger);
-
-
-        $this->addLog($message, $logLevel, $errorCode);
-        $repository->add($logger)->shouldNotBeCalled();
 
         $gatewayRepository->findOneBy(['factoryName' => 'mollie_subscription'])->willReturn($config);
         $config->getConfig()->willReturn([
@@ -94,6 +89,22 @@ final class MollieLoggerActionSpec extends ObjectBehavior
         ]);
         $this->addLog($message, $logLevel, $errorCode);
         $repository->add($logger)->shouldBeCalledOnce();
+    }
+
+    function it_cannot_add_log(
+        MollieLoggerFactoryInterface $loggerFactory,
+        MollieLoggerInterface $logger,
+        RepositoryInterface $repository,
+        RepositoryInterface $gatewayRepository
+    ): void {
+        $gatewayRepository->findOneBy(['factoryName' => 'mollie_subscription'])->willReturn(null);
+        $logLevel = MollieLoggerActionInterface::ERROR;
+        $message = 'log_test_message';
+        $errorCode = Response::HTTP_OK;
+        $loggerFactory->create($message, $logLevel, $errorCode)->willReturn($logger);
+
+        $this->addLog($message, $logLevel, $errorCode);
+        $repository->add($logger)->shouldNotBeCalled();
     }
 
     function it_add_negative_log_when_log_everything_is_set(
@@ -129,15 +140,10 @@ final class MollieLoggerActionSpec extends ObjectBehavior
         RepositoryInterface $gatewayRepository,
         GatewayConfigInterface $config
     ): void {
-        $gatewayRepository->findOneBy(['factoryName' => 'mollie_subscription'])->willReturn(null);
         $logLevel = MollieLoggerActionInterface::ERROR;
         $message = 'log_test__negative_message';
         $errorCode = Response::HTTP_INTERNAL_SERVER_ERROR;
         $loggerFactory->create($message, $logLevel, $errorCode)->willReturn($logger);
-
-
-        $this->addLog($message, $logLevel, $errorCode);
-        $repository->add($logger)->shouldNotBeCalled();
 
         $gatewayRepository->findOneBy(['factoryName' => 'mollie_subscription'])->willReturn($config);
         $config->getConfig()->willReturn([
@@ -145,5 +151,22 @@ final class MollieLoggerActionSpec extends ObjectBehavior
         ]);
         $this->addLog($message, $logLevel, $errorCode);
         $repository->add($logger)->shouldBeCalledOnce();
+    }
+
+    function it_cannot_add_negative_log(
+        MollieLoggerFactoryInterface $loggerFactory,
+        MollieLoggerInterface $logger,
+        RepositoryInterface $repository,
+        RepositoryInterface $gatewayRepository,
+        GatewayConfigInterface $config
+    ): void {
+        $gatewayRepository->findOneBy(['factoryName' => 'mollie_subscription'])->willReturn(null);
+        $logLevel = MollieLoggerActionInterface::ERROR;
+        $message = 'log_test__negative_message';
+        $errorCode = Response::HTTP_INTERNAL_SERVER_ERROR;
+        $loggerFactory->create($message, $logLevel, $errorCode)->willReturn($logger);
+
+        $this->addLog($message, $logLevel, $errorCode);
+        $repository->add($logger)->shouldNotBeCalled();
     }
 }

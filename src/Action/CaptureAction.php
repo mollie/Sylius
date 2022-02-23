@@ -65,7 +65,6 @@ final class CaptureAction extends BaseApiAwareAction implements CaptureActionInt
         $details['webhookUrl'] = $notifyToken->getTargetUrl();
         $details['backurl'] = $token->getTargetUrl();
         if (true === $this->mollieApiClient->isRecurringSubscription()) {
-            dump('createCustomer');
             $cancelToken = $this->tokenFactory->createToken(
                 $token->getGatewayName(),
                 $token->getDetails(),

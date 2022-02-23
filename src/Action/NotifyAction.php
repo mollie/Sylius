@@ -13,6 +13,7 @@ namespace BitBag\SyliusMolliePlugin\Action;
 
 use BitBag\SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
 use BitBag\SyliusMolliePlugin\Action\StateMachine\SetStatusOrderActionInterface;
+use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
 use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use BitBag\SyliusMolliePlugin\Repository\MollieSubscriptionRepositoryInterface;
 use BitBag\SyliusMolliePlugin\Request\Api\ConfigureNextOrder;

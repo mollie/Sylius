@@ -26,6 +26,7 @@ use Sylius\Component\Core\Model\PaymentMethodInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Sylius\RefundPlugin\Event\UnitsRefunded;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 final class OrderPaymentRefundSpec extends ObjectBehavior
 {
@@ -185,5 +186,31 @@ final class OrderPaymentRefundSpec extends ObjectBehavior
 
         $this->shouldThrow(BadRequestHttpException::class)->during('refund',[$units]);
         $loggerAction->addNegativeLog(sprintf('A token with hash `%s` could not be found.', $hash))->shouldBeCalledOnce();
+    }
+
+    function it_refunds_when_payment_null(
+        RepositoryInterface $orderRepository,
+        OrderInterface $order,
+        MollieLoggerActionInterface $loggerAction,
+        UnitsRefunded $units,
+        PaymentInterface $payment
+    ): void {
+        $orderRepository->findOneBy(['number' => '#0000001'])->willReturn($order);
+
+        $order->getPayments()->willReturn(new ArrayCollection([
+            null
+        ]));
+
+        $loggerAction->addNegativeLog(sprintf('Not fount payment in refund'))->shouldBeCalled();
+
+        $this->shouldThrow(NotFoundHttpException::class)->during('refund',[$units]);
+    }
+
+    function it_refunds_when_factory_name_not_in_array(
+        GatewayConfigInterface $config,
+        PaymentInterface $payment
+    ): void {
+        $config->getFactoryName()->willReturn('definitely_not_mollie_subscription_test');
+        $payment->getDetails()->shouldNotBeCalled();
     }
 }

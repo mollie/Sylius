@@ -40,5 +40,6 @@
         <service id="bitbag.sylius_mollie_plugin.factory.methods" class="BitBag\SyliusMolliePlugin\Factory\MethodsFactory"/>
         <service id="bitbag.sylius_mollie_plugin.factory.date_periods" class="BitBag\SyliusMolliePlugin\Factory\DatePeriodFactory"/>
         <service id="bitbag.sylius_mollie_plugin.factory.payment_details_factory" class="BitBag\SyliusMolliePlugin\Factory\PaymentDetailsFactory"/>
+        <service id="bit_bag.sylius_mollie_plugin.factory.api_customer_factory" class="BitBag\SyliusMolliePlugin\Factory\ApiCustomerFactory"/>
     </services>
 </container>

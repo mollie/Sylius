@@ -61,7 +61,6 @@ final class SubscriptionOrderCloner implements SubscriptionOrderClonerInterface
         $clonedOrder->setCheckoutState(OrderCheckoutStates::STATE_COMPLETED);
         $clonedOrder->setCheckoutCompletedAt(new \DateTime());
         $clonedOrder->setCustomer($order->getCustomer());
-        $clonedOrder->setCreatedAt(new \DateTime());
         $clonedOrder->setCurrencyCode($order->getCurrencyCode());
         $clonedOrder->setCustomerIp($order->getCustomerIp());
         $clonedOrder->setLocaleCode($order->getLocaleCode());

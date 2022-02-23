@@ -13,10 +13,10 @@ namespace BitBag\SyliusMolliePlugin\Action;
 
 use BitBag\SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
 use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
+use BitBag\SyliusMolliePlugin\Factory\ApiCustomerFactoryInterface;
 use BitBag\SyliusMolliePlugin\Helper\ConvertOrderInterface;
 use BitBag\SyliusMolliePlugin\Helper\PaymentDescriptionInterface;
 use BitBag\SyliusMolliePlugin\Payments\PaymentTerms\Options;
-use BitBag\SyliusMolliePlugin\Request\Api\CreateCustomer;
 use BitBag\SyliusMolliePlugin\Resolver\PaymentLocaleResolverInterface;
 use Mollie\Api\Types\PaymentMethod;
 use Payum\Core\Action\ActionInterface;
@@ -26,7 +26,6 @@ use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Convert;
 use Payum\Core\Request\GetCurrency;
-use spec\SM\DummyObject;
 use Sylius\Bundle\CoreBundle\Context\CustomerContext;
 use Sylius\Component\Core\Model\CustomerInterface;
 use Sylius\Component\Core\Model\OrderInterface;
@@ -57,13 +56,17 @@ final class ConvertMolliePaymentAction extends BaseApiAwareAction implements Act
     /** @var PaymentLocaleResolverInterface */
     private $paymentLocaleResolver;
 
+    /** @var ApiCustomerFactoryInterface */
+    private $apiCustomerFactory;
+
     public function __construct(
         PaymentDescriptionInterface $paymentDescription,
         SessionInterface $session,
         RepositoryInterface $mollieMethodsRepository,
         ConvertOrderInterface $orderConverter,
         CustomerContextInterface $customerContext,
-        PaymentLocaleResolverInterface $paymentLocaleResolver
+        PaymentLocaleResolverInterface $paymentLocaleResolver,
+        ApiCustomerFactoryInterface $apiCustomerFactory
     ) {
         $this->paymentDescription = $paymentDescription;
         $this->session = $session;
@@ -71,6 +74,7 @@ final class ConvertMolliePaymentAction extends BaseApiAwareAction implements Act
         $this->orderConverter = $orderConverter;
         $this->customerContext = $customerContext;
         $this->paymentLocaleResolver = $paymentLocaleResolver;
+        $this->apiCustomerFactory = $apiCustomerFactory;
     }
 
     /** @param Convert $request */
@@ -108,7 +112,6 @@ final class ConvertMolliePaymentAction extends BaseApiAwareAction implements Act
         /** @var MollieGatewayConfigInterface $method */
         $method = $this->mollieMethodsRepository->findOneBy(['methodId' => $paymentMethod]);
         $gatewayConfig = $method->getGateway()->getConfig();
-
         $details = [
             'amount' => [
                 'value' => "$amount",
@@ -127,7 +130,8 @@ final class ConvertMolliePaymentAction extends BaseApiAwareAction implements Act
         ];
 
         if (null !== $this->customerContext->getCustomer() && true === ($gatewayConfig['single_click_enabled'] ?? false)) {
-            $this->gateway->execute($mollieCustomer = new CreateCustomer($details));
+            $mollieCustomer = $this->apiCustomerFactory->createNew($details);
+            $this->gateway->execute($mollieCustomer);
             $model = $mollieCustomer->getModel();
             $details['metadata']['customer_mollie_id'] = $model['customer_mollie_id'];
         }

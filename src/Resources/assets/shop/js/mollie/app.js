@@ -160,7 +160,7 @@ $(function () {
                 tokenInput.setAttribute('value', token);
 
                 form.appendChild(tokenInput);
-                tokenField.value = token;
+                tokenInput.value = token;
 
                 form.submit();
             }

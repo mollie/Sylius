@@ -64,7 +64,7 @@ final class OrderPaymentRefund implements OrderPaymentRefundInterface
 
         $factoryName = $paymentMethod->getGatewayConfig()->getFactoryName() ?? null;
 
-        if (true === in_array($factoryName, [MollieGatewayFactory::FACTORY_NAME, MollieSubscriptionGatewayFactory::FACTORY_NAME], true)) {
+        if (false === in_array($factoryName, [MollieGatewayFactory::FACTORY_NAME, MollieSubscriptionGatewayFactory::FACTORY_NAME], true)) {
             return;
         }
 

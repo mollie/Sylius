@@ -21,7 +21,7 @@ export const model = {
 
         if (everyLabel !== '') {
             const __intervalElementContainer = $($('#sylius-variants-recurring-interval-label').html());
-            const __everyLabel = $('<span id="every-label" class="item"/>');
+            const __everyLabel = $('<div id="every-label" class="item mollie-every-label-container"/>');
             __intervalElementContainer.text(everyLabel.replace(/\%amount\%/, amount));
             __everyLabel.append(__intervalElementContainer);
             container.append(__everyLabel);

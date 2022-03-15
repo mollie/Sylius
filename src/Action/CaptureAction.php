@@ -19,7 +19,6 @@ use BitBag\SyliusMolliePlugin\Request\Api\CreateOnDemandSubscription;
 use BitBag\SyliusMolliePlugin\Request\Api\CreateOnDemandSubscriptionPayment;
 use BitBag\SyliusMolliePlugin\Request\Api\CreateOrder;
 use BitBag\SyliusMolliePlugin\Request\Api\CreatePayment;
-use BitBag\SyliusMolliePlugin\Request\Api\CreateSubscriptionPayment;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\Exception\RuntimeException;
@@ -66,6 +65,10 @@ final class CaptureAction extends BaseApiAwareAction implements CaptureActionInt
         $details['webhookUrl'] = $notifyToken->getTargetUrl();
         $details['backurl'] = $token->getTargetUrl();
 
+        $metadata = $details['metadata'];
+        $metadata['refund_token'] = $refundToken->getHash();
+        $details['metadata'] = $metadata;
+
         if (true === $this->mollieApiClient->isRecurringSubscription()) {
             if ('first' === $details['sequenceType']) {
                 $cancelToken = $this->tokenFactory->createToken(
@@ -83,10 +86,6 @@ final class CaptureAction extends BaseApiAwareAction implements CaptureActionInt
                 $this->gateway->execute(new CreateOnDemandSubscriptionPayment($details));
             }
         } else {
-            $metadata = $details['metadata'];
-            $metadata['refund_token'] = $refundToken->getHash();
-            $details['metadata'] = $metadata;
-
             if (isset($details['metadata']['methodType']) && $details['metadata']['methodType'] === Options::PAYMENT_API) {
                 if (in_array($details['metadata']['molliePaymentMethods'], Options::getOnlyOrderAPIMethods())) {
                     throw new \sprintf(

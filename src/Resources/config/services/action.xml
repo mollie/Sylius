@@ -38,11 +38,13 @@
             <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
             <argument type="service" id="bitbag_sylius_mollie_plugin.helper.convert_refund_data"/>
             <tag name="payum.action" factory="mollie" alias="payum.action.refund"/>
+            <tag name="payum.action" factory="mollie_subscription" alias="payum.action.refund_subscription"/>
         </service>
         <service id="bitbag_sylius_mollie_plugin.payum_action.refund_order" class="BitBag\SyliusMolliePlugin\Action\RefundOrderAction">
             <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
             <argument type="service" id="bitbag_sylius_mollie_plugin.helper.convert_refund_data"/>
             <tag name="payum.action" factory="mollie" alias="payum.action.refund_order"/>
+            <tag name="payum.action" factory="mollie_subscription" alias="payum.action.refund_order_subscription"/>
         </service>
         <service id="bitbag_sylius_mollie_plugin.action.capture" class="BitBag\SyliusMolliePlugin\Action\CaptureAction">
             <tag name="payum.action" factory="mollie" alias="payum.action.capture"/>

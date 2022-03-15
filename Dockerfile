@@ -2,12 +2,32 @@ ARG PHP_VERSION=7.4
 ARG NODE_VERSION=12.13
 ARG NGINX_VERSION=1.16
 
+########################## WKHTMLTOPDF ##########################
+FROM madnight/docker-alpine-wkhtmltopdf as wkhtmltopdf_image
+
 ########################## PHP ##########################
 FROM bitbag/sylius-php:${PHP_VERSION}-alpine AS root_php
 
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
+
+########################## PACKAGES FOR WKHTMLTOPDF ##########################
+RUN apk add --no-cache \
+ libstdc++ \
+ libx11 \
+ libxrender \
+ libxext \
+ ca-certificates \
+ fontconfig \
+ freetype \
+ ttf-dejavu \
+ ttf-droid \
+ ttf-freefont \
+ ttf-liberation \
+    ;
+
+COPY --from=wkhtmltopdf_image /bin/wkhtmltopdf /usr/local/bin/wkhtmltopdf
 
 WORKDIR /var/www
 
@@ -116,6 +136,23 @@ COPY --from=nodejs /var/www/tests/Application/public public/
 FROM bitbag/sylius-php:${PHP_VERSION}-alpine AS result_php
 
 RUN apk add --no-cache fcgi;
+
+########################## PACKAGES FOR WKHTMLTOPDF ##########################
+RUN apk add --no-cache \
+ libstdc++ \
+ libx11 \
+ libxrender \
+ libxext \
+ ca-certificates \
+ fontconfig \
+ freetype \
+ ttf-dejavu \
+ ttf-droid \
+ ttf-freefont \
+ ttf-liberation \
+    ;
+
+COPY --from=wkhtmltopdf_image /bin/wkhtmltopdf /usr/local/bin/wkhtmltopdf
 
 COPY .docker/php/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 COPY .docker/php/docker-healthcheck.sh /usr/local/bin/docker-healthcheck

@@ -16,10 +16,6 @@ use BitBag\SyliusMolliePlugin\Action\StateMachine\SetStatusOrderAction;
 use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
 use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use BitBag\SyliusMolliePlugin\Repository\MollieSubscriptionRepositoryInterface;
-use BitBag\SyliusMolliePlugin\Request\Api\ConfigureNextOrder;
-use BitBag\SyliusMolliePlugin\Request\Api\CreateMollieSubscription;
-use BitBag\SyliusMolliePlugin\Request\Api\CreateOnDemandSubscription;
-use BitBag\SyliusMolliePlugin\Request\Api\CreateOnDemandSubscriptionPayment;
 use BitBag\SyliusMolliePlugin\Request\StateMachine\StatusRecurringSubscription;
 use Mollie\Api\Exceptions\ApiException;
 use Payum\Core\Action\ActionInterface;
@@ -54,8 +50,7 @@ final class NotifyAction extends BaseApiAwareAction implements ActionInterface, 
         MollieSubscriptionRepositoryInterface $subscriptionRepository,
         SetStatusOrderAction $setStatusOrderAction,
         MollieLoggerActionInterface $loggerAction
-    )
-    {
+    ) {
         $this->getHttpRequest = $getHttpRequest;
         $this->subscriptionRepository = $subscriptionRepository;
         $this->setStatusOrderAction = $setStatusOrderAction;
@@ -69,8 +64,6 @@ final class NotifyAction extends BaseApiAwareAction implements ActionInterface, 
 
         $details = ArrayObject::ensureArrayObject($request->getModel());
         $this->gateway->execute($this->getHttpRequest);
-
-        $details['created_in_mollie'] = true;
 
         if (true === isset($details['sequenceType'])) {
             try {

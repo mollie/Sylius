@@ -6,16 +6,15 @@
         <defaults public="true" />
         <service id="bitbag_sylius_mollie_plugin.action.create_payment" class="BitBag\SyliusMolliePlugin\Action\Api\CreatePaymentAction">
             <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
-            <tag name="payum.action" factory="mollie" alias="payum.action.create_payment"/>
-            <tag name="payum.action" factory="mollie_subscription" alias="payum.action.create_payment_subscrption"/>
             <argument type="service" id="bitbag_sylius_mollie_plugin.parser.response.guzzle_negative_response_parser"/>
             <argument type="service" id="session"/>
+            <tag name="payum.action" factory="mollie" alias="payum.action.create_payment"/>
+            <tag name="payum.action" factory="mollie_subscription" alias="payum.action.create_payment_subscription"/>
         </service>
         <service id="bitbag_sylius_mollie_plugin.action.create_order" class="BitBag\SyliusMolliePlugin\Action\Api\CreateOrderAction">
             <argument type="service" id="bitbag_sylius_mollie_plugin.resolver.payment_config"/>
             <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
             <tag name="payum.action" factory="mollie" alias="payum.action.create_order"/>
-            <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
         </service>
         <service class="BitBag\SyliusMolliePlugin\Action\Api\CreateOnDemandPaymentAction" id="bitbag.sylius_mollie_plugin.action.api.create_on_demand_payment_action">
             <argument id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action" type="service"/>
@@ -44,7 +43,6 @@
             <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
             <argument type="service" id="bitbag_sylius_mollie_plugin.helper.convert_refund_data"/>
             <tag name="payum.action" factory="mollie" alias="payum.action.refund_order"/>
-            <tag name="payum.action" factory="mollie_subscription" alias="payum.action.refund_order_subscription"/>
         </service>
         <service id="bitbag_sylius_mollie_plugin.action.capture" class="BitBag\SyliusMolliePlugin\Action\CaptureAction">
             <tag name="payum.action" factory="mollie" alias="payum.action.capture"/>
@@ -62,9 +60,9 @@
             <argument type="service" id="bit_bag.sylius_mollie_plugin.refund.payment_refund"/>
             <argument type="service" id="bitbag_sylius_mollie_plugin.refund.order_refund"/>
             <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.updater.order.order_voucher_adjustment_updater"/>
             <tag name="payum.action" factory="mollie" alias="payum.action.status"/>
             <tag name="payum.action" factory="mollie_subscription" alias="payum.action.status_subscription"/>
-            <argument type="service" id="bitbag_sylius_mollie_plugin.updater.order.order_voucher_adjustment_updater"/>
         </service>
         <service id="bitbag_sylius_mollie_plugin.payum_action.api.create_customer" class="BitBag\SyliusMolliePlugin\Action\Api\CreateCustomerAction">
             <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
@@ -79,7 +77,7 @@
             <argument type="service" id="bitbag_sylius_mollie_plugin.payments.order_converter"/>
             <argument type="service" id="sylius.context.customer"/>
             <argument type="service" id="bitbag_sylius_mollie_plugin.resolver.payment_locale_resolver"/>
-            <tag name="payum.action" factory="mollie" alias="payum.action.api.create_customer"/>
+            <tag name="payum.action" factory="mollie" alias="payum.action.convert_mollie_payment"/>
         </service>
         <service id="bitbag_sylius_mollie_plugin.action.convert_mollie_subscription_payment" class="BitBag\SyliusMolliePlugin\Action\ConvertMollieSubscriptionPaymentAction">
             <argument type="service" id="bitbag_sylius_mollie_plugin.helper.payment_description"/>

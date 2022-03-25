@@ -48,7 +48,7 @@ final class SetStatusOrderAction
             return;
         }
         /** @var OrderInterface $orderSylius */
-        $orderSylius = $this->orderRepository->findOneBy(['id' => $order->orderNumber]);
+        $orderSylius = $this->orderRepository->findOneBy(['number' => $order->orderNumber]);
 
         /** @var ShipmentInterface $firstShipment */
         $firstShipment = $orderSylius->getShipments()->first();

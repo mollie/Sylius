@@ -13,7 +13,6 @@ namespace BitBag\SyliusMolliePlugin\Helper;
 
 use BitBag\SyliusMolliePlugin\Calculator\CalculateTaxAmountInterface;
 use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
-use BitBag\SyliusMolliePlugin\Order\AdjustmentInterface;
 use BitBag\SyliusMolliePlugin\Payments\PaymentTerms\Options;
 use BitBag\SyliusMolliePlugin\Resolver\MealVoucherResolverInterface;
 use BitBag\SyliusMolliePlugin\Resolver\TaxShipmentResolverInterface;
@@ -49,7 +48,7 @@ final class ConvertOrder implements ConvertOrderInterface
     /** @var TaxRateResolverInterface */
     private $taxRateResolver;
 
-    /** @var ZoneMatcherInterface  */
+    /** @var ZoneMatcherInterface */
     private $zoneMatcher;
 
     public function __construct(
@@ -78,7 +77,7 @@ final class ConvertOrder implements ConvertOrderInterface
         $amount = $this->intToStringConverter->convertIntToString($order->getTotal(), $divisor);
 
         $details['amount']['value'] = $amount;
-        $details['orderNumber'] = (string) $order->getId();
+        $details['orderNumber'] = (string) $order->getNumber();
         $details['shippingAddress'] = $this->createShippingAddress($customer);
         $details['billingAddress'] = $this->createBillingAddress($customer);
         $details['lines'] = $this->createLines($divisor, $method);

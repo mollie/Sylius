@@ -16,5 +16,13 @@
 
             <tag name="sylius.context.cart" priority="-1000" />
         </service>
+
+        <service id="bitbag_sylius_mollie_plugin.context.currency_or_first_channel_context"
+                class="BitBag\SyliusMolliePlugin\Context\Channel\CurrencyOrFirstChannelContext"
+        >
+            <argument type="service" id="sylius.repository.channel"/>
+
+            <tag name="sylius.context.channel" priority="-256"/>
+        </service>
     </services>
 </container>

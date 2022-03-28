@@ -15,7 +15,7 @@ use BitBag\SyliusMolliePlugin\Entity\ChannelInterface;
 use BitBag\SyliusMolliePlugin\Entity\ChannelTrait;
 use Sylius\Component\Core\Model\Channel as BaseChannel;
 
-final class Channel extends BaseChannel implements ChannelInterface
+class Channel extends BaseChannel implements ChannelInterface
 {
     use ChannelTrait;
 }

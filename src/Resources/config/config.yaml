@@ -8,3 +8,4 @@ imports:
 twig:
     globals:
         subscription_mollie_repository: "@bitbag_sylius_mollie_plugin.repository.subscription"
+

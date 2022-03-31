@@ -17,7 +17,7 @@
             <argument type="service" id="bitbag_sylius_mollie_plugin.calculator.refund.payment_refund_calculator" />
         </service>
         <service id="bitbag_sylius_mollie_plugin.refund.order_refund" class="BitBag\SyliusMolliePlugin\Refund\OrderRefund">
-            <argument type="service" id="sylius_refund_plugin.command_bus" />
+            <argument type="service" id="sylius.command_bus" />
             <argument type="service" id="bitbag_sylius_mollie_plugin.creator.order_refund_command_creator" />
             <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
         </service>

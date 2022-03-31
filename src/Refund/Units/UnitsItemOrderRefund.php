@@ -33,7 +33,8 @@ final class UnitsItemOrderRefund implements UnitsItemOrderRefundInterface
         $units = $order->getItemUnits();
 
         $unitsToRefund = [];
-        /** @var PartialRefundItem $item */
+
+        /** @var PartialRefundItem $unit */
         foreach ($units as $unit) {
             if (true === $this->hasUnitRefunded($order, $unit->getId())) {
                 continue;
@@ -57,7 +58,7 @@ final class UnitsItemOrderRefund implements UnitsItemOrderRefundInterface
     {
         $allItems = array_filter($this->getActualRefunded($order, $itemId));
 
-        return  count($allItems);
+        return count($allItems);
     }
 
     private function getActualRefunded(OrderInterface $order, int $itemId): array
@@ -67,7 +68,7 @@ final class UnitsItemOrderRefund implements UnitsItemOrderRefundInterface
         foreach ($units as $unit) {
             if ($itemId === $unit->getOrderItem()->getId()) {
                 $refundedUnits[] = $this->refundUnitsRepository->findOneBy([
-                    'orderNumber' => $order->getNumber(),
+                    'order' => $order->getId(),
                     'refundedUnitId' => $unit->getId(),
                     'type' => RefundType::orderItemUnit(),
                 ]);
@@ -80,7 +81,7 @@ final class UnitsItemOrderRefund implements UnitsItemOrderRefundInterface
     private function hasUnitRefunded(OrderInterface $order, int $unitId): bool
     {
         $unitRefunded = $this->refundUnitsRepository->findOneBy([
-            'orderNumber' => $order->getNumber(),
+            'order' => $order->getId(),
             'refundedUnitId' => $unitId,
             'type' => RefundType::orderItemUnit(),
         ]);

@@ -63,6 +63,7 @@ final class CreateOrderAction extends BaseApiAwareAction
                     'issuer' => $issuer,
                     'cardToken' => $details['metadata']['cartToken'],
                     'customerId' => $customerId,
+                    'webhookUrl' => $details['webhookUrl'],
                 ],
                 'amount' => $details['amount'],
                 'billingAddress' => $details['billingAddress'],

@@ -36,7 +36,7 @@ final class UnitsShipmentOrderRefund implements UnitsShipmentOrderRefundInterfac
         }
 
         foreach ($order->lines as $line) {
-            if ($line->type === ConvertOrderInterface::SHIPPING_TYPE && $line->quantityRefunded > 0) {
+            if ($line->type === ConvertOrderInterface::SHIPPING_TYPE && $line->refundableQuantity > 0) {
                 /** @var Adjustment $refundedShipment */
                 $refundedShipment = $syliusOrder->getAdjustments('shipping')->first();
 
@@ -55,7 +55,7 @@ final class UnitsShipmentOrderRefund implements UnitsShipmentOrderRefundInterfac
     private function hasShipmentRefund(OrderInterface $order): bool
     {
         $unitRefunded = $this->refundUnitsRepository->findOneBy([
-            'orderNumber' => $order->getNumber(),
+            'order' => $order->getId(),
             'type' => RefundType::shipment(),
         ]);
 

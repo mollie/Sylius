@@ -7,22 +7,5 @@
         <service id="bitbag.sylius_mollie_plugin.context.admin.admin_user_context" class="BitBag\SyliusMolliePlugin\Context\Admin\AdminUserContext">
             <argument type="service" id="security.token_storage"/>
         </service>
-
-        <service id="bitbag_sylius_mollie_plugin.context.mollie_resource_based_cart_context"
-                class="BitBag\SyliusMolliePlugin\Context\Cart\MollieResourceBasedCartContext"
-        >
-            <argument type="service" id="request_stack"/>
-            <argument type="service" id="bitbag_sylius_mollie_plugin.resolver.order.mollie_resource_order_resolver"/>
-
-            <tag name="sylius.context.cart" priority="-1000" />
-        </service>
-
-        <service id="bitbag_sylius_mollie_plugin.context.currency_or_first_channel_context"
-                class="BitBag\SyliusMolliePlugin\Context\Channel\CurrencyOrFirstChannelContext"
-        >
-            <argument type="service" id="sylius.repository.channel"/>
-
-            <tag name="sylius.context.channel" priority="-256"/>
-        </service>
     </services>
 </container>

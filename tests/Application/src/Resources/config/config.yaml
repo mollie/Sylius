@@ -18,9 +18,3 @@ sylius_order:
     order:
       classes:
         model: Tests\BitBag\SyliusMolliePlugin\Entity\Order
-
-sylius_channel:
-    resources:
-        channel:
-            classes:
-                model: Tests\BitBag\SyliusMolliePlugin\Entity\Channel

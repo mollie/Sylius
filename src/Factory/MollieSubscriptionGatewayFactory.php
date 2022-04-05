@@ -21,8 +21,6 @@ final class MollieSubscriptionGatewayFactory extends GatewayFactory
 {
     public const FACTORY_NAME = 'mollie_subscription';
 
-    public const CURRENCIES_AVAILABLE = ['EUR'];
-
     protected function populateConfig(ArrayObject $config): void
     {
         $environment = true === $config['environment'] ?
@@ -38,13 +36,13 @@ final class MollieSubscriptionGatewayFactory extends GatewayFactory
         if (false === (bool) $config['payum.api']) {
             $config['payum.default_options'] = [
                 'api_key' => null,
-                'method' => null
+                'method' => null,
             ];
 
             $config->defaults($config['payum.default_options']);
 
             $config['payum.required_options'] = [
-                $environment
+                $environment,
             ];
 
             $config['payum.api'] = function (ArrayObject $config) use ($environment) {
@@ -61,7 +59,6 @@ final class MollieSubscriptionGatewayFactory extends GatewayFactory
 
                 return $mollieApiClient;
             };
-
         }
     }
 }

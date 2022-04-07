@@ -64,7 +64,7 @@ final class OrderRefundCommandCreator implements OrderRefundCommandCreatorInterf
                 $partialRefundItems->addPartialRefundItemByQuantity(
                     $line->metadata->item_id,
                     $line->type,
-                    $line->refundableQuantity - $getRefundedQuantity
+                    $line->quantityRefunded - $getRefundedQuantity
                 );
             }
         }

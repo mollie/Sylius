@@ -44,7 +44,7 @@ final class UnitsItemOrderRefund implements UnitsItemOrderRefundInterface
             if (null !== $partialItem) {
                 $unitsToRefund[] = new OrderItemUnitRefund(
                     $unit->getId(),
-                    $unit->getOrderItem()->getUnitPrice()
+                    $unit->getTotal(),
                 );
 
                 $partialRefundItems->removeItem($partialItem);

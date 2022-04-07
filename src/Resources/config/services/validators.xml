@@ -31,5 +31,9 @@
             <argument type="service" id="Sylius\RefundPlugin\Validator\RefundAmountValidator" />
             <argument type="service" id="bitbag_sylius_mollie_plugin.checker.refund.duplicate_refund_the_same_amount_checker"/>
         </service>
+
+        <service id="Sylius\RefundPlugin\Validator\RefundUnitsCommandValidatorInterface"
+                 alias="bitbag_sylius_mollie_plugin.validator.refund.refund_units_command_validator"
+        />
     </services>
 </container>

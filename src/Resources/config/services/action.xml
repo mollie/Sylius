@@ -61,6 +61,7 @@
             <argument type="service" id="bitbag_sylius_mollie_plugin.refund.order_refund"/>
             <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
             <argument type="service" id="bitbag_sylius_mollie_plugin.updater.order.order_voucher_adjustment_updater"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.checker.refund.mollie_order_refund_checker"/>
             <tag name="payum.action" factory="mollie" alias="payum.action.status"/>
             <tag name="payum.action" factory="mollie_subscription" alias="payum.action.status_subscription"/>
         </service>

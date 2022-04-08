@@ -11,10 +11,10 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Controller\Action\Admin;
 
-use BitBag\SyliusMolliePlugin\Creator\MollieMethodsCreatorInterface;
+use BitBag\SyliusMolliePlugin\Entity\GatewayConfigInterface;
 use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use BitBag\SyliusMolliePlugin\Purifier\MolliePaymentMethodPurifierInterface;
-use BitBag\SyliusMolliePlugin\Repository\MollieGatewayConfigRepositoryInterface;
+use BitBag\SyliusMolliePlugin\Resolver\MollieMethodsResolverInterface;
 use Mollie\Api\Exceptions\ApiException;
 use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 use Sylius\Component\Resource\Exception\UpdateHandlingException;
@@ -30,8 +30,8 @@ final class MethodsAction
     /** @var Session */
     private $session;
 
-    /** @var MollieMethodsCreatorInterface */
-    private $mollieMethodsCreator;
+    /** @var MollieMethodsResolverInterface */
+    private $mollieMethodsResolver;
 
     /** @var MolliePaymentMethodPurifierInterface */
     private $methodPurifier;
@@ -42,13 +42,13 @@ final class MethodsAction
     public function __construct(
         MollieLoggerActionInterface $loggerAction,
         Session $session,
-        MollieMethodsCreatorInterface $mollieMethodsCreator,
+        MollieMethodsResolverInterface $mollieMethodsResolver,
         MolliePaymentMethodPurifierInterface $methodPurifier,
         EntityRepository $gatewayConfigRepository
     ) {
         $this->loggerAction = $loggerAction;
         $this->session = $session;
-        $this->mollieMethodsCreator = $mollieMethodsCreator;
+        $this->mollieMethodsResolver = $mollieMethodsResolver;
         $this->methodPurifier = $methodPurifier;
         $this->gatewayConfigRepository = $gatewayConfigRepository;
     }
@@ -56,8 +56,10 @@ final class MethodsAction
     public function __invoke(int $id, Request $request): Response
     {
         try {
+            /** @var GatewayConfigInterface $gateway */
             $gateway = $this->gatewayConfigRepository->find($id);
-            $this->mollieMethodsCreator->createForGateway($gateway);
+
+            $this->mollieMethodsResolver->createForGateway($gateway);
 
             $this->methodPurifier->removeAllNoLongerSupportedMethods();
 

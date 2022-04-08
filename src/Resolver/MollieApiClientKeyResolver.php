@@ -13,15 +13,14 @@ namespace BitBag\SyliusMolliePlugin\Resolver;
 
 use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
 use BitBag\SyliusMolliePlugin\Entity\OrderInterface;
-use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
-use BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
 use BitBag\SyliusMolliePlugin\Form\Type\MollieGatewayConfigurationType;
 use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use BitBag\SyliusMolliePlugin\Repository\PaymentMethodRepositoryInterface;
 use Mollie\Api\Exceptions\ApiException;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
-use Sylius\Component\Order\Context\CartContextInterface;
+use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Resource\Exception\UpdateHandlingException;
+use Webmozart\Assert\Assert;
 
 final class MollieApiClientKeyResolver implements MollieApiClientKeyResolverInterface
 {
@@ -37,7 +36,7 @@ final class MollieApiClientKeyResolver implements MollieApiClientKeyResolverInte
     /** @var ChannelContextInterface */
     private $channelContext;
 
-    /** @var MollieFactoryNameResolverInterface  */
+    /** @var MollieFactoryNameResolverInterface */
     private $factoryNameResolver;
 
     public function __construct(
@@ -56,8 +55,11 @@ final class MollieApiClientKeyResolver implements MollieApiClientKeyResolverInte
 
     public function getClientWithKey(OrderInterface $order = null): MollieApiClient
     {
+        /** @var ChannelInterface $channel */
+        $channel = $this->channelContext->getChannel();
+
         $paymentMethod = $this->paymentMethodRepository->findOneByChannelAndGatewayFactoryName(
-            $this->channelContext->getChannel(),
+            $channel,
             $this->factoryNameResolver->resolve($order)
         );
 
@@ -67,6 +69,7 @@ final class MollieApiClientKeyResolver implements MollieApiClientKeyResolverInte
 
         $gateway = $paymentMethod->getGatewayConfig();
 
+        Assert::notNull($gateway);
         $config = $gateway->getConfig();
 
         $environment = true === $config['environment'] ?
@@ -74,7 +77,10 @@ final class MollieApiClientKeyResolver implements MollieApiClientKeyResolverInte
             MollieGatewayConfigurationType::API_KEY_TEST;
 
         try {
-            return $this->mollieApiClient->setApiKey($config[$environment]);
+            /** @var MollieApiClient $mollieApiClient */
+            $mollieApiClient = $this->mollieApiClient->setApiKey($config[$environment]);
+
+            return $mollieApiClient;
         } catch (ApiException $e) {
             $this->loggerAction->addNegativeLog(sprintf('API call failed: %s', $e->getMessage()));
 

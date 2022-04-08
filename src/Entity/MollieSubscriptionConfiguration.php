@@ -1,4 +1,12 @@
 <?php
+
+/*
+ * This file has been created by developers from BitBag.
+ * Feel free to contact us once you face any issues or want to start
+ * You can find more information about us on https://bitbag.io and write us
+ * an email on hello@bitbag.io.
+ */
+
 declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Entity;
@@ -6,14 +14,23 @@ namespace BitBag\SyliusMolliePlugin\Entity;
 class MollieSubscriptionConfiguration implements MollieSubscriptionConfigurationInterface
 {
     protected ?int $id = null;
+
     protected string $hostName = '';
+
     protected ?int $port = null;
+
     protected ?string $subscriptionId = null;
+
     protected ?string $mandateId = null;
+
     protected ?string $customerId = null;
+
     protected ?string $interval = null;
+
     protected int $numberOfRepetitions = 1;
+
     protected array $paymentDetailsConfiguration = [];
+
     protected MollieSubscriptionInterface $subscription;
 
     public function __construct(MollieSubscriptionInterface $subscription)
@@ -51,7 +68,7 @@ class MollieSubscriptionConfiguration implements MollieSubscriptionConfiguration
         return $this->customerId;
     }
 
-    public function getInterval(): string
+    public function getInterval(): ?string
     {
         return $this->interval;
     }

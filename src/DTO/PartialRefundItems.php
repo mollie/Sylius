@@ -34,8 +34,11 @@ final class PartialRefundItems
         $this->partialRefundItems->add($partialRefundItem);
     }
 
-    public function addPartialRefundItemByQuantity(int $id, string $type, int $quantity): void
-    {
+    public function addPartialRefundItemByQuantity(
+        int $id,
+        string $type,
+        int $quantity
+    ): void {
         for ($oneItem = 0; $oneItem < $quantity; ++$oneItem) {
             $partialRefundItem = new PartialRefundItem();
             $partialRefundItem->setId($id);

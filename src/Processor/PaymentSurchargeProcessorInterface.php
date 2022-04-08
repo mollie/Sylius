@@ -11,10 +11,9 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Processor;
 
-use Sylius\Component\Order\Model\OrderInterface;
-use Sylius\Component\Order\Processor\OrderProcessorInterface;
+use BitBag\SyliusMolliePlugin\Entity\OrderInterface;
 
-interface PaymentSurchargeProcessorInterface extends OrderProcessorInterface
+interface PaymentSurchargeProcessorInterface
 {
     public function process(OrderInterface $order): void;
 }

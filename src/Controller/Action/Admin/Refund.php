@@ -112,7 +112,7 @@ final class Refund
         /** @var TokenInterface|null $token */
         $token = $this->payum->getTokenStorage()->find($hash);
 
-        if (null === $token || !$token instanceof TokenInterface) {
+        if (!$token instanceof TokenInterface) {
             $this->loggerAction->addNegativeLog(sprintf('A token with hash `%s` could not be found.', $hash));
 
             throw new BadRequestHttpException(sprintf('A token with hash `%s` could not be found.', $hash));
@@ -154,7 +154,7 @@ final class Refund
     private function redirectToReferer(Request $request): Response
     {
         /** @var string $url */
-        $url = $request->headers->get('referer', null, true);
+        $url = $request->headers->get('referer');
 
         return new RedirectResponse($url);
     }

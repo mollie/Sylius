@@ -22,6 +22,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
+use Webmozart\Assert\Assert;
 
 class ProcessSubscriptions extends Command
 {
@@ -33,8 +34,11 @@ class ProcessSubscriptions extends Command
     private $io;
 
     private MollieSubscriptionRepositoryInterface $mollieSubscriptionRepository;
+
     private Factory $stateMachineFactory;
+
     private SubscriptionProcessorInterface $subscriptionProcessor;
+
     private RouterInterface $router;
 
     public function __construct(
@@ -42,8 +46,7 @@ class ProcessSubscriptions extends Command
         Factory $stateMachineFactory,
         SubscriptionProcessorInterface $subscriptionProcessor,
         RouterInterface $router
-    )
-    {
+    ) {
         parent::__construct(self::COMMAND_NAME);
         $this->mollieSubscriptionRepository = $mollieSubscriptionRepository;
         $this->stateMachineFactory = $stateMachineFactory;
@@ -91,6 +94,8 @@ class ProcessSubscriptions extends Command
                 $configuration = $subscription->getSubscriptionConfiguration();
                 $routerContext->setHost($configuration->getHostName());
                 $firstOrder = $subscription->getFirstOrder();
+
+                Assert::notNull($firstOrder);
                 $routerContext->setParameter('_locale', $firstOrder->getLocaleCode());
                 $this->subscriptionProcessor->processNextPayment($subscription);
 

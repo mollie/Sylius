@@ -43,8 +43,11 @@ final class MollieLoggerAction implements MollieLoggerActionInterface
         $this->mollieFactoryNameResolver = $mollieFactoryNameResolver;
     }
 
-    public function addLog(string $message, int $logLevel = self::NOTICE, int $errorCode = Response::HTTP_OK): void
-    {
+    public function addLog(
+        string $message,
+        int $logLevel = self::NOTICE,
+        int $errorCode = Response::HTTP_OK
+    ): void {
         if (false === $this->canSaveLog($logLevel)) {
             return;
         }
@@ -53,8 +56,11 @@ final class MollieLoggerAction implements MollieLoggerActionInterface
         $this->repository->add($logger);
     }
 
-    public function addNegativeLog(string $message, int $logLevel = self::ERROR, int $errorCode = Response::HTTP_INTERNAL_SERVER_ERROR): void
-    {
+    public function addNegativeLog(
+        string $message,
+        int $logLevel = self::ERROR,
+        int $errorCode = Response::HTTP_INTERNAL_SERVER_ERROR
+    ): void {
         if (false === $this->canSaveLog($logLevel)) {
             return;
         }
@@ -65,7 +71,7 @@ final class MollieLoggerAction implements MollieLoggerActionInterface
 
     private function canSaveLog(int $logLevel): bool
     {
-        /** @var GatewayConfigInterface $gatewayConfig */
+        /** @var ?GatewayConfigInterface $gatewayConfig */
         $gatewayConfig = $this->gatewayRepository->findOneBy(['factoryName' => $this->mollieFactoryNameResolver->resolve()]);
 
         if (null === $gatewayConfig) {
@@ -75,11 +81,11 @@ final class MollieLoggerAction implements MollieLoggerActionInterface
 
         $level = $gatewayConfig->getConfig()['loggerLevel'];
 
-        if ($level === MollieLoggerActionInterface::LOG_EVERYTHING) {
+        if (MollieLoggerActionInterface::LOG_EVERYTHING === $level) {
             return true;
         }
 
-        if ($level === MollieLoggerActionInterface::LOG_ERRORS && $logLevel === self::ERROR) {
+        if (MollieLoggerActionInterface::LOG_ERRORS === $level && self::ERROR === $logLevel) {
             return true;
         }
 

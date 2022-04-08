@@ -90,7 +90,7 @@ final class PartialRefundItem
     {
         $value = $this->getAvailableAmountToRefund() - $amount;
 
-        if ($value < 0) {
+        if (0 > $value) {
             $this->amountToRefund = $this->getAvailableAmountToRefund();
 
             return abs($value);

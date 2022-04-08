@@ -16,9 +16,5 @@ use Sylius\Behat\Page\Shop\Checkout\CompletePageInterface as BaseCompletePageInt
 
 interface CompletePageInterface extends BaseCompletePageInterface
 {
-    /**
-     * @param string $consumerName
-     * @param string $iban
-     */
     public function specifyDirectDebit(string $consumerName, string $iban): void;
 }

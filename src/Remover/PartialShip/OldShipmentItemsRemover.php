@@ -26,7 +26,7 @@ final class OldShipmentItemsRemover implements OldShipmentItemsRemoverInterface
         /** @var OrderItemUnitInterface $unit */
         foreach ($shipment->getUnits() as $unit) {
             $item = $shipItems->findById($unit->getOrderItem()->getId());
-            if (null !== $item && $item->getQuantity() > 0) {
+            if (null !== $item && 0 < $item->getQuantity()) {
                 /** @var ShipmentInterface $oldShipment */
                 $oldShipment = $unit->getShipment();
 

@@ -1,4 +1,12 @@
 <?php
+
+/*
+ * This file has been created by developers from BitBag.
+ * Feel free to contact us once you face any issues or want to start
+ * You can find more information about us on https://bitbag.io and write us
+ * an email on hello@bitbag.io.
+ */
+
 declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Action\Api;
@@ -16,15 +24,16 @@ use Payum\Core\Exception\RequestNotSupportedException;
 final class CreateInternalSubscriptionAction extends BaseApiAwareAction implements ActionInterface, ApiAwareInterface
 {
     private MollieSubscriptionRepositoryInterface $subscriptionRepository;
+
     private MollieSubscriptionFactoryInterface $subscriptionFactory;
+
     private OrderRepositoryInterface $orderRepository;
 
     public function __construct(
         MollieSubscriptionRepositoryInterface $subscriptionRepository,
         MollieSubscriptionFactoryInterface $subscriptionFactory,
         OrderRepositoryInterface $orderRepository
-    )
-    {
+    ) {
         $this->subscriptionRepository = $subscriptionRepository;
         $this->subscriptionFactory = $subscriptionFactory;
         $this->orderRepository = $orderRepository;
@@ -42,7 +51,6 @@ final class CreateInternalSubscriptionAction extends BaseApiAwareAction implemen
         /** @var OrderInterface $rootOrder */
         $rootOrder = $this->orderRepository->find($model['metadata']['order_id']);
 
-        /** @var OrderInterface $rootOrder */
         foreach ($rootOrder->getRecurringItems() as $item) {
             $subscription = $this->subscriptionFactory->createFromFirstOrderWithOrderItemAndPaymentConfiguration(
                 $rootOrder,

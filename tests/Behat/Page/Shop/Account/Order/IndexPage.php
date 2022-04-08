@@ -17,7 +17,7 @@ use Sylius\Behat\Page\Shop\Account\Order\IndexPage as BaseIndexPage;
 final class IndexPage extends BaseIndexPage implements IndexPageInterface
 {
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function cancelSubscription(): void
     {

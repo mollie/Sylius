@@ -25,14 +25,10 @@
             <argument type="service" id="sylius.repository.payment_method"/>
             <argument type="service" id="sylius.context.channel"/>
         </service>
-        <service id="bitbag_sylius_mollie_plugin.creator.mollie_methods_creator" class="BitBag\SyliusMolliePlugin\Creator\MollieMethodsCreator">
-            <argument type="service" id="bitbag.sylius_mollie_plugin.factory.methods"/>
-            <argument type="service" id="doctrine.orm.default_entity_manager"/>
-            <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
-            <argument type="service" id="bitbag_sylius_mollie_plugin.mollie_api_client"/>
-            <argument type="service" id="sylius.repository.gateway_config"/>
+        <service id="bit_bag.sylius_mollie_plugin.creator.mollie_methods_creator" class="BitBag\SyliusMolliePlugin\Creator\MollieMethodsCreator">
+            <argument type="service" id="bitbag.sylius_mollie_plugin.factory.methods" />
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
             <argument type="service" id="bitbag_sylius_mollie_plugin.custom_factory.mollie_gateway_config"/>
-            <argument type="service" id="bitbag_sylius_mollie_plugin.purifier.mollie_payment_method_purifier"/>
         </service>
         <service id="bitbag_sylius_mollie_plugin.creator.api_keys_test_creator" class="BitBag\SyliusMolliePlugin\Creator\ApiKeysTestCreator">
             <argument type="service" id="bitbag_sylius_mollie_plugin.mollie_api_client"/>

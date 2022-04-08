@@ -30,10 +30,15 @@ interface ConvertOrderInterface
     public const ITEM_DISCOUNT_ADJUSTMENTS_TYPES = [
         AdjustmentInterface::ORDER_UNIT_PROMOTION_ADJUSTMENT,
         AdjustmentInterface::ORDER_ITEM_PROMOTION_ADJUSTMENT,
-        AdjustmentInterface::ORDER_PROMOTION_ADJUSTMENT
+        AdjustmentInterface::ORDER_PROMOTION_ADJUSTMENT,
     ];
 
     public const TAX_RATE_CRITERIA_ZONE = 'zone';
 
-    public function convert(OrderInterface $order, array $details, int $divisor, MollieGatewayConfigInterface $method): array;
+    public function convert(
+        OrderInterface $order,
+        array $details,
+        int $divisor,
+        MollieGatewayConfigInterface $method
+    ): array;
 }

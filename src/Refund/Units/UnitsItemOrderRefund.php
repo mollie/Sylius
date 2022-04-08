@@ -11,7 +11,6 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Refund\Units;
 
-use BitBag\SyliusMolliePlugin\DTO\PartialRefundItem;
 use BitBag\SyliusMolliePlugin\DTO\PartialRefundItems;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
@@ -65,6 +64,7 @@ final class UnitsItemOrderRefund implements UnitsItemOrderRefundInterface
     {
         $units = $order->getItemUnits();
 
+        $refundedUnits = [];
         foreach ($units as $unit) {
             if ($itemId === $unit->getOrderItem()->getId()) {
                 $refundedUnits[] = $this->refundUnitsRepository->findOneBy([
@@ -86,6 +86,6 @@ final class UnitsItemOrderRefund implements UnitsItemOrderRefundInterface
             'type' => RefundType::orderItemUnit(),
         ]);
 
-        return $unitRefunded ? true : false;
+        return null !== $unitRefunded;
     }
 }

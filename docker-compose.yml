@@ -26,7 +26,7 @@ services:
       - MYSQL_PASSWORD=${MYSQL_PASSWORD:-nopassword}
     volumes:
       - mysql-data:/var/lib/mysql:rw
-      # - ./docker/mysql/data:/var/lib/mysql:rw,delegated
+#       - ./docker/mysql/data:/var/lib/mysql:rw,delegated
     ports:
       - "3306:3306"
 

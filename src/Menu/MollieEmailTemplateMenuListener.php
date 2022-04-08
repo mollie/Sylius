@@ -22,6 +22,11 @@ final class MollieEmailTemplateMenuListener
         $cmsRootMenuItem =
             $menu
                 ->getChild('mollie');
+
+        if (null === $cmsRootMenuItem) {
+            return;
+        }
+
         $cmsRootMenuItem
             ->addChild('mollie_email_template', [
                 'route' => 'bitbag_sylius_mollie_plugin_admin_template_mollie_email_index',

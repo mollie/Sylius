@@ -18,14 +18,9 @@ use Webmozart\Assert\Assert;
 
 final class ManagingPaymentMethodContext implements Context
 {
-    /**
-     * @var CreatePageInterface
-     */
+    /** @var CreatePageInterface */
     private $createPage;
 
-    /**
-     * @param CreatePageInterface $createPage
-     */
     public function __construct(CreatePageInterface $createPage)
     {
         $this->createPage = $createPage;

@@ -42,14 +42,13 @@ final class CreateOnDemandSubscriptionAction extends BaseApiAwareAction implemen
         SessionInterface $session,
         MollieLoggerActionInterface $loggerAction,
         GuzzleNegativeResponseParserInterface $guzzleNegativeResponseParser
-    )
-    {
+    ) {
         $this->session = $session;
         $this->loggerAction = $loggerAction;
         $this->guzzleNegativeResponseParser = $guzzleNegativeResponseParser;
     }
 
-    /** @param CreateSepaMandate $request */
+    /** @param CreateSepaMandate|mixed $request */
     public function execute($request): void
     {
         $details = ArrayObject::ensureArrayObject($request->getModel());
@@ -74,11 +73,12 @@ final class CreateOnDemandSubscriptionAction extends BaseApiAwareAction implemen
             $formattedMessage = sprintf('Error with create payment with: %s', $e->getMessage());
             $this->loggerAction->addNegativeLog($formattedMessage);
 
-            if (empty($message)) {
+            if ('' === $message) {
                 throw new ApiException($formattedMessage);
             }
 
             $details['statusError'] = $message;
+
             return;
         } catch (\Exception $e) {
             $formattedMessage = sprintf('Error with create payment with: %s', $e->getMessage());

@@ -37,7 +37,7 @@ final class ProductVoucherTypeChecker implements ProductVoucherTypeCheckerInterf
             return $methods;
         }
 
-        /** @var MollieGatewayConfigInterface $mealVoucher */
+        /** @var ?MollieGatewayConfigInterface $mealVoucher */
         $mealVoucher = $this->paymentMethodRepository->findOneBy(['methodId' => MealVoucher::MEAL_VOUCHERS]);
         Assert::isInstanceOf($mealVoucher, MollieGatewayConfigInterface::class);
 

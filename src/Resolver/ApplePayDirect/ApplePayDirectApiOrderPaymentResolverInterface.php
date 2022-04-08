@@ -16,5 +16,9 @@ use BitBag\SyliusMolliePlugin\Entity\OrderInterface;
 
 interface ApplePayDirectApiOrderPaymentResolverInterface
 {
-    public function resolve(OrderInterface $order, MollieGatewayConfigInterface $mollieGatewayConfig, array $details): void;
+    public function resolve(
+        OrderInterface $order,
+        MollieGatewayConfigInterface $mollieGatewayConfig,
+        array $details
+    ): void;
 }

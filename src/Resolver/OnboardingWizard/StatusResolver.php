@@ -19,10 +19,10 @@ use Sylius\Component\Resource\Repository\RepositoryInterface;
 
 final class StatusResolver implements StatusResolverInterface
 {
-    /** @var RepositoryInterface $statusRepository */
+    /** @var RepositoryInterface */
     private $statusRepository;
 
-    /** @var StatusFactoryInterface $statusFactory */
+    /** @var StatusFactoryInterface */
     private $statusFactory;
 
     public function __construct(RepositoryInterface $statusRepository, StatusFactoryInterface $statusFactory)

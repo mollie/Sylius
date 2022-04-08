@@ -20,22 +20,14 @@ use Sylius\Behat\Service\Mocker\MockerInterface;
 
 final class MollieApiMocker
 {
-    /**
-     * @var MockerInterface
-     */
+    /** @var MockerInterface */
     private $mocker;
 
-    /**
-     * @param MockerInterface $mocker
-     */
     public function __construct(MockerInterface $mocker)
     {
         $this->mocker = $mocker;
     }
 
-    /**
-     * @param callable $action
-     */
     public function mockApiCreatePayment(callable $action): void
     {
         $payment = \Mockery::mock('payment', Payment::class);
@@ -77,9 +69,6 @@ final class MollieApiMocker
         $this->mocker->unmockAll();
     }
 
-    /**
-     * @param callable $action
-     */
     public function mockApiSuccessfulPayment(callable $action): void
     {
         $payment = \Mockery::mock('payment', Payment::class);
@@ -120,12 +109,9 @@ final class MollieApiMocker
         $this->mocker->unmockAll();
     }
 
-    /**
-     * @param callable $action
-     */
     public function mockApiCancelledPayment(callable $action): void
     {
-        $payment =\Mockery::mock('payment', Payment::class);
+        $payment = \Mockery::mock('payment', Payment::class);
 
         $payment->metadata = (object) [
             'order_id' => 1,
@@ -163,9 +149,6 @@ final class MollieApiMocker
         $this->mocker->unmockAll();
     }
 
-    /**
-     * @param callable $action
-     */
     public function mockApiRefundedPayment(callable $action): void
     {
         $payment = \Mockery::mock('payment', Payment::class);
@@ -214,9 +197,6 @@ final class MollieApiMocker
         $this->mocker->unmockAll();
     }
 
-    /**
-     * @param callable $action
-     */
     public function mockApiCreateRecurringSubscription(callable $action): void
     {
         $payment = \Mockery::mock('payment', Payment::class);
@@ -305,9 +285,6 @@ final class MollieApiMocker
         $this->mocker->unmockAll();
     }
 
-    /**
-     * @param callable $action
-     */
     public function mockApiCancelledRecurringSubscription(callable $action): void
     {
         $payment = \Mockery::mock('payment', Payment::class);

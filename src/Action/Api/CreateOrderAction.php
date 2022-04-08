@@ -16,11 +16,13 @@ use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use BitBag\SyliusMolliePlugin\Request\Api\CreateOrder;
 use BitBag\SyliusMolliePlugin\Resolver\PaymentMethodConfigResolverInterface;
 use Mollie\Api\Exceptions\ApiException;
+use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Reply\HttpRedirect;
+use Webmozart\Assert\Assert;
 
-final class CreateOrderAction extends BaseApiAwareAction
+final class CreateOrderAction extends BaseApiAwareAction implements ActionInterface
 {
     use GatewayAwareTrait;
 
@@ -44,7 +46,7 @@ final class CreateOrderAction extends BaseApiAwareAction
 
         $issuer = $details['metadata']['selected_issuer'] ?? null;
         $customerId = $details['metadata']['customer_mollie_id'] ?? null;
-        $method = $details['metadata']['molliePaymentMethods'] ?: '';
+        $method = $details['metadata']['molliePaymentMethods'] ?? '';
 
         if (null !== $method) {
             /** @var MollieGatewayConfigInterface $paymentMethod */
@@ -87,6 +89,8 @@ final class CreateOrderAction extends BaseApiAwareAction
         $details['order_mollie_id'] = $order->id;
 
         $this->loggerAction->addLog(sprintf('Create new order in mollie with id: %s', $order->id));
+
+        Assert::notNull($order->getCheckoutUrl());
 
         throw new HttpRedirect($order->getCheckoutUrl());
     }

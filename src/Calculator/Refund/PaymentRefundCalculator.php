@@ -20,9 +20,9 @@ final class PaymentRefundCalculator implements PaymentRefundCalculatorInterface
     {
         /** @var PartialRefundItem $partialRefundItem */
         foreach ($partialRefundItems->getPartialRefundItems() as $partialRefundItem) {
-            if ($partialRefundItem->getAvailableAmountToRefund() > 0) {
+            if (0 < $partialRefundItem->getAvailableAmountToRefund()) {
                 $totalToRefund = $partialRefundItem->setAmountToRefund($totalToRefund);
-                if ($totalToRefund === 0) {
+                if (0 === $totalToRefund) {
                     break;
                 }
             }

@@ -26,6 +26,7 @@ use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Capture;
 use Payum\Core\Security\GenericTokenFactoryInterface;
 use Payum\Core\Security\TokenInterface;
+use Psr\Log\InvalidArgumentException;
 
 final class CaptureAction extends BaseApiAwareAction implements CaptureActionInterface
 {
@@ -39,7 +40,7 @@ final class CaptureAction extends BaseApiAwareAction implements CaptureActionInt
         $this->tokenFactory = $genericTokenFactory;
     }
 
-    /** @param Capture $request */
+    /** @param Capture|mixed $request */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
@@ -86,19 +87,19 @@ final class CaptureAction extends BaseApiAwareAction implements CaptureActionInt
                 $this->gateway->execute(new CreateOnDemandSubscriptionPayment($details));
             }
         } else {
-            if (isset($details['metadata']['methodType']) && $details['metadata']['methodType'] === Options::PAYMENT_API) {
-                if (in_array($details['metadata']['molliePaymentMethods'], Options::getOnlyOrderAPIMethods())) {
-                    throw new \sprintf(
+            if (isset($details['metadata']['methodType']) && Options::PAYMENT_API === $details['metadata']['methodType']) {
+                if (in_array($details['metadata']['molliePaymentMethods'], Options::getOnlyOrderAPIMethods(), true)) {
+                    throw new InvalidArgumentException(sprintf(
                         'Method %s is not allowed to use %s',
                         $details['metadata']['molliePaymentMethods'],
                         Options::PAYMENT_API
-                    );
+                    ));
                 }
 
                 $this->gateway->execute(new CreatePayment($details));
             }
 
-            if (isset($details['metadata']['methodType']) && $details['metadata']['methodType'] === Options::ORDER_API) {
+            if (isset($details['metadata']['methodType']) && Options::ORDER_API === $details['metadata']['methodType']) {
                 $this->gateway->execute(new CreateOrder($details));
             }
         }

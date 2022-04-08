@@ -31,13 +31,13 @@ class BeginProcessingSubscriptions extends Command
     private $io;
 
     private MollieSubscriptionRepositoryInterface $mollieSubscriptionRepository;
+
     private Factory $stateMachineFactory;
 
     public function __construct(
         MollieSubscriptionRepositoryInterface $mollieSubscriptionRepository,
         Factory $stateMachineFactory
-    )
-    {
+    ) {
         parent::__construct(self::COMMAND_NAME);
         $this->mollieSubscriptionRepository = $mollieSubscriptionRepository;
         $this->stateMachineFactory = $stateMachineFactory;
@@ -78,7 +78,6 @@ class BeginProcessingSubscriptions extends Command
                     $this->mollieSubscriptionRepository->add($subscription);
                 }
             }
-
 
             $this->io->success('Successfully marked scheduled subscriptions');
         } catch (\Exception $exception) {

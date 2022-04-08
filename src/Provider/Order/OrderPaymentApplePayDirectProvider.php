@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Provider\Order;
 
 use BitBag\SyliusMolliePlugin\Entity\GatewayConfigInterface;
+use BitBag\SyliusMolliePlugin\Entity\OrderInterface;
 use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
 use Payum\Core\Payum;
 use SM\Factory\FactoryInterface as StateMachineFactoryInterface;
@@ -19,7 +20,6 @@ use Sylius\AdminOrderCreationPlugin\Provider\PaymentTokenProviderInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Core\Model\PaymentMethodInterface;
 use Sylius\Component\Core\Payment\Exception\NotProvidedOrderPaymentException;
-use Sylius\Component\Order\Model\OrderInterface;
 use Sylius\Component\Payment\Exception\UnresolvedDefaultPaymentMethodException;
 use Sylius\Component\Payment\Factory\PaymentFactoryInterface;
 use Sylius\Component\Payment\PaymentTransitions;
@@ -67,6 +67,7 @@ final class OrderPaymentApplePayDirectProvider implements OrderPaymentApplePayDi
     {
         $order->getPayments()->clear();
 
+        Assert::notNull($order->getCurrencyCode());
         /** @var PaymentInterface $payment */
         $payment = $this->paymentFactory->createWithAmountAndCurrencyCode($order->getTotal(), $order->getCurrencyCode());
 

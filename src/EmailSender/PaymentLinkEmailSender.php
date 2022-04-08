@@ -18,6 +18,7 @@ use Sylius\Component\Core\Model\CustomerInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Mailer\Sender\SenderInterface;
+use Webmozart\Assert\Assert;
 
 final class PaymentLinkEmailSender implements PaymentLinkEmailSenderInterface
 {
@@ -40,11 +41,13 @@ final class PaymentLinkEmailSender implements PaymentLinkEmailSenderInterface
         /** @var PaymentInterface $payment */
         $payment = $order->getPayments()->last();
 
-        if (empty($payment->getDetails())) {
+        if (0 === count($payment->getDetails())) {
             return;
         }
 
         $paymentLink = $payment->getDetails()['payment_mollie_link'];
+
+        Assert::notNull($template->getContent());
         $content = $this->contentParser->parse($template->getContent(), $paymentLink);
 
         /** @var CustomerInterface $customer */

@@ -1,4 +1,12 @@
 <?php
+
+/*
+ * This file has been created by developers from BitBag.
+ * Feel free to contact us once you face any issues or want to start
+ * You can find more information about us on https://bitbag.io and write us
+ * an email on hello@bitbag.io.
+ */
+
 declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Entity;
@@ -11,13 +19,13 @@ interface MollieSubscriptionScheduleInterface extends ResourceInterface
 
     public function getScheduledDate(): \DateTime;
 
-    public function getFulfilledDate(): ?\DateTime;
+    public function getFulfilledDate(): ?\DateTimeInterface;
 
     public function setMollieSubscription(MollieSubscriptionInterface $mollieSubscription): void;
 
     public function setScheduledDate(\DateTime $scheduledDate): void;
 
-    public function setFulfilledDate(?\DateTime $fulfilledDate): void;
+    public function setFulfilledDate(?\DateTimeInterface $fulfilledDate): void;
 
     public function isFulfilled(): bool;
 

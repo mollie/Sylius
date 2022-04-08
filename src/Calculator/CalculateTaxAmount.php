@@ -11,14 +11,14 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Calculator;
 
-use BitBag\SyliusMolliePlugin\Helper\IntToStringConverter;
+use BitBag\SyliusMolliePlugin\Helper\IntToStringConverterInterface;
 
 final class CalculateTaxAmount implements CalculateTaxAmountInterface
 {
-    /** @var IntToStringConverter */
+    /** @var IntToStringConverterInterface */
     private $converter;
 
-    public function __construct(IntToStringConverter $converter)
+    public function __construct(IntToStringConverterInterface $converter)
     {
         $this->converter = $converter;
     }

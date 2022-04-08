@@ -34,6 +34,7 @@
             <tag name="form.type_extension" extended_type="Sylius\Bundle\CoreBundle\Form\Type\Checkout\CompleteType"/>
         </service>
         <service id="bitbag_sylius_mollie_plugin.form.extension.product_variant_recurring" class="BitBag\SyliusMolliePlugin\Form\Extension\ProductVariantRecurringExtension">
+            <argument type="service" id="bit_bag.sylius_mollie_plugin.form.extension.resolver_group_provider"/>
             <tag name="form.type_extension" extended_type="Sylius\Bundle\ProductBundle\Form\Type\ProductVariantType"/>
         </service>
         <service id="bitbag_sylius_mollie_plugin.form.extension.payment_type" class="BitBag\SyliusMolliePlugin\Form\Extension\PaymentTypeExtension">

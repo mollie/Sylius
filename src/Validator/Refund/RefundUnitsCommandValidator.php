@@ -47,7 +47,7 @@ final class RefundUnitsCommandValidator implements RefundUnitsCommandValidatorIn
             throw OrderNotAvailableForRefunding::withOrderNumber($command->orderNumber());
         }
 
-        if (empty($command->units()) && empty($command->shipments())) {
+        if (0 === count($command->units()) && 0 === count($command->shipments())) {
             throw new OrderNotAvailableForRefunding(sprintf('There are no units to refund in order %s', $command->orderNumber()));
         }
 

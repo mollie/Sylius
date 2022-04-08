@@ -23,32 +23,18 @@ use Sylius\Component\Core\Repository\PaymentMethodRepositoryInterface;
 
 final class MollieContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
+    /** @var SharedStorageInterface */
     private $sharedStorage;
 
-    /**
-     * @var PaymentMethodRepositoryInterface
-     */
+    /** @var PaymentMethodRepositoryInterface */
     private $paymentMethodRepository;
 
-    /**
-     * @var ExampleFactoryInterface
-     */
+    /** @var ExampleFactoryInterface */
     private $paymentMethodExampleFactory;
 
-    /**
-     * @var EntityManager
-     */
+    /** @var EntityManager */
     private $paymentMethodManager;
 
-    /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param PaymentMethodRepositoryInterface $paymentMethodRepository
-     * @param ExampleFactoryInterface $paymentMethodExampleFactory
-     * @param EntityManager $paymentMethodManager
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         PaymentMethodRepositoryInterface $paymentMethodRepository,
@@ -103,16 +89,6 @@ final class MollieContext implements Context
         $this->paymentMethodManager->flush();
     }
 
-    /**
-     * @param string $name
-     * @param string $code
-     * @param string $factoryName
-     * @param string $description
-     * @param bool $addForCurrentChannel
-     * @param int|null $position
-     *
-     * @return PaymentMethodInterface
-     */
     private function createPaymentMethodMollie(
         string $name,
         string $code,

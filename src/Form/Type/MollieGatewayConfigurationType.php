@@ -124,7 +124,7 @@ final class MollieGatewayConfigurationType extends AbstractType
                 'help' => $this->documentationLinks->getSingleClickDoc(),
                 'help_html' => true,
             ])
-            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
                 $data = $event->getData();
 
                 if (isset($data['components']) && true === $data['components']) {
@@ -142,11 +142,15 @@ final class MollieGatewayConfigurationType extends AbstractType
         return 'bitbag_mollie_gateway_configuration_type';
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefault('constraints', [
-            new LiveApiKeyIsNotBlank(['field' => self::API_KEY_LIVE], ['sylius']),
-        ]);
+        $defaults = [
+            'field' => self::API_KEY_LIVE,
+            'groups' => ['sylius'],
+        ];
 
+        $resolver->setDefault('constraints', [
+            new LiveApiKeyIsNotBlank($defaults),
+        ]);
     }
 }

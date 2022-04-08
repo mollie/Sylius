@@ -17,7 +17,7 @@ use Sylius\Behat\Page\Shop\Checkout\CompletePage as BaseCompletePage;
 final class CompletePage extends BaseCompletePage implements CompletePageInterface
 {
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function specifyDirectDebit(string $consumerName, string $iban): void
     {

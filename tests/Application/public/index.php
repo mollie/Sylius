@@ -1,8 +1,10 @@
 <?php
 
-use Tests\BitBag\SyliusMolliePlugin\Application\Kernel;
+declare(strict_types=1);
+
 use Symfony\Component\ErrorHandler\Debug;
 use Symfony\Component\HttpFoundation\Request;
+use Tests\BitBag\SyliusMolliePlugin\Application\Kernel;
 
 require dirname(__DIR__) . '/config/bootstrap.php';
 

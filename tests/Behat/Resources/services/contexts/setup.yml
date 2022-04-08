@@ -20,5 +20,14 @@ services:
         class: Tests\BitBag\SyliusMolliePlugin\Behat\Context\Setup\SubscriptionContext
         public: true
         arguments:
-            - "@bitbag_sylius_mollie_plugin.manager.subscription"
-            - "@bitbag_sylius_mollie_plugin.factory.subscription"
+            - "@doctrine.orm.default_entity_manager"
+            - "@sylius.factory.order"
+
+    bitbag_sylius_mollie_plugin.behat.context.setup.product:
+        class: Tests\BitBag\SyliusMolliePlugin\Behat\Context\Setup\ProductContext
+        public: true
+        arguments:
+            - "@sylius.behat.shared_storage"
+            - "@sylius.repository.product"
+            - "@sylius.repository.product_variant"
+

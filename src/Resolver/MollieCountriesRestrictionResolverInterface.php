@@ -15,5 +15,9 @@ use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
 
 interface MollieCountriesRestrictionResolverInterface
 {
-    public function resolve(MollieGatewayConfigInterface $paymentMethod, array $methods, string $countryCode): ?array;
+    public function resolve(
+        MollieGatewayConfigInterface $paymentMethod,
+        array $methods,
+        string $countryCode
+    ): ?array;
 }

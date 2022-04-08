@@ -23,6 +23,7 @@ use Sylius\Component\Core\Model\OrderItemInterface;
 class Order extends BaseOrder implements OrderInterface
 {
     use AbandonedEmailOrderTrait;
+
     use RecurringOrderTrait;
 
     public function getRecurringItems(): Collection
@@ -53,11 +54,11 @@ class Order extends BaseOrder implements OrderInterface
 
     public function hasRecurringContents(): bool
     {
-        return $this->getRecurringItems()->count() > 0;
+        return 0 < $this->getRecurringItems()->count();
     }
 
     public function hasNonRecurringContents(): bool
     {
-        return $this->getNonRecurringItems()->count() > 0;
+        return 0 < $this->getNonRecurringItems()->count();
     }
 }

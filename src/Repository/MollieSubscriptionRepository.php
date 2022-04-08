@@ -17,7 +17,7 @@ use Sylius\Component\Core\Model\PaymentInterface;
 
 final class MollieSubscriptionRepository extends EntityRepository implements MollieSubscriptionRepositoryInterface
 {
-    public function findOneByOrderId($orderId): ?MollieSubscriptionInterface
+    public function findOneByOrderId(int $orderId): ?MollieSubscriptionInterface
     {
         $qb = $this->createQueryBuilder('q');
 
@@ -28,7 +28,8 @@ final class MollieSubscriptionRepository extends EntityRepository implements Mol
         return $qb->getQuery()->getOneOrNullResult()
         ;
     }
-    public function findByOrderId($orderId): array
+
+    public function findByOrderId(int $orderId): array
     {
         $qb = $this->createQueryBuilder('q');
 

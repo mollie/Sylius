@@ -55,8 +55,11 @@ final class ApplePayDirectApiOrderPaymentResolver implements ApplePayDirectApiOr
         $this->paymentLocaleResolver = $paymentLocaleResolver;
     }
 
-    public function resolve(OrderInterface $order, MollieGatewayConfigInterface $mollieGatewayConfig, array $details): void
-    {
+    public function resolve(
+        OrderInterface $order,
+        MollieGatewayConfigInterface $mollieGatewayConfig,
+        array $details
+    ): void {
         $this->apiClientKeyResolver->getClientWithKey();
         $details = $this->convertOrder->convert($order, $details, 100, $mollieGatewayConfig);
         $customer = $order->getCustomer();
@@ -103,7 +106,7 @@ final class ApplePayDirectApiOrderPaymentResolver implements ApplePayDirectApiOr
             }
 
             $response = $this->mollieApiClient->orders->create($requestData);
-            if ($response->status === OrderStatus::STATUS_PAID) {
+            if (OrderStatus::STATUS_PAID === $response->status) {
                 $this->paymentApplePayDirectProvider->applyRequiredTransition($payment, PaymentInterface::STATE_COMPLETED);
 
                 $paymentDetails = $payment->getDetails();

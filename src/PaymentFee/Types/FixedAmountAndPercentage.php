@@ -17,6 +17,7 @@ use BitBag\SyliusMolliePlugin\Payments\PaymentTerms\Options;
 use Doctrine\Common\Collections\Collection;
 use Sylius\Component\Order\Factory\AdjustmentFactoryInterface;
 use Sylius\Component\Order\Model\OrderInterface;
+use Webmozart\Assert\Assert;
 
 final class FixedAmountAndPercentage implements SurchargeTypeInterface
 {
@@ -41,7 +42,10 @@ final class FixedAmountAndPercentage implements SurchargeTypeInterface
 
     public function calculate(OrderInterface $order, MollieGatewayConfig $paymentMethod): OrderInterface
     {
-        $limit = $paymentMethod->getPaymentSurchargeFee()->getSurchargeLimit() * 100;
+        $paymentSurchargeFee = $paymentMethod->getPaymentSurchargeFee();
+        Assert::notNull($paymentSurchargeFee);
+        Assert::notNull($paymentSurchargeFee->getSurchargeLimit());
+        $limit = $paymentSurchargeFee->getSurchargeLimit() * 100;
 
         $percentage = $this->percentage->calculate($order, $paymentMethod);
         $fixed = $this->fixedAmount->calculate($order, $paymentMethod);
@@ -51,14 +55,14 @@ final class FixedAmountAndPercentage implements SurchargeTypeInterface
 
         $amount = $percentageAmount + $fixAmount;
 
-        if (isset($limit) && $amount > $limit) {
+        if ($amount > $limit) {
             $amount = $limit;
         }
 
         $order->removeAdjustments(AdjustmentInterface::FIXED_AMOUNT_ADJUSTMENT);
         $order->removeAdjustments(AdjustmentInterface::PERCENTAGE_ADJUSTMENT);
 
-        if ($order->getAdjustments(AdjustmentInterface::PERCENTAGE_AND_AMOUNT_ADJUSTMENT)) {
+        if (false === $order->getAdjustments(AdjustmentInterface::PERCENTAGE_AND_AMOUNT_ADJUSTMENT)->isEmpty()) {
             $order->removeAdjustments(AdjustmentInterface::PERCENTAGE_AND_AMOUNT_ADJUSTMENT);
         }
 
@@ -74,7 +78,7 @@ final class FixedAmountAndPercentage implements SurchargeTypeInterface
 
     public function canCalculate(string $type): bool
     {
-        return array_search($type, Options::getAvailablePaymentSurchargeFeeType()) === Options::FIXED_FEE_AND_PERCENTAGE;
+        return Options::FIXED_FEE_AND_PERCENTAGE === array_search($type, Options::getAvailablePaymentSurchargeFeeType(), true);
     }
 
     private function getSumOfCalculatedValue(Collection $adjustments): float

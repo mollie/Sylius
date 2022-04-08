@@ -29,7 +29,7 @@ final class CompleteTypeExtension extends AbstractTypeExtension
         /** @var OrderInterface $order */
         $order = $builder->getData();
 
-        /** @var PaymentInterface $payment */
+        /** @var ?PaymentInterface $payment */
         $payment = $order->getLastPayment();
         /** @var PaymentMethodInterface|null $method */
         $method = null !== $payment ? $payment->getMethod() : null;

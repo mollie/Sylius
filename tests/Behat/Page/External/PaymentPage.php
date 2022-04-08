@@ -21,22 +21,12 @@ use Symfony\Component\BrowserKit\AbstractBrowser;
 
 final class PaymentPage extends Page implements PaymentPageInterface
 {
-    /**
-     * @var RepositoryInterface
-     */
+    /** @var RepositoryInterface */
     private $securityTokenRepository;
 
-    /**
-     * @var AbstractBrowser
-     */
+    /** @var AbstractBrowser */
     private $client;
 
-    /**
-     * @param Session $session
-     * @param MinkParameters $parameters
-     * @param RepositoryInterface $securityTokenRepository
-     * @param AbstractBrowser $client
-     */
     public function __construct(
         Session $session,
         MinkParameters $parameters,
@@ -50,7 +40,7 @@ final class PaymentPage extends Page implements PaymentPageInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function capture(): void
     {
@@ -60,7 +50,7 @@ final class PaymentPage extends Page implements PaymentPageInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function notify(array $postData): void
     {
@@ -69,21 +59,11 @@ final class PaymentPage extends Page implements PaymentPageInterface
         $this->client->request('POST', $notifyToken->getTargetUrl(), $postData);
     }
 
-    /**
-     * @param array $urlParameters
-     *
-     * @return string
-     */
     protected function getUrl(array $urlParameters = []): string
     {
         return 'https://api.mollie.nl';
     }
 
-    /**
-     * @param string $type
-     *
-     * @return TokenInterface
-     */
     private function findToken(string $type = 'capture'): TokenInterface
     {
         $tokens = [];
@@ -95,7 +75,7 @@ final class PaymentPage extends Page implements PaymentPageInterface
             }
         }
 
-        if (count($tokens) > 0) {
+        if (0 < count($tokens)) {
             return end($tokens);
         }
 

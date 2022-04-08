@@ -16,7 +16,6 @@ use Mollie\Api\Resources\Payment;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Order\Factory\AdjustmentFactoryInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
-use Webmozart\Assert\Assert;
 
 final class OrderVoucherAdjustmentUpdater implements OrderVoucherAdjustmentUpdaterInterface
 {
@@ -45,7 +44,6 @@ final class OrderVoucherAdjustmentUpdater implements OrderVoucherAdjustmentUpdat
 
         /** @var OrderInterface $order */
         $order = $this->orderRepository->find($orderId);
-        Assert::isInstanceOf($order, OrderInterface::class);
 
         if (isset($molliePayment->details->vouchers)) {
             foreach ($molliePayment->details->vouchers as $voucher) {

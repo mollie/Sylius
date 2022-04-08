@@ -16,10 +16,11 @@ use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
 use BitBag\SyliusMolliePlugin\Form\Type\MollieGatewayConfigurationType;
 use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use BitBag\SyliusMolliePlugin\Resolver\PartialShip\FromSyliusToMollieLinesResolverInterface;
+use Doctrine\Common\Collections\Collection;
 use Mollie\Api\Exceptions\ApiException;
-use Mollie\Api\Resources\Order;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\PaymentMethodInterface;
+use Webmozart\Assert\Assert;
 
 final class OrderMolliePartialShip implements OrderMolliePartialShipInterface
 {
@@ -44,17 +45,23 @@ final class OrderMolliePartialShip implements OrderMolliePartialShipInterface
 
     public function partialShip(OrderInterface $order): void
     {
-        $units = $order->getShipments()->last()->getUnits();
+        /** @var Collection $shipments */
+        $shipments = $order->getShipments();
+        $units = $shipments->last()->getUnits();
 
         if ($units->isEmpty()) {
             return;
         }
 
         $payment = $order->getLastPayment();
+        Assert::notNull($payment);
 
         /** @var PaymentMethodInterface $paymentMethod */
         $paymentMethod = $payment->getMethod();
 
+        if (null === $paymentMethod->getGatewayConfig()) {
+            return;
+        }
         $factoryName = $paymentMethod->getGatewayConfig()->getFactoryName() ?? null;
 
         if (!isset($payment->getDetails()['order_mollie_id']) || MollieGatewayFactory::FACTORY_NAME !== $factoryName) {
@@ -64,7 +71,6 @@ final class OrderMolliePartialShip implements OrderMolliePartialShipInterface
         $modusKey = $this->getModus($paymentMethod->getGatewayConfig()->getConfig());
 
         try {
-            /** @var Order $mollieOrder */
             $this->apiClient->setApiKey($modusKey);
             $mollieOrder = $this->apiClient->orders->get($payment->getDetails()['order_mollie_id']);
 

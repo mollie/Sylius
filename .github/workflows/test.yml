@@ -1,12 +1,10 @@
 name: Test application
 
 on:
-    push:
-        branches:
-            - master
+    push: ~
     pull_request:
         branches:
-            - master
+            - 'master'
     schedule:
         -   cron: "0 1 * * 6" # Run at 1am every Saturday
 
@@ -21,13 +19,10 @@ jobs:
             matrix:
                 php: [ 7.4 ]
                 symfony: [ ^4.4, ^5.2 ]
-                sylius: [ ~1.8.0, ~1.9.0, ~1.10.0 ]
-                node: [ 10.x ]
+                sylius: [ ~1.9.4, ~1.10.0 ]
+                node: [ 14.x ]
                 mysql: [ 5.7, 8.0 ]
 
-                exclude:
-                    -   sylius: ~1.8.0
-                        symfony: ^5.2
         env:
             APP_ENV: test
             DATABASE_URL: "mysql://root:root@127.0.0.1/sylius?serverVersion=${{ matrix.mysql }}"
@@ -115,7 +110,7 @@ jobs:
             -   name: Prepare test application database
                 run: |
                     (cd tests/Application && bin/console doctrine:database:create -vvv)
-                    (cd tests/Application && bin/console doctrine:migrations:migrate -n -vvv -q)
+                    (cd tests/Application && bin/console doctrine:schema:create -vvv)
             -   name: Prepare test application assets
                 run: |
                     (cd tests/Application && bin/console assets:install public -vvv)
@@ -126,11 +121,15 @@ jobs:
             -   name: Load fixtures in test application
                 run: (cd tests/Application && bin/console sylius:fixtures:load -n)
 
-            -   name: Run analysis
-                run: composer analyse
+            -   name: Run PHPSpec
+                run: vendor/bin/phpspec run --ansi -f progress --no-interaction
 
-            #-   name: Run PHPSpec
-            #        run: vendor/bin/phpspec run --ansi -f progress --no-interaction
+            -   name: Run PHPStan
+                run: vendor/bin/phpstan analyse -c phpstan.neon -l 8 src/
+
+            -   name: Run ECS
+                run : vendor/bin/ecs check src
+
 
             #-   name: Run PHPUnit
             #        run: vendor/bin/phpunit --colors=always

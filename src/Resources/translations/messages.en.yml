@@ -308,4 +308,3 @@ bitbag_sylius_mollie_plugin:
         step_open: 'Open'
         create: 'Before configuring individual payment methods, click "create" to save Mollie as a Payment Method in Sylius Admin Panel.'
 
-

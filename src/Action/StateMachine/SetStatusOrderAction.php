@@ -21,7 +21,7 @@ use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Order\OrderTransitions;
 use Sylius\Component\Shipping\ShipmentTransitions;
 
-final class SetStatusOrderAction
+final class SetStatusOrderAction implements SetStatusOrderActionInterface
 {
     /** @var FactoryInterface */
     private $factory;
@@ -44,7 +44,7 @@ final class SetStatusOrderAction
 
     public function execute(Order $order): void
     {
-        if (!$order->orderNumber) {
+        if (null === $order->orderNumber) {
             return;
         }
         /** @var OrderInterface $orderSylius */
@@ -108,7 +108,13 @@ final class SetStatusOrderAction
         // check if in mollie and sylius is the same shipped items
         $shippableQuantity = 0;
         foreach ($order->lines as $line) {
-            if ($line->type === 'physical') {
+            if (!property_exists($line, 'type')) {
+                throw new \InvalidArgumentException();
+            }
+            if ('physical' === $line->type) {
+                if (!property_exists($line, 'shippableQuantity')) {
+                    throw new \InvalidArgumentException();
+                }
                 $shippableQuantity += $line->shippableQuantity;
             }
         }

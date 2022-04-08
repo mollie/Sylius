@@ -12,14 +12,16 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Resolver;
 
 use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
+use BitBag\SyliusMolliePlugin\Entity\ProductInterface;
 use BitBag\SyliusMolliePlugin\Payments\Methods\MealVoucher;
 use Sylius\Component\Core\Model\OrderItemInterface;
+use Webmozart\Assert\Assert;
 
 final class MealVoucherResolver implements MealVoucherResolverInterface
 {
     public function resolve(MollieGatewayConfigInterface $method, OrderItemInterface $item): ?string
     {
-        if ($method->getMethodId() === MealVoucher::MEAL_VOUCHERS) {
+        if (MealVoucher::MEAL_VOUCHERS === $method->getMethodId()) {
             return $this->getMealVoucherCategory($method, $item);
         }
 
@@ -34,12 +36,14 @@ final class MealVoucherResolver implements MealVoucherResolverInterface
         if (null !== $method->getDefaultCategory()) {
             return $method->getDefaultCategory()->getName();
         }
+        Assert::notNull($item->getProduct());
 
         throw new \LogicException(\sprintf('Voucher need default category, product category found in product name %s', $item->getProduct()->getName()));
     }
 
     private function getMealVoucherFromItem(OrderItemInterface $item): ?string
     {
+        /** @var ProductInterface $product */
         $product = $item->getProduct();
 
         return null === $product->getProductType() ? null : $product->getProductType()->getName();

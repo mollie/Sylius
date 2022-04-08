@@ -25,26 +25,15 @@ use Sylius\Component\Payment\PaymentTransitions;
 
 final class OrderContext implements Context
 {
-    /**
-     * @var EntityManager
-     */
+    /** @var EntityManager */
     private $entityManager;
 
-    /**
-     * @var StateMachineFactoryInterface
-     */
+    /** @var StateMachineFactoryInterface */
     private $stateMachineFactory;
 
-    /**
-     * @var RegistryInterface|Payum
-     */
+    /** @var RegistryInterface|Payum */
     private $payum;
 
-    /**
-     * @param EntityManager $entityManager
-     * @param StateMachineFactoryInterface $stateMachineFactory
-     * @param RegistryInterface $payum
-     */
     public function __construct(
         EntityManager $entityManager,
         StateMachineFactoryInterface $stateMachineFactory,
@@ -66,7 +55,6 @@ final class OrderContext implements Context
     }
 
     /**
-     * @param OrderInterface $order
      * @param $transition
      *
      * @throws \SM\SMException

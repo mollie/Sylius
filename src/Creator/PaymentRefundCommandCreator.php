@@ -62,19 +62,22 @@ final class PaymentRefundCommandCreator implements PaymentRefundCommandCreatorIn
     {
         $orderId = $payment->metadata->order_id;
 
-        /** @var OrderInterface $order */
+        /** @var ?OrderInterface $order */
         $order = $this->orderRepository->findOneBy(['id' => $orderId]);
         Assert::notNull($order, sprintf('Cannot find order id with id %s', $orderId));
 
         $allRefunded = $this->refundUnitsRepository->findBy(['order' => $order->getId()]);
 
         $refunded = $this->getSumOfAmountExistingRefunds($allRefunded);
+
+        Assert::notNull($payment->amountRefunded);
         $mollieRefund = (float) $payment->amountRefunded->value * 100;
         $toRefund = (int) $mollieRefund - $refunded;
 
+        Assert::notNull($order->getChannel());
         $refundMethods = $this->refundPaymentMethodProvider->findForChannel($order->getChannel());
 
-        if (empty($refundMethods)) {
+        if (0 === count($refundMethods)) {
             throw new OfflineRefundPaymentMethodNotFound(
                 sprintf('Not found offline payment method on this channel with code :%s', $order->getChannel()->getCode())
             );
@@ -85,6 +88,8 @@ final class PaymentRefundCommandCreator implements PaymentRefundCommandCreatorIn
         $orderItemUnitRefund = $this->itemRefund->refund($order, $toRefund);
         $shipmentRefund = $this->shipmentRefund->refund($order, $orderItemUnitRefund, $toRefund);
 
+        Assert::notNull($order->getNumber());
+
         return new RefundUnits($order->getNumber(), $orderItemUnitRefund, $shipmentRefund, $refundMethod->getId(), '');
     }
 
@@ -92,7 +97,7 @@ final class PaymentRefundCommandCreator implements PaymentRefundCommandCreatorIn
     {
         $sum = 0;
 
-        if (empty($refundedUnits)) {
+        if (0 === count($refundedUnits)) {
             return $sum;
         }
 

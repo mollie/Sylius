@@ -53,7 +53,7 @@ final class PaymentMollieType extends AbstractType
                 ],
                 'label' => false,
                 'choices' => $data,
-                'choice_attr' => function ($value) use ($images, $paymentFee) {
+                'choice_attr' => function ($value) use ($images, $paymentFee): array {
                     return [
                         'image' => $images[$value],
                         'paymentFee' => $paymentFee[$value],
@@ -64,7 +64,7 @@ final class PaymentMollieType extends AbstractType
                 'label' => false,
                 'choices' => $issuers['ideal'] ?? null,
                 'choice_label' => 'name',
-                'choice_attr' => function ($value) {
+                'choice_attr' => function ($value): array {
                     return ['image' => $value->image->svg];
                 },
             ])

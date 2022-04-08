@@ -22,6 +22,7 @@ use Sylius\Component\Core\Model\PaymentMethodInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator as ConstraintValidatorAlias;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Webmozart\Assert\Assert;
 
 final class PaymentMethodMollieChannelUniqueValidator extends ConstraintValidatorAlias
 {
@@ -34,21 +35,26 @@ final class PaymentMethodMollieChannelUniqueValidator extends ConstraintValidato
     public function __construct(
         PaymentMethodRepositoryInterface $paymentMethodRepository,
         TranslatorInterface $translator
-    )
-    {
+    ) {
         $this->paymentMethodRepository = $paymentMethodRepository;
         $this->translator = $translator;
     }
 
     public function validate($value, Constraint $constraint): void
     {
-        if ($value instanceof PaymentMethodInterface && null !== $value->getCode()) {
-            false === $this->isMolliePaymentMethod($value) ?: $this->validateMolliePaymentMethod($value, $constraint);
+        if ($value instanceof PaymentMethodInterface &&
+            null !== $value->getCode() &&
+            $this->isMolliePaymentMethod($value)
+        ) {
+            $this->validateMolliePaymentMethod($value, $constraint);
         }
     }
 
     private function validateMolliePaymentMethod(PaymentMethodInterface $paymentMethod, Constraint $constraint): void
     {
+        if (null === $paymentMethod->getCode()) {
+            return;
+        }
         $molliePaymentMethods = $this->paymentMethodRepository->findAllByFactoryNameAndCode($paymentMethod->getCode());
 
         if (0 === count($molliePaymentMethods)) {
@@ -62,12 +68,14 @@ final class PaymentMethodMollieChannelUniqueValidator extends ConstraintValidato
 
         /** @var PaymentMethodInterface $method */
         foreach ($molliePaymentMethods as $method) {
+            Assert::notNull($method->getGatewayConfig());
             $separatedMethods[$method->getGatewayConfig()->getFactoryName()][] = $method;
         }
 
         foreach ($separatedMethods as $gatewayName => $methodsCollection) {
             $alreadyUsedChannels = $this->getAlreadyUsedChannels($methodsCollection);
 
+            Assert::notNull($paymentMethod->getGatewayConfig());
             if ($paymentMethod->getGatewayConfig()->getFactoryName() !== $gatewayName) {
                 continue;
             }
@@ -117,9 +125,10 @@ final class PaymentMethodMollieChannelUniqueValidator extends ConstraintValidato
         $gateway = $paymentMethod->getGatewayConfig();
 
         return true === in_array(
-                $gateway->getFactoryName(),
-                [MollieGatewayFactory::FACTORY_NAME, MollieSubscriptionGatewayFactory::FACTORY_NAME]
-            );
+            $gateway->getFactoryName(),
+            [MollieGatewayFactory::FACTORY_NAME, MollieSubscriptionGatewayFactory::FACTORY_NAME],
+            true
+        );
     }
 
     private function getChannelsNameByChannels(Collection $alreadyUsedChannels): string

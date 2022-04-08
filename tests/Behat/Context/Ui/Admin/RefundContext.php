@@ -19,20 +19,12 @@ use Tests\BitBag\SyliusMolliePlugin\Behat\Mocker\MollieApiMocker;
 
 final class RefundContext implements Context
 {
-    /**
-     * @var MollieApiMocker
-     */
+    /** @var MollieApiMocker */
     private $mollieApiMocker;
 
-    /**
-     * @var ManagingOrdersContext
-     */
+    /** @var ManagingOrdersContext */
     private $managingOrdersContext;
 
-    /**
-     * @param MollieApiMocker $mollieApiMocker
-     * @param ManagingOrdersContext $managingOrdersContext
-     */
     public function __construct(
         MollieApiMocker $mollieApiMocker,
         ManagingOrdersContext $managingOrdersContext

@@ -33,7 +33,7 @@ final class CancelRecurringSubscriptionProcessor implements CancelRecurringSubsc
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function process(MollieSubscriptionInterface $subscription): void
     {

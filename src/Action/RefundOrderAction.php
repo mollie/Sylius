@@ -26,6 +26,7 @@ use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Resource\Exception\UpdateHandlingException;
+use Webmozart\Assert\Assert;
 
 final class RefundOrderAction extends BaseApiAwareAction implements ActionInterface, ApiAwareInterface, GatewayAwareInterface
 {
@@ -54,6 +55,12 @@ final class RefundOrderAction extends BaseApiAwareAction implements ActionInterf
         if (!array_key_exists('refund', $details['metadata'])) {
             return;
         }
+
+        /** @var PaymentInterface $payment */
+        $payment = $request->getFirstModel();
+
+        Assert::notNull($payment->getCurrencyCode());
+        $refundData = $this->convertOrderRefundData->convert($details['metadata']['refund'], $payment->getCurrencyCode());
 
         try {
             $order = $this->mollieApiClient->orders->get($details['order_mollie_id'], ['embed' => 'payments']);

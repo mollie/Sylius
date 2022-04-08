@@ -1,4 +1,12 @@
 <?php
+
+/*
+ * This file has been created by developers from BitBag.
+ * Feel free to contact us once you face any issues or want to start
+ * You can find more information about us on https://bitbag.io and write us
+ * an email on hello@bitbag.io.
+ */
+
 declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Form\Type;
@@ -22,7 +30,7 @@ final class MollieIntervalType extends AbstractType
         $this->transformer = $transformer;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('amount', NumberType::class, [
             'error_bubbling' => false,
@@ -33,8 +41,8 @@ final class MollieIntervalType extends AbstractType
                 new GreaterThan([
                     'value' => 0,
                     'groups' => ['recurring_product_variant'],
-                ])
-            ]
+                ]),
+            ],
         ]);
         $builder->add('step', ChoiceType::class, [
             'choices' => array_combine(
@@ -43,7 +51,7 @@ final class MollieIntervalType extends AbstractType
             ),
             'label' => false,
             'error_bubbling' => false,
-            'choice_label' => function (string $value) {
+            'choice_label' => function (string $value): string {
                 return sprintf(
                     'bitbag_sylius_mollie_plugin.form.product_variant.interval_configuration.steps.%s',
                     $value

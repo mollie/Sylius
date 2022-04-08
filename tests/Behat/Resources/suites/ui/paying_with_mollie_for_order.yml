@@ -42,5 +42,7 @@ default:
                 - sylius.behat.context.ui.shop.checkout.thank_you
 
                 - bitbag_sylius_mollie_plugin.behat.context.ui.shop.checkout
+                - bitbag_sylius_mollie_plugin.behat.context.setup.product
+                - Behat\MinkExtension\Context\MinkContext
             filters:
                 tags: "@paying_with_mollie_for_order && @ui"

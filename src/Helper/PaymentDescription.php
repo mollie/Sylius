@@ -17,6 +17,7 @@ use Mollie\Api\Types\PaymentMethod;
 use Sylius\Bundle\PayumBundle\Provider\PaymentDescriptionProviderInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
+use Webmozart\Assert\Assert;
 
 final class PaymentDescription implements PaymentDescriptionInterface
 {
@@ -33,18 +34,26 @@ final class PaymentDescription implements PaymentDescriptionInterface
         MollieGatewayConfigInterface $methodConfig,
         OrderInterface $order
     ): string {
-        $paymentMethodType = array_search($methodConfig->getPaymentType(), Options::getAvailablePaymentType());
+        $paymentMethodType = array_search($methodConfig->getPaymentType(), Options::getAvailablePaymentType(), true);
         $description = $methodConfig->getPaymentDescription();
 
-        if ($methodConfig->getMethodId() === PaymentMethod::PAYPAL) {
+        if (PaymentMethod::PAYPAL === $methodConfig->getMethodId()) {
+            Assert::notNull($order->getNumber());
+
             return $this->createPayPalDescription($order->getNumber());
         }
 
-        if ($paymentMethodType === Options::PAYMENT_API && !empty($description)) {
+        if (Options::PAYMENT_API === $paymentMethodType
+            && isset($description)
+            && '' !== $description
+        ) {
+            Assert::notNull($order->getChannel());
             $replacements = [
                 '{ordernumber}' => $order->getNumber(),
                 '{storename}' => $order->getChannel()->getName(),
             ];
+
+            Assert::notNull($methodConfig->getPaymentDescription());
 
             return str_replace(
                 array_keys($replacements),

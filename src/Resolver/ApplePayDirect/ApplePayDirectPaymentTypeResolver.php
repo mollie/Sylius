@@ -38,8 +38,12 @@ final class ApplePayDirectPaymentTypeResolver implements ApplePayDirectPaymentTy
         array $applePayDirectToken
     ): void {
         $details = [];
+        /** @var OrderInterface $order */
         $order = $payment->getOrder();
 
+        if (null === $payment->getAmount()) {
+            return;
+        }
         $amount = number_format(abs($payment->getAmount() / 100), 2, '.', '');
 
         $details['amount'] = [

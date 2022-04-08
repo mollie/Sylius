@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Tests\BitBag\SyliusMolliePlugin\Application\src\Entity;
@@ -6,7 +7,9 @@ namespace Tests\BitBag\SyliusMolliePlugin\Application\src\Entity;
 trait RecurringProductVariantTrait
 {
     private bool $recurring = false;
+
     private ?int $times = null;
+
     private ?string $interval = null;
 
     public function isRecurring(): bool

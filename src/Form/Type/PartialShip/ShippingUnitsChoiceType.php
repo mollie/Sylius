@@ -24,7 +24,8 @@ final class ShippingUnitsChoiceType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        if ($options['multiple']) {
+        Assert::keyExists($options, 'multiple');
+        if (true === $options['multiple']) {
             $builder->addViewTransformer(new CollectionToArrayTransformer(), true);
         }
     }
@@ -44,7 +45,11 @@ final class ShippingUnitsChoiceType extends AbstractType
                     $productName = $product->getName();
                     Assert::notNull($productName);
 
-                    return $name ? sprintf('%s (%s)', $productName, $name) : $productName;
+                    if ('' !== $name) {
+                        return sprintf('%s (%s)', $productName, $name);
+                    }
+
+                    return $productName;
                 },
                 'multiple' => false,
                 'expanded' => true,

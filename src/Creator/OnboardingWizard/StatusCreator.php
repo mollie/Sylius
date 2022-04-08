@@ -19,13 +19,13 @@ use Doctrine\ORM\EntityManagerInterface;
 
 final class StatusCreator implements StatusCreatorInterface
 {
-    /** @var EntityManagerInterface $entityManager */
+    /** @var EntityManagerInterface */
     private $entityManager;
 
-    /** @var AdminUserContextInterface $adminUserContext */
+    /** @var AdminUserContextInterface */
     private $adminUserContext;
 
-    /** @var StatusResolverInterface $statusResolver */
+    /** @var StatusResolverInterface */
     private $statusResolver;
 
     public function __construct(
@@ -42,7 +42,7 @@ final class StatusCreator implements StatusCreatorInterface
     {
         $adminUser = $this->adminUserContext->getAdminUser();
 
-        if ($adminUser === null) {
+        if (null === $adminUser) {
             throw new AdminUserNotFound("Couldn't resolve admin user account.");
         }
 

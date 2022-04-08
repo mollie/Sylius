@@ -15,7 +15,7 @@
         <service id="bitbag_sylius_mollie_plugin.controller.action.admin.methods" class="BitBag\SyliusMolliePlugin\Controller\Action\Admin\MethodsAction">
             <argument type="service" id="bitbag_sylius_mollie_plugin.logger.mollie_logger_action"/>
             <argument type="service" id="session"/>
-            <argument type="service" id="bitbag_sylius_mollie_plugin.creator.mollie_methods_creator"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.creator.mollie_methods_resolver"/>
             <argument type="service" id="bitbag_sylius_mollie_plugin.purifier.mollie_payment_method_purifier"/>
             <argument type="service" id="sylius.repository.gateway_config"/>
         </service>

@@ -14,6 +14,8 @@ namespace BitBag\SyliusMolliePlugin\Uploader;
 use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
 use Doctrine\Common\Collections\Collection;
 use Gaufrette\Filesystem;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Webmozart\Assert\Assert;
 
 final class PaymentMethodLogoUploader implements PaymentMethodLogoUploaderInterface
 {
@@ -29,6 +31,7 @@ final class PaymentMethodLogoUploader implements PaymentMethodLogoUploaderInterf
     {
         /** @var MollieGatewayConfigInterface $mollieGatewayConfig */
         foreach ($mollieGatewayConfigs as $mollieGatewayConfig) {
+            Assert::notNull($mollieGatewayConfig->getCustomizeMethodImage());
             if ($mollieGatewayConfig->getCustomizeMethodImage()->hasFile()) {
                 $this->uploadSingle($mollieGatewayConfig);
             }
@@ -47,6 +50,10 @@ final class PaymentMethodLogoUploader implements PaymentMethodLogoUploaderInterf
     private function uploadSingle(MollieGatewayConfigInterface $mollieGatewayConfig): void
     {
         $customizeImage = $mollieGatewayConfig->getCustomizeMethodImage();
+
+        Assert::notNull($customizeImage);
+
+        /** @var UploadedFile $file */
         $file = $customizeImage->getFile();
 
         if (null !== $customizeImage->getPath() && $this->fileExists($customizeImage->getPath())) {
@@ -60,9 +67,12 @@ final class PaymentMethodLogoUploader implements PaymentMethodLogoUploaderInterf
 
         $customizeImage->setPath($path);
         $customizeImage->setName($file->getClientOriginalName());
+
+        Assert::notNull($customizeImage->getPath());
+
         $this->filesystem->write(
             $customizeImage->getPath(),
-            file_get_contents($file->getPathname())
+            $file->getPathname()
         );
     }
 
@@ -73,7 +83,7 @@ final class PaymentMethodLogoUploader implements PaymentMethodLogoUploaderInterf
 
     private function isAdBlockingProne(string $path): bool
     {
-        return strpos($path, 'ad') !== false;
+        return false !== strpos($path, 'ad');
     }
 
     private function expandPath(string $path): string

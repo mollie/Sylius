@@ -16,18 +16,18 @@ use BitBag\SyliusMolliePlugin\Entity\GatewayConfigInterface;
 use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfig;
 use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
 use BitBag\SyliusMolliePlugin\Entity\OrderInterface as MollieOrderInterface;
-use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
-use BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
 use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
+use BitBag\SyliusMolliePlugin\Repository\MollieGatewayConfigRepository;
+use BitBag\SyliusMolliePlugin\Repository\MollieGatewayConfigRepositoryInterface;
 use BitBag\SyliusMolliePlugin\Repository\PaymentMethodRepositoryInterface;
 use BitBag\SyliusMolliePlugin\Resolver\Order\PaymentCheckoutOrderResolverInterface;
 use Mollie\Api\Exceptions\ApiException;
 use Sylius\Component\Core\Model\OrderInterface;
-use Sylius\Component\Resource\Repository\RepositoryInterface;
+use Webmozart\Assert\Assert;
 
 final class MolliePaymentsMethodResolver implements MolliePaymentsMethodResolverInterface
 {
-    /** @var RepositoryInterface */
+    /** @var MollieGatewayConfigRepositoryInterface */
     private $mollieGatewayRepository;
 
     /** @var MollieCountriesRestrictionResolverInterface */
@@ -52,7 +52,7 @@ final class MolliePaymentsMethodResolver implements MolliePaymentsMethodResolver
     private $mollieFactoryNameResolver;
 
     public function __construct(
-        RepositoryInterface $mollieGatewayRepository,
+        MollieGatewayConfigRepository $mollieGatewayRepository,
         MollieCountriesRestrictionResolverInterface $countriesRestrictionResolver,
         ProductVoucherTypeCheckerInterface $productVoucherTypeChecker,
         PaymentCheckoutOrderResolverInterface $paymentCheckoutOrderResolver,
@@ -60,8 +60,7 @@ final class MolliePaymentsMethodResolver implements MolliePaymentsMethodResolver
         MollieAllowedMethodsResolverInterface $allowedMethodsResolver,
         MollieLoggerActionInterface $loggerAction,
         MollieFactoryNameResolverInterface $mollieFactoryNameResolver
-    )
-    {
+    ) {
         $this->mollieGatewayRepository = $mollieGatewayRepository;
         $this->countriesRestrictionResolver = $countriesRestrictionResolver;
         $this->productVoucherTypeChecker = $productVoucherTypeChecker;
@@ -74,9 +73,9 @@ final class MolliePaymentsMethodResolver implements MolliePaymentsMethodResolver
 
     public function resolve(): array
     {
+        /** @var OrderInterface $order */
         $order = $this->paymentCheckoutOrderResolver->resolve();
 
-        /** @var OrderInterface $order */
         $address = $order->getBillingAddress();
 
         if (null === $address) {
@@ -90,6 +89,7 @@ final class MolliePaymentsMethodResolver implements MolliePaymentsMethodResolver
         if (false === $order instanceof MollieOrderInterface) {
             return $this->getDefaultOptions();
         }
+        Assert::notNull($address->getCountryCode());
 
         return $this->getMolliePaymentOptions($order, $address->getCountryCode());
     }
@@ -100,7 +100,7 @@ final class MolliePaymentsMethodResolver implements MolliePaymentsMethodResolver
         $methods = $this->getDefaultOptions();
         $factoryName = $this->mollieFactoryNameResolver->resolve($order);
 
-        /** @var GatewayConfigInterface $gateway */
+        Assert::notNull($order->getChannel());
         $paymentMethod = $this->paymentMethodRepository->findOneByChannelAndGatewayFactoryName(
             $order->getChannel(),
             $factoryName
@@ -110,6 +110,7 @@ final class MolliePaymentsMethodResolver implements MolliePaymentsMethodResolver
             return $this->getDefaultOptions();
         }
 
+        /** @var ?GatewayConfigInterface $gateway */
         $gateway = $paymentMethod->getGatewayConfig();
 
         if (null === $gateway) {
@@ -118,7 +119,7 @@ final class MolliePaymentsMethodResolver implements MolliePaymentsMethodResolver
 
         $paymentConfigs = $this->mollieGatewayRepository->findAllEnabledByGateway($gateway);
 
-        if (empty($paymentConfigs)) {
+        if (0 === count($paymentConfigs)) {
             return $this->getDefaultOptions();
         }
 
@@ -130,20 +131,24 @@ final class MolliePaymentsMethodResolver implements MolliePaymentsMethodResolver
             return $this->getDefaultOptions();
         }
 
-        /** @var MollieGatewayConfig $paymentMethod */
-        foreach ($paymentConfigs as $paymentMethod) {
-            if (in_array($paymentMethod->getMethodId(), $allowedMethodsIds, true)) {
-                $allowedMethods[] = $paymentMethod;
+        /** @var MollieGatewayConfig $allowedMethod */
+        foreach ($paymentConfigs as $allowedMethod) {
+            if (in_array($allowedMethod->getMethodId(), $allowedMethodsIds, true)) {
+                $allowedMethods[] = $allowedMethod;
             }
         }
 
-        if (empty($allowedMethods)) {
+        if (0 === count($allowedMethods)) {
             return $this->getDefaultOptions();
         }
 
-        /** @var MollieGatewayConfigInterface $paymentMethod */
-        foreach ($allowedMethods as $paymentMethod) {
-            $methods = $this->countriesRestrictionResolver->resolve($paymentMethod, $methods, $countryCode);
+        /** @var MollieGatewayConfigInterface $allowedMethod */
+        foreach ($allowedMethods as $allowedMethod) {
+            Assert::notNull($methods);
+            $methods = $this->countriesRestrictionResolver->resolve($allowedMethod, $methods, $countryCode);
+        }
+        if (null === $methods) {
+            return $this->getDefaultOptions();
         }
 
         return $this->productVoucherTypeChecker->checkTheProductTypeOnCart($order, $methods);

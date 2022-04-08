@@ -21,6 +21,7 @@ use Payum\Core\ApiAwareInterface;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
+use Webmozart\Assert\Assert;
 
 final class CancelRecurringSubscriptionAction extends BaseApiAwareAction implements ActionInterface, GatewayAwareInterface, ApiAwareInterface
 {
@@ -34,7 +35,7 @@ final class CancelRecurringSubscriptionAction extends BaseApiAwareAction impleme
         $this->loggerAction = $loggerAction;
     }
 
-    /** @param CancelRecurringSubscription $request */
+    /** @param CancelRecurringSubscription|mixed $request */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
@@ -44,6 +45,7 @@ final class CancelRecurringSubscriptionAction extends BaseApiAwareAction impleme
         $configuration = $subscription->getSubscriptionConfiguration();
 
         try {
+            Assert::notNull($configuration->getCustomerId());
             /** @var Customer $customer */
             $customer = $this->mollieApiClient->customers->get($configuration->getCustomerId());
         } catch (\Exception $e) {
@@ -54,6 +56,7 @@ final class CancelRecurringSubscriptionAction extends BaseApiAwareAction impleme
 
         $this->loggerAction->addLog(sprintf('Cancel recurring subscription with id:  %s', $configuration->getSubscriptionId()));
 
+        Assert::notNull($configuration->getSubscriptionId());
         $customer->cancelSubscription($configuration->getSubscriptionId());
     }
 

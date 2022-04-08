@@ -17,6 +17,7 @@ use BitBag\SyliusMolliePlugin\PaymentFee\Types\FixedAmount;
 use BitBag\SyliusMolliePlugin\PaymentFee\Types\FixedAmountAndPercentage;
 use BitBag\SyliusMolliePlugin\PaymentFee\Types\Percentage;
 use Sylius\Component\Order\Model\OrderInterface;
+use Webmozart\Assert\Assert;
 
 final class Calculate
 {
@@ -50,7 +51,8 @@ final class Calculate
 
     private function calculatePaymentSurcharge(OrderInterface $order, MollieGatewayConfig $paymentMethod): OrderInterface
     {
-        if (empty($paymentMethod->getPaymentSurchargeFee()->getType()) || $paymentMethod->getPaymentSurchargeFee()->getType() === ' ') {
+        Assert::notNull($paymentMethod->getPaymentSurchargeFee());
+        if (null === $paymentMethod->getPaymentSurchargeFee()->getType() || ' ' === $paymentMethod->getPaymentSurchargeFee()->getType()) {
             return $order;
         }
 

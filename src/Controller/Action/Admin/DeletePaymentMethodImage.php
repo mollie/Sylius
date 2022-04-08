@@ -19,6 +19,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Webmozart\Assert\Assert;
 
 final class DeletePaymentMethodImage
 {
@@ -56,6 +57,7 @@ final class DeletePaymentMethodImage
         /** @var MollieMethodImageInterface $customizeMethodImage */
         $customizeMethodImage = $mollieGateway->getCustomizeMethodImage();
 
+        Assert::notNull($customizeMethodImage->getPath());
         $this->logoUploader->remove($customizeMethodImage->getPath());
         $mollieGateway->setCustomizeMethodImage(null);
 

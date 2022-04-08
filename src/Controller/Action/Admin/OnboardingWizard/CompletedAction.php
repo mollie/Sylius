@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class CompletedAction
 {
-    /** @var StatusCreatorInterface $onboardingWizardStatusCreator */
+    /** @var StatusCreatorInterface */
     private $onboardingWizardStatusCreator;
 
     public function __construct(StatusCreatorInterface $onboardingWizardStatusCreator)
@@ -34,6 +34,6 @@ final class CompletedAction
             return new JsonResponse(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
 
-        return new JsonResponse(["completed" => $onboardingWizardStatus->isCompleted()]);
+        return new JsonResponse(['completed' => $onboardingWizardStatus->isCompleted()]);
     }
 }

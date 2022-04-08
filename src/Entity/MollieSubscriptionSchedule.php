@@ -1,4 +1,12 @@
 <?php
+
+/*
+ * This file has been created by developers from BitBag.
+ * Feel free to contact us once you face any issues or want to start
+ * You can find more information about us on https://bitbag.io and write us
+ * an email on hello@bitbag.io.
+ */
+
 declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Entity;
@@ -6,9 +14,13 @@ namespace BitBag\SyliusMolliePlugin\Entity;
 class MollieSubscriptionSchedule implements MollieSubscriptionScheduleInterface
 {
     protected ?int $id = null;
+
     protected MollieSubscriptionInterface $mollieSubscription;
+
     protected \DateTime $scheduledDate;
-    protected ?\DateTime $fulfilledDate = null;
+
+    protected ?\DateTimeInterface $fulfilledDate = null;
+
     protected int $scheduleIndex = 0;
 
     public function getId(): ?int
@@ -26,7 +38,7 @@ class MollieSubscriptionSchedule implements MollieSubscriptionScheduleInterface
         return $this->scheduledDate;
     }
 
-    public function getFulfilledDate(): ?\DateTime
+    public function getFulfilledDate(): ?\DateTimeInterface
     {
         return $this->fulfilledDate;
     }
@@ -41,7 +53,7 @@ class MollieSubscriptionSchedule implements MollieSubscriptionScheduleInterface
         $this->scheduledDate = $scheduledDate;
     }
 
-    public function setFulfilledDate(?\DateTime $fulfilledDate): void
+    public function setFulfilledDate(?\DateTimeInterface $fulfilledDate): void
     {
         $this->fulfilledDate = $fulfilledDate;
     }

@@ -17,10 +17,10 @@ use Sylius\Component\Resource\Repository\RepositoryInterface;
 
 interface MollieSubscriptionRepositoryInterface extends RepositoryInterface
 {
-    public function findOneByOrderId($orderId): ?MollieSubscriptionInterface;
+    public function findOneByOrderId(int $orderId): ?MollieSubscriptionInterface;
 
     /** @return MollieSubscriptionInterface[] */
-    public function findByOrderId($orderId): array;
+    public function findByOrderId(int $orderId): array;
 
     /** @return MollieSubscriptionInterface[] */
     public function findByPayment(PaymentInterface $payment): array;

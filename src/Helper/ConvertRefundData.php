@@ -42,7 +42,7 @@ final class ConvertRefundData implements ConvertRefundDataInterface
 
     private function getTotal(array $refundsData): iterable
     {
-        /** @var OrderItemUnitRefund|ShipmentRefund $data */
+        /** @var OrderItemUnitRefund|ShipmentRefund $refundData */
         foreach ($refundsData as $refundData) {
             yield $refundData->total();
         }

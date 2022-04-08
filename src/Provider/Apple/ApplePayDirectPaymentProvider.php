@@ -12,11 +12,13 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Provider\Apple;
 
 use BitBag\SyliusMolliePlugin\Entity\GatewayConfigInterface;
+use BitBag\SyliusMolliePlugin\Entity\OrderInterface;
 use BitBag\SyliusMolliePlugin\Resolver\ApplePayDirect\ApplePayDirectPaymentTypeResolverInterface;
+use Doctrine\Common\Collections\Collection;
 use Mollie\Api\Types\PaymentMethod;
 use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Core\Model\PaymentMethodInterface;
-use Sylius\Component\Order\Model\OrderInterface;
+use Webmozart\Assert\Assert;
 
 final class ApplePayDirectPaymentProvider implements ApplePayDirectPaymentProviderInterface
 {
@@ -30,18 +32,21 @@ final class ApplePayDirectPaymentProvider implements ApplePayDirectPaymentProvid
 
     public function provideApplePayPayment(OrderInterface $order, array $applePayPaymentToken): void
     {
-        /** @var PaymentInterface $paymentMethod */
+        /** @var PaymentInterface $payment */
         $payment = $order->getLastPayment();
         /** @var PaymentMethodInterface $paymentMethod */
         $paymentMethod = $payment->getMethod();
         /** @var GatewayConfigInterface $gatewayConfig */
         $gatewayConfig = $paymentMethod->getGatewayConfig();
 
-        if ($gatewayConfig->getMollieGatewayConfig()->isEmpty()) {
+        /** @var Collection $mollieGatewayConfig */
+        $mollieGatewayConfig = $gatewayConfig->getMollieGatewayConfig();
+        if ($mollieGatewayConfig->isEmpty()) {
             return;
         }
 
         $applePayConfig = $gatewayConfig->getMethodByName(PaymentMethod::APPLEPAY);
+        Assert::notNull($applePayConfig);
 
         if (!$applePayConfig->isEnabled()) {
             return;

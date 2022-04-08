@@ -27,6 +27,7 @@ final class PaymentMethodConfigResolver implements PaymentMethodConfigResolverIn
 
     public function getConfigFromMethodId(string $methodId): MollieGatewayConfigInterface
     {
+        /** @var ?MollieGatewayConfigInterface $paymentMethod */
         $paymentMethod = $this->mollieMethodRepository->findOneBy(['methodId' => $methodId]);
 
         Assert::notNull($paymentMethod, sprintf('Cannot find payment method config with method id %s', $methodId));

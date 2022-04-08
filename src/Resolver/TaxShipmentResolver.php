@@ -16,7 +16,6 @@ use Sylius\Component\Core\Model\ShipmentInterface;
 use Sylius\Component\Core\Model\ShippingMethodInterface;
 use Sylius\Component\Taxation\Calculator\CalculatorInterface;
 use Sylius\Component\Taxation\Resolver\TaxRateResolverInterface;
-use Webmozart\Assert\Assert;
 
 final class TaxShipmentResolver implements TaxShipmentResolverInterface
 {
@@ -44,17 +43,16 @@ final class TaxShipmentResolver implements TaxShipmentResolverInterface
 
     private function getShippingMethod(OrderInterface $order): ShippingMethodInterface
     {
-        /** @var ShipmentInterface|bool $shipment */
-        $shipment = $order->getShipments()->first();
-
-        if (false === $shipment) {
+        $shipmentCollection = $order->getShipments();
+        if ($shipmentCollection->isEmpty()) {
             throw new \LogicException('Order should have at least one shipment.');
         }
 
-        $method = $shipment->getMethod();
+        /** @var ShipmentInterface $shipment */
+        $shipment = $shipmentCollection->first();
 
         /** @var ShippingMethodInterface $method */
-        Assert::isInstanceOf($method, ShippingMethodInterface::class);
+        $method = $shipment->getMethod();
 
         return $method;
     }

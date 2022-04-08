@@ -13,39 +13,26 @@ declare(strict_types=1);
 namespace Tests\BitBag\SyliusMolliePlugin\Behat\Context\Ui\Shop;
 
 use Behat\Behat\Context\Context;
+use Behat\MinkExtension\Context\RawMinkContext;
 use Sylius\Behat\Page\Shop\Order\ShowPageInterface;
 use Tests\BitBag\SyliusMolliePlugin\Behat\Mocker\MollieApiMocker;
 use Tests\BitBag\SyliusMolliePlugin\Behat\Page\External\PaymentPageInterface;
 use Tests\BitBag\SyliusMolliePlugin\Behat\Page\Shop\Checkout\CompletePageInterface;
 
-final class CheckoutContext implements Context
+final class CheckoutContext extends RawMinkContext implements Context
 {
-    /**
-     * @var CompletePageInterface
-     */
+    /** @var CompletePageInterface */
     private $summaryPage;
 
-    /**
-     * @var ShowPageInterface
-     */
+    /** @var ShowPageInterface */
     private $orderDetails;
 
-    /**
-     * @var MollieApiMocker
-     */
+    /** @var MollieApiMocker */
     private $mollieApiMocker;
 
-    /**
-     * @var PaymentPageInterface
-     */
+    /** @var PaymentPageInterface */
     private $paymentPage;
 
-    /**
-     * @param CompletePageInterface $summaryPage
-     * @param ShowPageInterface $orderDetails
-     * @param MollieApiMocker $mollieApiMocker
-     * @param PaymentPageInterface $paymentPage
-     */
     public function __construct(
         CompletePageInterface $summaryPage,
         ShowPageInterface $orderDetails,
@@ -118,5 +105,33 @@ final class CheckoutContext implements Context
         $this->mollieApiMocker->mockApiCreateRecurringSubscription(function () {
             $this->summaryPage->confirmOrder();
         });
+    }
+
+    /**
+     * @Given the product :$productName has recurring payment option available
+     */
+    public function theProductHasRecurringPaymentOptionAvailable($productName)
+    {
+        $this->createPage->open(['/variants']);
+    }
+
+    /**
+     * @Given I click :arg1 item
+     */
+    public function iClickItem($arg1)
+    {
+        $session = $this->getSession();
+        $page = $session->getPage();
+        $page->clickLink('PHP T-Shirt');
+    }
+
+    /**
+     * @Given I click :arg1
+     */
+    public function iClick($arg1)
+    {
+        $session = $this->getSession();
+        $page = $session->getPage();
+        $page->clickLink($arg1);
     }
 }

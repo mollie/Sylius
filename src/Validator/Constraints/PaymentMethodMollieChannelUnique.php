@@ -23,6 +23,7 @@ final class PaymentMethodMollieChannelUnique extends Constraint
         return PaymentMethodMollieChannelUniqueValidator::class;
     }
 
+    /** @return string[] */
     public function getTargets(): array
     {
         return [self::CLASS_CONSTRAINT];

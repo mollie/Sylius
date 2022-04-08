@@ -38,7 +38,7 @@ final class ShipmentShipEventListener
 
     public function shipAll(GenericEvent $event): void
     {
-        /** @var ShipmentInterface $shipment */
+        /** @var ?ShipmentInterface $shipment */
         $shipment = $event->getSubject();
         Assert::isInstanceOf($shipment, ShipmentInterface::class);
 
@@ -53,6 +53,7 @@ final class ShipmentShipEventListener
         /** @var PaymentMethodInterface $paymentMethod */
         $paymentMethod = $payment->getMethod();
 
+        Assert::notNull($paymentMethod->getGatewayConfig());
         $factoryName = $paymentMethod->getGatewayConfig()->getFactoryName() ?? null;
 
         if (!isset($payment->getDetails()['order_mollie_id']) || MollieGatewayFactory::FACTORY_NAME !== $factoryName) {
@@ -62,8 +63,8 @@ final class ShipmentShipEventListener
         $modusKey = $this->getModus($paymentMethod->getGatewayConfig()->getConfig());
 
         try {
-            /** @var Order $order */
             $this->apiClient->setApiKey($modusKey);
+            /** @var Order $order */
             $order = $this->apiClient->orders->get($payment->getDetails()['order_mollie_id']);
             $order->shipAll();
         } catch (ApiException $e) {

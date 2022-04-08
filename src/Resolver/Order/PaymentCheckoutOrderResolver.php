@@ -16,6 +16,7 @@ use Sylius\Component\Order\Context\CartContextInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Webmozart\Assert\Assert;
 
 final class PaymentCheckoutOrderResolver implements PaymentCheckoutOrderResolverInterface
 {
@@ -41,6 +42,7 @@ final class PaymentCheckoutOrderResolver implements PaymentCheckoutOrderResolver
     public function resolve(): OrderInterface
     {
         $order = null;
+        Assert::notNull($this->requestStack->getCurrentRequest());
         $tokenValue = $this->requestStack->getCurrentRequest()->get('tokenValue');
 
         if (null !== $tokenValue) {

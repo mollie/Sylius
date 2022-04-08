@@ -20,6 +20,7 @@ use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Reply\HttpRedirect;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Webmozart\Assert\Assert;
 
 final class CreatePaymentAction extends BaseApiAwareAction
 {
@@ -46,11 +47,14 @@ final class CreatePaymentAction extends BaseApiAwareAction
 
     public function execute($request): void
     {
+        /** @var array $details */
         $details = ArrayObject::ensureArrayObject($request->getModel());
 
         try {
+            Assert::keyExists($details, 'metadata');
+            Assert::keyExists($details['metadata'], 'molliePaymentMethods');
             $paymentDetails = [
-                'method' => $details['metadata']['molliePaymentMethods'] ?: '',
+                'method' => $details['metadata']['molliePaymentMethods'],
                 'issuer' => $details['metadata']['selected_issuer'] ?? null,
                 'cardToken' => $details['metadata']['cartToken'],
                 'amount' => $details['amount'],
@@ -71,7 +75,7 @@ final class CreatePaymentAction extends BaseApiAwareAction
             $message = $this->guzzleNegativeResponseParser->parse($e);
             $this->loggerAction->addNegativeLog(sprintf('Error with create payment with: %s', $e->getMessage()));
 
-            if (empty($message)) {
+            if ('' === $message) {
                 throw new ApiException(sprintf('Error with create payment with: %s', $e->getMessage()));
             }
 

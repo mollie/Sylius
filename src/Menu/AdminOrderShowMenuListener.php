@@ -16,6 +16,7 @@ use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
 use Sylius\Bundle\AdminBundle\Event\OrderShowMenuBuilderEvent;
 use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Core\Model\PaymentMethodInterface;
+use Webmozart\Assert\Assert;
 
 final class AdminOrderShowMenuListener
 {
@@ -31,17 +32,18 @@ final class AdminOrderShowMenuListener
         $menu = $event->getMenu();
         $order = $event->getOrder();
 
-        /** @var PaymentInterface $payment */
+        /** @var ?PaymentInterface $payment */
         $payment = $order->getPayments()->last();
 
-        if (false === $payment) {
+        if (null === $payment) {
             return;
         }
 
         /** @var PaymentMethodInterface $paymentMethod */
         $paymentMethod = $payment->getMethod();
 
-        if (in_array($payment->getState(), self::AVAILABLE_PAYMENT_STATE) &&
+        Assert::notNull($paymentMethod->getGatewayConfig());
+        if (in_array($payment->getState(), self::AVAILABLE_PAYMENT_STATE, true) &&
             MollieGatewayFactory::FACTORY_NAME === $paymentMethod->getGatewayConfig()->getFactoryName()
         ) {
             $menu

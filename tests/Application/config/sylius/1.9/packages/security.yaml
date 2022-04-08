@@ -97,13 +97,6 @@ security:
         authenticators:
           - lexik_jwt_authentication.jwt_token_authenticator
 
-    api:
-      pattern: "%sylius.security.api_regex%/.*"
-      provider: sylius_admin_user_provider
-      fos_oauth: true
-      stateless: true
-      anonymous: true
-
     shop:
       switch_user: { role: ROLE_ALLOWED_TO_SWITCH }
       context: shop

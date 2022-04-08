@@ -21,14 +21,23 @@ use Sylius\Component\Customer\Model\CustomerInterface;
 class MollieSubscription implements MollieSubscriptionInterface
 {
     protected ?int $id = null;
+
     protected string $state = MollieSubscriptionInterface::STATE_NEW;
+
     protected ?CustomerInterface $customer = null;
+
     protected \DateTime $createdAt;
+
     protected ?\DateTime $startedAt = null;
+
     protected OrderItemInterface $orderItem;
+
     protected Collection $schedules;
+
     protected string $processingState = MollieSubscriptionInterface::PROCESSING_STATE_NONE;
+
     protected string $paymentState = MollieSubscriptionInterface::PAYMENT_STATE_PENDING;
+
     protected int $recentFailedPaymentsCount = 0;
 
     /** @var Collection<int, PaymentInterface> */
@@ -36,6 +45,7 @@ class MollieSubscription implements MollieSubscriptionInterface
 
     /** @var Collection<int, SyliusOrder> */
     protected Collection $orders;
+
     protected MollieSubscriptionConfigurationInterface $subscriptionConfiguration;
 
     public function __construct()
@@ -86,7 +96,7 @@ class MollieSubscription implements MollieSubscriptionInterface
         }
     }
 
-    public function getCustomer(): CustomerInterface
+    public function getCustomer(): ?CustomerInterface
     {
         return $this->customer;
     }
@@ -113,6 +123,10 @@ class MollieSubscription implements MollieSubscriptionInterface
 
     public function getLastOrder(): ?SyliusOrder
     {
+        if ($this->orders->isEmpty()) {
+            return null;
+        }
+
         return $this->orders->last();
     }
 
@@ -167,7 +181,7 @@ class MollieSubscription implements MollieSubscriptionInterface
     public function getScheduleByIndex(int $index): ?MollieSubscriptionScheduleInterface
     {
         return $this->schedules
-            ->filter(fn(MollieSubscriptionScheduleInterface $schedule) => $index === $schedule->getScheduleIndex())
+            ->filter(fn (MollieSubscriptionScheduleInterface $schedule) => $index === $schedule->getScheduleIndex())
             ->first()
         ;
     }
@@ -179,10 +193,10 @@ class MollieSubscription implements MollieSubscriptionInterface
 
     public function incrementFailedPaymentCounter(): void
     {
-        $this->recentFailedPaymentsCount++;
+        ++$this->recentFailedPaymentsCount;
     }
 
-    public function resetFailedPaymentCount()
+    public function resetFailedPaymentCount(): void
     {
         $this->recentFailedPaymentsCount = 0;
     }
@@ -204,6 +218,10 @@ class MollieSubscription implements MollieSubscriptionInterface
 
     public function getLastPayment(): ?PaymentInterface
     {
+        if ($this->payments->isEmpty()) {
+            return null;
+        }
+
         return $this->payments->last();
     }
 }

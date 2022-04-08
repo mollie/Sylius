@@ -11,12 +11,8 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Resolver;
 
-use BitBag\SyliusMolliePlugin\Creator\MollieMethodsCreatorInterface;
 use Mollie\Api\Resources\Method;
 use Sylius\Component\Core\Model\OrderInterface;
-use Sylius\Component\Core\OrderProcessing\OrderPricesRecalculator;
-use Sylius\Component\Currency\Context\CurrencyContextInterface;
-use Sylius\Component\Currency\Converter\CurrencyConverterInterface;
 
 final class MollieAllowedMethodsResolver implements MollieAllowedMethodsResolverInterface
 {
@@ -29,8 +25,7 @@ final class MollieAllowedMethodsResolver implements MollieAllowedMethodsResolver
     public function __construct(
         MollieApiClientKeyResolverInterface $mollieApiClientKeyResolver,
         PaymentLocaleResolverInterface $paymentLocaleResolver
-    )
-    {
+    ) {
         $this->mollieApiClientKeyResolver = $mollieApiClientKeyResolver;
         $this->paymentLocaleResolver = $paymentLocaleResolver;
     }
@@ -54,7 +49,7 @@ final class MollieAllowedMethodsResolver implements MollieAllowedMethodsResolver
 
     private function createParametersByOrder(OrderInterface $order): array
     {
-        $parameters =  array_merge(
+        $parameters = array_merge(
             [
                 'amount' => [
                     'value' => $this->parseTotalToString($order->getTotal()),
@@ -62,9 +57,9 @@ final class MollieAllowedMethodsResolver implements MollieAllowedMethodsResolver
                 ],
                 'billingCountry' => null !== $order->getBillingAddress()
                     ? $order->getBillingAddress()->getCountryCode()
-                    : null
+                    : null,
             ],
-            MollieMethodsCreatorInterface::PARAMETERS
+            MollieMethodsResolverInterface::PARAMETERS
         );
 
         if (null !== ($paymentLocale = $this->paymentLocaleResolver->resolveFromOrder($order))) {
@@ -76,6 +71,6 @@ final class MollieAllowedMethodsResolver implements MollieAllowedMethodsResolver
 
     private function parseTotalToString(int $total): string
     {
-        return substr_replace((string)$total, '.', -2, 0);
+        return substr_replace((string) $total, '.', -2, 0);
     }
 }

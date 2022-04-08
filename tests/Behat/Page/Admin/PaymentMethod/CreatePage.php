@@ -18,7 +18,7 @@ use Sylius\Behat\Page\Admin\Crud\CreatePage as BaseCreatePage;
 final class CreatePage extends BaseCreatePage implements CreatePageInterface
 {
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function setApiKey(string $apiKey): void
     {
@@ -26,7 +26,7 @@ final class CreatePage extends BaseCreatePage implements CreatePageInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function setProfileId(string $profileId): void
     {
@@ -34,7 +34,7 @@ final class CreatePage extends BaseCreatePage implements CreatePageInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function setTimes(int $times): void
     {
@@ -42,7 +42,7 @@ final class CreatePage extends BaseCreatePage implements CreatePageInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function setInterval(string $interval): void
     {
@@ -50,7 +50,7 @@ final class CreatePage extends BaseCreatePage implements CreatePageInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function containsErrorWithMessage(string $message, bool $strict = true): bool
     {

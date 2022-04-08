@@ -44,7 +44,7 @@ final class MollieGatewayFactory extends GatewayFactory
                 $environment,
             ];
 
-            $config['payum.api'] = function (ArrayObject $config) use ($environment) {
+            $config['payum.api'] = function (ArrayObject $config) use ($environment): MollieApiClient {
                 $config->validateNotEmpty($config['payum.required_options']);
 
                 /** @var MollieApiClient $mollieApiClient */

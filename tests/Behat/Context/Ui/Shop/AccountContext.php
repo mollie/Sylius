@@ -20,26 +20,15 @@ use Tests\BitBag\SyliusMolliePlugin\Behat\Page\Shop\Account\Order\IndexPageInter
 
 final class AccountContext implements Context
 {
-    /**
-     * @var IndexPageInterface
-     */
+    /** @var IndexPageInterface */
     private $orderIndexPage;
 
-    /**
-     * @var NotificationCheckerInterface
-     */
+    /** @var NotificationCheckerInterface */
     private $notificationChecker;
 
-    /**
-     * @var MollieApiMocker
-     */
+    /** @var MollieApiMocker */
     private $mollieApiMocker;
 
-    /**
-     * @param IndexPageInterface $orderIndexPage
-     * @param NotificationCheckerInterface $notificationChecker
-     * @param MollieApiMocker $mollieApiMocker
-     */
     public function __construct(
         IndexPageInterface $orderIndexPage,
         NotificationCheckerInterface $notificationChecker,

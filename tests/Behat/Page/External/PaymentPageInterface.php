@@ -18,8 +18,5 @@ interface PaymentPageInterface extends PageInterface
 {
     public function capture(): void;
 
-    /**
-     * @param array $postData
-     */
     public function notify(array $postData): void;
 }

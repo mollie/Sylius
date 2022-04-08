@@ -30,6 +30,7 @@ use BitBag\SyliusMolliePlugin\Payments\Methods\MyBank;
 use BitBag\SyliusMolliePlugin\Payments\Methods\PayPal;
 use BitBag\SyliusMolliePlugin\Payments\Methods\Przelewy24;
 use BitBag\SyliusMolliePlugin\Payments\Methods\SofortBanking;
+use Mollie\Api\Resources\Method;
 
 interface MethodsInterface
 {
@@ -52,6 +53,10 @@ interface MethodsInterface
         Przelewy24::class,
         SofortBanking::class,
         MealVoucher::class,
-        DirectDebit::class
+        DirectDebit::class,
     ];
+
+    public function getAllEnabled(): array;
+
+    public function add(Method $mollieMethod): void;
 }

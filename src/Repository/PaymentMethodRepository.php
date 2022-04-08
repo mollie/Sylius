@@ -32,7 +32,7 @@ class PaymentMethodRepository extends BasePaymentMethodRepository implements Pay
         ;
     }
 
-    public function findOneByChannelAndGatewayFactoryName(ChannelInterface $channel, $factoryName): ?PaymentMethodInterface
+    public function findOneByChannelAndGatewayFactoryName(ChannelInterface $channel, string $factoryName): ?PaymentMethodInterface
     {
         return $this->createQueryBuilder('o')
             ->innerJoin('o.gatewayConfig', 'gatewayConfig')

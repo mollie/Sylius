@@ -16,6 +16,7 @@ use BitBag\SyliusMolliePlugin\Order\AdjustmentInterface;
 use BitBag\SyliusMolliePlugin\Payments\PaymentTerms\Options;
 use Sylius\Component\Order\Factory\AdjustmentFactoryInterface;
 use Sylius\Component\Order\Model\OrderInterface;
+use Webmozart\Assert\Assert;
 
 final class FixedAmount implements SurchargeTypeInterface
 {
@@ -29,15 +30,17 @@ final class FixedAmount implements SurchargeTypeInterface
 
     public function calculate(OrderInterface $order, MollieGatewayConfig $paymentMethod): OrderInterface
     {
+        Assert::notNull($paymentMethod->getPaymentSurchargeFee());
         $fixedAmount = $paymentMethod->getPaymentSurchargeFee()->getFixedAmount();
 
-        if ($order->getAdjustments(AdjustmentInterface::FIXED_AMOUNT_ADJUSTMENT)) {
+        if (false === $order->getAdjustments(AdjustmentInterface::FIXED_AMOUNT_ADJUSTMENT)->isEmpty()) {
             $order->removeAdjustments(AdjustmentInterface::FIXED_AMOUNT_ADJUSTMENT);
         }
 
         /** @var AdjustmentInterface $adjustment */
         $adjustment = $this->adjustmentFactory->createNew();
         $adjustment->setType(AdjustmentInterface::FIXED_AMOUNT_ADJUSTMENT);
+        Assert::notNull($fixedAmount);
         $adjustment->setAmount((int) ($fixedAmount * 100));
         $adjustment->setNeutral(false);
 
@@ -48,6 +51,6 @@ final class FixedAmount implements SurchargeTypeInterface
 
     public function canCalculate(string $type): bool
     {
-        return array_search($type, Options::getAvailablePaymentSurchargeFeeType()) === Options::FIXED_FEE;
+        return Options::FIXED_FEE === array_search($type, Options::getAvailablePaymentSurchargeFeeType(), true);
     }
 }

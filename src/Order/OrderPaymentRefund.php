@@ -18,6 +18,7 @@ use BitBag\SyliusMolliePlugin\Request\Api\RefundOrder;
 use Payum\Core\Payum;
 use Payum\Core\Request\Refund as RefundAction;
 use Payum\Core\Security\TokenInterface;
+use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Core\Model\PaymentMethodInterface;
 use Sylius\Component\Resource\Exception\UpdateHandlingException;
@@ -25,6 +26,7 @@ use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Sylius\RefundPlugin\Event\UnitsRefunded;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Webmozart\Assert\Assert;
 
 final class OrderPaymentRefund implements OrderPaymentRefundInterface
 {
@@ -49,6 +51,7 @@ final class OrderPaymentRefund implements OrderPaymentRefundInterface
 
     public function refund(UnitsRefunded $units): void
     {
+        /** @var OrderInterface $order */
         $order = $this->orderRepository->findOneBy(['number' => $units->orderNumber()]);
 
         /** @var PaymentInterface|null $payment */
@@ -62,6 +65,7 @@ final class OrderPaymentRefund implements OrderPaymentRefundInterface
         /** @var PaymentMethodInterface $paymentMethod */
         $paymentMethod = $payment->getMethod();
 
+        Assert::notNull($paymentMethod->getGatewayConfig());
         $factoryName = $paymentMethod->getGatewayConfig()->getFactoryName() ?? null;
 
         if (false === in_array($factoryName, [MollieGatewayFactory::FACTORY_NAME, MollieSubscriptionGatewayFactory::FACTORY_NAME], true)) {
@@ -76,7 +80,7 @@ final class OrderPaymentRefund implements OrderPaymentRefundInterface
 
         $hash = $details['metadata']['refund_token'];
 
-        /** @var TokenInterface|null $token */
+        /** @var TokenInterface|mixed $token */
         $token = $this->payum->getTokenStorage()->find($hash);
 
         if (null === $token || !$token instanceof TokenInterface) {

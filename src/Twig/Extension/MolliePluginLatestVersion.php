@@ -16,6 +16,7 @@ use BitBag\SyliusMolliePlugin\Checker\Version\MolliePluginLatestVersionCheckerIn
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
+use Webmozart\Assert\Assert;
 
 final class MolliePluginLatestVersion extends AbstractExtension
 {
@@ -43,9 +44,10 @@ final class MolliePluginLatestVersion extends AbstractExtension
 
     public function versionRenderWidget(Environment $environment): string
     {
+        Assert::notNull($this->latestVersionChecker->checkLatestVersion());
         $latestVersion = str_replace('v', '', $this->latestVersionChecker->checkLatestVersion());
 
-        if ($latestVersion === BitBagSyliusMolliePlugin::VERSION || empty($latestVersion)) {
+        if (BitBagSyliusMolliePlugin::VERSION === $latestVersion) {
             return '';
         }
 

@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Controller\Action\Shop;
 
+use BitBag\SyliusMolliePlugin\Entity\OrderInterface;
 use BitBag\SyliusMolliePlugin\Provider\Apple\ApplePayDirectProviderInterface;
 use Sylius\Bundle\OrderBundle\Controller\OrderController as BaseOrderController;
 use Sylius\Bundle\ResourceBundle\Event\ResourceControllerEvent;
@@ -40,7 +41,7 @@ final class OrderController extends BaseOrderController
 
         if ($event->isStopped()) {
             $eventResponse = $event->getResponse();
-            if (!empty($eventResponse)) {
+            if (null !== $eventResponse) {
                 return $eventResponse;
             }
 
@@ -48,12 +49,14 @@ final class OrderController extends BaseOrderController
         }
 
         try {
-            $this->getApplePayProviderService()->provideOrder($this->getCurrentCart(), $request);
+            /** @var OrderInterface $currentCart */
+            $currentCart = $this->getCurrentCart();
+            $this->getApplePayProviderService()->provideOrder($currentCart, $request);
 
             /** @var PaymentInterface $payment */
-            $payment = $this->getCurrentCart()->getLastPayment();
+            $payment = $currentCart->getLastPayment();
 
-            if ($payment->getState() !== PaymentInterface::STATE_COMPLETED) {
+            if (PaymentInterface::STATE_COMPLETED !== $payment->getState()) {
                 $response = [
                     'status' => 1,
                     'errors' => 'Payment not created',
@@ -71,7 +74,7 @@ final class OrderController extends BaseOrderController
 
         $postEventResponse = $postEvent->getResponse();
 
-        if (!empty($postEventResponse)) {
+        if (null !== $postEventResponse) {
             return $postEventResponse;
         }
 
@@ -79,10 +82,11 @@ final class OrderController extends BaseOrderController
 
         $initializeEventResponse = $initializeEvent->getResponse();
 
-        if (!empty($initializeEventResponse)) {
+        if (null !== $initializeEventResponse) {
             return $initializeEventResponse;
         }
 
+        $dataResponse = [];
         $redirect = $this->redirectToRoute('sylius_shop_order_thank_you');
         $dataResponse['returnUrl'] = $redirect->getTargetUrl();
         $dataResponse['responseToApple'] = ['status' => 0];
@@ -97,6 +101,9 @@ final class OrderController extends BaseOrderController
 
     private function getApplePayProviderService(): ApplePayDirectProviderInterface
     {
-        return $this->get('bitbag_sylius_mollie_plugin.provider.apple.apple_pay_direct_provider');
+        /** @var ApplePayDirectProviderInterface $provider */
+        $provider = $this->get('bitbag_sylius_mollie_plugin.provider.apple.apple_pay_direct_provider');
+
+        return $provider;
     }
 }

@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace spec\BitBag\SyliusMolliePlugin\Action;
 
 use BitBag\SyliusMolliePlugin\Action\StatusAction;
+use BitBag\SyliusMolliePlugin\Checker\Refund\MollieOrderRefundCheckerInterface;
 use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
 use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use BitBag\SyliusMolliePlugin\Refund\OrderRefundInterface;
@@ -39,46 +40,48 @@ use Sylius\Component\Core\Model\PaymentInterface;
 
 final class StatusActionSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         PaymentRefundInterface $paymentRefund,
         OrderRefundInterface $orderRefund,
         MollieLoggerActionInterface $loggerAction,
         OrderVoucherAdjustmentUpdaterInterface $orderVoucherAdjustmentUpdater,
         GatewayInterface $gateway,
-        MollieApiClient $mollieApiClient
+        MollieApiClient $mollieApiClient,
+        MollieOrderRefundCheckerInterface $mollieOrderRefundChecker
     ): void {
         $this->beConstructedWith(
             $paymentRefund,
             $orderRefund,
             $loggerAction,
-            $orderVoucherAdjustmentUpdater
+            $orderVoucherAdjustmentUpdater,
+            $mollieOrderRefundChecker
         );
 
         $this->setApi($mollieApiClient);
         $this->setGateway($gateway);
     }
 
-    function it_is_initializable(): void
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(StatusAction::class);
     }
 
-    function it_implements_action_interface(): void
+    public function it_implements_action_interface(): void
     {
         $this->shouldHaveType(ActionInterface::class);
     }
 
-    function it_implements_api_aware_interface(): void
+    public function it_implements_api_aware_interface(): void
     {
         $this->shouldHaveType(ApiAwareInterface::class);
     }
 
-    function it_implements_gateway_aware_interface(): void
+    public function it_implements_gateway_aware_interface(): void
     {
         $this->shouldHaveType(GatewayAwareInterface::class);
     }
 
-    function it_marks_when_details_are_unset(
+    public function it_marks_when_details_are_unset(
         GetStatusInterface $request,
         PaymentInterface $payment,
         MollieLoggerActionInterface $loggerAction
@@ -93,7 +96,7 @@ final class StatusActionSpec extends ObjectBehavior
         $this->execute($request);
     }
 
-    function it_marks_when_status_equals_error(
+    public function it_marks_when_status_equals_error(
         GetStatusInterface $request,
         PaymentInterface $payment
     ): void {
@@ -112,7 +115,7 @@ final class StatusActionSpec extends ObjectBehavior
         $this->execute($request);
     }
 
-    function it_tries_to_mark_and_throws_api_exception(
+    public function it_tries_to_mark_and_throws_api_exception(
         GetStatusInterface $request,
         PaymentInterface $payment,
         CustomerEndpoint $customerEndpoint,
@@ -139,7 +142,7 @@ final class StatusActionSpec extends ObjectBehavior
         $this->shouldThrow(ApiException::class)->during('execute', [$request]);
     }
 
-    function it_marks_when_subscription_mollie_id_is_set_and_status_equals_canceled(
+    public function it_marks_when_subscription_mollie_id_is_set_and_status_equals_canceled(
         GetStatusInterface $request,
         PaymentInterface $payment,
         CustomerEndpoint $customerEndpoint,
@@ -170,7 +173,7 @@ final class StatusActionSpec extends ObjectBehavior
         $this->execute($request);
     }
 
-    function it_marks_when_subscription_mollie_id_is_set_and_status_equals_active(
+    public function it_marks_when_subscription_mollie_id_is_set_and_status_equals_active(
         GetStatusInterface $request,
         PaymentInterface $payment,
         CustomerEndpoint $customerEndpoint,
@@ -201,7 +204,7 @@ final class StatusActionSpec extends ObjectBehavior
         $this->execute($request);
     }
 
-    function it_marks_when_subscription_mollie_id_is_set_and_status_equals_pending(
+    public function it_marks_when_subscription_mollie_id_is_set_and_status_equals_pending(
         GetStatusInterface $request,
         PaymentInterface $payment,
         CustomerEndpoint $customerEndpoint,
@@ -232,7 +235,7 @@ final class StatusActionSpec extends ObjectBehavior
         $this->execute($request);
     }
 
-    function it_marks_when_subscription_mollie_id_is_set_and_status_equals_completed(
+    public function it_marks_when_subscription_mollie_id_is_set_and_status_equals_completed(
         GetStatusInterface $request,
         PaymentInterface $payment,
         CustomerEndpoint $customerEndpoint,
@@ -263,7 +266,7 @@ final class StatusActionSpec extends ObjectBehavior
         $this->execute($request);
     }
 
-    function it_marks_when_subscription_mollie_id_is_set_and_status_equals_suspended(
+    public function it_marks_when_subscription_mollie_id_is_set_and_status_equals_suspended(
         GetStatusInterface $request,
         PaymentInterface $payment,
         CustomerEndpoint $customerEndpoint,
@@ -294,7 +297,7 @@ final class StatusActionSpec extends ObjectBehavior
         $this->execute($request);
     }
 
-    function it_marks_when_subscription_mollie_id_is_set_and_status_equals_unknown(
+    public function it_marks_when_subscription_mollie_id_is_set_and_status_equals_unknown(
         GetStatusInterface $request,
         PaymentInterface $payment,
         CustomerEndpoint $customerEndpoint,
@@ -325,7 +328,7 @@ final class StatusActionSpec extends ObjectBehavior
         $this->execute($request);
     }
 
-    function it_marks_when_subscription_mollie_id_and_order_id_are_unset_and_with_refund_set_to_true(
+    public function it_marks_when_subscription_mollie_id_and_order_id_are_unset_and_with_refund_set_to_true(
         GetStatusInterface $request,
         PaymentInterface $corePayment,
         Payment $payment,
@@ -336,7 +339,8 @@ final class StatusActionSpec extends ObjectBehavior
         MollieLoggerActionInterface $loggerAction,
         Order $order,
         OrderVoucherAdjustmentUpdaterInterface $orderVoucherAdjustmentUpdater,
-        OrderRefundInterface $orderRefund
+        OrderRefundInterface $orderRefund,
+        MollieOrderRefundCheckerInterface $mollieOrderRefundChecker
     ): void {
         $details = [
             'payment_mollie_id' => null,
@@ -366,13 +370,16 @@ final class StatusActionSpec extends ObjectBehavior
         $molliePayment->hasRefunds()->willReturn(true);
         $molliePayment->hasChargebacks()->willReturn(true);
 
+        $mollieOrderRefundChecker->check($order)
+            ->willReturn(true);
+
         $orderRefund->refund($order)->shouldBeCalled();
         $loggerAction->addLog(sprintf('Mark payment order refunded to: %s', $molliePayment->status))->shouldBeCalled();
 
         $this->execute($request);
     }
 
-    function it_marks_when_subscription_mollie_id_and_order_id_are_unset_and_with_refund_set_to_false(
+    public function it_marks_when_subscription_mollie_id_and_order_id_are_unset_and_with_refund_set_to_false(
         GetStatusInterface $request,
         PaymentInterface $corePayment,
         Payment $payment,
@@ -420,7 +427,7 @@ final class StatusActionSpec extends ObjectBehavior
         $this->execute($request);
     }
 
-    function it_marks_when_subscription_mollie_id_and_refund_are_set_to_false_and_with_order_id_set_to_true(
+    public function it_marks_when_subscription_mollie_id_and_refund_are_set_to_false_and_with_order_id_set_to_true(
         GetStatusInterface $request,
         PaymentInterface $corePayment,
         Payment $payment,
@@ -468,7 +475,7 @@ final class StatusActionSpec extends ObjectBehavior
         $this->execute($request);
     }
 
-    function it_marks_when_subscription_mollie_id_is_set_to_false_and_refund_with_order_id_are_set_to_true(
+    public function it_marks_when_subscription_mollie_id_is_set_to_false_and_refund_with_order_id_are_set_to_true(
         GetStatusInterface $request,
         PaymentInterface $corePayment,
         Payment $payment,
@@ -479,7 +486,8 @@ final class StatusActionSpec extends ObjectBehavior
         MollieLoggerActionInterface $loggerAction,
         Order $order,
         OrderVoucherAdjustmentUpdaterInterface $orderVoucherAdjustmentUpdater,
-        OrderRefundInterface $orderRefund
+        OrderRefundInterface $orderRefund,
+        MollieOrderRefundCheckerInterface $mollieOrderRefundChecker
     ): void {
         $details = [
             'payment_mollie_id' => null,
@@ -509,6 +517,9 @@ final class StatusActionSpec extends ObjectBehavior
         $molliePayment->hasRefunds()->willReturn(true);
         $molliePayment->hasChargebacks()->willReturn(true);
 
+        $mollieOrderRefundChecker->check($order)
+            ->willReturn(true);
+
         $orderRefund->refund($order)->shouldBeCalled();
         $loggerAction->addLog(sprintf('Mark payment order refunded to: %s', $molliePayment->status))
             ->shouldBeCalled();
@@ -516,7 +527,7 @@ final class StatusActionSpec extends ObjectBehavior
         $this->execute($request);
     }
 
-    function it_supports_only_get_status_request_and_array_access(
+    public function it_supports_only_get_status_request_and_array_access(
         GetStatusInterface $request,
         PaymentInterface $payment
     ): void {

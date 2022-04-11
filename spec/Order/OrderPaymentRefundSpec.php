@@ -19,9 +19,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Payum\Core\GatewayInterface;
 use Payum\Core\Model\GatewayConfigInterface;
 use Payum\Core\Payum;
+use Payum\Core\Request\Refund as RefundAction;
 use Payum\Core\Security\TokenInterface;
 use Payum\Core\Storage\StorageInterface;
-use Payum\Core\Request\Refund as RefundAction;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Core\Model\PaymentMethodInterface;
@@ -32,7 +32,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 final class OrderPaymentRefundSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         RepositoryInterface $orderRepository,
         MollieLoggerActionInterface $loggerAction,
         Payum $payum,
@@ -59,7 +59,7 @@ final class OrderPaymentRefundSpec extends ObjectBehavior
         $orderRepository->findOneBy(['number' => '#0000001'])->willReturn($order);
 
         $order->getPayments()->willReturn(new ArrayCollection([
-            $payment->getWrappedObject()
+            $payment->getWrappedObject(),
         ]));
         $payment->getMethod()->willReturn($paymentMethod);
 
@@ -67,24 +67,28 @@ final class OrderPaymentRefundSpec extends ObjectBehavior
         $config->getFactoryName()->willReturn('mollie_subscription_test');
     }
 
-    function it_is_initializable(): void
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(OrderPaymentRefund::class);
     }
 
-    function it_should_implement_order_payment_refund_interface(): void
+    public function it_should_implement_order_payment_refund_interface(): void
     {
         $this->shouldImplement(OrderPaymentRefundInterface::class);
     }
 
-    function it_refunds_order_payment_when_token_is_not_null_and_order_mollie_id_was_found(
+    public function it_refunds_order_payment_when_token_is_not_null_and_order_mollie_id_was_found(
         UnitsRefunded $units,
         PaymentInterface $payment,
         Payum $payum,
         StorageInterface $storage,
         TokenInterface $token,
-        GatewayInterface $gateway
+        GatewayInterface $gateway,
+        PaymentMethodInterface $paymentMethod,
+        GatewayConfigInterface $gatewayConfig
     ): void {
+        $mollieFactoryName = 'mollie';
+
         $details = [
             'metadata' => [
                 'refund' => [
@@ -95,12 +99,22 @@ final class OrderPaymentRefundSpec extends ObjectBehavior
                     'shipments' => [
                         'dhl',
                         'fedex',
-                    ]
+                    ],
                 ],
-                'refund_token' => 'test_token'
+                'refund_token' => 'test_token',
             ],
-            'order_mollie_id' => 1
+            'order_mollie_id' => 1,
         ];
+
+        $payment->getMethod()
+            ->willReturn($paymentMethod);
+
+        $paymentMethod->getGatewayConfig()
+            ->willReturn($gatewayConfig);
+
+        $gatewayConfig->getFactoryName()
+            ->willReturn($mollieFactoryName);
+
         $payment->getDetails()->willReturn($details);
         $hash = $details['metadata']['refund_token'];
         $payment->setDetails($details);
@@ -108,22 +122,25 @@ final class OrderPaymentRefundSpec extends ObjectBehavior
 
         $storage->find($hash)->willReturn($token);
 
-        $token->getGatewayName()->willReturn('test_gateway');
-        $payum->getGateway('test_gateway')->willReturn($gateway);
+        $token->getGatewayName()->willReturn('mollie');
+        $payum->getGateway('mollie')->willReturn($gateway);
 
         $gateway->execute(new RefundOrder($token->getWrappedObject()))->shouldBeCalledOnce();
 
         $this->refund($units);
     }
 
-    function it_refunds_order_payment_when_token_is_not_null_and_order_mollie_id_was_not_found(
+    public function it_refunds_order_payment_when_token_is_not_null_and_order_mollie_id_was_not_found(
         UnitsRefunded $units,
         PaymentInterface $payment,
         Payum $payum,
         StorageInterface $storage,
         TokenInterface $token,
-        GatewayInterface $gateway
+        GatewayInterface $gateway,
+        PaymentMethodInterface $paymentMethod,
+        GatewayConfigInterface $gatewayConfig
     ): void {
+        $mollieFactoryName = 'mollie';
         $details = [
             'metadata' => [
                 'refund' => [
@@ -134,11 +151,21 @@ final class OrderPaymentRefundSpec extends ObjectBehavior
                     'shipments' => [
                         'dhl',
                         'fedex',
-                    ]
+                    ],
                 ],
-                'refund_token' => 'test_token'
-            ]
+                'refund_token' => 'test_token',
+            ],
         ];
+
+        $payment->getMethod()
+            ->willReturn($paymentMethod);
+
+        $paymentMethod->getGatewayConfig()
+            ->willReturn($gatewayConfig);
+
+        $gatewayConfig->getFactoryName()
+            ->willReturn($mollieFactoryName);
+
         $payment->getDetails()->willReturn($details);
         $hash = $details['metadata']['refund_token'];
         $payment->setDetails($details);
@@ -154,15 +181,19 @@ final class OrderPaymentRefundSpec extends ObjectBehavior
         $this->refund($units);
     }
 
-    function it_not_refunds_order_payment_when_token_is_null(
+    public function it_not_refunds_order_payment_when_token_is_null(
         UnitsRefunded $units,
         PaymentInterface $payment,
         Payum $payum,
         StorageInterface $storage,
         TokenInterface $token,
         GatewayInterface $gateway,
-        MollieLoggerActionInterface $loggerAction
+        MollieLoggerActionInterface $loggerAction,
+        PaymentMethodInterface $paymentMethod,
+        GatewayConfigInterface $gatewayConfig
     ): void {
+        $mollieFactoryName = 'mollie';
+
         $details = [
             'metadata' => [
                 'refund' => [
@@ -173,11 +204,21 @@ final class OrderPaymentRefundSpec extends ObjectBehavior
                     'shipments' => [
                         'dhl',
                         'fedex',
-                    ]
+                    ],
                 ],
-                'refund_token' => 'test_token'
-            ]
+                'refund_token' => 'test_token',
+            ],
         ];
+
+        $payment->getMethod()
+            ->willReturn($paymentMethod);
+
+        $paymentMethod->getGatewayConfig()
+            ->willReturn($gatewayConfig);
+
+        $gatewayConfig->getFactoryName()
+            ->willReturn($mollieFactoryName);
+
         $payment->getDetails()->willReturn($details);
         $hash = $details['metadata']['refund_token'];
         $payment->setDetails($details);
@@ -190,10 +231,10 @@ final class OrderPaymentRefundSpec extends ObjectBehavior
 
         $loggerAction->addNegativeLog(sprintf('A token with hash `%s` could not be found.', $hash))->shouldBeCalledOnce();
 
-        $this->shouldThrow(BadRequestHttpException::class)->during('refund',[$units]);
+        $this->shouldThrow(BadRequestHttpException::class)->during('refund', [$units]);
     }
 
-    function it_refunds_order_payment_when_payment_is_null(
+    public function it_refunds_order_payment_when_payment_is_null(
         RepositoryInterface $orderRepository,
         OrderInterface $order,
         MollieLoggerActionInterface $loggerAction,
@@ -202,15 +243,15 @@ final class OrderPaymentRefundSpec extends ObjectBehavior
         $orderRepository->findOneBy(['number' => '#0000001'])->willReturn($order);
 
         $order->getPayments()->willReturn(new ArrayCollection([
-            null
+            null,
         ]));
 
         $loggerAction->addNegativeLog(sprintf('Not fount payment in refund'))->shouldBeCalled();
 
-        $this->shouldThrow(NotFoundHttpException::class)->during('refund',[$units]);
+        $this->shouldThrow(NotFoundHttpException::class)->during('refund', [$units]);
     }
 
-    function it_refunds_order_payment_when_factory_name_is_not_in_array(
+    public function it_refunds_order_payment_when_factory_name_is_not_in_array(
         GatewayConfigInterface $config,
         PaymentInterface $payment
     ): void {

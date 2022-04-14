@@ -5,12 +5,18 @@ declare(strict_types=1);
 namespace Tests\BitBag\SyliusMolliePlugin\PHPUnit\Functional\Api;
 
 use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
+use BitBag\SyliusMolliePlugin\Entity\OrderInterface;
+use BitBag\SyliusMolliePlugin\Repository\CreditMemoRepositoryInterface;
+use BitBag\SyliusMolliePlugin\Repository\OrderRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Payum\Core\Model\Identity;
 use Sylius\Component\Core\Model\Payment;
 use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Core\Repository\PaymentRepositoryInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
+use Sylius\RefundPlugin\Entity\CreditMemoInterface;
+use Sylius\RefundPlugin\Entity\LineItemInterface;
+use Sylius\RefundPlugin\Entity\RefundInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\BitBag\SyliusMolliePlugin\PHPUnit\Functional\FunctionalTestCase;
@@ -23,8 +29,20 @@ final class RefundOrderWebhookTest extends FunctionalTestCase
     /** @var RepositoryInterface */
     private $securityTokenRepository;
 
+    /** @var OrderRepositoryInterface */
+    private $orderRepository;
+
     /** @var PaymentRepositoryInterface */
     private $paymentRepository;
+
+    /** @var RepositoryInterface */
+    private $refundRepository;
+
+    /** @var RepositoryInterface */
+    private $refundPaymentRepository;
+
+    /** @var CreditMemoRepositoryInterface */
+    private $creditMemoRepository;
 
     /** @var EntityManagerInterface */
     private $entityManager;
@@ -36,10 +54,20 @@ final class RefundOrderWebhookTest extends FunctionalTestCase
         $this->mollieApiClient = self::getContainer()->get('bitbag_sylius_mollie_plugin.mollie_api_client');
         $this->mollieApiClient->setApiEndpoint('http://localhost:8217');
         $this->securityTokenRepository = self::getContainer()->get('sylius.repository.payment_security_token');
+        $this->orderRepository = self::getContainer()->get('sylius.repository.order');
         $this->paymentRepository = self::getContainer()->get('sylius.repository.payment');
+        $this->refundRepository = self::getContainer()->get('sylius_refund.repository.refund');
+        $this->refundPaymentRepository = self::getContainer()->get('sylius_refund.repository.refund_payment');
+        $this->creditMemoRepository = self::getContainer()->get('sylius_refund.repository.credit_memo');
         $this->entityManager = self::getContainer()->get('doctrine.orm.entity_manager');
     }
 
+    /**
+      * The tested scenario:
+      *
+      * We simulate refunding all (to be honest only one existing) order items in order by
+      * calling the notify webhook (as Mollie does).
+      **/
     public function test_order_status_after_refund_with_credit_memos(): void
     {
         $fixtures = $this->loadFixturesFromFiles([
@@ -73,9 +101,54 @@ final class RefundOrderWebhookTest extends FunctionalTestCase
 
         $response = $this->client->getResponse();
 
-        die(var_dump($response->getContent()));
-
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+
+        $order = $this->orderRepository->findOneByNumber('000000001');
+        $this->assertEquals('refunded', $order->getPaymentState());
+
+        $this->assertCreditMemos($order);
+        $this->assertRefunds($order);
+    }
+
+    private function assertCreditMemos(OrderInterface $order): void
+    {
+        $memos = $this->creditMemoRepository->findByOrderId((string) $order->getId());
+        $this->assertCount(1, $memos);
+
+        /** @var CreditMemoInterface $memo */
+        $memo = current($memos);
+        $this->assertEquals($order->getTotal(), $memo->getTotal());
+        $this->assertEquals($order->getCurrencyCode(), $memo->getCurrencyCode());
+
+        $memoLineItems = $memo->getLineItems();
+        $this->assertCount(1, $memoLineItems);
+
+        /** @var LineItemInterface $refundLineItem */
+        $refundLineItem = $memoLineItems->first();
+        $this->assertEquals('Knitted wool-blend green cap', $refundLineItem->name());
+        $this->assertEquals(1, $refundLineItem->quantity());
+        $this->assertEquals(3832, $refundLineItem->unitNetPrice());
+        $this->assertEquals(3832, $refundLineItem->unitGrossPrice());
+        $this->assertEquals(3832, $refundLineItem->netValue());
+        $this->assertEquals(3832, $refundLineItem->grossValue());
+        $this->assertEquals(0, $refundLineItem->taxAmount());
+    }
+
+    private function assertRefunds(OrderInterface $order): void
+    {
+        /** @var RefundInterface $refund */
+        $refund = $this->refundRepository->findOneBy(['order' => $order]);
+        $this->assertNotNull($refund);
+
+        $this->assertEquals($order->getTotal(), $refund->getAmount());
+
+        $refundPayment = $this->refundPaymentRepository->findOneBy(['order' => $order]);
+        $this->assertNotNull($refundPayment);
+
+        $orderPayment = $order->getPayments()->first();
+        $this->assertEquals($orderPayment->getAmount(), $refundPayment->getAmount());
+        $this->assertEquals($orderPayment->getCurrencyCode(), $refundPayment->getCurrencyCode());
+        $this->assertEquals($orderPayment->getState(), $refundPayment->getState());
     }
 
     private function request(

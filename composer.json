@@ -37,7 +37,8 @@
         "symfony/web-profiler-bundle": "^4.4 || ^5.2",
         "vimeo/psalm": "4.7.1",
         "symfony/webpack-encore-bundle": "^1.12",
-        "bitbag/coding-standard": "^1.0"
+        "bitbag/coding-standard": "^1.0",
+        "lchrusciel/api-test-case": "^5.2"
     },
     "conflict": {
         "symplify/package-builder": "8.3.25"

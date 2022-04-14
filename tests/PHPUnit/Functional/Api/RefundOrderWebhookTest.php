@@ -8,6 +8,8 @@ use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
 use Doctrine\ORM\EntityManagerInterface;
 use Payum\Core\Model\Identity;
 use Sylius\Component\Core\Model\Payment;
+use Sylius\Component\Core\Model\PaymentInterface;
+use Sylius\Component\Core\Repository\PaymentRepositoryInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,6 +23,9 @@ final class RefundOrderWebhookTest extends FunctionalTestCase
     /** @var RepositoryInterface */
     private $securityTokenRepository;
 
+    /** @var PaymentRepositoryInterface */
+    private $paymentRepository;
+
     /** @var EntityManagerInterface */
     private $entityManager;
 
@@ -31,6 +36,7 @@ final class RefundOrderWebhookTest extends FunctionalTestCase
         $this->mollieApiClient = self::getContainer()->get('bitbag_sylius_mollie_plugin.mollie_api_client');
         $this->mollieApiClient->setApiEndpoint('http://localhost:8217');
         $this->securityTokenRepository = self::getContainer()->get('sylius.repository.payment_security_token');
+        $this->paymentRepository = self::getContainer()->get('sylius.repository.payment');
         $this->entityManager = self::getContainer()->get('doctrine.orm.entity_manager');
     }
 
@@ -40,12 +46,20 @@ final class RefundOrderWebhookTest extends FunctionalTestCase
             'Api/RefundOrderWebhookTest/test_order_status_after_refund_with_credit_memos.yaml'
         ]);
 
-        $paymentId = $fixtures['order_payment']->getId();
+        /** @var PaymentInterface $payment */
+        $payment = $fixtures['order_payment'];
+        $paymentId = $payment->getId();
 
         $notifyToken = $this->securityTokenRepository->findOneBy(['hash' => $fixtures['notify_token']->getHash()]);
         $refundToken = $this->securityTokenRepository->findOneBy(['hash' => $fixtures['refund_token']->getHash()]);
         $notifyToken->setDetails(new Identity($paymentId, Payment::class));
         $refundToken->setDetails(new Identity($paymentId, Payment::class));
+
+        $payment = $this->paymentRepository->find($paymentId);
+
+        $details = $payment->getDetails();
+        $details['order_mollie_id'] = 'ord_' . $fixtures['order']->getId() . '-' . $fixtures['order_item']->getId();
+        $payment->setDetails($details);
 
         $this->entityManager->flush();
 
@@ -54,7 +68,7 @@ final class RefundOrderWebhookTest extends FunctionalTestCase
             '/payment/notify/654fed',
             [],
             '',
-            ['id' => 'ord_123xyz']
+            ['id' => 'ord_' . $fixtures['order']->getId() . '-' . $fixtures['order_item']->getId()]
         );
 
         $response = $this->client->getResponse();

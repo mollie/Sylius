@@ -27,6 +27,20 @@ Sylius\Component\Core\Model\Customer:
         email: "test@example.com"
         emailCanonical: "test@example.com"
 
+
+Sylius\Component\Core\Model\Address:
+    customer_address:
+        firstName: "Bruce"
+        lastName: "Wayne"
+        phoneNumber: 123123123
+        company: "Wayne Enterprise"
+        countryCode: "GB"
+        provinceCode: "GB-SCT"
+        street: "McGlynn Island"
+        city: "Klingside"
+        postcode: "33553"
+        customer: "@customer"
+
 Sylius\Component\Core\Model\Adjustment:
     shipping_adjustment:
         adjustable: '@order'
@@ -44,6 +58,7 @@ Tests\BitBag\SyliusMolliePlugin\Entity\Order:
         state: "new"
         checkout_state: "completed"
         payment_state: "paid"
+        billingAddress: "@customer_address"
         checkout_completed_at: '<dateTimeBetween("-60 minutes", "-35 minutes", "Europe/Paris")>'
 
 Sylius\Component\Core\Model\OrderItem:
@@ -62,7 +77,7 @@ Sylius\Component\Core\Model\Payment:
         order: "@order"
         currency_code: "EUR"
         amount: 3832
-        state: "new"
+        state: "completed"
         details: {"email": "test@test.pl", "lines": [{"name": "Knitted wool-blend green cap", "type": "physical", "vatRate": "0", "category": null, "metadata": {"item_id": 77}, "quantity": 1, "unitPrice": {"value": "38.32", "currency": "USD"}, "vatAmount": {"value": "0", "currency": "USD"}, "totalAmount": {"value": "38.32", "currency": "USD"}, "discountAmount": {"value": "0.00", "currency": "USD"}}, {"name": "SHIPPING_FEE", "type": "shipping_fee", "vatRate": "0.00", "quantity": 1, "unitPrice": {"value": "0.00", "currency": "USD"}, "vatAmount": {"value": "0.00", "currency": "USD"}, "totalAmount": {"value": "0.00", "currency": "USD"}}], "amount": {"value": "38.32", "currency": "USD"}, "locale": "en_US", "backurl": "http://7b3a-85-117-23-246.ngrok.io/payment/capture/4Msd-gEEBKW2r1K3MeOC4hmBDiuFQYxRfjljcPEOLxk", "metadata": {"refund": {"items": [], "shipments": [{}]}, "order_id": 39, "cartToken": null, "methodType": "Orders API", "customer_id": 24, "refund_token": "789def", "selected_issuer": null, "molliePaymentMethods": "creditcard"}, "full_name": "", "webhookUrl": "http://7b3a-85-117-23-246.ngrok.io/payment/notify/654fed", "description": "Payment contains 1 item for a total of 38.32", "orderNumber": "000000001", "billingAddress": {"city": "Test", "email": "test@test.pl", "country": "PL", "givenName": "Test", "familyName": "Test", "postalCode": "12-123", "streetAndNumber": "Test"}, "order_mollie_id": "ord_123xyz", "shippingAddress": {"city": "Test", "email": "test@test.pl", "country": "PL", "givenName": "Test", "familyName": "Test", "postalCode": "12-123", "streetAndNumber": "Test"}}
 
 Sylius\Component\Core\Model\PaymentMethod:
@@ -99,7 +114,7 @@ Tests\BitBag\SyliusMolliePlugin\Entity\Product:
 Sylius\Component\Core\Model\ProductTranslation:
     cap_product_translation:
         slug: "random-cap"
-        locale: "en_GB"
+        locale: "en_US"
         name: "Knitted wool-blend green cap"
         description: "WINDPROOF INSULATED CAP."
         translatable: "@cap_product"
@@ -108,7 +123,7 @@ Tests\BitBag\SyliusMolliePlugin\Entity\ProductVariant:
     cap_variant:
         code: "RANDOM_CAP_CODE"
         product: "@cap_product"
-        currentLocale: "en_GB"
+        currentLocale: "en_US"
         translations: ["@cap_variant_translation"]
         channelPricings:
             CHANNEL_CODE: "@channel_pricing"
@@ -120,7 +135,7 @@ Tests\BitBag\SyliusMolliePlugin\Entity\ProductVariant:
 
 Sylius\Component\Product\Model\ProductVariantTranslation:
     cap_variant_translation:
-        locale: "en_GB"
+        locale: "en_US"
         name: "Random Cap"
         translatable: "@cap_variant"
 

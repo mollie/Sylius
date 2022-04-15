@@ -146,7 +146,7 @@ final class StatusAction extends BaseApiAwareAction implements StatusActionInter
                 /** @var Payment $payment */
                 $payment = current($payments);
 
-                if ($payment->method === MealVoucher::MEAL_VOUCHERS) {
+                if (MealVoucher::MEAL_VOUCHERS === $payment->method) {
                     $this->orderVoucherAdjustmentUpdater->update($payment, $order->metadata->order_id);
                 }
 

@@ -11,7 +11,6 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Refund\Units;
 
-use BitBag\SyliusMolliePlugin\DTO\PartialRefundItem;
 use BitBag\SyliusMolliePlugin\DTO\PartialRefundItems;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\OrderItemUnitInterface;

@@ -63,6 +63,7 @@ final class RefundOrderAction extends BaseApiAwareAction implements ActionInterf
         $refundData = $this->convertOrderRefundData->convert($details['metadata']['refund'], $payment->getCurrencyCode());
 
         $molliePayment = null;
+
         try {
             $order = $this->mollieApiClient->orders->get($details['order_mollie_id'], ['embed' => 'payments']);
             $embeddedPayments = $order->_embedded->payments;

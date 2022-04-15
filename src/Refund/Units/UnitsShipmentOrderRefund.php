@@ -14,7 +14,6 @@ namespace BitBag\SyliusMolliePlugin\Refund\Units;
 use BitBag\SyliusMolliePlugin\Helper\ConvertOrderInterface;
 use Mollie\Api\Resources\Order;
 use Sylius\Component\Core\Model\OrderInterface;
-use Sylius\Component\Core\Model\OrderItemUnitInterface;
 use Sylius\Component\Order\Model\Adjustment;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Sylius\RefundPlugin\Model\RefundType;
@@ -43,7 +42,7 @@ final class UnitsShipmentOrderRefund implements UnitsShipmentOrderRefundInterfac
                 throw new \InvalidArgumentException();
             }
 
-            if ($line->type === ConvertOrderInterface::SHIPPING_TYPE && $line->quantityRefunded > 0) {
+            if (ConvertOrderInterface::SHIPPING_TYPE === $line->type && 0 < $line->quantityRefunded) {
                 /** @var Adjustment $refundedShipment */
                 $refundedShipment = $syliusOrder->getAdjustments('shipping')->first();
 

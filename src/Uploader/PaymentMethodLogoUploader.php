@@ -69,10 +69,13 @@ final class PaymentMethodLogoUploader implements PaymentMethodLogoUploaderInterf
         $customizeImage->setName($file->getClientOriginalName());
 
         Assert::notNull($customizeImage->getPath());
+        $fileContent = file_get_contents($file->getPathname());
+
+        Assert::string($fileContent);
 
         $this->filesystem->write(
             $customizeImage->getPath(),
-            $file->getPathname()
+            $fileContent
         );
     }
 

@@ -14,6 +14,7 @@ namespace BitBag\SyliusMolliePlugin\Refund\Units;
 use BitBag\SyliusMolliePlugin\Helper\ConvertOrderInterface;
 use Mollie\Api\Resources\Order;
 use Sylius\Component\Core\Model\OrderInterface;
+use Sylius\Component\Core\Model\OrderItemUnitInterface;
 use Sylius\Component\Order\Model\Adjustment;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Sylius\RefundPlugin\Model\RefundType;
@@ -35,6 +36,7 @@ final class UnitsShipmentOrderRefund implements UnitsShipmentOrderRefundInterfac
             return [];
         }
 
+        /** @var mixed $line */
         foreach ($order->lines as $line) {
             if (!property_exists($line, 'type') ||
                 !property_exists($line, 'refundableQuantity')) {

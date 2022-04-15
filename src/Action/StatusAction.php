@@ -28,6 +28,7 @@ use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\GetStatusInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
+use Webmozart\Assert\Assert;
 
 final class StatusAction extends BaseApiAwareAction implements StatusActionInterface
 {
@@ -61,7 +62,7 @@ final class StatusAction extends BaseApiAwareAction implements StatusActionInter
         $this->mollieOrderRefundChecker = $mollieOrderRefundChecker;
     }
 
-    /** @param GetStatusInterface $request */
+    /** @param GetStatusInterface|mixed $request */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
@@ -135,6 +136,8 @@ final class StatusAction extends BaseApiAwareAction implements StatusActionInter
             }
         }
 
+        $order = null;
+        $molliePayment = null;
         if (false === isset($details['subscription_mollie_id']) && isset($details['order_mollie_id'])) {
             try {
                 $order = $this->mollieApiClient->orders->get($details['order_mollie_id'], ['embed' => 'payments']);
@@ -156,6 +159,10 @@ final class StatusAction extends BaseApiAwareAction implements StatusActionInter
                 throw new ApiException(sprintf('Error with get payment page with id %s', $details['payment_mollie_id']));
             }
         }
+
+        Assert::notNull($order);
+        Assert::notNull($molliePayment);
+
         if ($molliePayment->hasRefunds() || $molliePayment->hasChargebacks()) {
             if (isset($details['order_mollie_id'])) {
                 $mollieOrderLinesRefundable = $this->mollieOrderRefundChecker->check($order);

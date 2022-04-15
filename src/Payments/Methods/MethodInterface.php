@@ -23,6 +23,10 @@ interface MethodInterface
 
     public function setEnabled(bool $enabled): void;
 
+    public function enable(): void;
+
+    public function disable(): void;
+
     public function getImage(): array;
 
     public function setImage(array $image): void;

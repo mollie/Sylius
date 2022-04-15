@@ -40,12 +40,13 @@ final class SubscriptionContext implements Context
         /** @var MollieSubscriptionInterface $subscription */
         $subscription = $this->subscriptionFactory->createNew();
 
-        $subscription->setSubscription();
-        $subscription->setCustomerId('id_1');
         $subscription->addOrder($order);
         $subscription->setState(MollieSubscriptionInterface::STATE_ACTIVE);
+        $subscriptionConfiguration = $subscription->getSubscriptionConfiguration();
+        $subscriptionConfiguration->setInterval('10 days');
 
         $this->entityManagerSubscription->persist($subscription);
+        $this->entityManagerSubscription->persist($subscriptionConfiguration);
         $this->entityManagerSubscription->flush();
     }
 }

@@ -53,7 +53,7 @@
                 data-payment-id="{{ methodForm.vars.value.id }}"
             >
                 <div class="draggable-button-enable">
-                    {{ form_row(methodForm.enabled) }}
+                    {{ form_row(methodForm.enabled, { id: methodForm.vars.value.name }) }}
                 </div>
                 <div class="title{% if loop.index0 == 0 %} active{% endif %}">
                     <i class="dropdown icon"></i>

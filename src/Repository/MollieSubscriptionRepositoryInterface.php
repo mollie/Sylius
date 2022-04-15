@@ -30,4 +30,6 @@ interface MollieSubscriptionRepositoryInterface extends RepositoryInterface
 
     /** @return MollieSubscriptionInterface[] */
     public function findProcessableSubscriptions(): array;
+
+    public function findOneByOrderIdAsString(string $orderId): ?MollieSubscriptionInterface;
 }

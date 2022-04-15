@@ -5,7 +5,7 @@ Feature: Adding a new mollie recurring subscription
     I want to add a new recurring subscription to the registry
 
     Background:
-        Given the store operates on a channel named "Web-EUR" in "eur" currency
+        Given the store operates on a channel named "Web-EUR" in "EUR" currency
         And I am logged in as an administrator
 
     @ui
@@ -13,8 +13,8 @@ Feature: Adding a new mollie recurring subscription
         Given I want to create a new Mollie recurring subscription
         When I name it "Mollie Recurring Subscription" in "English (United States)"
         And I specify its code as "mollie_recurring_subscription_test"
-        And I fill the Profile ID with "test"
-        And I fill the API key with "test_Bdzq53PCPvHc9WFazncF4tSn5ssvNP"
+        And I fill the Profile ID with "MOLLIE_PROFILE_KEY"
+        And I fill the API key with "MOLLIE_TEST_API_KEY"
         And make it available in channel "Web-EUR"
         And I add it
         Then I should be notified that it has been successfully created

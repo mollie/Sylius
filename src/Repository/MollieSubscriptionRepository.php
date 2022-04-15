@@ -73,4 +73,9 @@ final class MollieSubscriptionRepository extends EntityRepository implements Mol
 
         return $qb->getQuery()->getResult();
     }
+
+    public function findOneByOrderIdAsString(string $orderId): ?MollieSubscriptionInterface
+    {
+        return $this->findOneByOrderId((int) $orderId);
+    }
 }

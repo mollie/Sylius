@@ -28,6 +28,7 @@ default:
                 - sylius.behat.context.setup.shop_security
                 - sylius.behat.context.setup.taxation
                 - sylius.behat.context.setup.user
+                - sylius.behat.context.setup.zone
 
                 - bitbag_sylius_mollie_plugin.behat.context.setup.mollie
 

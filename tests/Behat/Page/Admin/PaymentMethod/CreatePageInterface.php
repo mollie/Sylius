@@ -24,5 +24,11 @@ interface CreatePageInterface extends BaseCreatePageInterface
 
     public function setInterval(string $interval): void;
 
+    public function loadPaymentMethods(): void;
+
+    public function enablePaymentMethod(string $paymentMethodName): void;
+
     public function containsErrorWithMessage(string $message, bool $strict = true): bool;
+
+    public function containsSuccessMessage(string $message): bool;
 }

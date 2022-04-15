@@ -48,8 +48,12 @@ final class ProductContext extends RawMinkContext implements Context
         /** @var \Sylius\Component\Core\Model\Product $product */
         $product = $this->productRepository->findByName($productName, 'en_US');
         $productVariants = $product[0]->getVariants();
+
+        /** @var ProductVariantInterface $productVariant */
         $productVariant = $productVariants->first();
         $productVariant->setRecurring(true);
+        $productVariant->setTimes(2);
+        $productVariant->setInterval('10 days');
 
         $this->saveProductVariant($productVariant);
     }

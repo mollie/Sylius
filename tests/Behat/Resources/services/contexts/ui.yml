@@ -4,6 +4,8 @@ services:
         public: true
         arguments:
             - "@bitbag_sylius_mollie_plugin.page.admin.payment_method.create"
+            - "%env(MOLLIE_TEST_API_KEY)%"
+            - "%env(MOLLIE_PROFILE_KEY)%"
 
     bitbag_sylius_mollie_plugin.behat.context.ui.shop.checkout:
         class: Tests\BitBag\SyliusMolliePlugin\Behat\Context\Ui\Shop\CheckoutContext

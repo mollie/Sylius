@@ -7,6 +7,12 @@ services:
             - "@sylius.repository.payment_method"
             - "@sylius.fixture.example_factory.payment_method"
             - "@sylius.manager.payment_method"
+            - "%env(MOLLIE_TEST_API_KEY)%"
+            - "%env(MOLLIE_PROFILE_KEY)%"
+            - "@bitbag_sylius_mollie_plugin.creator.mollie_methods_resolver"
+            - "@bitbag_sylius_mollie_plugin.purifier.mollie_payment_method_purifier"
+            - "@sylius.repository.gateway_config"
+            - "@bitbag_sylius_mollie_plugin.repository.mollie_gateway_config"
 
     bitbag_sylius_mollie_plugin.context.setup.order:
         class: Tests\BitBag\SyliusMolliePlugin\Behat\Context\Setup\OrderContext
@@ -21,7 +27,7 @@ services:
         public: true
         arguments:
             - "@doctrine.orm.default_entity_manager"
-            - "@sylius.factory.order"
+            - "@bitbag_sylius_mollie_plugin.factory.mollie_subscription"
 
     bitbag_sylius_mollie_plugin.behat.context.setup.product:
         class: Tests\BitBag\SyliusMolliePlugin\Behat\Context\Setup\ProductContext

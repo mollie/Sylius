@@ -22,7 +22,7 @@ final class CreatePage extends BaseCreatePage implements CreatePageInterface
      */
     public function setApiKey(string $apiKey): void
     {
-        $this->getDocument()->fillField('API Key', $apiKey);
+        $this->getDocument()->fillField('Test API Key *', $apiKey);
     }
 
     /**
@@ -49,6 +49,18 @@ final class CreatePage extends BaseCreatePage implements CreatePageInterface
         $this->getDocument()->fillField('Interval', $interval);
     }
 
+    public function loadPaymentMethods(): void
+    {
+        $this->getDocument()->find('css', '#get_methods')->click();
+        $time = 10000;
+        $this->getSession()->wait($time, '(0 === jQuery.active)');
+    }
+
+    public function enablePaymentMethod(string $paymentMethodName): void
+    {
+        $this->getDocument()->checkField($paymentMethodName);
+    }
+
     /**
      * @inheritdoc
      */
@@ -69,5 +81,18 @@ final class CreatePage extends BaseCreatePage implements CreatePageInterface
         }
 
         return $result;
+    }
+
+    public function containsSuccessMessage(string $message): bool
+    {
+        $successMessages = $this->getDocument()->findAll('css', '.sylius-flash-message p');
+
+        foreach ($successMessages as $successMessage) {
+            if ($successMessage->getText() === $message) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

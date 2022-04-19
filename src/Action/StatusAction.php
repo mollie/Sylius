@@ -165,7 +165,6 @@ final class StatusAction extends BaseApiAwareAction implements StatusActionInter
             if (isset($details['order_mollie_id'])) {
                 Assert::notNull($order);
 
-
                 $mollieOrderLinesRefundable = $this->mollieOrderRefundChecker->check($order);
 
                 if ($mollieOrderLinesRefundable) {

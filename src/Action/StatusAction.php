@@ -126,6 +126,7 @@ final class StatusAction extends BaseApiAwareAction implements StatusActionInter
             return;
         }
 
+        $molliePayment = null;
         if (false === isset($details['subscription_mollie_id']) && isset($details['payment_mollie_id'])) {
             try {
                 $molliePayment = $this->mollieApiClient->payments->get($details['payment_mollie_id']);
@@ -137,7 +138,6 @@ final class StatusAction extends BaseApiAwareAction implements StatusActionInter
         }
 
         $order = null;
-        $molliePayment = null;
         if (false === isset($details['subscription_mollie_id']) && isset($details['order_mollie_id'])) {
             try {
                 $order = $this->mollieApiClient->orders->get($details['order_mollie_id'], ['embed' => 'payments']);
@@ -160,11 +160,12 @@ final class StatusAction extends BaseApiAwareAction implements StatusActionInter
             }
         }
 
-        Assert::notNull($order);
         Assert::notNull($molliePayment);
-
         if ($molliePayment->hasRefunds() || $molliePayment->hasChargebacks()) {
             if (isset($details['order_mollie_id'])) {
+                Assert::notNull($order);
+
+
                 $mollieOrderLinesRefundable = $this->mollieOrderRefundChecker->check($order);
 
                 if ($mollieOrderLinesRefundable) {

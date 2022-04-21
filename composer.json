@@ -4,12 +4,12 @@
     "description": "Mollie payment plugin for Sylius applications.",
     "license": "MIT",
     "require": {
-        "php": "^7.4 || ^8.0",
-        "sylius/sylius": "~1.9.4 || ~1.10.0",
+        "php": "^8.0",
+        "sylius/sylius": "~1.10.0 || ~1.11.0",
         "symfony/messenger": "^4.4 || ^5.2",
         "mollie/mollie-api-php": "^2.0",
-        "sylius/refund-plugin": "^1.0",
-        "sylius/admin-order-creation-plugin":  "^0.11 || ^0.12",
+        "sylius/refund-plugin": "^1.1",
+        "sylius/admin-order-creation-plugin":  "^0.13",
         "ext-json": "*",
         "willdurand/js-translation-bundle": "^4.0"
     },
@@ -38,7 +38,8 @@
         "vimeo/psalm": "4.7.1",
         "symfony/webpack-encore-bundle": "^1.12",
         "bitbag/coding-standard": "^1.0",
-        "lchrusciel/api-test-case": "^5.2"
+        "lchrusciel/api-test-case": "^5.2",
+        "polishsymfonycommunity/symfony-mocker-container": "^1.0"
     },
     "conflict": {
         "symplify/package-builder": "8.3.25"

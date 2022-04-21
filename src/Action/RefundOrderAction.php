@@ -62,14 +62,16 @@ final class RefundOrderAction extends BaseApiAwareAction implements ActionInterf
         Assert::notNull($payment->getCurrencyCode());
         $refundData = $this->convertOrderRefundData->convert($details['metadata']['refund'], $payment->getCurrencyCode());
 
+        $molliePayment = null;
+
         try {
             $order = $this->mollieApiClient->orders->get($details['order_mollie_id'], ['embed' => 'payments']);
-            $payments = $order->_embedded->payments;
+            $embeddedPayments = $order->_embedded->payments;
 
-            /** @var Payment $payment */
-            foreach ($payments as $payment) {
-                if (PaymentStatus::STATUS_PAID === $payment->status) {
-                    $molliePayment = $this->mollieApiClient->payments->get($payment->id);
+            /** @var Payment $embeddedPayment */
+            foreach ($embeddedPayments as $embeddedPayment) {
+                if (PaymentStatus::STATUS_PAID === $embeddedPayment->status) {
+                    $molliePayment = $this->mollieApiClient->payments->get($embeddedPayment->id);
                 }
             }
         } catch (ApiException $e) {
@@ -77,6 +79,8 @@ final class RefundOrderAction extends BaseApiAwareAction implements ActionInterf
 
             throw new \Exception(sprintf('API call failed: %s', htmlspecialchars($e->getMessage())));
         }
+
+        Assert::notNull($molliePayment);
 
         if ($molliePayment->hasRefunds()) {
             return;
@@ -86,7 +90,10 @@ final class RefundOrderAction extends BaseApiAwareAction implements ActionInterf
         $payment = $request->getFirstModel();
 
         try {
-            $refundData = $this->convertOrderRefundData->convert($details['metadata']['refund'], $payment->getCurrencyCode());
+            $currencyCode = $payment->getCurrencyCode();
+            Assert::notNull($currencyCode);
+
+            $refundData = $this->convertOrderRefundData->convert($details['metadata']['refund'], $currencyCode);
 
             $this->mollieApiClient->payments->refund(
                 $molliePayment,

@@ -13,6 +13,7 @@ namespace BitBag\SyliusMolliePlugin\Refund\Units;
 
 use BitBag\SyliusMolliePlugin\DTO\PartialRefundItems;
 use Sylius\Component\Core\Model\OrderInterface;
+use Sylius\Component\Core\Model\OrderItemUnitInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Sylius\RefundPlugin\Model\OrderItemUnitRefund;
 use Sylius\RefundPlugin\Model\RefundType;
@@ -33,7 +34,7 @@ final class UnitsItemOrderRefund implements UnitsItemOrderRefundInterface
 
         $unitsToRefund = [];
 
-        /** @var PartialRefundItem $unit */
+        /** @var OrderItemUnitInterface $unit */
         foreach ($units as $unit) {
             if (true === $this->hasUnitRefunded($order, $unit->getId())) {
                 continue;

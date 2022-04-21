@@ -5,7 +5,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.0",
-        "sylius/sylius": "~1.11.0",
+        "sylius/sylius": "~1.10.0",
         "symfony/messenger": "^4.4 || ^5.2",
         "mollie/mollie-api-php": "^2.0",
         "sylius/refund-plugin": "^1.1",

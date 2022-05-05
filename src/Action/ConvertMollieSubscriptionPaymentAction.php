@@ -130,6 +130,10 @@ final class ConvertMollieSubscriptionPaymentAction extends BaseApiAwareAction im
         ];
         $details['metadata'] = array_merge($details['metadata'], $paymentOptions['metadata'] ?? []);
 
+        if (isset($paymentOptions['mandateId'])) {
+            $details['mandateId'] = $paymentOptions['mandateId'];
+        }
+
         $this->gateway->execute($mollieCustomer = new CreateCustomer($details));
         $model = $mollieCustomer->getModel();
         $details['customerId'] = $model['customer_mollie_id'];

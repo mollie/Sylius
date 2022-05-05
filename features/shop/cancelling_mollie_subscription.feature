@@ -11,10 +11,10 @@ Feature: Cancelling subscription
         And the store has a payment method "Mollie Subscription" with a code "mollie_subscription" and Mollie Subscription payment gateway
         And I am a logged in customer
         And I placed an order "#00000666"
-        And this order has an active mollie subscription
         And I bought a single "Angel T-Shirt"
         And I addressed it to "Lucifer Morningstar", "Seaside Fwy", "90802" "Los Angeles" in the "United States" with identical billing address
         And I chose "Free" shipping method with "Mollie Subscription" payment
+        And this order has an active mollie subscription
 
     @ui
     Scenario: Cancelling subscription

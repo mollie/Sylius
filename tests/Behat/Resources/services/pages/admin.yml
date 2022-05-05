@@ -1,2 +1,3 @@
 imports:
     - { resource: "admin/payment_method.yml" }
+    - { resource: "admin/order.yml" }

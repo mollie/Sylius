@@ -28,6 +28,9 @@ services:
         arguments:
             - "@doctrine.orm.default_entity_manager"
             - "@bitbag_sylius_mollie_plugin.factory.mollie_subscription"
+            - "@sylius.behat.shared_storage"
+            - "@bitbag_sylius_mollie_plugin.processor.subscription_schedule_processor"
+            - "@bitbag_sylius_mollie_plugin.mollie_api_client"
 
     bitbag_sylius_mollie_plugin.behat.context.setup.product:
         class: Tests\BitBag\SyliusMolliePlugin\Behat\Context\Setup\ProductContext
@@ -36,4 +39,5 @@ services:
             - "@sylius.behat.shared_storage"
             - "@sylius.repository.product"
             - "@sylius.repository.product_variant"
+            - "@sylius.repository.channel_pricing"
 

@@ -26,6 +26,8 @@ jobs:
         env:
             APP_ENV: test
             DATABASE_URL: "mysql://root:root@127.0.0.1/sylius?serverVersion=${{ matrix.mysql }}"
+            MOLLIE_TEST_API_KEY: "${{ secrets.MOLLIE_TEST_API_KEY }}"
+            MOLLIE_PROFILE_KEY: "${{ secrets.MOLLIE_PROFILE_KEY }}"
 
         steps:
             -   uses: actions/checkout@v2
@@ -121,6 +123,12 @@ jobs:
             -   name: Load fixtures in test application
                 run: (cd tests/Application && bin/console sylius:fixtures:load -n)
 
+            -   name: Run PHPStan
+                run: vendor/bin/phpstan analyse -c phpstan.neon -l 8 src/
+
+            -   name: Run ECS
+                run: vendor/bin/ecs check src
+
             -   name: Run PHPSpec
                 run: vendor/bin/phpspec run --ansi -f progress --no-interaction
 
@@ -134,12 +142,6 @@ jobs:
                     name: Behat logs
                     path: etc/build/
                     if-no-files-found: ignore
-
-            -   name: Run PHPStan
-                run: vendor/bin/phpstan analyse -c phpstan.neon -l 8 src/
-
-            -   name: Run ECS
-                run : vendor/bin/ecs check src
 
             #-   name: Run PHPUnit
             #        run: vendor/bin/phpunit --colors=always

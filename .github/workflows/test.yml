@@ -132,6 +132,12 @@ jobs:
             -   name: Run PHPSpec
                 run: vendor/bin/phpspec run --ansi -f progress --no-interaction
 
+            -   name: Install Mockoon CLI
+                run: npm install -g @mockoon/cli
+
+            -   name: Run Mockoon for Behat
+                run: mockoon-cli start --data tests/Behat/Mollie_Behat.json
+
             -   name: Run Behat
                 run: vendor/bin/behat --colors --strict -vvv --no-interaction  -f progress || vendor/bin/behat --colors --strict -vvv --no-interaction --rerun
 
@@ -143,5 +149,14 @@ jobs:
                     path: etc/build/
                     if-no-files-found: ignore
 
-            #-   name: Run PHPUnit
-            #        run: vendor/bin/phpunit --colors=always
+            -   name: Stop Mockoon for Behat
+                run: mockoon-cli stop mockoon-mollie-behat
+
+            -   name: Run Mockoon for PHPUnit
+                run: mockoon-cli start --data tests/PHPUnit/Functional/Mockoon.json
+
+            -   name: Run PHPUnit
+                run: vendor/bin/phpunit --colors=always
+
+            -   name: Stop Mockoon for PHPUnit
+                run: mockoon-cli stop mockoon-mollie-phpunit

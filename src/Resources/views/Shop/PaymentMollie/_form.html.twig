@@ -14,9 +14,10 @@
                     id="choice-{{ keyChoice }}"
                     name="{{ methodMollie.vars.full_name }}"
                     class="online-payment__input"
+                    {{ sylius_test_html_attribute('payment-method-payment-item') }}
             >
             <label for="choice-{{ keyChoice }}" class="online-payment__label">
-                <img class="online-payment__image" src="{{ choice.attr['image'] }}">
+                <img class="online-payment__image" src="{{ choice.attr['image'] }}" alt="payment_image">
                 {{ choice.label }}
             </label>
 

@@ -15,7 +15,6 @@ namespace Tests\BitBag\SyliusMolliePlugin\Behat\Context\Ui\Shop;
 use Behat\Behat\Context\Context;
 use Sylius\Behat\NotificationType;
 use Sylius\Behat\Service\NotificationCheckerInterface;
-use Tests\BitBag\SyliusMolliePlugin\Behat\Mocker\MollieApiMocker;
 use Tests\BitBag\SyliusMolliePlugin\Behat\Page\Shop\Account\Order\IndexPageInterface;
 
 final class AccountContext implements Context
@@ -26,17 +25,12 @@ final class AccountContext implements Context
     /** @var NotificationCheckerInterface */
     private $notificationChecker;
 
-    /** @var MollieApiMocker */
-    private $mollieApiMocker;
-
     public function __construct(
         IndexPageInterface $orderIndexPage,
-        NotificationCheckerInterface $notificationChecker,
-        MollieApiMocker $mollieApiMocker
+        NotificationCheckerInterface $notificationChecker
     ) {
         $this->orderIndexPage = $orderIndexPage;
         $this->notificationChecker = $notificationChecker;
-        $this->mollieApiMocker = $mollieApiMocker;
     }
 
     /**
@@ -44,9 +38,7 @@ final class AccountContext implements Context
      */
     public function iCancelThisSubscription(): void
     {
-        $this->mollieApiMocker->mockApiCancelledRecurringSubscription(function () {
-            $this->orderIndexPage->cancelSubscription();
-        });
+        $this->orderIndexPage->cancelSubscription();
     }
 
     /**

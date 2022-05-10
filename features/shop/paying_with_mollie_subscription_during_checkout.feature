@@ -5,28 +5,21 @@ Feature: Paying with Mollie Subscription during checkout
     I want to be able to pay with Mollie Subscription
 
     Background:
-        Given the store operates on a channel named "test channel" in "EUR" currency
-        Given there is a zone "The Rest of the World" containing all other countries
+        Given the store operates on a single channel in "United States"
         And there is a user "john@bitbag.pl" identified by "password123"
         And the store has a payment method "Mollie Subscription" with a code "mollie_subscription" and Mollie Subscription payment gateway
         And gateway "mollie_subscription" has all methods loaded and enabled
         And the store has a product "PHP T-Shirt" priced at "€19.99"
         And the "PHP T-shirt" variant has recurring payment enabled
         And the store ships everywhere for free
-        And the store ships to "Netherlands"
         And I am logged in as "john@bitbag.pl"
 
     @ui
     Scenario: Successful payment
-        Given I am on "/"
-        And I should see "PHP T-Shirt"
-        And I click "PHP T-Shirt" item
-        And I should see "Add to cart"
-        And I press "Add to cart"
-        And I should see "Success Item has been added to cart"
-        Then I follow "Checkout"
-        When I specify the billing address as "Ankh Morpork", "Frost Alley", "90210", "Netherlands" for "Jon Snow"
+        Given I added product "PHP T-Shirt" to the cart
+        And I have proceeded selecting "Mollie Subscription" payment method
+        When I select "creditcard" as my payment option
         Then I press "Next"
-        When I proceed with "Free" shipping method
-        Then I press "Next"
-        When I confirm my order with Mollie Subscription
+        When I confirm my order
+        Then I should be notified that my payment has been completed
+        And I should see the thank you page

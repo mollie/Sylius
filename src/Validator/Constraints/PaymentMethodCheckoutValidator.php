@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Validator\Constraints;
 
-use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
+use BitBag\SyliusMolliePlugin\Checker\Gateway\MollieGatewayFactoryCheckerInterface;
 use BitBag\SyliusMolliePlugin\Resolver\Order\PaymentCheckoutOrderResolverInterface;
 use Payum\Core\Model\GatewayConfigInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
@@ -28,12 +28,16 @@ final class PaymentMethodCheckoutValidator extends ConstraintValidator
     /** @var PaymentCheckoutOrderResolverInterface */
     private $paymentCheckoutOrderResolver;
 
+    private MollieGatewayFactoryCheckerInterface $mollieGatewayFactoryChecker;
+
     public function __construct(
         PaymentCheckoutOrderResolverInterface $paymentCheckoutOrderResolver,
-        Session $session
+        Session $session,
+        MollieGatewayFactoryCheckerInterface $mollieGatewayFactoryChecker
     ) {
         $this->session = $session;
         $this->paymentCheckoutOrderResolver = $paymentCheckoutOrderResolver;
+        $this->mollieGatewayFactoryChecker = $mollieGatewayFactoryChecker;
     }
 
     public function validate($value, Constraint $constraint): void
@@ -52,7 +56,7 @@ final class PaymentMethodCheckoutValidator extends ConstraintValidator
         /** @var GatewayConfigInterface $gateway */
         $gateway = $paymentMethod->getGatewayConfig();
 
-        if (MollieGatewayFactory::FACTORY_NAME !== $gateway->getFactoryName() || null !== $value) {
+        if ((null !== $value) || (!$this->mollieGatewayFactoryChecker->isMollieGateway($gateway))) {
             return;
         }
 

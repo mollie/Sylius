@@ -129,20 +129,4 @@ final class ManagingPaymentMethodContext implements Context
     {
         $this->createPage->enablePaymentMethod($paymentMethodName);
     }
-
-    /**
-     * @When I fill the times with :times
-     */
-    public function iFillTheTimesWith(int $times): void
-    {
-        $this->createPage->setTimes($times);
-    }
-
-    /**
-     * @When I fill the interval with :interval
-     */
-    public function iFillTheIntervalWith(string $interval): void
-    {
-        $this->createPage->setInterval($interval);
-    }
 }

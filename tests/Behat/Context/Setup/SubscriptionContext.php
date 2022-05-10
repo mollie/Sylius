@@ -13,18 +13,17 @@ declare(strict_types=1);
 namespace Tests\BitBag\SyliusMolliePlugin\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
-use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
 use BitBag\SyliusMolliePlugin\Entity\MollieCustomer;
 use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
 use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionScheduleInterface;
 use BitBag\SyliusMolliePlugin\Processor\SubscriptionScheduleProcessorInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use PHPUnit\Framework\Assert;
 use Sylius\Behat\Service\SharedStorageInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Order\Model\OrderItemInterface;
 use Sylius\Component\Payment\Model\PaymentInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
+use Webmozart\Assert\Assert;
 
 final class SubscriptionContext implements Context
 {
@@ -40,20 +39,16 @@ final class SubscriptionContext implements Context
 
     private string $output = '';
 
-    private MollieApiClient $mollieApiClient;
-
     public function __construct(
         EntityManagerInterface $entityManagerSubscription,
         FactoryInterface $subscriptionFactory,
         SharedStorageInterface $sharedStorage,
-        SubscriptionScheduleProcessorInterface $subscriptionScheduleProcessor,
-        MollieApiClient $mollieApiClient
+        SubscriptionScheduleProcessorInterface $subscriptionScheduleProcessor
     ) {
         $this->entityManagerSubscription = $entityManagerSubscription;
         $this->subscriptionFactory = $subscriptionFactory;
         $this->sharedStorage = $sharedStorage;
         $this->subscriptionScheduleProcessor = $subscriptionScheduleProcessor;
-        $this->mollieApiClient = $mollieApiClient;
     }
 
     /**
@@ -66,6 +61,12 @@ final class SubscriptionContext implements Context
         $mollieCustomer = new MollieCustomer();
         $mollieCustomer->setEmail('sylius@example.com');
         $mollieCustomer->setProfileId('cst_profile');
+
+        $customer = $order->getCustomer();
+        Assert::notNull($customer);
+
+        $customerId = $customer->getId();
+
         $paymentDetails = [
             'email' => 'sylius@example.com',
             'amount' => [
@@ -77,7 +78,7 @@ final class SubscriptionContext implements Context
                 'gateway' => 'mollie_subscription',
                 'order_id' => $order->getId(),
                 'cartToken' => null,
-                'customer_id' => $order->getCustomer()->getId(),
+                'customer_id' => $customerId,
                 'refund_token' => 'refundToken',
                 'sequenceType' => 'first',
                 'selected_issuer' => null,
@@ -103,7 +104,7 @@ final class SubscriptionContext implements Context
         $subscriptionConfiguration->setInterval('10 days');
 
         $orderItem = $order->getItems()->first();
-        Assert::assertInstanceOf(OrderItemInterface::class, $orderItem);
+        Assert::isInstanceOf($orderItem, OrderItemInterface::class);
         $subscription->setOrderItem($orderItem);
         $subscription->setPaymentState(MollieSubscriptionInterface::PAYMENT_STATE_OK);
         $subscriptionConfiguration = $subscription->getSubscriptionConfiguration();
@@ -127,9 +128,11 @@ final class SubscriptionContext implements Context
         $this->subscriptionScheduleProcessor
             ->processScheduleGeneration($subscription);
 
+        $yesterdayDateTime = new \DateTime(date('d M Y H:i:s', strtotime('-1 days')));
+
         /** @var MollieSubscriptionScheduleInterface $schedule */
         foreach ($subscription->getSchedules() as $schedule) {
-            $schedule->setScheduledDate(new \DateTime());
+            $schedule->setScheduledDate($yesterdayDateTime);
         }
 
         $this->entityManagerSubscription->persist($subscription);
@@ -141,7 +144,9 @@ final class SubscriptionContext implements Context
      */
     public function iRunCommand(string $command): void
     {
-        $this->output = shell_exec($command);
+        $output = shell_exec($command);
+        Assert::string($output);
+        $this->output = $output;
     }
 
     /**

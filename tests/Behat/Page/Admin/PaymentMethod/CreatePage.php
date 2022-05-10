@@ -14,6 +14,7 @@ namespace Tests\BitBag\SyliusMolliePlugin\Behat\Page\Admin\PaymentMethod;
 
 use Behat\Mink\Element\NodeElement;
 use Sylius\Behat\Page\Admin\Crud\CreatePage as BaseCreatePage;
+use Webmozart\Assert\Assert;
 
 final class CreatePage extends BaseCreatePage implements CreatePageInterface
 {
@@ -33,25 +34,12 @@ final class CreatePage extends BaseCreatePage implements CreatePageInterface
         $this->getDocument()->fillField('Profile ID', $profileId);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function setTimes(int $times): void
-    {
-        $this->getDocument()->fillField('Times', $times);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function setInterval(string $interval): void
-    {
-        $this->getDocument()->fillField('Interval', $interval);
-    }
-
     public function loadPaymentMethods(): void
     {
-        $this->getDocument()->find('css', '#get_methods')->click();
+        $getMethodsButton = $this->getDocument()->find('css', '#get_methods');
+        Assert::notNull($getMethodsButton);
+
+        $getMethodsButton->click();
         $time = 5000;
         $this->getSession()->wait($time);
     }
@@ -75,7 +63,7 @@ final class CreatePage extends BaseCreatePage implements CreatePageInterface
                 return true;
             }
 
-            if (false === $strict && strstr($validationMessageElement->getText(), $message)) {
+            if (false === $strict && str_contains($validationMessageElement->getText(), $message)) {
                 return true;
             }
         }

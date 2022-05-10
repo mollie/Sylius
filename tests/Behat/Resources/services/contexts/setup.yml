@@ -21,6 +21,7 @@ services:
             - "@doctrine.orm.default_entity_manager"
             - "@sm.factory"
             - "@payum"
+            - "@bitbag_sylius_mollie_plugin.checker.gateway.mollie_gateway_factory_checker"
 
     bitbag_sylius_mollie_plugin.context.setup.subscription:
         class: Tests\BitBag\SyliusMolliePlugin\Behat\Context\Setup\SubscriptionContext

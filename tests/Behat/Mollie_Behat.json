@@ -1,0 +1,117 @@
+{
+  "uuid": "b7b51bc3-5b0e-4af8-8107-db82f91cc7ab",
+  "lastMigration": 19,
+  "name": "Mollie Behat",
+  "endpointPrefix": "",
+  "latency": 0,
+  "port": 8218,
+  "hostname": "127.0.0.1",
+  "routes": [
+    {
+      "uuid": "06a1b2ad-9fb7-468c-8a31-bf9e29e4c4cd",
+      "documentation": "",
+      "method": "post",
+      "endpoint": "v2/payments",
+      "responses": [
+        {
+          "uuid": "09c207ee-1f32-409d-b189-650dfc6b7268",
+          "body": "{\n   \"resource\":\"payment\",\n   \"id\":\"tr_payment\",\n   \"mode\":\"test\",\n   \"createdAt\":\"2022-04-13T16:15:05+00:00\",\n   \"amount\":{\n      \"value\":\"1.00\",\n      \"currency\":\"USD\"\n   },\n   \"description\":\"recurringDescription\",\n   \"method\":\"creditcard\",\n   \"metadata\":{\n      \"order_id\":1,\n      \"customer_Id\":1,\n      \"molliePaymentMethods\":null,\n      \"cartToken\":null,\n      \"sequenceType\":\"recurring\",\n      \"gateway\":\"mollie_subscription\",\n      \"selected_issuer\":null,\n      \"refund_token\":\"refundToken\"\n   },\n   \"status\":\"paid\",\n   \"paidAt\":\"2022-04-13T16:15:05+00:00\",\n   \"amountRefunded\":{\n      \"value\":\"0.00\",\n      \"currency\":\"USD\"\n   },\n   \"amountRemaining\":{\n      \"value\":\"1.00\",\n      \"currency\":\"USD\"\n   },\n   \"profileId\":\"pfl_profile\",\n   \"customerId\":\"cst_customer\",\n   \"mandateId\":\"mdt_mandate\",\n   \"sequenceType\":\"recurring\",\n   \"redirectUrl\":null,\n   \"webhookUrl\":\"http:\\/\\/127.0.0.1:8218\\/payment\\/notify\\/654fed\",\n   \"settlementAmount\":{\n      \"value\":\"1.00\",\n      \"currency\":\"USD\"\n   },\n   \"details\":{\n      \"cardNumber\":\"6787\",\n      \"cardHolder\":\"T. TEST\",\n      \"cardAudience\":\"consumer\",\n      \"cardLabel\":\"Mastercard\",\n      \"cardCountryCode\":\"NL\",\n      \"cardSecurity\":\"normal\",\n      \"feeRegion\":\"other\"\n   },\n   \"_links\":{\n      \"self\":{\n         \"href\":\"127.0.0.1:8218\\/v2\\/payments\\/tr_payment\",\n         \"type\":\"application\\/hal+json\"\n      },\n      \"dashboard\":{\n         \"href\":\"https:\\/\\/www.mollie.com\\/dashboard\\/org_123\\/payments\\/tr_payment\",\n         \"type\":\"text\\/html\"\n      },\n      \"changePaymentState\":{\n         \"href\":\"https:\\/\\/www.mollie.com/checkout/test-mode?method/=creditcard&token=token\",\n         \"type\":\"text\\/html\"\n      },\n      \"customer\":{\n         \"href\":\"https:\\/\\/127.0.0.1:8218\\/v2\\/customers\\/cst_customer\",\n         \"type\":\"application/hal+json\"\n      },\n      \"mandate\":{\n         \"href\":\"https:\\/\\/127.0.0.1:8218\\/v2\\/customers\\/cst_customer\\/mandates\\/mdt_mandate\",\n         \"type\":\"application/hal+json\"\n      },\n      \"documentation\":{\n         \"href\":\"https:\\/\\/docs.mollie.com\\/reference\\/v2\\/payments-api\\/create-order\",\n         \"type\":\"text\\/html\"\n      }\n   }\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false
+        }
+      ],
+      "enabled": true,
+      "randomResponse": false,
+      "sequentialResponse": false
+    },
+    {
+      "uuid": "4eeb23a7-e91a-452f-a21b-90405b59ca2b",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "v2/payments/tr_:paymentId",
+      "responses": [
+        {
+          "uuid": "ca59fc3a-ce19-4259-8b17-6e1c3f728f30",
+          "body": "{\n   \"resource\":\"payment\",\n   \"id\":\"tr_{{urlParam 'paymentId'}}\",\n   \"mode\":\"test\",\n   \"createdAt\":\"2022-04-13T16:15:05+00:00\",\n   \"amount\":{\n      \"value\":\"1.00\",\n      \"currency\":\"USD\"\n   },\n   \"description\":\"recurringDescription\",\n   \"method\":\"creditcard\",\n   \"metadata\":{\n      \"order_id\":1,\n      \"customer_Id\":1,\n      \"molliePaymentMethods\":null,\n      \"cartToken\":null,\n      \"sequenceType\":\"recurring\",\n      \"gateway\":\"mollie_subscription\",\n      \"selected_issuer\":null,\n      \"refund_token\":\"refundToken\"\n   },\n   \"status\":\"paid\",\n   \"paidAt\":\"2022-04-13T16:15:05+00:00\",\n   \"amountRefunded\":{\n      \"value\":\"0.00\",\n      \"currency\":\"USD\"\n   },\n   \"amountRemaining\":{\n      \"value\":\"1.00\",\n      \"currency\":\"USD\"\n   },\n   \"profileId\":\"pfl_profile\",\n   \"customerId\":\"cst_customer\",\n   \"mandateId\":\"mdt_mandate\",\n   \"sequenceType\":\"recurring\",\n   \"redirectUrl\":null,\n   \"webhookUrl\":\"http:\\/\\/127.0.0.1:8218\\/payment\\/notify\\/654fed\",\n   \"settlementAmount\":{\n      \"value\":\"1.00\",\n      \"currency\":\"USD\"\n   },\n   \"details\":{\n      \"cardNumber\":\"6787\",\n      \"cardHolder\":\"T. TEST\",\n      \"cardAudience\":\"consumer\",\n      \"cardLabel\":\"Mastercard\",\n      \"cardCountryCode\":\"NL\",\n      \"cardSecurity\":\"normal\",\n      \"feeRegion\":\"other\"\n   },\n   \"_links\":{\n      \"self\":{\n         \"href\":\"127.0.0.1:8218\\/v2\\/payments\\/tr_{{urlParam 'paymentId'}}\",\n         \"type\":\"application\\/hal+json\"\n      },\n      \"dashboard\":{\n         \"href\":\"https:\\/\\/www.mollie.com\\/dashboard\\/org_123\\/payments\\/tr_{{urlParam 'paymentId'}}\",\n         \"type\":\"text\\/html\"\n      },\n      \"changePaymentState\":{\n         \"href\":\"https:\\/\\/www.mollie.com/checkout/test-mode?method/=creditcard&token=token\",\n         \"type\":\"text\\/html\"\n      },\n      \"customer\":{\n         \"href\":\"https:\\/\\/127.0.0.1:8218\\/v2\\/customers\\/cst_customer\",\n         \"type\":\"application/hal+json\"\n      },\n      \"mandate\":{\n         \"href\":\"https:\\/\\/127.0.0.1:8218\\/v2\\/customers\\/cst_customer\\/mandates\\/mdt_mandate\",\n         \"type\":\"application/hal+json\"\n      },\n      \"documentation\":{\n         \"href\":\"https:\\/\\/docs.mollie.com\\/reference\\/v2\\/payments-api\\/create-order\",\n         \"type\":\"text\\/html\"\n      }\n   }\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false
+        }
+      ],
+      "enabled": true,
+      "randomResponse": false,
+      "sequentialResponse": false
+    },
+    {
+      "uuid": "48ae485e-21a6-4fe7-84d1-0f313e524fc2",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "v2/methods",
+      "responses": [
+        {
+          "uuid": "69a97d29-0699-4fe3-a445-dd8d8d7a511b",
+          "body": "{\n   \"_embedded\":{\n      \"methods\":{\n         \"0\":{\n            \"resource\":\"method\",\n            \"id\":\"ideal\",\n            \"description\":\"iDEAL\",\n            \"minimumAmount\":{\n               \"value\":\"0.01\",\n               \"currency\":\"EUR\"\n            },\n            \"maximumAmount\":{\n               \"value\":\"50000.0\",\n               \"currency\":\"EUR\"\n            },\n            \"image\":{\n               \"size1x\":\"https://www.mollie.com/external/icons/payment-methods/ideal.png\",\n               \"size2x\":\"https://www.mollie.com/external/icons/payment-methods/ideal%402x.png\",\n               \"svg\":\"https://www.mollie.com/external/icons/payment-methods/ideal.svg\"\n            },\n            \"status\":\"activated\",\n            \"issuers\":{\n               \"0\":{\n                  \"resource\":\"issuer\",\n                  \"id\":\"ideal_ABNANL2A\",\n                  \"name\":\"ABN AMRO\",\n                  \"image\":{\n                     \"size1x\":\"https://www.mollie.com/external/icons/ideal-issuers/ABNANL2A.png\",\n                     \"size2x\":\"https://www.mollie.com/external/icons/ideal-issuers/ABNANL2A%402x.png\",\n                     \"svg\":\"https://www.mollie.com/external/icons/ideal-issuers/ABNANL2A.svg\"\n                  }\n               }\n            },\n            \"_links\":{\n               \"self\":{\n                  \"href\":\"127.0.0.1:8218\\/v2\\/methods/ideal\",\n                  \"type\":\"application\\/hal+json\"\n               }\n            }\n         },\n         \"1\":{\n            \"resource\":\"method\",\n            \"id\":\"creditcard\",\n            \"description\":\"Credit card\",\n            \"minimumAmount\":{\n               \"value\":\"0.01\",\n               \"currency\":\"EUR\"\n            },\n            \"maximumAmount\":{\n               \"value\":\"50000.0\",\n               \"currency\":\"EUR\"\n            },\n            \"image\":{\n               \"size1x\":\"https://www.mollie.com/external/icons/payment-methods/creditcard.png\",\n               \"size2x\":\"https://www.mollie.com/external/icons/payment-methods/creditcard%402x.png\",\n               \"svg\":\"https://www.mollie.com/external/icons/payment-methods/creditcard.svg\"\n            },\n            \"status\":\"activated\",\n            \"_links\":{\n               \"self\":{\n                  \"href\":\"127.0.0.1:8218\\/v2\\/methods/creditcard\",\n                  \"type\":\"application\\/hal+json\"\n               }\n            }\n         }\n      }\n   },\n   \"count\":2,\n   \"_links\":{\n      \"documentation\":{\n         \"href\":\"https:\\/\\/docs.mollie.com\\/reference\\/v2\\/methods-api\\/list-methods\",\n         \"type\":\"text\\/html\"\n      },\n      \"self\":{\n         \"href\":\"127.0.0.1:8218\\/v2\\/methods?include=issuers&sequenceType=recurring\",\n         \"type\":\"application\\/hal+json\"\n      }\n   }\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false
+        }
+      ],
+      "enabled": true,
+      "randomResponse": false,
+      "sequentialResponse": false
+    }
+  ],
+  "proxyMode": false,
+  "proxyHost": "",
+  "proxyRemovePrefix": false,
+  "tlsOptions": {
+    "enabled": false,
+    "type": "CERT",
+    "pfxPath": "",
+    "certPath": "",
+    "keyPath": "",
+    "caPath": "",
+    "passphrase": ""
+  },
+  "cors": true,
+  "headers": [
+    {
+      "key": "Content-Type",
+      "value": "application/json"
+    }
+  ],
+  "proxyReqHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "proxyResHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ]
+}

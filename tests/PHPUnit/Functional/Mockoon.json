@@ -1,7 +1,7 @@
 {
   "uuid": "0ddbe0cf-e880-4631-a1d8-245632be2119",
   "lastMigration": 19,
-  "name": "Mollie",
+  "name": "Mollie PHPUnit",
   "endpointPrefix": "",
   "latency": 0,
   "port": 8217,

@@ -53,6 +53,7 @@ final class OrderItemClonerSpec extends ObjectBehavior
         OrderInterface $order,
         ProductVariantInterface $variant
     ): void {
+		$orderItemQuantity = 5;
         $orderItemFactory->createNew()->willReturn($clonedOrderItem);
 
         $orderItem->getProductName()->willReturn('test_product_name');
@@ -74,9 +75,9 @@ final class OrderItemClonerSpec extends ObjectBehavior
         $clonedOrderItem->setVariantName('test_variant_name')->shouldBeCalled();
         $clonedOrderItem->setImmutable(true)->shouldBeCalled();
 
-        $orderItemUnitFactory->createForItem($clonedOrderItem)->willReturn($clonedUnit);
-
-        $clonedOrderItem->addUnit($clonedUnit)->shouldBeCalled();
+		$orderItem->getQuantity()->willReturn($orderItemQuantity);
+		$orderItemUnitFactory->createForItem($clonedOrderItem)->willReturn($clonedUnit)->shouldBeCalledTimes(5);
+        $clonedOrderItem->addUnit($clonedUnit)->shouldBeCalledTimes(5);
 
         $clonedOrderItem->recalculateUnitsTotal()->shouldBeCalled();
         $clonedOrderItem->recalculateAdjustmentsTotal()->shouldBeCalled();

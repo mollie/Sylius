@@ -18,6 +18,8 @@ use BitBag\SyliusMolliePlugin\Entity\ProductVariantInterface;
 use Sylius\Behat\Service\SharedStorageInterface;
 use Sylius\Bundle\CoreBundle\Doctrine\ORM\ProductRepository;
 use Sylius\Bundle\CoreBundle\Doctrine\ORM\ProductVariantRepository;
+use Sylius\Component\Core\Model\ChannelPricingInterface;
+use Sylius\Component\Resource\Repository\RepositoryInterface;
 
 final class ProductContext extends RawMinkContext implements Context
 {
@@ -30,14 +32,18 @@ final class ProductContext extends RawMinkContext implements Context
     /** @var ProductVariantRepository */
     private $productVariantRepository;
 
+    private RepositoryInterface $channelPricingRepository;
+
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ProductRepository $productRepository,
-        ProductVariantRepository $productVariantRepository
+        ProductVariantRepository $productVariantRepository,
+        RepositoryInterface $channelPricingRepository
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->productRepository = $productRepository;
         $this->productVariantRepository = $productVariantRepository;
+        $this->channelPricingRepository = $channelPricingRepository;
     }
 
     /**
@@ -56,6 +62,26 @@ final class ProductContext extends RawMinkContext implements Context
         $productVariant->setInterval('10 days');
 
         $this->saveProductVariant($productVariant);
+    }
+
+    /**
+     * @Then I change :productVariantCode product variant price to :price
+     */
+    public function iChangeProductVariantPriceTo(string $productVariantCode, string $price): void
+    {
+        /** @var ProductVariantInterface $productVariant */
+        $productVariant = $this->productVariantRepository->findOneBy([
+            'code' => $productVariantCode,
+        ]);
+
+        /** @var ChannelPricingInterface $channelPricing */
+        $channelPricing = $this->channelPricingRepository->findOneBy([
+            'productVariant' => $productVariant->getId(),
+        ]);
+
+        $channelPricing->setPrice((int) $price * 100);
+
+        $this->channelPricingRepository->add($channelPricing);
     }
 
     private function saveProductVariant(ProductVariantInterface $product)

@@ -12,9 +12,16 @@ sylius_product:
     product_variant:
       classes:
         model: Tests\BitBag\SyliusMolliePlugin\Entity\ProductVariant
+        repository: BitBag\SyliusMolliePlugin\Repository\ProductVariantRepository
 
 sylius_order:
   resources:
     order:
       classes:
         model: Tests\BitBag\SyliusMolliePlugin\Entity\Order
+
+sylius_customer:
+    resources:
+        customer:
+            classes:
+                repository: BitBag\SyliusMolliePlugin\Repository\CustomerRepository

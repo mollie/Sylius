@@ -44,8 +44,10 @@ final class OrderItemCloner implements OrderItemClonerInterface
         $clonedOrderItem->setVersion($orderItem->getVersion());
         $clonedOrderItem->setImmutable(true);
 
-        $clonedUnit = $this->orderItemUnitFactory->createForItem($clonedOrderItem);
-        $clonedOrderItem->addUnit($clonedUnit);
+        for ($orderItemQuantity = $orderItem->getQuantity(); 0 < $orderItemQuantity; --$orderItemQuantity) {
+            $clonedUnit = $this->orderItemUnitFactory->createForItem($clonedOrderItem);
+            $clonedOrderItem->addUnit($clonedUnit);
+        }
 
         $clonedOrderItem->recalculateUnitsTotal();
         $clonedOrderItem->recalculateAdjustmentsTotal();

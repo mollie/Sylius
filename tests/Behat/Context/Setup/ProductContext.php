@@ -18,7 +18,9 @@ use BitBag\SyliusMolliePlugin\Entity\ProductVariantInterface;
 use Sylius\Behat\Service\SharedStorageInterface;
 use Sylius\Bundle\CoreBundle\Doctrine\ORM\ProductRepository;
 use Sylius\Bundle\CoreBundle\Doctrine\ORM\ProductVariantRepository;
+use Sylius\Component\Core\Formatter\StringInflector;
 use Sylius\Component\Core\Model\ChannelPricingInterface;
+use Sylius\Component\Product\Model\ProductInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 
 final class ProductContext extends RawMinkContext implements Context
@@ -49,11 +51,13 @@ final class ProductContext extends RawMinkContext implements Context
     /**
      * @Given the :productName variant has recurring payment enabled
      */
-    public function theVariantHasRecurringPaymentEnabled($productName)
+    public function theVariantHasRecurringPaymentEnabled(string $productName): void
     {
-        /** @var \Sylius\Component\Core\Model\Product $product */
-        $product = $this->productRepository->findByName($productName, 'en_US');
-        $productVariants = $product[0]->getVariants();
+        /** @var ProductInterface $product */
+        $product = $this->productRepository->findOneBy([
+            'code' => StringInflector::nameToUppercaseCode($productName),
+        ]);
+        $productVariants = $product->getVariants();
 
         /** @var ProductVariantInterface $productVariant */
         $productVariant = $productVariants->first();
@@ -84,7 +88,7 @@ final class ProductContext extends RawMinkContext implements Context
         $this->channelPricingRepository->add($channelPricing);
     }
 
-    private function saveProductVariant(ProductVariantInterface $product)
+    private function saveProductVariant(ProductVariantInterface $product): void
     {
         $this->productVariantRepository->add($product);
         $this->sharedStorage->set('product_variant', $product);

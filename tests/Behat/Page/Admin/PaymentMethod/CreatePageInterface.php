@@ -20,10 +20,6 @@ interface CreatePageInterface extends BaseCreatePageInterface
 
     public function setProfileId(string $profileId): void;
 
-    public function setTimes(int $times): void;
-
-    public function setInterval(string $interval): void;
-
     public function loadPaymentMethods(): void;
 
     public function enablePaymentMethod(string $paymentMethodName): void;

@@ -17,6 +17,7 @@
             <tag name="validator.constraint_validator"/>
             <argument type="service" id="bitbag_sylius_mollie_plugin.resolver.order.payment_checkout_order_resolver"/>
             <argument type="service" id="session"/>
+            <argument type="service" id="bitbag_sylius_mollie_plugin.checker.gateway.mollie_gateway_factory_checker"/>
         </service>
 
         <service id="bitbag_sylius_mollie_plugin.validator.constraints.payment_method_mollie_channel_unique_validator"

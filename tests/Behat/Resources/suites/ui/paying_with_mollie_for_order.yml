@@ -29,6 +29,7 @@ default:
                 - sylius.behat.context.setup.taxation
                 - sylius.behat.context.setup.user
                 - sylius.behat.context.setup.zone
+                - sylius.behat.context.setup.admin_security
 
                 - bitbag_sylius_mollie_plugin.behat.context.setup.mollie
 
@@ -44,6 +45,9 @@ default:
 
                 - bitbag_sylius_mollie_plugin.behat.context.ui.shop.checkout
                 - bitbag_sylius_mollie_plugin.behat.context.setup.product
+                - sylius.behat.context.ui.admin.managing_orders
+                - bitbag_sylius_mollie_plugin.behat.context.ui.admin.order
+                - bitbag_sylius_mollie_plugin.behat.context.ui.shop.product
                 - Behat\MinkExtension\Context\MinkContext
             filters:
                 tags: "@paying_with_mollie_for_order && @ui"

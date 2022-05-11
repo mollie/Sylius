@@ -1,3 +1,4 @@
+{% set tokenField = data.children['cartToken']%}
 <div class="online-payment__credit-card" id="mollie_cart_data">
     <div class="form-fields">
         <div class="form-group">
@@ -24,5 +25,6 @@
             <div id="verification-code-error" class="field-error" role="alert"></div>
         </div>
         <div id="form-error" class="form-error" role="alert"></div>
+        {{ form_row(tokenField) }}
     </div>
 </div>

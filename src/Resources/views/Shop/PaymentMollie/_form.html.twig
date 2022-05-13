@@ -22,7 +22,7 @@
             </label>
 
             {% if choice.value == 'creditcard' and true == gatewayConfig.config['components'] | default(false) %}
-                {% include '@BitBagSyliusMolliePlugin/Shop/PaymentMollie/_creditCardForm.html.twig' with {data: methodMollie.parent} %}
+                {% include '@BitBagSyliusMolliePlugin/Shop/PaymentMollie/_creditCardForm.html.twig' %}
             {% elseif choice.value == 'ideal' %}
                 {% for key, method in mollie_payment_options %}
                     {% if key == 'issuers' and method.vars.choices|length > 0 %}

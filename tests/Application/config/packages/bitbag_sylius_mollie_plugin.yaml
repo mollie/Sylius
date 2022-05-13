@@ -7,3 +7,4 @@ sylius_grid:
             fields:
                 order:
                     sortable: order.number
+

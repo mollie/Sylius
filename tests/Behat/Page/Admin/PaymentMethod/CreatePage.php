@@ -14,43 +14,43 @@ namespace Tests\BitBag\SyliusMolliePlugin\Behat\Page\Admin\PaymentMethod;
 
 use Behat\Mink\Element\NodeElement;
 use Sylius\Behat\Page\Admin\Crud\CreatePage as BaseCreatePage;
+use Webmozart\Assert\Assert;
 
 final class CreatePage extends BaseCreatePage implements CreatePageInterface
 {
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function setApiKey(string $apiKey): void
     {
-        $this->getDocument()->fillField('API Key', $apiKey);
+        $this->getDocument()->fillField('Test API Key *', $apiKey);
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function setProfileId(string $profileId): void
     {
         $this->getDocument()->fillField('Profile ID', $profileId);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setTimes(int $times): void
+    public function loadPaymentMethods(): void
     {
-        $this->getDocument()->fillField('Times', $times);
+        $getMethodsButton = $this->getDocument()->find('css', '#get_methods');
+        Assert::notNull($getMethodsButton);
+
+        $getMethodsButton->click();
+        $time = 5000;
+        $this->getSession()->wait($time);
+    }
+
+    public function enablePaymentMethod(string $paymentMethodName): void
+    {
+        $this->getDocument()->checkField($paymentMethodName);
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function setInterval(string $interval): void
-    {
-        $this->getDocument()->fillField('Interval', $interval);
-    }
-
-    /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function containsErrorWithMessage(string $message, bool $strict = true): bool
     {
@@ -63,11 +63,24 @@ final class CreatePage extends BaseCreatePage implements CreatePageInterface
                 return true;
             }
 
-            if (false === $strict && strstr($validationMessageElement->getText(), $message)) {
+            if (false === $strict && str_contains($validationMessageElement->getText(), $message)) {
                 return true;
             }
         }
 
         return $result;
+    }
+
+    public function containsSuccessMessage(string $message): bool
+    {
+        $successMessages = $this->getDocument()->findAll('css', '.sylius-flash-message p');
+
+        foreach ($successMessages as $successMessage) {
+            if ($successMessage->getText() === $message) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

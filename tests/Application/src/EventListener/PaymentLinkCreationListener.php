@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Tests\BitBag\SyliusMolliePlugin\Application\src\EventListener;
 
 use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
+use BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
 use Doctrine\Persistence\ObjectManager;
 use Payum\Core\Model\GatewayConfigInterface;
 use Payum\Core\Payum;
@@ -72,7 +73,7 @@ final class PaymentLinkCreationListener
 
         $token = $this->paymentTokenProvider->getPaymentToken($payment);
 
-        if (MollieGatewayFactory::FACTORY_NAME === $paymentMethod->getGatewayConfig()->getFactoryName()) {
+        if (true === in_array($paymentMethod->getGatewayConfig()->getFactoryName(), [MollieGatewayFactory::FACTORY_NAME, MollieSubscriptionGatewayFactory::FACTORY_NAME], true)) {
             $notifyToken = $this->payum->getTokenFactory()->createNotifyToken($token->getGatewayName(), $token->getDetails());
             $refundToken = $this->payum->getTokenFactory()->createRefundToken($token->getGatewayName(), $token->getDetails());
 

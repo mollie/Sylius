@@ -42,7 +42,7 @@ final class ChangePositionPaymentMethodCreator implements ChangePositionPaymentM
                 'id' => $position['identifier'],
             ]);
             if ($method instanceof MollieGatewayConfigInterface && isset($position['id'])) {
-                $method->setPosition((int)$position['id']);
+                $method->setPosition((int) $position['id']);
 
                 $this->mollieGatewayEntityManager->persist($method);
             }
@@ -54,7 +54,7 @@ final class ChangePositionPaymentMethodCreator implements ChangePositionPaymentM
     private function emptyPositionFilter(array $positions): array
     {
         return array_filter($positions, function (array $position): bool {
-            return isset($position['id']) && $position['id'] !== '';
+            return isset($position['id']) && '' !== $position['id'];
         });
     }
 }

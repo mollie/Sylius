@@ -33,12 +33,21 @@
         <service id="bitbag_sylius_mollie_plugin.form.extension.complete_type" class="BitBag\SyliusMolliePlugin\Form\Extension\CompleteTypeExtension">
             <tag name="form.type_extension" extended_type="Sylius\Bundle\CoreBundle\Form\Type\Checkout\CompleteType"/>
         </service>
+        <service id="bitbag_sylius_mollie_plugin.form.extension.product_variant_recurring" class="BitBag\SyliusMolliePlugin\Form\Extension\ProductVariantRecurringExtension">
+            <argument type="service" id="bit_bag.sylius_mollie_plugin.form.extension.resolver_group_provider"/>
+            <tag name="form.type_extension" extended_type="Sylius\Bundle\ProductBundle\Form\Type\ProductVariantType"/>
+        </service>
         <service id="bitbag_sylius_mollie_plugin.form.extension.payment_type" class="BitBag\SyliusMolliePlugin\Form\Extension\PaymentTypeExtension">
             <tag name="form.type_extension" extended_type="Sylius\Bundle\CoreBundle\Form\Type\Checkout\PaymentType"/>
         </service>
         <service id="bitbag_sylius_mollie_plugin.form.type.mollie_payment" class="BitBag\SyliusMolliePlugin\Form\Type\PaymentMollieType">
             <argument type="service" id="session"/>
             <argument type="service" id="bitbag_sylius_mollie_plugin.resolver.payment_methods"/>
+            <tag name="form.type"/>
+        </service>
+        <service id="bitbag_sylius_mollie_plugin.form.transformer.mollie_interval" class="BitBag\SyliusMolliePlugin\Form\Transformer\MollieIntervalTransformer"/>
+        <service id="bitbag_sylius_mollie_plugin.form.type.mollie_interval" class="BitBag\SyliusMolliePlugin\Form\Type\MollieIntervalType">
+            <argument type="service" id="bitbag_sylius_mollie_plugin.form.transformer.mollie_interval"/>
             <tag name="form.type"/>
         </service>
         <service id="bitbag_sylius_mollie_plugin.form.extension.payment_method_type" class="BitBag\SyliusMolliePlugin\Form\Extension\GatewayConfigTypeExtension">
@@ -62,6 +71,9 @@
         </service>
         <service id="bitbag_sylius_mollie_plugin.grid.filter.mollie_logger_level" class="BitBag\SyliusMolliePlugin\Grid\Filter\MollieLoggerLevel">
             <tag name="sylius.grid_filter" type="log_level" form_type="BitBag\SyliusMolliePlugin\Form\Type\MollieLoggerLevelFilterType" />
+        </service>
+        <service id="bitbag_sylius_mollie_plugin.grid.filter.mollie_subscription_state" class="BitBag\SyliusMolliePlugin\Grid\Filter\MollieSubscriptionState">
+            <tag name="sylius.grid_filter" type="subscription_state" form_type="BitBag\SyliusMolliePlugin\Form\Type\MollieSubscriptionStateGridFilterType" />
         </service>
         <service id="bitbag_sylius_mollie_plugin.form.type.partial_ship.partial_ship_type" class="BitBag\SyliusMolliePlugin\Form\Type\PartialShip\PartialShipType">
             <argument>%sylius.model.shipment.class%</argument>

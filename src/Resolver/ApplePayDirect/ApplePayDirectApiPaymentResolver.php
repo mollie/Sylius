@@ -71,7 +71,7 @@ final class ApplePayDirectApiPaymentResolver implements ApplePayDirectApiPayment
                 ]
             );
 
-            if ($response->status === PaymentStatus::STATUS_PAID) {
+            if (PaymentStatus::STATUS_PAID === $response->status) {
                 $this->paymentApplePayDirectProvider->applyRequiredTransition($payment, PaymentInterface::STATE_COMPLETED);
 
                 $paymentDetails = $payment->getDetails();

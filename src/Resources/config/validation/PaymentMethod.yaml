@@ -1,5 +1,0 @@
-Sylius\Component\Core\Model\PaymentMethod:
-    constraints:
-        - BitBag\SyliusMolliePlugin\Validator\Constraints\Currency:
-            groups: ['sylius']
-            message: 'bitbag_sylius_mollie_plugin.channel.required_currency'

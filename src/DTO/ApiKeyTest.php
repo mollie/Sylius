@@ -33,7 +33,7 @@ final class ApiKeyTest
     public function __construct(
         string $type,
         bool $key = false,
-        $methods = null,
+        MethodCollection $methods = null,
         string $status = 'OK',
         string $message = ''
     ) {

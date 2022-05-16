@@ -21,7 +21,6 @@ final class Methods implements MethodsInterface
 
     public function add(Method $mollieMethod): void
     {
-        /** @var MethodInterface $payment */
         foreach (self::GATEWAYS as $gateway) {
             $payment = new $gateway();
 
@@ -30,7 +29,10 @@ final class Methods implements MethodsInterface
                 $payment->setMinimumAmount((array) $mollieMethod->minimumAmount);
                 $payment->setMaximumAmount((array) $mollieMethod->maximumAmount);
                 $payment->setImage((array) $mollieMethod->image);
-                $payment->setIssuers((array) $mollieMethod->issuers);
+
+                /** @var array|null $issuers */
+                $issuers = $mollieMethod->issuers;
+                $payment->setIssuers((array) $issuers);
 
                 $this->methods[] = $payment;
             }
@@ -40,10 +42,13 @@ final class Methods implements MethodsInterface
     public function getAllEnabled(): array
     {
         $methods = [];
-
         /** @var MethodInterface $method */
         foreach ($this->methods as $method) {
-            $methods[] = $method->isEnabled() ?: $method;
+            if (true === $method->isEnabled()) {
+                $methods[] = $method->isEnabled();
+            } else {
+                $methods[] = $method;
+            }
         }
 
         return $methods;

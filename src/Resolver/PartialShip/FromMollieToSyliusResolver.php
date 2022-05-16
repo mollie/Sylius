@@ -40,11 +40,20 @@ final class FromMollieToSyliusResolver implements FromMollieToSyliusResolverInte
         $shipItems = new PartialShipItems();
 
         foreach ($mollieOrder->lines as $line) {
-            if ($line->status === self::SHIPPING_STATUS) {
+            if (!property_exists($line, 'status')) {
+                throw new \InvalidArgumentException();
+            }
+            if (self::SHIPPING_STATUS === $line->status) {
+                if (!property_exists($line, 'metadata')) {
+                    throw new \InvalidArgumentException();
+                }
                 $itemShippedQuantity = $this->getShippedItemQuantity($order, $line->metadata->item_id);
                 $shipItem = new PartialShipItem();
 
                 $shipItem->setId($line->metadata->item_id);
+                if (!property_exists($line, 'quantityShipped')) {
+                    throw new \InvalidArgumentException();
+                }
                 $shipItem->setQuantity($line->quantityShipped - $itemShippedQuantity);
 
                 $shipItems->setPartialShipItem($shipItem);
@@ -56,7 +65,7 @@ final class FromMollieToSyliusResolver implements FromMollieToSyliusResolverInte
 
     private function getShippedItemQuantity(OrderInterface $order, int $itemId): int
     {
-        $itemCollection = $order->getItems()->filter(function (OrderItemInterface $item) use ($itemId) {
+        $itemCollection = $order->getItems()->filter(function (OrderItemInterface $item) use ($itemId): bool {
             return $item->getId() === $itemId;
         });
 

@@ -23,7 +23,9 @@
                         {% if product.simple %}
                             {{ form_row(form.variant.translations) }}
                         {% endif %}
-                        {{ form_row(form.variantSelectionMethod) }}
+                        {% if form.variantSelectionMethod.isRendered() is same as (false) %}
+                            {{ form_row(form.variantSelectionMethod) }}
+                        {% endif %}
                     </div>
                 </div>
             </div>

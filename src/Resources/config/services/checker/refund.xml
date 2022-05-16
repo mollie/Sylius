@@ -8,5 +8,10 @@
             <argument type="service" id="bitbag_sylius_mollie_plugin.repository.credit_memo_repository"/>
             <argument type="service" id="sylius.repository.order"/>
         </service>
+
+        <service id="bitbag_sylius_mollie_plugin.checker.refund.mollie_order_refund_checker"
+                class="BitBag\SyliusMolliePlugin\Checker\Refund\MollieOrderRefundChecker"
+        >
+        </service>
     </services>
 </container>

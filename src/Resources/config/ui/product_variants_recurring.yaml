@@ -1,0 +1,7 @@
+sylius_ui:
+    events:
+        sylius.shop.product.show.right_sidebar:
+            blocks:
+                variant_recurring_state:
+                    template: "@BitBagSyliusMolliePlugin/Shop/Product/_variantRecurringContainer.html.twig"
+                    priority: -10

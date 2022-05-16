@@ -12,93 +12,72 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Action\StateMachine;
 
 use BitBag\SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
-use BitBag\SyliusMolliePlugin\Entity\SubscriptionInterface;
-use BitBag\SyliusMolliePlugin\Request\Api\CancelRecurringSubscription;
+use BitBag\SyliusMolliePlugin\Action\StateMachine\Applicator\SubscriptionAndPaymentIdApplicatorInterface;
+use BitBag\SyliusMolliePlugin\Action\StateMachine\Applicator\SubscriptionAndSyliusPaymentApplicatorInterface;
+use BitBag\SyliusMolliePlugin\Action\StateMachine\Transition\StateMachineTransitionInterface;
+use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
 use BitBag\SyliusMolliePlugin\Request\StateMachine\StatusRecurringSubscription;
-use BitBag\SyliusMolliePlugin\Transitions\SubscriptionTransitions;
+use BitBag\SyliusMolliePlugin\Transitions\MollieSubscriptionTransitions;
 use Doctrine\ORM\EntityManagerInterface;
-use Mollie\Api\Resources\Customer;
-use Mollie\Api\Resources\Subscription;
-use Mollie\Api\Types\SubscriptionStatus;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Exception\RequestNotSupportedException;
-use SM\Factory\FactoryInterface;
 
 final class StatusRecurringSubscriptionAction extends BaseApiAwareAction implements ActionInterface, ApiAwareInterface
 {
     /** @var EntityManagerInterface */
     private $subscriptionManager;
 
-    /** @var FactoryInterface */
-    private $subscriptionSateMachineFactory;
+    /** @var SubscriptionAndPaymentIdApplicatorInterface */
+    private $subscriptionAndPaymentIdApplicator;
+
+    /** @var SubscriptionAndSyliusPaymentApplicatorInterface */
+    private $subscriptionAndSyliusPaymentApplicator;
+
+    /** @var StateMachineTransitionInterface */
+    private $stateMachineTransition;
 
     public function __construct(
         EntityManagerInterface $subscriptionManager,
-        FactoryInterface $subscriptionSateMachineFactory
+        SubscriptionAndPaymentIdApplicatorInterface $subscriptionAndPaymentIdApplicator,
+        SubscriptionAndSyliusPaymentApplicatorInterface $subscriptionAndSyliusPaymentApplicator,
+        StateMachineTransitionInterface $stateMachineTransition
     ) {
         $this->subscriptionManager = $subscriptionManager;
-        $this->subscriptionSateMachineFactory = $subscriptionSateMachineFactory;
+        $this->subscriptionAndPaymentIdApplicator = $subscriptionAndPaymentIdApplicator;
+        $this->subscriptionAndSyliusPaymentApplicator = $subscriptionAndSyliusPaymentApplicator;
+        $this->stateMachineTransition = $stateMachineTransition;
     }
 
-    /** @param CancelRecurringSubscription $request */
+    /** @param StatusRecurringSubscription|mixed $request */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
-        /** @var SubscriptionInterface $subscription */
+        /** @var MollieSubscriptionInterface $subscription */
         $subscription = $request->getModel();
+        $paymentId = $request->getPaymentId();
+        $syliusPayment = $request->getPayment();
 
-        /** @var Customer $customer */
-        $customer = $this->mollieApiClient->customers->get($subscription->getCustomerId());
-
-        /** @var Subscription $subscriptionApiResult */
-        $subscriptionApiResult = $customer->getSubscription($subscription->getSubscriptionId());
-
-        switch ($subscriptionApiResult->status) {
-            case SubscriptionStatus::STATUS_ACTIVE:
-                $this->applyStateMachineTransition($subscription, SubscriptionTransitions::TRANSITION_ACTIVATE);
-
-                break;
-            case SubscriptionStatus::STATUS_PENDING:
-                $this->applyStateMachineTransition($subscription, SubscriptionTransitions::TRANSITION_PROCESS);
-
-                break;
-            case SubscriptionStatus::STATUS_CANCELED:
-                $this->applyStateMachineTransition($subscription, SubscriptionTransitions::TRANSITION_CANCEL);
-
-                break;
-            case SubscriptionStatus::STATUS_COMPLETED:
-                $this->applyStateMachineTransition($subscription, SubscriptionTransitions::TRANSITION_COMPLETE);
-
-                break;
-            case SubscriptionStatus::STATUS_SUSPENDED:
-                $this->applyStateMachineTransition($subscription, SubscriptionTransitions::TRANSITION_SUSPEND);
-
-                break;
-            default:
-                $this->applyStateMachineTransition($subscription, SubscriptionTransitions::TRANSITION_FAIL);
-
-                break;
+        if (null !== $paymentId) {
+            $this->subscriptionAndPaymentIdApplicator->execute($subscription, $paymentId);
         }
+
+        if (null !== $syliusPayment) {
+            $this->subscriptionAndSyliusPaymentApplicator->execute($subscription, $syliusPayment);
+        }
+
+        $this->stateMachineTransition->apply($subscription, MollieSubscriptionTransitions::TRANSITION_COMPLETE);
+        $this->stateMachineTransition->apply($subscription, MollieSubscriptionTransitions::TRANSITION_ABORT);
+
+        $this->subscriptionManager->persist($subscription);
+        $this->subscriptionManager->flush();
     }
 
     public function supports($request): bool
     {
         return
             $request instanceof StatusRecurringSubscription &&
-            $request->getModel() instanceof SubscriptionInterface
-        ;
-    }
-
-    private function applyStateMachineTransition(SubscriptionInterface $subscription, string $transitions): void
-    {
-        $stateMachine = $this->subscriptionSateMachineFactory->get($subscription, SubscriptionTransitions::GRAPH);
-
-        if (!$stateMachine->can($transitions)) {
-            return;
-        }
-
-        $stateMachine->apply($transitions);
+            $request->getModel() instanceof MollieSubscriptionInterface;
     }
 }

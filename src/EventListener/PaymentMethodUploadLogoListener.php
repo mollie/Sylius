@@ -41,6 +41,10 @@ final class PaymentMethodUploadLogoListener
         /** @var GatewayConfigInterface $gatewayConfig */
         $gatewayConfig = $subject->getGatewayConfig();
 
+        if (null === $gatewayConfig->getMollieGatewayConfig()) {
+            return;
+        }
+
         if ($gatewayConfig->getMollieGatewayConfig()->isEmpty()) {
             return;
         }
@@ -52,10 +56,12 @@ final class PaymentMethodUploadLogoListener
     {
         $mollieConfigs = $gatewayConfig->getMollieGatewayConfig();
 
+        Assert::notNull($mollieConfigs);
         $this->logoUploader->upload($mollieConfigs);
 
         /** @var MollieGatewayConfigInterface $mollieConfig */
         foreach ($mollieConfigs as $mollieConfig) {
+            Assert::notNull($mollieConfig->getCustomizeMethodImage());
             if (false === $mollieConfig->getCustomizeMethodImage()->hasFile()) {
                 $mollieConfig->getCustomizeMethodImage()->setFile(null);
             }

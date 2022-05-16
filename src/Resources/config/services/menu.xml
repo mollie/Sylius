@@ -12,5 +12,8 @@
         <service id="bitbag_sylius_mollie_plugin.menu.mollie_email_template_menu_listener" class="BitBag\SyliusMolliePlugin\Menu\MollieEmailTemplateMenuListener">
             <tag name="kernel.event_listener" event="sylius.menu.admin.main" method="buildMenu" />
         </service>
+        <service id="bitbag_sylius_mollie_plugin.menu.mollie_recurring_menu_listener" class="BitBag\SyliusMolliePlugin\Menu\MollieRecurringMenuListener">
+            <tag name="kernel.event_listener" method="buildMenu" event="sylius.menu.admin.main" />
+        </service>
     </services>
 </container>

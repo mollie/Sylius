@@ -69,7 +69,7 @@ final class PaymentFeeCalculateAction implements PaymentFeeCalculateActionInterf
             throw new NotFoundException(sprintf('Method with id %s not found', $methodId));
         }
 
-        /** @var OrderInterface $calculatedOrder */
+        /** @var ?OrderInterface $calculatedOrder */
         $calculatedOrder = $this->calculate->calculateFromCart($order, $method);
 
         if (null === $calculatedOrder) {
@@ -78,7 +78,7 @@ final class PaymentFeeCalculateAction implements PaymentFeeCalculateActionInterf
 
         $paymentFee = $this->getPaymentFee($calculatedOrder);
 
-        if (empty($paymentFee)) {
+        if (0 === count($paymentFee)) {
             return new JsonResponse([], Response::HTTP_OK);
         }
 

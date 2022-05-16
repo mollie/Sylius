@@ -1,0 +1,14 @@
+{% if product.isConfigurable() and not product.enabledVariants.empty() %}
+    {% if product.getVariantSelectionMethod() == 'match' %}
+        {% include '@BitBagSyliusMolliePlugin/Shop/Product/_variantRecurringMatch.html.twig' %}
+        {% include '@BitBagSyliusMolliePlugin/Shop/Product/_variantRecurringMatchDetails.html.twig' %}
+    {% endif %}
+    {% if product.getVariantSelectionMethod() == 'choice' %}
+        {% include '@BitBagSyliusMolliePlugin/Shop/Product/_variantRecurringChoice.html.twig' %}
+        {% include '@BitBagSyliusMolliePlugin/Shop/Product/_variantRecurringChoiceDetails.html.twig' %}
+    {% endif %}
+{% endif %}
+
+{% include "@BitBagSyliusMolliePlugin/Shop/_partial/_recurringTranslations.html.twig" %}
+
+<div class="ui hidden divider"></div>

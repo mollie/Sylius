@@ -12,6 +12,8 @@ default:
                 - sylius.behat.context.transform.shared_storage
                 - sylius.behat.context.transform.shipping_method
 
+                - bitbag_sylius_mollie_plugin.behat.context.setup.mollie
+
                 - sylius.behat.context.setup.channel
                 - sylius.behat.context.setup.currency
                 - sylius.behat.context.setup.locale

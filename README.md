@@ -18,8 +18,9 @@ At BitBag we do believe in open source. However, we are able to do it just becau
   * [Usage](#usage)
   * [Customization](#customization)
   * [Testing](#testing)
-  * [Recurring subscription](#recurring-subscription)
+  * [Recurring subscription (internal CRON)](doc/recurring.md)
   * [Frontend part](#frontend)
+* [Recurring payments](doc/recurring.md)
 * [About us](#about-us)
     * [Community](#community)
 * [Demo Sylius shop](#demo-sylius-shop)
@@ -106,20 +107,6 @@ Run the below command to see what Symfony services are shared with this plugin:
 ```
 $ bin/console debug:container bitbag_sylius_mollie_plugin
 ```
-
-## Recurring subscription
-----
-### State Machine
-
-For a better integration with Mollie's recurring subscription, [you can use state machine callback.](http://docs.sylius.com/en/1.1/customization/state_machine.html#how-to-add-a-new-callback)
-
-Available states:
-
-* Processing: Subscription created but not active yet (start date higher than "now")
-* Active: Subscription is in progress. Not all payments are done, but we wait until the next payment date
-* Cancelled: The merchant cancelled the subscription
-* Suspended: Mandates became invalid, so the subscription is suspended
-* Completed: All subscription payments are executed according to the timetable
 
 ## Plugin Development
 ----

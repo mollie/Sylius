@@ -1,43 +1,43 @@
 sylius_grid:
-  grids:
-    bitbag_sylius_mollie_plugin_mollie_logger:
-      driver:
-        name: doctrine/orm
-        options:
-          class: BitBag\SyliusMolliePlugin\Entity\MollieLogger
-      sorting:
-        dateTime: desc
-      fields:
-        level:
-          type: twig
-          label: bitbag_sylius_mollie_plugin.ui.level
-          sortable: ~
-          options:
-            template: "@BitBagSyliusMolliePlugin/Admin/Logger/_level.html.twig"
-        errorCode:
-          type: string
-          label: bitbag_sylius_mollie_plugin.ui.error_code
-          sortable: ~
-        message:
-          type: string
-          label: bitbag_sylius_mollie_plugin.ui.message
-          sortable: ~
-        dateTime:
-          type: datetime
-          label: bitbag_sylius_mollie_plugin.ui.data_time
-          sortable: ~
-          options:
-            format: 'Y-m-d H:i:s'
-      filters:
-        date:
-          type: date
-          label: bitbag_sylius_mollie_plugin.ui.search
-          options:
-            field: dateTime
-            label: test
-        level:
-          type: log_level
-          label: bitbag_sylius_mollie_plugin.ui.level
-  templates:
-    filter:
-      log_level: "@BitBagSyliusMolliePlugin/Admin/Logger/Grid/_theme.html.twig"
+    grids:
+        bitbag_sylius_mollie_plugin_mollie_logger:
+            driver:
+                name: doctrine/orm
+                options:
+                    class: BitBag\SyliusMolliePlugin\Entity\MollieLogger
+            sorting:
+                dateTime: desc
+            fields:
+                level:
+                    type: twig
+                    label: bitbag_sylius_mollie_plugin.ui.level
+                    sortable: ~
+                    options:
+                        template: "@BitBagSyliusMolliePlugin/Admin/Logger/_level.html.twig"
+                errorCode:
+                    type: string
+                    label: bitbag_sylius_mollie_plugin.ui.error_code
+                    sortable: ~
+                message:
+                    type: string
+                    label: bitbag_sylius_mollie_plugin.ui.message
+                    sortable: ~
+                dateTime:
+                    type: datetime
+                    label: bitbag_sylius_mollie_plugin.ui.data_time
+                    sortable: ~
+                    options:
+                        format: 'Y-m-d H:i:s'
+            filters:
+                date:
+                    type: date
+                    label: bitbag_sylius_mollie_plugin.ui.search
+                    options:
+                        field: dateTime
+                        label: test
+                level:
+                    type: log_level
+                    label: bitbag_sylius_mollie_plugin.ui.level
+    templates:
+        filter:
+            log_level: "@BitBagSyliusMolliePlugin/Admin/Logger/Grid/_theme.html.twig"

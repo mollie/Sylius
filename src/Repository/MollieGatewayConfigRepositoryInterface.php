@@ -12,8 +12,9 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Repository;
 
 use BitBag\SyliusMolliePlugin\Entity\GatewayConfigInterface;
+use Sylius\Component\Resource\Repository\RepositoryInterface;
 
-interface MollieGatewayConfigRepositoryInterface
+interface MollieGatewayConfigRepositoryInterface extends RepositoryInterface
 {
     public function findAllEnabledByGateway(GatewayConfigInterface $gateway): array;
 }

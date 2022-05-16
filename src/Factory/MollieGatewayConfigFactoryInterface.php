@@ -11,11 +11,15 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Factory;
 
+use BitBag\SyliusMolliePlugin\Entity\GatewayConfigInterface;
 use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
 use BitBag\SyliusMolliePlugin\Payments\Methods\MethodInterface;
-use Sylius\Bundle\PayumBundle\Model\GatewayConfigInterface;
 
 interface MollieGatewayConfigFactoryInterface
 {
-    public function create(MethodInterface $method, GatewayConfigInterface $gateway, int $key): MollieGatewayConfigInterface;
+    public function create(
+        MethodInterface $method,
+        GatewayConfigInterface $gateway,
+        int $key
+    ): MollieGatewayConfigInterface;
 }

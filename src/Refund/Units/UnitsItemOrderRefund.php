@@ -11,9 +11,9 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Refund\Units;
 
-use BitBag\SyliusMolliePlugin\DTO\PartialRefundItem;
 use BitBag\SyliusMolliePlugin\DTO\PartialRefundItems;
 use Sylius\Component\Core\Model\OrderInterface;
+use Sylius\Component\Core\Model\OrderItemUnitInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Sylius\RefundPlugin\Model\OrderItemUnitRefund;
 use Sylius\RefundPlugin\Model\RefundType;
@@ -33,7 +33,8 @@ final class UnitsItemOrderRefund implements UnitsItemOrderRefundInterface
         $units = $order->getItemUnits();
 
         $unitsToRefund = [];
-        /** @var PartialRefundItem $item */
+
+        /** @var OrderItemUnitInterface $unit */
         foreach ($units as $unit) {
             if (true === $this->hasUnitRefunded($order, $unit->getId())) {
                 continue;
@@ -43,7 +44,7 @@ final class UnitsItemOrderRefund implements UnitsItemOrderRefundInterface
             if (null !== $partialItem) {
                 $unitsToRefund[] = new OrderItemUnitRefund(
                     $unit->getId(),
-                    $unit->getOrderItem()->getUnitPrice()
+                    $unit->getTotal(),
                 );
 
                 $partialRefundItems->removeItem($partialItem);
@@ -57,17 +58,18 @@ final class UnitsItemOrderRefund implements UnitsItemOrderRefundInterface
     {
         $allItems = array_filter($this->getActualRefunded($order, $itemId));
 
-        return  count($allItems);
+        return count($allItems);
     }
 
     private function getActualRefunded(OrderInterface $order, int $itemId): array
     {
         $units = $order->getItemUnits();
 
+        $refundedUnits = [];
         foreach ($units as $unit) {
             if ($itemId === $unit->getOrderItem()->getId()) {
                 $refundedUnits[] = $this->refundUnitsRepository->findOneBy([
-                    'orderNumber' => $order->getNumber(),
+                    'order' => $order->getId(),
                     'refundedUnitId' => $unit->getId(),
                     'type' => RefundType::orderItemUnit(),
                 ]);
@@ -80,11 +82,11 @@ final class UnitsItemOrderRefund implements UnitsItemOrderRefundInterface
     private function hasUnitRefunded(OrderInterface $order, int $unitId): bool
     {
         $unitRefunded = $this->refundUnitsRepository->findOneBy([
-            'orderNumber' => $order->getNumber(),
+            'order' => $order->getId(),
             'refundedUnitId' => $unitId,
             'type' => RefundType::orderItemUnit(),
         ]);
 
-        return $unitRefunded ? true : false;
+        return null !== $unitRefunded;
     }
 }

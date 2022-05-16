@@ -1,5 +1,7 @@
 import _get from 'lodash.get';
 
+import {updateTourCompletition} from "./index";
+
 import {steps} from '../config/steps';
 import wizardTranslations from '../config/wizardTranslations';
 
@@ -36,6 +38,7 @@ const handleStepButtons = (onboardingWizard, stepIndex, step, translator) => {
 
                 if (stepIndex === 0) {
                     tour.complete();
+                    updateTourCompletition();
                 } else {
                     if (step.urlMollie) {
                         window.open(`${step.urlMollie}/signin`, '_blank');

@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace spec\BitBag\SyliusMolliePlugin\PaymentProcessing;
 
-use BitBag\SyliusMolliePlugin\Entity\SubscriptionInterface;
-use BitBag\SyliusMolliePlugin\MollieSubscriptionGatewayFactory;
+use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
+use BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
 use BitBag\SyliusMolliePlugin\PaymentProcessing\CancelRecurringSubscriptionProcessor;
 use BitBag\SyliusMolliePlugin\PaymentProcessing\CancelRecurringSubscriptionProcessorInterface;
 use Payum\Core\GatewayInterface;
@@ -43,8 +43,8 @@ final class CancelRecurringSubscriptionProcessorSpec extends ObjectBehavior
         $this->shouldHaveType(CancelRecurringSubscriptionProcessorInterface::class);
     }
 
-    function it_processes(
-        SubscriptionInterface $subscription,
+    function it_processes_cancel_recurring_subscription(
+        MollieSubscriptionInterface $subscription,
         OrderInterface $order,
         PaymentInterface $payment,
         PaymentMethodInterface $paymentMethod,
@@ -61,11 +61,73 @@ final class CancelRecurringSubscriptionProcessorSpec extends ObjectBehavior
 
         $order->getLastPayment()->willReturn($payment);
 
-        $subscription->getOrder()->willReturn($order);
+        $subscription->getOrderItem()->willReturn($order);
+
+        $subscription->getLastOrder()->willReturn($order);
 
         $payum->getGateway(MollieSubscriptionGatewayFactory::FACTORY_NAME)->willReturn($gateway);
 
         $gateway->execute(Argument::any())->shouldBeCalled();
+
+        $this->process($subscription);
+    }
+
+    function it_processes_cancel_recurring_subscription_when_last_order_is_null(
+        MollieSubscriptionInterface $subscription,
+        GatewayInterface $gateway
+    ): void {
+        $subscription->getLastOrder()->willReturn(null);
+
+        $gateway->execute(Argument::any())->shouldNotBeCalled();
+
+        $this->process($subscription);
+    }
+
+    function it_processes_cancel_recurring_subscription_when_last_payment_is_null(
+        MollieSubscriptionInterface $subscription,
+        OrderInterface $order,
+        GatewayInterface $gateway
+    ): void {
+        $subscription->getLastOrder()->willReturn($order);
+        $order->getLastPayment()->willReturn(null);
+
+        $gateway->execute(Argument::any())->shouldNotBeCalled();
+
+        $this->process($subscription);
+    }
+
+    function it_processes_cancel_recurring_subscription_with_null_config(
+        MollieSubscriptionInterface $subscription,
+        OrderInterface $order,
+        PaymentInterface $payment,
+        PaymentMethodInterface $paymentMethod,
+        GatewayInterface $gateway
+    ): void {
+        $subscription->getLastOrder()->willReturn($order);
+        $order->getLastPayment()->willReturn($payment);
+        $payment->getMethod()->willReturn($paymentMethod);
+        $paymentMethod->getGatewayConfig()->willReturn(null);
+
+        $gateway->execute(Argument::any())->shouldNotBeCalled();
+
+        $this->process($subscription);
+    }
+
+    function it_processes_cancel_recurring_subscription_with_wrong_factory_name(
+        MollieSubscriptionInterface $subscription,
+        OrderInterface $order,
+        PaymentInterface $payment,
+        PaymentMethodInterface $paymentMethod,
+        GatewayConfigInterface $gatewayConfig,
+        GatewayInterface $gateway
+    ): void {
+        $subscription->getLastOrder()->willReturn($order);
+        $order->getLastPayment()->willReturn($payment);
+        $payment->getMethod()->willReturn($paymentMethod);
+        $paymentMethod->getGatewayConfig()->willReturn($gatewayConfig);
+        $gatewayConfig->getFactoryName()->willReturn('not_mollie_subscription');
+
+        $gateway->execute(Argument::any())->shouldNotBeCalled();
 
         $this->process($subscription);
     }

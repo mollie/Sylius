@@ -13,31 +13,45 @@ declare(strict_types=1);
 namespace spec\BitBag\SyliusMolliePlugin\Action\StateMachine;
 
 use BitBag\SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
+use BitBag\SyliusMolliePlugin\Action\StateMachine\Applicator\SubscriptionAndPaymentIdApplicatorInterface;
+use BitBag\SyliusMolliePlugin\Action\StateMachine\Applicator\SubscriptionAndSyliusPaymentApplicatorInterface;
 use BitBag\SyliusMolliePlugin\Action\StateMachine\StatusRecurringSubscriptionAction;
+use BitBag\SyliusMolliePlugin\Action\StateMachine\Transition\StateMachineTransitionInterface;
 use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
-use BitBag\SyliusMolliePlugin\Entity\SubscriptionInterface;
+use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionConfigurationInterface;
+use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
+use BitBag\SyliusMolliePlugin\Request\Api\CancelRecurringSubscription;
 use BitBag\SyliusMolliePlugin\Request\StateMachine\StatusRecurringSubscription;
-use BitBag\SyliusMolliePlugin\Transitions\SubscriptionTransitions;
+use BitBag\SyliusMolliePlugin\Transitions\MollieSubscriptionPaymentProcessingTransitions;
+use BitBag\SyliusMolliePlugin\Transitions\MollieSubscriptionTransitions;
 use Doctrine\ORM\EntityManagerInterface;
 use Mollie\Api\Endpoints\CustomerEndpoint;
+use Mollie\Api\Endpoints\PaymentEndpoint;
 use Mollie\Api\Resources\Customer;
+use Mollie\Api\Resources\Payment;
 use Mollie\Api\Resources\Subscription;
+use Mollie\Api\Types\PaymentStatus;
 use Mollie\Api\Types\SubscriptionStatus;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use PhpSpec\ObjectBehavior;
 use SM\Factory\FactoryInterface;
 use SM\StateMachine\StateMachineInterface;
+use Sylius\Component\Core\Model\PaymentInterface;
 
 final class StatusRecurringSubscriptionActionSpec extends ObjectBehavior
 {
     function let(
         EntityManagerInterface $subscriptionManager,
-        FactoryInterface $subscriptionSateMachineFactory
+        SubscriptionAndPaymentIdApplicatorInterface $subscriptionAndPaymentIdApplicator,
+        SubscriptionAndSyliusPaymentApplicatorInterface $subscriptionAndSyliusPaymentApplicator,
+        StateMachineTransitionInterface $stateMachineTransition
     ): void {
         $this->beConstructedWith(
             $subscriptionManager,
-            $subscriptionSateMachineFactory
+            $subscriptionAndPaymentIdApplicator,
+            $subscriptionAndSyliusPaymentApplicator,
+            $stateMachineTransition
         );
     }
 
@@ -61,33 +75,92 @@ final class StatusRecurringSubscriptionActionSpec extends ObjectBehavior
         $this->shouldHaveType(BaseApiAwareAction::class);
     }
 
-    function it_executes(
+    function it_applies_abort_tranistion(
         StatusRecurringSubscription $request,
-        MollieApiClient $mollieApiClient,
-        SubscriptionInterface $subscription,
-        CustomerEndpoint $customerEndpoint,
-        Customer $customer,
-        FactoryInterface $subscriptionSateMachineFactory,
-        StateMachineInterface $stateMachine,
-        Subscription $subscriptionApi
+        MollieSubscriptionInterface $subscription,
+        EntityManagerInterface $subscriptionManager,
+        StateMachineTransitionInterface $stateMachineTransition
     ): void {
-        $this->setApi($mollieApiClient);
-        $stateMachine->can(SubscriptionTransitions::TRANSITION_ACTIVATE)->willReturn();
-        $subscriptionApi->status = SubscriptionStatus::STATUS_ACTIVE;
-        $subscriptionSateMachineFactory->get($subscription, SubscriptionTransitions::GRAPH)->willReturn($stateMachine);
-        $subscription->getSubscriptionId()->willReturn('id_1');
-        $subscription->getCustomerId()->willReturn('id_1');
-        $customer->getSubscription('id_1')->willReturn($subscriptionApi);
-        $customerEndpoint->get('id_1')->willReturn($customer);
-        $mollieApiClient->customers = $customerEndpoint;
         $request->getModel()->willReturn($subscription);
+
+        $request->getPaymentId()->willReturn(null);
+        $request->getPayment()->willReturn(null);
+
+        $stateMachineTransition->apply(
+            $subscription,
+            MollieSubscriptionTransitions::TRANSITION_COMPLETE
+        )->shouldBeCalled();
+        $stateMachineTransition->apply(
+            $subscription,
+            MollieSubscriptionTransitions::TRANSITION_ABORT
+        )->shouldBeCalled();
+
+        $subscriptionManager->persist($subscription)->shouldBeCalled();
+        $subscriptionManager->flush()->shouldBeCalled();
+
+        $this->execute($request);
+    }
+
+    function it_executes_when_payment_id_is_not_null(
+        StatusRecurringSubscription $request,
+        MollieSubscriptionInterface $subscription,
+        EntityManagerInterface $subscriptionManager,
+        StateMachineTransitionInterface $stateMachineTransition,
+        SubscriptionAndPaymentIdApplicatorInterface $subscriptionAndPaymentIdApplicator
+    ): void {
+        $request->getModel()->willReturn($subscription);
+
+        $request->getPaymentId()->willReturn('payment_id');
+        $request->getPayment()->willReturn(null);
+
+        $subscriptionAndPaymentIdApplicator->execute($subscription, 'payment_id')->shouldBeCalled();
+        $stateMachineTransition->apply(
+            $subscription,
+            MollieSubscriptionTransitions::TRANSITION_COMPLETE
+        )->shouldBeCalled();
+        $stateMachineTransition->apply(
+            $subscription,
+            MollieSubscriptionTransitions::TRANSITION_ABORT
+        )->shouldBeCalled();
+
+        $subscriptionManager->persist($subscription)->shouldBeCalled();
+        $subscriptionManager->flush()->shouldBeCalled();
+
+        $this->execute($request);
+    }
+
+    function it_executes_when_sylius_payment_is_not_null(
+        StatusRecurringSubscription $request,
+        MollieSubscriptionInterface $subscription,
+        EntityManagerInterface $subscriptionManager,
+        StateMachineTransitionInterface $stateMachineTransition,
+        SubscriptionAndSyliusPaymentApplicatorInterface $subscriptionAndSyliusPaymentApplicator,
+        PaymentInterface $payment
+    ): void {
+        $request->getModel()->willReturn($subscription);
+
+        $request->getPaymentId()->willReturn(null);
+        $request->getPayment()->willReturn($payment);
+
+        $subscriptionAndSyliusPaymentApplicator->execute($subscription, $payment)->shouldBeCalled();
+        $stateMachineTransition->apply(
+            $subscription,
+            MollieSubscriptionTransitions::TRANSITION_COMPLETE
+        )->shouldBeCalled();
+        $stateMachineTransition->apply(
+            $subscription,
+            MollieSubscriptionTransitions::TRANSITION_ABORT
+        )->shouldBeCalled();
+
+        $subscriptionManager->persist($subscription)->shouldBeCalled();
+        $subscriptionManager->flush()->shouldBeCalled();
 
         $this->execute($request);
     }
 
     function it_supports_status_recurring_subscription_request_and_subscription_model(
         StatusRecurringSubscription $request,
-        SubscriptionInterface $subscription
+        MollieSubscriptionInterface $subscription
     ): void {
         $request->getModel()->willReturn($subscription);
 

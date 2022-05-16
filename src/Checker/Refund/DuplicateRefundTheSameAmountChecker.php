@@ -47,7 +47,7 @@ final class DuplicateRefundTheSameAmountChecker implements DuplicateRefundTheSam
             $this->getTotalAmount($command)
         );
 
-        return !empty($creditMemos);
+        return 0 !== count($creditMemos);
     }
 
     private function getTotalAmount(RefundUnits $command): int

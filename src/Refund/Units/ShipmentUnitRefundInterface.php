@@ -15,5 +15,9 @@ use Sylius\Component\Core\Model\OrderInterface;
 
 interface ShipmentUnitRefundInterface
 {
-    public function refund(OrderInterface $order, array $orderItemUnitRefund, int $totalToRefund): array;
+    public function refund(
+        OrderInterface $order,
+        array $orderItemUnitRefund,
+        int $totalToRefund
+    ): array;
 }

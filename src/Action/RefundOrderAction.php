@@ -16,6 +16,8 @@ use BitBag\SyliusMolliePlugin\Helper\ConvertRefundDataInterface;
 use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use BitBag\SyliusMolliePlugin\Request\Api\RefundOrder;
 use Mollie\Api\Exceptions\ApiException;
+use Mollie\Api\Resources\Payment;
+use Mollie\Api\Types\PaymentStatus;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
@@ -24,6 +26,7 @@ use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Resource\Exception\UpdateHandlingException;
+use Webmozart\Assert\Assert;
 
 final class RefundOrderAction extends BaseApiAwareAction implements ActionInterface, ApiAwareInterface, GatewayAwareInterface
 {
@@ -49,22 +52,48 @@ final class RefundOrderAction extends BaseApiAwareAction implements ActionInterf
 
         $details = ArrayObject::ensureArrayObject($request->getModel());
 
-        if ($details['created_in_mollie']) {
-            $this->loggerAction->addLog('Received refund created in Mollie dashboard');
-
+        if (!array_key_exists('refund', $details['metadata'])) {
             return;
         }
 
         /** @var PaymentInterface $payment */
         $payment = $request->getFirstModel();
+
+        Assert::notNull($payment->getCurrencyCode());
         $refundData = $this->convertOrderRefundData->convert($details['metadata']['refund'], $payment->getCurrencyCode());
+
+        $molliePayment = null;
 
         try {
             $order = $this->mollieApiClient->orders->get($details['order_mollie_id'], ['embed' => 'payments']);
-            $payments = $order->_embedded->payments;
-            $payment = current($payments);
+            $embeddedPayments = $order->_embedded->payments;
 
-            $molliePayment = $this->mollieApiClient->payments->get($payment->id);
+            /** @var Payment $embeddedPayment */
+            foreach ($embeddedPayments as $embeddedPayment) {
+                if (PaymentStatus::STATUS_PAID === $embeddedPayment->status) {
+                    $molliePayment = $this->mollieApiClient->payments->get($embeddedPayment->id);
+                }
+            }
+        } catch (ApiException $e) {
+            $this->loggerAction->addNegativeLog(sprintf('API call failed: %s', htmlspecialchars($e->getMessage())));
+
+            throw new \Exception(sprintf('API call failed: %s', htmlspecialchars($e->getMessage())));
+        }
+
+        Assert::notNull($molliePayment);
+
+        if ($molliePayment->hasRefunds()) {
+            return;
+        }
+
+        /** @var PaymentInterface $payment */
+        $payment = $request->getFirstModel();
+
+        try {
+            $currencyCode = $payment->getCurrencyCode();
+            Assert::notNull($currencyCode);
+
+            $refundData = $this->convertOrderRefundData->convert($details['metadata']['refund'], $currencyCode);
 
             $this->mollieApiClient->payments->refund(
                 $molliePayment,

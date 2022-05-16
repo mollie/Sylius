@@ -18,6 +18,7 @@ final class PaymentLocaleResolver implements PaymentLocaleResolverInterface
 {
     public function resolveFromOrder(OrderInterface $order): ?string
     {
+        /** @var string $orderLocale */
         $orderLocale = $order->getLocaleCode();
 
         if (false === array_key_exists($orderLocale, MollieGatewayFactoryInterface::LOCALES_AVAILABLE_MAP)) {

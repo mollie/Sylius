@@ -15,6 +15,7 @@ use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\OrderItem;
 use Sylius\Component\Taxation\Calculator\CalculatorInterface;
 use Sylius\Component\Taxation\Resolver\TaxRateResolverInterface;
+use Webmozart\Assert\Assert;
 
 final class TaxUnitItemResolver implements TaxUnitItemResolverInterface
 {
@@ -34,6 +35,7 @@ final class TaxUnitItemResolver implements TaxUnitItemResolverInterface
 
     public function resolve(OrderInterface $order, OrderItem $item): ?float
     {
+        Assert::notNull($item->getVariant());
         $rate = $this->taxRateResolver->resolve($item->getVariant());
 
         return null === $rate ? null : $rate->getAmount();

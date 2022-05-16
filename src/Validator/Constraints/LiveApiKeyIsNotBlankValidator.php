@@ -32,7 +32,8 @@ final class LiveApiKeyIsNotBlankValidator extends ConstraintValidator
             throw new MissingFieldException('api_key_live');
         }
 
-        if (true === $value['environment'] && empty($value['api_key_live'])) {
+        $isEmpty = null === $value['api_key_live'] || '' === $value['api_key_live'];
+        if (true === $value['environment'] && $isEmpty) {
             $this->context->buildViolation($constraint->message)
                 ->atPath(sprintf('[%s]', $constraint->field))
                 ->addViolation()

@@ -24,32 +24,41 @@ final class MollieCountriesRestrictionResolver implements MollieCountriesRestric
         $this->imageResolver = $imageResolver;
     }
 
-    public function resolve(MollieGatewayConfigInterface $paymentMethod, array $methods, string $countryCode): ?array
-    {
-        if ($paymentMethod->getCountryRestriction() === MollieGatewayConfigInterface::ALL_COUNTRIES) {
+    public function resolve(
+        MollieGatewayConfigInterface $paymentMethod,
+        array $methods,
+        string $countryCode
+    ): ?array {
+        if (MollieGatewayConfigInterface::ALL_COUNTRIES === $paymentMethod->getCountryRestriction()) {
             return $this->excludeCountryLevel($paymentMethod, $methods, $countryCode);
         }
-        if ($paymentMethod->getCountryRestriction() === MollieGatewayConfigInterface::SELECTED_COUNTRIES) {
+        if (MollieGatewayConfigInterface::SELECTED_COUNTRIES === $paymentMethod->getCountryRestriction()) {
             return $this->allowCountryLevel($paymentMethod, $methods, $countryCode);
         }
 
         return $methods;
     }
 
-    private function allowCountryLevel(MollieGatewayConfigInterface $paymentMethod, array $methods, string $countryCode): array
-    {
+    private function allowCountryLevel(
+        MollieGatewayConfigInterface $paymentMethod,
+        array $methods,
+        string $countryCode
+    ): array {
         if (is_array($paymentMethod->getCountryLevelAllowed()) &&
-            in_array($countryCode, $paymentMethod->getCountryLevelAllowed())) {
+            in_array($countryCode, $paymentMethod->getCountryLevelAllowed(), true)) {
             return $this->setData($methods, $paymentMethod);
         }
 
         return $methods;
     }
 
-    private function excludeCountryLevel(MollieGatewayConfigInterface $paymentMethod, array $methods, string $countryCode): array
-    {
+    private function excludeCountryLevel(
+        MollieGatewayConfigInterface $paymentMethod,
+        array $methods,
+        string $countryCode
+    ): array {
         if (is_array($paymentMethod->getCountryLevelExcluded()) &&
-            in_array($countryCode, $paymentMethod->getCountryLevelExcluded())) {
+            in_array($countryCode, $paymentMethod->getCountryLevelExcluded(), true)) {
             return $methods;
         }
 
@@ -63,8 +72,7 @@ final class MollieCountriesRestrictionResolver implements MollieCountriesRestric
         $methods['data'][$translation->getName() ?? $paymentMethod->getName()] = $paymentMethod->getMethodId();
         $methods['image'][$paymentMethod->getMethodId()] = $this->imageResolver->resolve($paymentMethod);
         $methods['issuers'][$paymentMethod->getMethodId()] = $paymentMethod->getIssuers();
-        $methods['paymentFee'][$paymentMethod->getMethodId()] = $paymentMethod->getPaymentSurchargeFee()->getType()
-            ? $paymentMethod->getPaymentSurchargeFee() : [];
+        $methods['paymentFee'][$paymentMethod->getMethodId()] = null !== $paymentMethod->getPaymentSurchargeFee() ? $paymentMethod->getPaymentSurchargeFee() : [];
 
         return $methods;
     }

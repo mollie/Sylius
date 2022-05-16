@@ -21,5 +21,9 @@ interface PaymentlinkResolverInterface
         PaymentMethod::KLARNA_SLICE_IT,
     ];
 
-    public function resolve(OrderInterface $order, array $data, string $templateName): string;
+    public function resolve(
+        OrderInterface $order,
+        array $data,
+        string $templateName
+    ): string;
 }

@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Tests\BitBag\SyliusMolliePlugin\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
-use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
+use BitBag\SyliusMolliePlugin\Checker\Gateway\MollieGatewayFactoryCheckerInterface;
 use Doctrine\ORM\EntityManager;
 use Payum\Core\Payum;
 use Payum\Core\Registry\RegistryInterface;
@@ -21,37 +21,31 @@ use SM\Factory\FactoryInterface as StateMachineFactoryInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\PaymentMethodInterface;
 use Sylius\Component\Payment\PaymentTransitions;
+use Webmozart\Assert\Assert;
 
 final class OrderContext implements Context
 {
-    /**
-     * @var EntityManager
-     */
+    /** @var EntityManager */
     private $entityManager;
 
-    /**
-     * @var StateMachineFactoryInterface
-     */
+    /** @var StateMachineFactoryInterface */
     private $stateMachineFactory;
 
-    /**
-     * @var RegistryInterface|Payum
-     */
+    /** @var RegistryInterface|Payum */
     private $payum;
 
-    /**
-     * @param EntityManager $entityManager
-     * @param StateMachineFactoryInterface $stateMachineFactory
-     * @param RegistryInterface $payum
-     */
+    private MollieGatewayFactoryCheckerInterface $mollieGatewayFactoryChecker;
+
     public function __construct(
         EntityManager $entityManager,
         StateMachineFactoryInterface $stateMachineFactory,
-        RegistryInterface $payum
+        RegistryInterface $payum,
+        MollieGatewayFactoryCheckerInterface $mollieGatewayFactoryChecker
     ) {
         $this->entityManager = $entityManager;
         $this->stateMachineFactory = $stateMachineFactory;
         $this->payum = $payum;
+        $this->mollieGatewayFactoryChecker = $mollieGatewayFactoryChecker;
     }
 
     /**
@@ -64,27 +58,27 @@ final class OrderContext implements Context
         $this->entityManager->flush();
     }
 
-    /**
-     * @param OrderInterface $order
-     * @param $transition
-     *
-     * @throws \SM\SMException
-     */
-    private function applyMolliePaymentTransitionOnOrder(OrderInterface $order, $transition): void
+    private function applyMolliePaymentTransitionOnOrder(OrderInterface $order, string $transition): void
     {
         foreach ($order->getPayments() as $payment) {
             /** @var PaymentMethodInterface $paymentMethod */
             $paymentMethod = $payment->getMethod();
 
-            if (MollieGatewayFactory::FACTORY_NAME === $paymentMethod->getGatewayConfig()->getFactoryName()) {
+            $gatewayConfig = $paymentMethod->getGatewayConfig();
+
+            Assert::notNull($gatewayConfig);
+
+            if ($this->mollieGatewayFactoryChecker->isMollieGateway($gatewayConfig)) {
+                Assert::isInstanceOf($this->payum, Payum::class);
                 $refundToken = $this->payum->getTokenFactory()->createRefundToken('mollie', $payment);
 
                 $metadata = [];
-
+                $model = [];
                 $metadata['refund_token'] = $refundToken->getHash();
 
                 $model['metadata'] = $metadata;
 
+                Assert::notNull($payment->getAmount());
                 $model['amount'] = $payment->getAmount() / 100;
                 $model['payment_mollie_id'] = 'test';
 

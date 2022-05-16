@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Action\Api;
 
-use BitBag\SyliusMolliePlugin\Entity\SubscriptionInterface;
+use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
 use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use BitBag\SyliusMolliePlugin\Request\Api\CancelRecurringSubscription;
 use Mollie\Api\Exceptions\ApiException;
@@ -21,6 +21,7 @@ use Payum\Core\ApiAwareInterface;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
+use Webmozart\Assert\Assert;
 
 final class CancelRecurringSubscriptionAction extends BaseApiAwareAction implements ActionInterface, GatewayAwareInterface, ApiAwareInterface
 {
@@ -34,33 +35,36 @@ final class CancelRecurringSubscriptionAction extends BaseApiAwareAction impleme
         $this->loggerAction = $loggerAction;
     }
 
-    /** @param CancelRecurringSubscription $request */
+    /** @param CancelRecurringSubscription|mixed $request */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
-        /** @var SubscriptionInterface $subscription */
+        /** @var MollieSubscriptionInterface $subscription */
         $subscription = $request->getModel();
+        $configuration = $subscription->getSubscriptionConfiguration();
 
         try {
+            Assert::notNull($configuration->getCustomerId());
             /** @var Customer $customer */
-            $customer = $this->mollieApiClient->customers->get($subscription->getCustomerId());
+            $customer = $this->mollieApiClient->customers->get($configuration->getCustomerId());
         } catch (\Exception $e) {
             $this->loggerAction->addNegativeLog(sprintf('Error with get customer in recurring subscription with: %s', $e->getMessage()));
 
             throw new ApiException('Error with get customer in recurring subscription with ' . $e->getMessage());
         }
 
-        $this->loggerAction->addLog(sprintf('Cancel recurring subscription with id:  %s', $subscription->getSubscriptionId()));
+        $this->loggerAction->addLog(sprintf('Cancel recurring subscription with id:  %s', $configuration->getSubscriptionId()));
 
-        $customer->cancelSubscription($subscription->getSubscriptionId());
+        Assert::notNull($configuration->getSubscriptionId());
+        $customer->cancelSubscription($configuration->getSubscriptionId());
     }
 
     public function supports($request): bool
     {
         return
             $request instanceof CancelRecurringSubscription &&
-            $request->getModel() instanceof SubscriptionInterface
+            $request->getModel() instanceof MollieSubscriptionInterface
             ;
     }
 }

@@ -1,0 +1,7 @@
+<div id="cart-variant-details">
+{% for key, item in cart.items %}
+    <div data-index="{{ key }}" data-recurring="{{ (item.variant.recurring ? '1' : 0) | default('0') }}"{% if item.variant.recurring %} data-interval="{{ item.variant.interval }}" data-times="{{ item.variant.times }}"{% endif %}></div>
+{% endfor %}
+</div>
+
+{% include "@BitBagSyliusMolliePlugin/Shop/_partial/_recurringTranslations.html.twig" %}

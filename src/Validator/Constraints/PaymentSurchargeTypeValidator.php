@@ -34,22 +34,25 @@ final class PaymentSurchargeTypeValidator extends ConstraintValidator
 
     private function validatePaymentSurcharge(PaymentSurchargeFeeInterface $paymentSurchargeFee, Constraint $constraint): void
     {
-        if ($paymentSurchargeFee->getType() === Options::PERCENTAGE && null === $paymentSurchargeFee->getPercentage()) {
+        if (Options::PERCENTAGE === $paymentSurchargeFee->getType() && null === $paymentSurchargeFee->getPercentage()) {
             $this->createNegativeResponse($constraint, self::PERCENTAGE_FIELD);
         }
-        if ($paymentSurchargeFee->getType() === Options::FIXED_FEE && null === $paymentSurchargeFee->getFixedAmount()) {
+        if (Options::FIXED_FEE === $paymentSurchargeFee->getType() && null === $paymentSurchargeFee->getFixedAmount()) {
             $this->createNegativeResponse($constraint, self::FIXED_AMOUNT_FIELD);
         }
-        if ($paymentSurchargeFee->getType() === Options::FIXED_FEE_AND_PERCENTAGE && null === $paymentSurchargeFee->getPercentage()) {
+        if (Options::FIXED_FEE_AND_PERCENTAGE === $paymentSurchargeFee->getType() && null === $paymentSurchargeFee->getPercentage()) {
             $this->createNegativeResponse($constraint, self::PERCENTAGE_FIELD);
         }
-        if ($paymentSurchargeFee->getType() === Options::FIXED_FEE_AND_PERCENTAGE && null === $paymentSurchargeFee->getFixedAmount()) {
+        if (Options::FIXED_FEE_AND_PERCENTAGE === $paymentSurchargeFee->getType() && null === $paymentSurchargeFee->getFixedAmount()) {
             $this->createNegativeResponse($constraint, self::FIXED_AMOUNT_FIELD);
         }
     }
 
     private function createNegativeResponse(Constraint $constraint, string $filedName): void
     {
+        if (!property_exists($constraint, 'message')) {
+            throw new \InvalidArgumentException();
+        }
         $this->context->buildViolation($constraint->message)->atPath($filedName)->addViolation();
     }
 }

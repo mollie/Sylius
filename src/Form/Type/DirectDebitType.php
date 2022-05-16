@@ -58,7 +58,7 @@ final class DirectDebitType extends AbstractType
                 ],
                 'data' => $this->session->get('mollie_direct_debit_data')['iban'] ?? null,
             ])
-            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
                 $data = $event->getData();
 
                 $this->session->set('mollie_direct_debit_data', $data);

@@ -19,4 +19,6 @@ interface GatewayConfigInterface extends BaseGatewayConfigInterface
     public function getMollieGatewayConfig(): ?Collection;
 
     public function setMollieGatewayConfig(?Collection $mollieGatewayConfig): void;
+
+    public function getMethodByName(string $methodName): ?MollieGatewayConfigInterface;
 }

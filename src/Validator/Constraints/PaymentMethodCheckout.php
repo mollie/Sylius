@@ -23,6 +23,7 @@ final class PaymentMethodCheckout extends Constraint
         return PaymentMethodCheckoutValidator::class;
     }
 
+    /** @return string[] */
     public function getTargets(): array
     {
         return [self::CLASS_CONSTRAINT];

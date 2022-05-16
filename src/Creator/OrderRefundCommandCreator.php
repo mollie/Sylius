@@ -54,12 +54,23 @@ final class OrderRefundCommandCreator implements OrderRefundCommandCreatorInterf
         $orderId = $order->metadata->order_id;
         /** @var OrderInterface $syliusOrder */
         $syliusOrder = $this->orderRepository->findOneBy(['id' => $orderId]);
-        Assert::notNull($order, sprintf('Cannot find order id with id %s', $orderId));
 
         $partialRefundItems = new PartialRefundItems();
 
         foreach ($order->lines as $line) {
-            if ($line->status === 'paid' && $line->type === ConvertOrderInterface::PHYSICAL_TYPE) {
+            if (!property_exists($line, 'status') ||
+                !property_exists($line, 'type')
+            ) {
+                throw new \InvalidArgumentException();
+            }
+
+            if ('paid' === $line->status && ConvertOrderInterface::PHYSICAL_TYPE === $line->type) {
+                if (!property_exists($line, 'metadata') ||
+                    !property_exists($line, 'quantityRefunded')
+                ) {
+                    throw new \InvalidArgumentException();
+                }
+
                 $getRefundedQuantity = $this->unitsItemOrderRefund->getActualRefundedQuantity($syliusOrder, $line->metadata->item_id);
                 $partialRefundItems->addPartialRefundItemByQuantity(
                     $line->metadata->item_id,
@@ -69,9 +80,10 @@ final class OrderRefundCommandCreator implements OrderRefundCommandCreatorInterf
             }
         }
 
+        Assert::notNull($syliusOrder->getChannel());
         $refundMethods = $this->refundPaymentMethodProvider->findForChannel($syliusOrder->getChannel());
 
-        if (empty($refundMethods)) {
+        if (0 === count($refundMethods)) {
             throw new OfflineRefundPaymentMethodNotFound(
                 sprintf('Not found offline payment method on this channel with code :%s', $syliusOrder->getChannel()->getCode())
             );
@@ -81,6 +93,8 @@ final class OrderRefundCommandCreator implements OrderRefundCommandCreatorInterf
 
         $unitsToRefund = $this->unitsItemOrderRefund->refund($syliusOrder, $partialRefundItems);
         $shipmentToRefund = $this->shipmentOrderRefund->refund($order, $syliusOrder);
+
+        Assert::notNull($syliusOrder->getNumber());
 
         return new RefundUnits($syliusOrder->getNumber(), $unitsToRefund, $shipmentToRefund, $refundMethod->getId(), '');
     }

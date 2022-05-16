@@ -1,8 +1,9 @@
 {% import '@SyliusUi/Macro/flags.html.twig' as flags %}
 
-{% set mollie = constant('BitBag\\SyliusMolliePlugin\\Factory\\MollieGatewayFactory::FACTORY_NAME') %}
+{% set mollieStandardGateway = constant('BitBag\\SyliusMolliePlugin\\Factory\\MollieGatewayFactory::FACTORY_NAME') %}
+{% set mollieRecuringGateway = constant('BitBag\\SyliusMolliePlugin\\Factory\\MollieSubscriptionGatewayFactory::FACTORY_NAME') %}
 
-{% if form.vars.value.gatewayConfig.factoryName == 'mollie' %}
+{% if form.vars.value.gatewayConfig.factoryName is same as (mollieStandardGateway) %}
     {% include '@SyliusAdmin/PaymentMethod/_mollieMessage.html.twig' %}
     {{ bitbag_render_version_widget() }}
 {% endif %}
@@ -36,8 +37,8 @@
                 <div class="two field js-onboardingWizard-profile-api">
                     <div class="js-two-fields-test">
                         <div class="required field">
-                                <label 
-                                    for="sylius_payment_method_gatewayConfig_config_profile_id" 
+                                <label
+                                    for="sylius_payment_method_gatewayConfig_config_profile_id"
                                     class="required"
                                 >
                                     {{ field.vars.label|trans|raw|nl2br }}
@@ -68,7 +69,7 @@
     {% endif %}
 </div>
 
-{% if form.vars.value.gatewayConfig.factoryName == 'mollie' %}
+{% if form.vars.value.gatewayConfig.factoryName in [mollieStandardGateway, mollieRecuringGateway] %}
     {% include 'bundles/SyliusAdminBundle/PaymentMethod/_mollieMethodsForm.html.twig' %}
 {% endif %}
 

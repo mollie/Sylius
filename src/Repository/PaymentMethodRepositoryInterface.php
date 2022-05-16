@@ -19,5 +19,5 @@ interface PaymentMethodRepositoryInterface extends BasePaymentMethodRepositoryIn
 {
     public function findAllByFactoryNameAndCode(string $code): array;
 
-    public function findOneByChannelAndGatewayFactoryName(ChannelInterface $channel, $factoryName): ?PaymentMethodInterface;
+    public function findOneByChannelAndGatewayFactoryName(ChannelInterface $channel, string $factoryName): ?PaymentMethodInterface;
 }

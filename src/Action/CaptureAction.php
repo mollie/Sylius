@@ -13,10 +13,12 @@ namespace BitBag\SyliusMolliePlugin\Action;
 
 use BitBag\SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
 use BitBag\SyliusMolliePlugin\Payments\PaymentTerms\Options;
+use BitBag\SyliusMolliePlugin\Request\Api\CreateCustomer;
+use BitBag\SyliusMolliePlugin\Request\Api\CreateInternalRecurring;
+use BitBag\SyliusMolliePlugin\Request\Api\CreateOnDemandSubscription;
+use BitBag\SyliusMolliePlugin\Request\Api\CreateOnDemandSubscriptionPayment;
 use BitBag\SyliusMolliePlugin\Request\Api\CreateOrder;
 use BitBag\SyliusMolliePlugin\Request\Api\CreatePayment;
-use BitBag\SyliusMolliePlugin\Request\Api\CreateRecurringSubscription;
-use BitBag\SyliusMolliePlugin\Request\Api\CreateSepaMandate;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\Exception\RuntimeException;
@@ -24,6 +26,7 @@ use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Capture;
 use Payum\Core\Security\GenericTokenFactoryInterface;
 use Payum\Core\Security\TokenInterface;
+use Psr\Log\InvalidArgumentException;
 
 final class CaptureAction extends BaseApiAwareAction implements CaptureActionInterface
 {
@@ -37,7 +40,7 @@ final class CaptureAction extends BaseApiAwareAction implements CaptureActionInt
         $this->tokenFactory = $genericTokenFactory;
     }
 
-    /** @param Capture $request */
+    /** @param Capture|mixed $request */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
@@ -63,38 +66,40 @@ final class CaptureAction extends BaseApiAwareAction implements CaptureActionInt
         $details['webhookUrl'] = $notifyToken->getTargetUrl();
         $details['backurl'] = $token->getTargetUrl();
 
+        $metadata = $details['metadata'];
+        $metadata['refund_token'] = $refundToken->getHash();
+        $details['metadata'] = $metadata;
+
         if (true === $this->mollieApiClient->isRecurringSubscription()) {
-            $cancelToken = $this->tokenFactory->createToken(
-                $token->getGatewayName(),
-                $token->getDetails(),
-                'bitbag_sylius_mollie_plugin_cancel_subscription_mollie',
-                ['orderId' => $details['metadata']['order_id']]
-            );
+            if ('first' === $details['sequenceType']) {
+                $cancelToken = $this->tokenFactory->createToken(
+                    $token->getGatewayName(),
+                    $token->getDetails(),
+                    'bitbag_sylius_mollie_plugin_cancel_subscription_mollie',
+                    ['orderId' => $details['metadata']['order_id']]
+                );
 
-            $details['cancel_token'] = $cancelToken->getHash();
-
-            $this->gateway->execute(new CreateSepaMandate($details));
-            $this->gateway->execute(new CreateRecurringSubscription($details));
-        }
-
-        if (false === $this->mollieApiClient->isRecurringSubscription()) {
-            $metadata = $details['metadata'];
-            $metadata['refund_token'] = $refundToken->getHash();
-            $details['metadata'] = $metadata;
-
-            if (isset($details['metadata']['methodType']) && $details['metadata']['methodType'] === Options::PAYMENT_API) {
-                if (in_array($details['metadata']['molliePaymentMethods'], Options::getOnlyOrderAPIMethods())) {
-                    throw new \sprintf(
+                $details['cancel_token'] = $cancelToken->getHash();
+                $this->gateway->execute(new CreateCustomer($details));
+                $this->gateway->execute(new CreateInternalRecurring($details));
+                $this->gateway->execute(new CreateOnDemandSubscription($details));
+            } elseif ('recurring' === $details['sequenceType']) {
+                $this->gateway->execute(new CreateOnDemandSubscriptionPayment($details));
+            }
+        } else {
+            if (isset($details['metadata']['methodType']) && Options::PAYMENT_API === $details['metadata']['methodType']) {
+                if (in_array($details['metadata']['molliePaymentMethods'], Options::getOnlyOrderAPIMethods(), true)) {
+                    throw new InvalidArgumentException(sprintf(
                         'Method %s is not allowed to use %s',
                         $details['metadata']['molliePaymentMethods'],
                         Options::PAYMENT_API
-                    );
+                    ));
                 }
 
                 $this->gateway->execute(new CreatePayment($details));
             }
 
-            if (isset($details['metadata']['methodType']) && $details['metadata']['methodType'] === Options::ORDER_API) {
+            if (isset($details['metadata']['methodType']) && Options::ORDER_API === $details['metadata']['methodType']) {
                 $this->gateway->execute(new CreateOrder($details));
             }
         }
@@ -104,7 +109,6 @@ final class CaptureAction extends BaseApiAwareAction implements CaptureActionInt
     {
         return
             $request instanceof Capture &&
-            $request->getModel() instanceof \ArrayAccess
-            ;
+            $request->getModel() instanceof \ArrayAccess;
     }
 }

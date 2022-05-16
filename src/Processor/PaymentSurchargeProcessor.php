@@ -11,12 +11,14 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Processor;
 
+use BitBag\SyliusMolliePlugin\Entity\GatewayConfigInterface;
 use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfig;
+use BitBag\SyliusMolliePlugin\Entity\OrderInterface;
 use BitBag\SyliusMolliePlugin\PaymentFee\Calculate;
 use Doctrine\Common\Collections\Collection;
-use Payum\Core\Model\PaymentInterface;
-use Sylius\Component\Order\Model\OrderInterface;
-use Sylius\Component\Payment\Model\PaymentMethodInterface;
+use Sylius\Component\Core\Model\PaymentMethodInterface;
+use Sylius\Component\Payment\Model\PaymentInterface;
+use Webmozart\Assert\Assert;
 
 final class PaymentSurchargeProcessor implements PaymentSurchargeProcessorInterface
 {
@@ -36,13 +38,14 @@ final class PaymentSurchargeProcessor implements PaymentSurchargeProcessorInterf
         /** @var PaymentMethodInterface $paymentMethod */
         $paymentMethod = $payment->getMethod();
 
-        if ($paymentMethod->getGatewayConfig()->getFactoryName() !== 'mollie') {
+        Assert::notNull($paymentMethod->getGatewayConfig());
+        if ('mollie' !== $paymentMethod->getGatewayConfig()->getFactoryName()) {
             return;
         }
 
         $data = $payment->getDetails();
 
-        if (null === $data) {
+        if (0 === count($data)) {
             return;
         }
 
@@ -59,10 +62,12 @@ final class PaymentSurchargeProcessor implements PaymentSurchargeProcessorInterf
 
     private function getMolliePaymentSurcharge(PaymentMethodInterface $paymentMethod, string $molliePaymentMethod = null): ?MollieGatewayConfig
     {
+        /** @var GatewayConfigInterface $gatewayConfig */
+        $gatewayConfig = $paymentMethod->getGatewayConfig();
         /** @var Collection $configMethods */
-        $configMethods = $paymentMethod->getGatewayConfig()->getMollieGatewayConfig();
+        $configMethods = $gatewayConfig->getMollieGatewayConfig();
 
-        if ($molliePaymentMethod === null) {
+        if (null === $molliePaymentMethod) {
             return $configMethods->last();
         }
 

@@ -1,0 +1,7 @@
+sylius_resource:
+    resources:
+        bitbag_sylius_mollie_plugin.mollie_subscription_schedule:
+            driver: doctrine/orm
+            classes:
+                model: BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionSchedule
+                interface: BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionScheduleInterface

@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Parser\Response;
 
 use Mollie\Api\Exceptions\ApiException;
+use Webmozart\Assert\Assert;
 
 final class GuzzleNegativeResponseParser implements GuzzleNegativeResponseParserInterface
 {
@@ -19,6 +20,8 @@ final class GuzzleNegativeResponseParser implements GuzzleNegativeResponseParser
     {
         if ($exception->hasResponse()) {
             $response = $exception->getResponse();
+
+            Assert::notNull($response);
             $responseBodyAsString = json_decode((string) $response->getBody(), true);
             if (isset($responseBodyAsString['extra']['failureReason'])) {
                 return $responseBodyAsString['extra']['failureReason'];

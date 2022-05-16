@@ -1,5 +1,53 @@
 bitbag_sylius_mollie_plugin:
     ui:
+        product_variant:
+            tab:
+                recurring: 'Recurring settings'
+        breadcrumbs:
+            subscriptions: 'Subscriptions'
+        subscription_list: ''
+        subscription:
+            block_name: 'Subscription'
+            contents: 'Subscription contents'
+            orders: 'Orders'
+            payments: 'Payments'
+            subscription_duration: 'Will occur %times% times, with interval %interval%.'
+            schedule:
+                block_name: 'Payment schedule'
+                index: '#'
+                scheduled_date: 'Scheduled date'
+                fulfilled_date: 'Fulfilled date'
+            transitions:
+                block_name: 'Subscription state management'
+                cancel: 'Cancel'
+                pause: 'Pause'
+                resume: 'Resume'
+            fields:
+                state: 'State'
+                started_at: 'Started at'
+                interval: 'Interval'
+                orders: 'Orders'
+                recent_failed_payments_count: 'Recent failed payments count'
+                payment_state: 'Recent payment state'
+            state:
+                new: 'New'
+                active: 'Active'
+                processing: 'Processing'
+                canceled: 'Canceled'
+                aborted: 'Auto-Canceled due to failed payments'
+                completed: 'Completed'
+                paused: 'Paused'
+            payment_state:
+                pending: 'Pending'
+                fail: 'Failed'
+                ok: 'Ok'
+            grid:
+                filters:
+                    created_at: 'Created at'
+                    started_at: 'Started at'
+        yes: 'Yes'
+        no: 'No'
+        per_interval: ' / %interval%'
         api_key_test: 'Test API Key'
         api_key_live: 'Live API Key'
         api_key_choice_test: 'Test'
@@ -95,6 +143,9 @@ bitbag_sylius_mollie_plugin:
         selected_countries: 'Selected countries'
         country_level_allow: 'Allow payment from specific countries'
         country_level_exclude: 'Exclude payment from specific countries'
+        mollie_subscriptions: 'Subscriptions'
+        mollie_recurring_payments: 'Recurring payments'
+        order_recurring: 'Is recurring'
         you_can_find_you_profile_id: |-
             Profile ID *
             You can find your Profile ID in your
@@ -130,6 +181,20 @@ bitbag_sylius_mollie_plugin:
     form:
         channel_should_be_unique: 'Mollie payment method is already enabled for {channels} channel. Mollie can only be configured once per channel.'
         enabled_buy_now_button_help: 'The button is shown on the checkout page'
+        product_variant:
+            recurring: Is recurring?
+            times: Recurring duration
+            times_help: Recurring duration as numeric value describing number of recurrings
+            interval: Recurring interval
+            complete_recurring_price: Divide the product price across all payments?
+            interval_configuration:
+                step: 'Interval step unit'
+                amount: 'Interval step'
+                steps:
+                    days: 'Day(s)'
+                    weeks: 'Week(s)'
+                    months: 'Month(s)'
+
         payment_methods:
             payment_description: 'Description'
             payment_description_help: |-
@@ -148,6 +213,14 @@ bitbag_sylius_mollie_plugin:
             tracking_code: 'Tracking Code'
         methods: 'Choose enabled methods'
         expiration_date_time: 'Expiration date time'
+    shop:
+        product_variant:
+            recurring: 'Subscription'
+            times: 'time(s)'
+            every:
+                days: 'every %amount% day(s)'
+                weeks: 'every %amount% week(s)'
+                months: 'every %amount% month(s)'
     subscription:
         cancel: 'Subscription has been successfully canceled.'
     onboardingMollie:
@@ -234,5 +307,4 @@ bitbag_sylius_mollie_plugin:
             cancel: 'Continue onboarding'
         step_open: 'Open'
         create: 'Before configuring individual payment methods, click "create" to save Mollie as a Payment Method in Sylius Admin Panel.'
-
 

@@ -15,9 +15,12 @@ namespace spec\BitBag\SyliusMolliePlugin\Action\Api;
 use BitBag\SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
 use BitBag\SyliusMolliePlugin\Action\Api\CancelRecurringSubscriptionAction;
 use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
-use BitBag\SyliusMolliePlugin\Entity\SubscriptionInterface;
+use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionConfigurationInterface;
+use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
+use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use BitBag\SyliusMolliePlugin\Request\Api\CancelRecurringSubscription;
 use Mollie\Api\Endpoints\CustomerEndpoint;
+use Mollie\Api\Exceptions\ApiException;
 use Mollie\Api\Resources\Customer;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
@@ -25,6 +28,13 @@ use PhpSpec\ObjectBehavior;
 
 final class CancelRecurringSubscriptionActionSpec extends ObjectBehavior
 {
+    function let(MollieLoggerActionInterface $loggerAction): void
+    {
+        $this->beConstructedWith(
+            $loggerAction
+        );
+    }
+
     function it_is_initializable(): void
     {
         $this->shouldHaveType(CancelRecurringSubscriptionAction::class);
@@ -45,28 +55,60 @@ final class CancelRecurringSubscriptionActionSpec extends ObjectBehavior
         $this->shouldHaveType(BaseApiAwareAction::class);
     }
 
-    function it_executes(
+    function it_executes_cancel_recurring_subscription_action(
         CancelRecurringSubscription $request,
         MollieApiClient $mollieApiClient,
-        SubscriptionInterface $subscription,
+        MollieSubscriptionInterface $subscription,
+        MollieSubscriptionConfigurationInterface $configuration,
         CustomerEndpoint $customerEndpoint,
-        Customer $customer
+        Customer $customer,
+        MollieLoggerActionInterface $loggerAction
     ): void {
         $mollieApiClient->customers = $customerEndpoint;
         $this->setApi($mollieApiClient);
-        $customerEndpoint->get('id_1')->willReturn($customer);
-        $subscription->getSubscriptionId()->willReturn('id_1');
-        $subscription->getCustomerId()->willReturn('id_1');
-        $request->getModel()->willReturn($subscription);
 
-        $customer->cancelSubscription('id_1')->shouldBeCalled();
+        $request->getModel()->willReturn($subscription);
+        $subscription->getSubscriptionConfiguration()->willReturn($configuration);
+        $configuration->getCustomerId()->willReturn('id_1');
+        $configuration->getSubscriptionId()->willReturn('sub_id_1');
+        $customerEndpoint->get('id_1')->willReturn($customer);
+
+        $loggerAction->addLog('Cancel recurring subscription with id:  sub_id_1')->shouldBeCalled();
+        $customer->cancelSubscription('sub_id_1')->shouldBeCalled();
 
         $this->execute($request);
     }
 
+    function it_executes_cancel_recurring_subscription_action_and_throws_api_exception(
+        CancelRecurringSubscription $request,
+        MollieApiClient $mollieApiClient,
+        MollieSubscriptionInterface $subscription,
+        MollieSubscriptionConfigurationInterface $configuration,
+        CustomerEndpoint $customerEndpoint,
+        MollieLoggerActionInterface $loggerAction
+    ): void {
+        $mollieApiClient->customers = $customerEndpoint;
+        $this->setApi($mollieApiClient);
+
+        $request->getModel()->willReturn($subscription);
+        $subscription->getSubscriptionConfiguration()->willReturn($configuration);
+        $configuration->getCustomerId()->willReturn('id_1');
+        $configuration->getSubscriptionId()->willReturn('sub_id_1');
+        $e = new \Exception('error_test');
+        $customerEndpoint->get('id_1')->willThrow($e);
+
+        $loggerAction->addNegativeLog(sprintf(
+            'Error with get customer in recurring subscription with: %s',
+            'error_test'))
+            ->shouldBeCalled();
+
+        $this->shouldThrow(ApiException::class)
+            ->during('execute', [$request]);
+    }
+
     function it_supports_cancel_recurring_subscription_request_and_subscription_model(
         CancelRecurringSubscription $request,
-        SubscriptionInterface $subscription
+        MollieSubscriptionInterface $subscription
     ): void {
         $request->getModel()->willReturn($subscription);
 

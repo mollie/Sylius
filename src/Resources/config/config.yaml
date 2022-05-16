@@ -4,7 +4,8 @@ imports:
     - { resource: "@BitBagSyliusMolliePlugin/Resources/config/state_machine.yaml" }
     - { resource: "@BitBagSyliusMolliePlugin/Resources/config/grids.yaml" }
     - { resource: "@BitBagSyliusMolliePlugin/Resources/config/email.yaml" }
+    - { resource: "@BitBagSyliusMolliePlugin/Resources/config/ui.yaml" }
 
 twig:
     globals:
-        subscription_mollie_repository: "@bitbag_sylius_mollie_plugin.repository.subscription"
+        subscription_mollie_repository: "@bitbag_sylius_mollie_plugin.repository.mollie_subscription"

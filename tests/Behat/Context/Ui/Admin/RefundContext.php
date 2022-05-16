@@ -15,29 +15,15 @@ namespace Tests\BitBag\SyliusMolliePlugin\Behat\Context\Ui\Admin;
 use Behat\Behat\Context\Context;
 use Sylius\Behat\Context\Ui\Admin\ManagingOrdersContext;
 use Sylius\Component\Core\Model\OrderInterface;
-use Tests\BitBag\SyliusMolliePlugin\Behat\Mocker\MollieApiMocker;
 
 final class RefundContext implements Context
 {
-    /**
-     * @var MollieApiMocker
-     */
-    private $mollieApiMocker;
-
-    /**
-     * @var ManagingOrdersContext
-     */
+    /** @var ManagingOrdersContext */
     private $managingOrdersContext;
 
-    /**
-     * @param MollieApiMocker $mollieApiMocker
-     * @param ManagingOrdersContext $managingOrdersContext
-     */
     public function __construct(
-        MollieApiMocker $mollieApiMocker,
         ManagingOrdersContext $managingOrdersContext
     ) {
-        $this->mollieApiMocker = $mollieApiMocker;
         $this->managingOrdersContext = $managingOrdersContext;
     }
 
@@ -46,8 +32,6 @@ final class RefundContext implements Context
      */
     public function iMarkThisOrdersMolliePaymentAsRefunded(OrderInterface $order): void
     {
-        $this->mollieApiMocker->mockApiRefundedPayment(function () use ($order) {
-            $this->managingOrdersContext->iMarkThisOrderSPaymentAsRefunded($order);
-        });
+        $this->managingOrdersContext->iMarkThisOrderSPaymentAsRefunded($order);
     }
 }

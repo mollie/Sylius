@@ -14,6 +14,7 @@ namespace BitBag\SyliusMolliePlugin\Checker\ApplePay;
 use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
 use Mollie\Api\Types\PaymentMethod;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
+use Webmozart\Assert\Assert;
 
 final class ApplePayEnabledChecker implements ApplePayEnabledCheckerInterface
 {
@@ -32,6 +33,8 @@ final class ApplePayEnabledChecker implements ApplePayEnabledCheckerInterface
         ]);
 
         if ($applePayConfig instanceof MollieGatewayConfigInterface) {
+            Assert::notNull($applePayConfig->isApplePayDirectButton());
+
             return $applePayConfig->isApplePayDirectButton() && $applePayConfig->isEnabled();
         }
 

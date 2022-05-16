@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\PaymentProcessing;
 
-use BitBag\SyliusMolliePlugin\Entity\SubscriptionInterface;
+use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
 use BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
 use BitBag\SyliusMolliePlugin\Request\Api\CancelRecurringSubscription;
 use Payum\Core\Payum;
@@ -33,11 +33,17 @@ final class CancelRecurringSubscriptionProcessor implements CancelRecurringSubsc
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
-    public function process(SubscriptionInterface $subscription): void
+    public function process(MollieSubscriptionInterface $subscription): void
     {
-        $payment = $subscription->getOrder()->getLastPayment();
+        $lastOrder = $subscription->getLastOrder();
+
+        if (null === $lastOrder) {
+            return;
+        }
+
+        $payment = $lastOrder->getLastPayment();
 
         if (null === $payment) {
             return;

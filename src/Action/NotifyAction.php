@@ -12,10 +12,10 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Action;
 
 use BitBag\SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
-use BitBag\SyliusMolliePlugin\Action\StateMachine\SetStatusOrderAction;
-use BitBag\SyliusMolliePlugin\Entity\SubscriptionInterface;
+use BitBag\SyliusMolliePlugin\Action\StateMachine\SetStatusOrderActionInterface;
+use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
 use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
-use BitBag\SyliusMolliePlugin\Repository\SubscriptionRepositoryInterface;
+use BitBag\SyliusMolliePlugin\Repository\MollieSubscriptionRepositoryInterface;
 use BitBag\SyliusMolliePlugin\Request\StateMachine\StatusRecurringSubscription;
 use Mollie\Api\Exceptions\ApiException;
 use Payum\Core\Action\ActionInterface;
@@ -36,10 +36,10 @@ final class NotifyAction extends BaseApiAwareAction implements ActionInterface, 
     /** @var GetHttpRequest */
     private $getHttpRequest;
 
-    /** @var SubscriptionRepositoryInterface */
+    /** @var MollieSubscriptionRepositoryInterface */
     private $subscriptionRepository;
 
-    /** @var SetStatusOrderAction */
+    /** @var SetStatusOrderActionInterface */
     private $setStatusOrderAction;
 
     /** @var MollieLoggerActionInterface */
@@ -47,8 +47,8 @@ final class NotifyAction extends BaseApiAwareAction implements ActionInterface, 
 
     public function __construct(
         GetHttpRequest $getHttpRequest,
-        SubscriptionRepositoryInterface $subscriptionRepository,
-        SetStatusOrderAction $setStatusOrderAction,
+        MollieSubscriptionRepositoryInterface $subscriptionRepository,
+        SetStatusOrderActionInterface $setStatusOrderAction,
         MollieLoggerActionInterface $loggerAction
     ) {
         $this->getHttpRequest = $getHttpRequest;
@@ -57,7 +57,7 @@ final class NotifyAction extends BaseApiAwareAction implements ActionInterface, 
         $this->loggerAction = $loggerAction;
     }
 
-    /** @param Notify $request */
+    /** @param Notify|mixed $request */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
@@ -65,13 +65,13 @@ final class NotifyAction extends BaseApiAwareAction implements ActionInterface, 
         $details = ArrayObject::ensureArrayObject($request->getModel());
         $this->gateway->execute($this->getHttpRequest);
 
-        $details['created_in_mollie'] = true;
-
-        if (true === isset($details['payment_mollie_id'])) {
+        if (true === isset($details['sequenceType'])) {
             try {
                 $payment = $this->mollieApiClient->payments->get($this->getHttpRequest->request['id']);
             } catch (\Exception $e) {
-                $this->loggerAction->addNegativeLog(sprintf('Error with get customer from mollie with: %s', $e->getMessage()));
+                $this->loggerAction->addNegativeLog(
+                    sprintf('Error with get customer from mollie with: %s', $e->getMessage())
+                );
 
                 throw new ApiException(sprintf('Error with get customer from mollie with: %s', $e->getMessage()));
             }
@@ -80,27 +80,25 @@ final class NotifyAction extends BaseApiAwareAction implements ActionInterface, 
                 $details['payment_mollie_id'] = $this->getHttpRequest->request['id'];
             }
 
+            $subscriptions = $this->subscriptionRepository->findByOrderId($details['metadata']['order_id']);
+
+            /** @var MollieSubscriptionInterface $subscription */
+            foreach ($subscriptions as $subscription) {
+                $this->gateway->execute(new StatusRecurringSubscription($subscription, $payment->id));
+            }
+
             $this->loggerAction->addLog(sprintf('Notify payment with id: %s', $payment->id));
 
             throw new HttpResponse(Response::$statusTexts[Response::HTTP_OK], Response::HTTP_OK);
         }
 
-        if (true === isset($details['subscription_mollie_id'])) {
-            /** @var SubscriptionInterface $subscription */
-            $subscription = $this->subscriptionRepository->findOneByOrderId($details['metadata']['order_id']);
-
-            $this->gateway->execute(new StatusRecurringSubscription($subscription));
-
-            $this->loggerAction->addLog(sprintf('Notify subscription with id: %s', $details['subscription_mollie_id']));
-
-            throw new HttpResponse(Response::$statusTexts[Response::HTTP_OK], Response::HTTP_OK);
-        }
-
-        if (true === isset($details['order_mollie_id'])) {
+        if (true === isset($details['order_mollie_id']) && str_starts_with($this->getHttpRequest->request['id'], 'ord_')) {
             try {
                 $order = $this->mollieApiClient->orders->get($this->getHttpRequest->request['id']);
             } catch (\Exception $e) {
-                $this->loggerAction->addNegativeLog(sprintf('Error with get order from mollie with: %s', $e->getMessage()));
+                $this->loggerAction->addNegativeLog(
+                    sprintf('Error with get order from mollie with: %s', $e->getMessage())
+                );
 
                 throw new ApiException('Error to get order with ' . $e->getMessage());
             }
@@ -121,7 +119,6 @@ final class NotifyAction extends BaseApiAwareAction implements ActionInterface, 
     {
         return
             $request instanceof Notify &&
-            $request->getModel() instanceof \ArrayAccess
-            ;
+            $request->getModel() instanceof \ArrayAccess;
     }
 }

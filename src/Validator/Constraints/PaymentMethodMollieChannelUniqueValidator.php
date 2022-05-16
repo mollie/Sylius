@@ -13,6 +13,7 @@ namespace BitBag\SyliusMolliePlugin\Validator\Constraints;
 
 use BitBag\SyliusMolliePlugin\Entity\GatewayConfigInterface;
 use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
+use BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
 use BitBag\SyliusMolliePlugin\Repository\PaymentMethodRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -21,6 +22,7 @@ use Sylius\Component\Core\Model\PaymentMethodInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator as ConstraintValidatorAlias;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Webmozart\Assert\Assert;
 
 final class PaymentMethodMollieChannelUniqueValidator extends ConstraintValidatorAlias
 {
@@ -40,27 +42,52 @@ final class PaymentMethodMollieChannelUniqueValidator extends ConstraintValidato
 
     public function validate($value, Constraint $constraint): void
     {
-        if ($value instanceof PaymentMethodInterface && null !== $value->getCode()) {
-            false === $this->isMolliePaymentMethod($value) ?: $this->validateMolliePaymentMethod($value, $constraint);
+        if ($value instanceof PaymentMethodInterface &&
+            null !== $value->getCode() &&
+            $this->isMolliePaymentMethod($value)
+        ) {
+            $this->validateMolliePaymentMethod($value, $constraint);
         }
     }
 
     private function validateMolliePaymentMethod(PaymentMethodInterface $paymentMethod, Constraint $constraint): void
     {
+        if (null === $paymentMethod->getCode()) {
+            return;
+        }
         $molliePaymentMethods = $this->paymentMethodRepository->findAllByFactoryNameAndCode($paymentMethod->getCode());
 
         if (0 === count($molliePaymentMethods)) {
             return;
         }
 
-        $alreadyUsedChannels = $this->getAlreadyUsedChannels($molliePaymentMethods);
+        $separatedMethods = [
+            MollieSubscriptionGatewayFactory::FACTORY_NAME => [],
+            MollieGatewayFactory::FACTORY_NAME => [],
+        ];
 
-        if ($this->isTheSameChannel($paymentMethod->getChannels(), $alreadyUsedChannels)) {
-            $translation = $this->translator->trans('bitbag_sylius_mollie_plugin.form.channel_should_be_unique', [
-                '{channels}' => $this->getChannelsNameByChannels($alreadyUsedChannels),
-            ]);
+        /** @var PaymentMethodInterface $method */
+        foreach ($molliePaymentMethods as $method) {
+            Assert::notNull($method->getGatewayConfig());
+            $separatedMethods[$method->getGatewayConfig()->getFactoryName()][] = $method;
+        }
 
-            $this->context->buildViolation($translation)->atPath('channels')->addViolation();
+        foreach ($separatedMethods as $gatewayName => $methodsCollection) {
+            $alreadyUsedChannels = $this->getAlreadyUsedChannels($methodsCollection);
+
+            Assert::notNull($paymentMethod->getGatewayConfig());
+            if ($paymentMethod->getGatewayConfig()->getFactoryName() !== $gatewayName) {
+                continue;
+            }
+
+            if ($this->isTheSameChannel($paymentMethod->getChannels(), $alreadyUsedChannels)) {
+                $translation = $this->translator->trans('bitbag_sylius_mollie_plugin.form.channel_should_be_unique', [
+                    '{channels}' => $this->getChannelsNameByChannels($alreadyUsedChannels),
+                ]);
+
+                $this->context->buildViolation($translation)->atPath('channels')->addViolation()
+                ;
+            }
         }
     }
 
@@ -97,7 +124,11 @@ final class PaymentMethodMollieChannelUniqueValidator extends ConstraintValidato
         /** @var GatewayConfigInterface $gateway */
         $gateway = $paymentMethod->getGatewayConfig();
 
-        return $gateway->getFactoryName() === MollieGatewayFactory::FACTORY_NAME;
+        return true === in_array(
+            $gateway->getFactoryName(),
+            [MollieGatewayFactory::FACTORY_NAME, MollieSubscriptionGatewayFactory::FACTORY_NAME],
+            true
+        );
     }
 
     private function getChannelsNameByChannels(Collection $alreadyUsedChannels): string

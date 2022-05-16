@@ -11,9 +11,9 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Factory;
 
+use BitBag\SyliusMolliePlugin\Entity\GatewayConfigInterface;
 use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
 use BitBag\SyliusMolliePlugin\Payments\Methods\MethodInterface;
-use Sylius\Bundle\PayumBundle\Model\GatewayConfigInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 
@@ -33,12 +33,17 @@ final class MollieGatewayConfigFactory implements MollieGatewayConfigFactoryInte
 
     private function createNewOrUpdate(MethodInterface $method, GatewayConfigInterface $gateway): MollieGatewayConfigInterface
     {
+        /** @var ?MollieGatewayConfigInterface $methodExist */
         $methodExist = $this->repository->findOneBy([
+            /** @phpstan-ignore-next-line Not every class which implements MethodInterface returns the same type */
             'methodId' => $method->getMethodId(),
             'gateway' => $gateway,
         ]);
 
-        return null !== $methodExist ? $methodExist : $this->mollieGatewayConfigFactory->createNew();
+        /** @var MollieGatewayConfigInterface $gatewayConfig */
+        $gatewayConfig = $this->mollieGatewayConfigFactory->createNew();
+
+        return null !== $methodExist ? $methodExist : $gatewayConfig;
     }
 
     public function create(
@@ -48,6 +53,7 @@ final class MollieGatewayConfigFactory implements MollieGatewayConfigFactoryInte
     ): MollieGatewayConfigInterface {
         $mollieGatewayConfig = $this->createNewOrUpdate($method, $gateway);
 
+        /** @phpstan-ignore-next-line Not every class which implements MethodInterface returns the same type */
         $mollieGatewayConfig->setMethodId($method->getMethodId());
         $mollieGatewayConfig->setName($method->getName());
         $mollieGatewayConfig->setMinimumAmount($method->getMinimumAmount());

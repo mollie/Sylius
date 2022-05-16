@@ -23,6 +23,7 @@ final class PaymentSurchargeType extends Constraint
         return PaymentSurchargeTypeValidator::class;
     }
 
+    /** @return string[] */
     public function getTargets(): array
     {
         return [self::CLASS_CONSTRAINT];

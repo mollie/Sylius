@@ -12,7 +12,6 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Action\Api;
 
 use BitBag\SyliusMolliePlugin\Entity\MollieCustomer;
-use BitBag\SyliusMolliePlugin\Entity\MollieCustomerInterface;
 use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use BitBag\SyliusMolliePlugin\Request\Api\CreateCustomer;
 use Mollie\Api\Exceptions\ApiException;
@@ -36,7 +35,7 @@ final class CreateCustomerAction extends BaseApiAwareAction implements ActionInt
         $this->mollieCustomerRepository = $mollieCustomerRepository;
     }
 
-    /** @param CreateCustomer $request */
+    /** @param CreateCustomer|mixed $request */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
@@ -47,7 +46,7 @@ final class CreateCustomerAction extends BaseApiAwareAction implements ActionInt
             'email' => $model['email'],
         ];
 
-        /** @var MollieCustomerInterface $customer */
+        /** @var ?MollieCustomer $customer */
         $customer = $this->mollieCustomerRepository->findOneBy(['email' => $model['email']]);
 
         if (null === $customer) {
@@ -56,7 +55,7 @@ final class CreateCustomerAction extends BaseApiAwareAction implements ActionInt
         }
 
         try {
-            if (empty($customer->getProfileId())) {
+            if (null === $customer->getProfileId()) {
                 $customerMollie = $this->mollieApiClient->customers->create($data);
                 $customer->setProfileId($customerMollie->id);
 

@@ -18,13 +18,16 @@ use Sylius\RefundPlugin\Model\ShipmentRefund;
 
 final class ShipmentUnitRefund implements ShipmentUnitRefundInterface
 {
-    public function refund(OrderInterface $order, array $orderItemUnitRefund, int $totalToRefund): array
-    {
+    public function refund(
+        OrderInterface $order,
+        array $orderItemUnitRefund,
+        int $totalToRefund
+    ): array {
         /** @var AdjustmentInterface $refundedShipment */
         $refundedShipment = $order->getAdjustments('shipping')->first();
 
         $totalRefunded = 0;
-        if (!empty($orderItemUnitRefund)) {
+        if (0 < count($orderItemUnitRefund)) {
             /** @var OrderItemUnitRefund $item */
             foreach ($orderItemUnitRefund as $item) {
                 $totalRefunded += $item->total();
@@ -33,7 +36,7 @@ final class ShipmentUnitRefund implements ShipmentUnitRefundInterface
             $totalToRefund -= $totalRefunded;
         }
 
-        if ($totalToRefund <= 0) {
+        if (0 >= $totalToRefund) {
             return [];
         }
 

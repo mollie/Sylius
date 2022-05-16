@@ -22,7 +22,7 @@ class MollieMethodImage implements MollieMethodImageInterface
     /** @var \SplFileInfo|null */
     protected $file;
 
-    /** @var string */
+    /** @var string|null */
     protected $path;
 
     /** @var MollieGatewayConfigInterface */

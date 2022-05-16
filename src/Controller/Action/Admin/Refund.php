@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Controller\Action\Admin;
 
 use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
+use BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
 use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use BitBag\SyliusMolliePlugin\Request\Api\RefundOrder;
 use Doctrine\ORM\EntityManagerInterface;
@@ -86,7 +87,7 @@ final class Refund
         $gatewayConfig = $paymentMethod->getGatewayConfig();
         $factoryName = $gatewayConfig->getFactoryName() ?? null;
 
-        if (MollieGatewayFactory::FACTORY_NAME !== $factoryName) {
+        if (false === in_array($factoryName, [MollieGatewayFactory::FACTORY_NAME, MollieSubscriptionGatewayFactory::FACTORY_NAME], true)) {
             $this->applyStateMachineTransition($payment);
 
             $this->session->getFlashBag()->add('success', 'sylius.payment.refunded');
@@ -111,7 +112,7 @@ final class Refund
         /** @var TokenInterface|null $token */
         $token = $this->payum->getTokenStorage()->find($hash);
 
-        if (null === $token || !$token instanceof TokenInterface) {
+        if (!$token instanceof TokenInterface) {
             $this->loggerAction->addNegativeLog(sprintf('A token with hash `%s` could not be found.', $hash));
 
             throw new BadRequestHttpException(sprintf('A token with hash `%s` could not be found.', $hash));
@@ -153,7 +154,7 @@ final class Refund
     private function redirectToReferer(Request $request): Response
     {
         /** @var string $url */
-        $url = $request->headers->get('referer', null, true);
+        $url = $request->headers->get('referer');
 
         return new RedirectResponse($url);
     }

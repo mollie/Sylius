@@ -11,9 +11,9 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\PaymentProcessing;
 
-use BitBag\SyliusMolliePlugin\Entity\SubscriptionInterface;
+use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
 
 interface CancelRecurringSubscriptionProcessorInterface
 {
-    public function process(SubscriptionInterface $subscription): void;
+    public function process(MollieSubscriptionInterface $subscription): void;
 }

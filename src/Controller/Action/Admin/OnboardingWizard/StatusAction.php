@@ -19,10 +19,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class StatusAction
 {
-    /** @var RepositoryInterface $statusRepository */
+    /** @var RepositoryInterface */
     private $statusRepository;
 
-    /** @var AdminUserContextInterface $adminUserContext */
+    /** @var AdminUserContextInterface */
     private $adminUserContext;
 
     public function __construct(RepositoryInterface $statusRepository, AdminUserContextInterface $adminUserContext)

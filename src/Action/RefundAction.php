@@ -24,6 +24,7 @@ use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Refund;
 use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Resource\Exception\UpdateHandlingException;
+use Webmozart\Assert\Assert;
 
 final class RefundAction extends BaseApiAwareAction implements ActionInterface, ApiAwareInterface, GatewayAwareInterface
 {
@@ -43,16 +44,26 @@ final class RefundAction extends BaseApiAwareAction implements ActionInterface, 
         $this->convertOrderRefundData = $convertOrderRefundData;
     }
 
-    /** @param Refund $request */
+    /** @param Refund|mixed $request */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
         $details = ArrayObject::ensureArrayObject($request->getModel());
 
-        if ($details['created_in_mollie']) {
-            $this->loggerAction->addLog('Received refund created in Mollie dashboard');
+        if (!array_key_exists('refund', $details['metadata'])) {
+            return;
+        }
 
+        try {
+            $molliePayment = $this->mollieApiClient->payments->get($details['payment_mollie_id']);
+        } catch (ApiException $e) {
+            $this->loggerAction->addNegativeLog(sprintf('API call failed: %s', htmlspecialchars($e->getMessage())));
+
+            throw new \Exception(sprintf('API call failed: %s', htmlspecialchars($e->getMessage())));
+        }
+
+        if ($molliePayment->hasRefunds()) {
             return;
         }
 
@@ -61,6 +72,8 @@ final class RefundAction extends BaseApiAwareAction implements ActionInterface, 
 
         try {
             $molliePayment = $this->mollieApiClient->payments->get($details['payment_mollie_id']);
+
+            Assert::notNull($payment->getCurrencyCode());
             $refundData = $this->convertOrderRefundData->convert($details['metadata']['refund'], $payment->getCurrencyCode());
 
             if (true === $molliePayment->canBeRefunded()) {

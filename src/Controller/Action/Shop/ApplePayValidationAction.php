@@ -48,11 +48,12 @@ final class ApplePayValidationAction
 
         $validateUrl = $request->get('validationUrl');
 
-        if (empty($validateUrl)) {
+        if (null === $validateUrl) {
             return new JsonResponse(null, Response::HTTP_NOT_FOUND);
         }
 
         $url = $request->getHost();
+        /** @var string[] $domain */
         $domain = parse_url($url);
 
         try {

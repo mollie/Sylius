@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Repository;
 
 use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
+use BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
 use Sylius\Bundle\CoreBundle\Doctrine\ORM\PaymentMethodRepository as BasePaymentMethodRepository;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\PaymentMethodInterface;
@@ -22,16 +23,16 @@ class PaymentMethodRepository extends BasePaymentMethodRepository implements Pay
     {
         return $this->createQueryBuilder('o')
             ->innerJoin('o.gatewayConfig', 'gatewayConfig')
-            ->where('gatewayConfig.factoryName = :factoryName')
+            ->where('gatewayConfig.factoryName in (:factoryName)')
             ->andWhere('o.code != :code')
-            ->setParameter('factoryName', MollieGatewayFactory::FACTORY_NAME)
+            ->setParameter('factoryName', [MollieGatewayFactory::FACTORY_NAME, MollieSubscriptionGatewayFactory::FACTORY_NAME])
             ->setParameter('code', $code)
             ->getQuery()
             ->getResult()
         ;
     }
 
-    public function findOneByChannelAndGatewayFactoryName(ChannelInterface $channel, $factoryName): ?PaymentMethodInterface
+    public function findOneByChannelAndGatewayFactoryName(ChannelInterface $channel, string $factoryName): ?PaymentMethodInterface
     {
         return $this->createQueryBuilder('o')
             ->innerJoin('o.gatewayConfig', 'gatewayConfig')

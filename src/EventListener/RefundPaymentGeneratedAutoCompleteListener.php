@@ -18,6 +18,7 @@ use Sylius\Component\Core\Model\PaymentMethodInterface;
 use Sylius\RefundPlugin\Entity\RefundPaymentInterface;
 use Sylius\RefundPlugin\Event\RefundPaymentGenerated;
 use Sylius\RefundPlugin\StateResolver\RefundPaymentCompletedStateApplierInterface;
+use Webmozart\Assert\Assert;
 
 final class RefundPaymentGeneratedAutoCompleteListener
 {
@@ -45,6 +46,7 @@ final class RefundPaymentGeneratedAutoCompleteListener
         /** @var PaymentMethodInterface $paymentMethod */
         $paymentMethod = $this->paymentMethodRepository->find($refundPaymentGenerated->paymentMethodId());
 
+        Assert::notNull($paymentMethod->getGatewayConfig());
         if (MollieGatewayFactory::FACTORY_NAME !== $paymentMethod->getGatewayConfig()->getFactoryName()) {
             return;
         }

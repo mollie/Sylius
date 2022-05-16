@@ -61,35 +61,52 @@ class TemplateMollieEmail implements TemplateMollieEmailInterface
 
     public function getName(): ?string
     {
-        return $this->getBlockTranslation()->getName();
+        /** @var TemplateMollieEmailTranslationInterface $translation */
+        $translation = $this->getBlockTranslation();
+
+        return $translation->getName();
     }
 
     public function setName(?string $name): void
     {
-        $this->getBlockTranslation()->setName($name);
+        /** @var TemplateMollieEmailTranslationInterface $translation */
+        $translation = $this->getBlockTranslation();
+
+        $translation->setName($name);
     }
 
     public function getSubject(): ?string
     {
-        return $this->getBlockTranslation()->getSubject();
+        /** @var TemplateMollieEmailTranslationInterface $translation */
+        $translation = $this->getBlockTranslation();
+
+        return $translation->getSubject();
     }
 
     public function setSubject(?string $subject): void
     {
-        $this->getBlockTranslation()->setSubject($subject);
+        /** @var TemplateMollieEmailTranslationInterface $translation */
+        $translation = $this->getBlockTranslation();
+
+        $translation->setSubject($subject);
     }
 
     public function getContent(): ?string
     {
-        return $this->getBlockTranslation()->getContent();
+        /** @var TemplateMollieEmailTranslationInterface $translation */
+        $translation = $this->getBlockTranslation();
+
+        return $translation->getContent();
     }
 
     public function setContent(?string $content): void
     {
-        $this->getBlockTranslation()->setContent($content);
+        /** @var TemplateMollieEmailTranslationInterface $translation */
+        $translation = $this->getBlockTranslation();
+
+        $translation->setContent($content);
     }
 
-    /** @return TemplateMollieEmailTranslationInterface|TranslationInterface|null */
     protected function getBlockTranslation(): TranslationInterface
     {
         return $this->getTranslation();

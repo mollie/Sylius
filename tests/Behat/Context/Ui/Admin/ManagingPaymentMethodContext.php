@@ -18,17 +18,25 @@ use Webmozart\Assert\Assert;
 
 final class ManagingPaymentMethodContext implements Context
 {
-    /**
-     * @var CreatePageInterface
-     */
+    /** @var CreatePageInterface */
     private $createPage;
 
-    /**
-     * @param CreatePageInterface $createPage
-     */
-    public function __construct(CreatePageInterface $createPage)
-    {
+    private string $mollieTestApiKey;
+
+    private string $mollieProfileId;
+
+    public const MOLLIE_TEST_API_KEY = 'MOLLIE_TEST_API_KEY';
+
+    public const MOLLIE_PROFILE_KEY = 'MOLLIE_PROFILE_KEY';
+
+    public function __construct(
+        CreatePageInterface $createPage,
+        string $mollieTestApiKey,
+        string $mollieProfileId
+    ) {
         $this->createPage = $createPage;
+        $this->mollieTestApiKey = $mollieTestApiKey;
+        $this->mollieProfileId = $mollieProfileId;
     }
 
     /**
@@ -44,6 +52,12 @@ final class ManagingPaymentMethodContext implements Context
      */
     public function iConfigureItWithTestMollieCredentials(string $apiKey): void
     {
+        if (self::MOLLIE_TEST_API_KEY === $apiKey) {
+            $this->createPage->setApiKey($this->mollieTestApiKey);
+
+            return;
+        }
+
         $this->createPage->setApiKey($apiKey);
     }
 
@@ -52,6 +66,12 @@ final class ManagingPaymentMethodContext implements Context
      */
     public function iConfigureProfileId(string $profileId): void
     {
+        if (self::MOLLIE_PROFILE_KEY === $profileId) {
+            $this->createPage->setProfileId($this->mollieProfileId);
+
+            return;
+        }
+
         $this->createPage->setProfileId($profileId);
     }
 
@@ -71,11 +91,19 @@ final class ManagingPaymentMethodContext implements Context
     }
 
     /**
-     * @Then I should be notified that :message
+     * @Then I should be notified with error :message message
      */
-    public function iShouldBeNotifiedThat(string $message): void
+    public function iShouldBeNotifiedWithErrorMessage(string $message): void
     {
         Assert::true($this->createPage->containsErrorWithMessage($message));
+    }
+
+    /**
+     * @Then I should be notified with success :message message
+     */
+    public function iShouldBeNotifiedWithSuccessMessage(string $message): void
+    {
+        Assert::true($this->createPage->containsSuccessMessage($message));
     }
 
     /**
@@ -87,18 +115,18 @@ final class ManagingPaymentMethodContext implements Context
     }
 
     /**
-     * @When I fill the times with :times
+     * @Given I can load payment methods
      */
-    public function iFillTheTimesWith(int $times): void
+    public function iCanLoadPaymentMethods(): void
     {
-        $this->createPage->setTimes($times);
+        $this->createPage->loadPaymentMethods();
     }
 
     /**
-     * @When I fill the interval with :interval
+     * @Given I enable :paymentMethodName payment method
      */
-    public function iFillTheIntervalWith(string $interval): void
+    public function iEnablePaymentMethod(string $paymentMethodName): void
     {
-        $this->createPage->setInterval($interval);
+        $this->createPage->enablePaymentMethod($paymentMethodName);
     }
 }

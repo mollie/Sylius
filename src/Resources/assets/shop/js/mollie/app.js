@@ -154,12 +154,6 @@ $(function () {
                     return;
                 }
 
-                const tokenInput = document.createElement('input');
-                tokenInput.setAttribute('name', 'token');
-                tokenInput.setAttribute('type', 'hidden');
-                tokenInput.setAttribute('value', token);
-
-                form.appendChild(tokenInput);
                 tokenField.value = token;
 
                 form.submit();

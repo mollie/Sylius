@@ -16,5 +16,9 @@ use Sylius\Component\Resource\Factory\FactoryInterface;
 
 interface MollieLoggerFactoryInterface extends FactoryInterface
 {
-    public function create(string $message, int $logLevel, int $errorCode): MollieLoggerInterface;
+    public function create(
+        string $message,
+        int $logLevel,
+        int $errorCode
+    ): MollieLoggerInterface;
 }

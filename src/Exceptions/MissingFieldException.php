@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Exception\ValidatorException;
 
 final class MissingFieldException extends ValidatorException
 {
-    public function __construct($field)
+    public function __construct(string $field)
     {
         parent::__construct(sprintf("Expected field %s, but it's missing.", $field));
     }

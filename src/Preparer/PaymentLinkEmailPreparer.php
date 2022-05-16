@@ -13,19 +13,19 @@ namespace BitBag\SyliusMolliePlugin\Preparer;
 
 use BitBag\SyliusMolliePlugin\EmailSender\PaymentLinkEmailSenderInterface;
 use BitBag\SyliusMolliePlugin\Entity\TemplateMollieEmailTranslationInterface;
+use BitBag\SyliusMolliePlugin\Repository\TemplateMollieEmailTranslationRepositoryInterface;
 use Liip\ImagineBundle\Exception\Config\Filter\NotFoundException;
 use Sylius\Component\Core\Model\OrderInterface;
-use Sylius\Component\Resource\Repository\RepositoryInterface;
 
 final class PaymentLinkEmailPreparer implements PaymentLinkEmailPreparerInterface
 {
-    /** @var RepositoryInterface */
+    /** @var TemplateMollieEmailTranslationRepositoryInterface */
     private $templateRepository;
 
     /** @var PaymentLinkEmailSenderInterface */
     private $emailSender;
 
-    public function __construct(RepositoryInterface $templateRepository, PaymentLinkEmailSenderInterface $emailSender)
+    public function __construct(TemplateMollieEmailTranslationRepositoryInterface $templateRepository, PaymentLinkEmailSenderInterface $emailSender)
     {
         $this->templateRepository = $templateRepository;
         $this->emailSender = $emailSender;
@@ -35,7 +35,10 @@ final class PaymentLinkEmailPreparer implements PaymentLinkEmailPreparerInterfac
     {
         $locale = $order->getLocaleCode();
 
-        /** @var TemplateMollieEmailTranslationInterface $template */
+        if (null === $locale) {
+            return;
+        }
+        /** @var ?TemplateMollieEmailTranslationInterface $template */
         $template = $this->templateRepository->findOneByLocaleCodeAdnType(
             $locale,
             $templateName

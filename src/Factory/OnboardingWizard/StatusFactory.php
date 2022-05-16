@@ -27,7 +27,10 @@ final class StatusFactory implements StatusFactoryInterface
 
     public function createNew(): OnboardingWizardStatusInterface
     {
-        return $this->factory->createNew();
+        /** @var OnboardingWizardStatusInterface $statusFactory */
+        $statusFactory = $this->factory->createNew();
+
+        return $statusFactory;
     }
 
     public function create(AdminUserInterface $adminUser, bool $completed): OnboardingWizardStatusInterface

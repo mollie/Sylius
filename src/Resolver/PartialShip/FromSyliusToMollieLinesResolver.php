@@ -16,6 +16,7 @@ use BitBag\SyliusMolliePlugin\DTO\PartialShipItems;
 use Doctrine\Common\Collections\Collection;
 use Mollie\Api\Resources\Order;
 use Sylius\Component\Core\Model\OrderItemUnitInterface;
+use Webmozart\Assert\Assert;
 
 final class FromSyliusToMollieLinesResolver implements FromSyliusToMollieLinesResolverInterface
 {
@@ -26,6 +27,7 @@ final class FromSyliusToMollieLinesResolver implements FromSyliusToMollieLinesRe
         /** @var OrderItemUnitInterface $unit */
         foreach ($units as $unit) {
             $lineId = $this->getLineIdFromMollie($mollieOrder, $unit->getOrderItem()->getId());
+            Assert::notNull($lineId);
 
             $shipItem = new PartialShipItem();
             $shipItem->setId($unit->getOrderItem()->getId());
@@ -41,7 +43,14 @@ final class FromSyliusToMollieLinesResolver implements FromSyliusToMollieLinesRe
     private function getLineIdFromMollie(Order $mollieOrder, int $itemId): ?string
     {
         foreach ($mollieOrder->lines as $line) {
+            if (!property_exists($line, 'metadata')) {
+                throw new \InvalidArgumentException();
+            }
             if ($itemId === $line->metadata->item_id) {
+                if (!property_exists($line, 'id')) {
+                    throw new \InvalidArgumentException();
+                }
+
                 return (string) $line->id;
             }
         }

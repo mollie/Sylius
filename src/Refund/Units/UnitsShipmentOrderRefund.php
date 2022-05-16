@@ -35,8 +35,14 @@ final class UnitsShipmentOrderRefund implements UnitsShipmentOrderRefundInterfac
             return [];
         }
 
+        /** @var mixed $line */
         foreach ($order->lines as $line) {
-            if ($line->type === ConvertOrderInterface::SHIPPING_TYPE && $line->quantityRefunded > 0) {
+            if (!property_exists($line, 'type') ||
+                !property_exists($line, 'refundableQuantity')) {
+                throw new \InvalidArgumentException();
+            }
+
+            if (ConvertOrderInterface::SHIPPING_TYPE === $line->type && 0 < $line->quantityRefunded) {
                 /** @var Adjustment $refundedShipment */
                 $refundedShipment = $syliusOrder->getAdjustments('shipping')->first();
 
@@ -55,10 +61,10 @@ final class UnitsShipmentOrderRefund implements UnitsShipmentOrderRefundInterfac
     private function hasShipmentRefund(OrderInterface $order): bool
     {
         $unitRefunded = $this->refundUnitsRepository->findOneBy([
-            'orderNumber' => $order->getNumber(),
+            'order' => $order->getId(),
             'type' => RefundType::shipment(),
         ]);
 
-        return $unitRefunded ? true : false;
+        return null !== $unitRefunded;
     }
 }

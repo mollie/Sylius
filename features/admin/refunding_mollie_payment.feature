@@ -28,3 +28,4 @@ Feature: Refunding order's Mollie payment
         When I mark this order's mollie payment as refunded
         Then it should have payment with state refunded
         And it's payment state should be refunded
+        Then I should not be able to refund this payment

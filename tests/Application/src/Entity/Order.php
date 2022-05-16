@@ -12,14 +12,53 @@ declare(strict_types=1);
 
 namespace Tests\BitBag\SyliusMolliePlugin\Entity;
 
+use BitBag\SyliusMolliePlugin\Entity\AbandonedEmailOrderTrait;
 use BitBag\SyliusMolliePlugin\Entity\OrderInterface;
-use BitBag\SyliusMolliePlugin\Entity\OrderTrait;
+use BitBag\SyliusMolliePlugin\Entity\ProductVariantInterface;
+use BitBag\SyliusMolliePlugin\Entity\RecurringOrderTrait;
+use Doctrine\Common\Collections\Collection;
 use Sylius\Component\Core\Model\Order as BaseOrder;
+use Sylius\Component\Core\Model\OrderItemInterface;
 
 class Order extends BaseOrder implements OrderInterface
 {
-    use OrderTrait;
+    use AbandonedEmailOrderTrait;
 
-    /** @var bool */
-    protected $abandonedEmail = false;
+    use RecurringOrderTrait;
+
+    public function getRecurringItems(): Collection
+    {
+        return $this
+            ->items
+            ->filter(function (OrderItemInterface $orderItem) {
+                $variant = $orderItem->getVariant();
+
+                return $variant instanceof ProductVariantInterface
+                    && true === $variant->isRecurring();
+            })
+        ;
+    }
+
+    public function getNonRecurringItems(): Collection
+    {
+        return $this
+            ->items
+            ->filter(function (OrderItemInterface $orderItem) {
+                $variant = $orderItem->getVariant();
+
+                return $variant instanceof ProductVariantInterface
+                    && false === $variant->isRecurring();
+            })
+        ;
+    }
+
+    public function hasRecurringContents(): bool
+    {
+        return 0 < $this->getRecurringItems()->count();
+    }
+
+    public function hasNonRecurringContents(): bool
+    {
+        return 0 < $this->getNonRecurringItems()->count();
+    }
 }

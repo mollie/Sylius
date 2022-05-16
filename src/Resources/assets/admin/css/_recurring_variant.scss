@@ -1,0 +1,21 @@
+#recurring-variant-settings {
+    .field {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+
+        .help-text {
+            flex-direction: column;
+        }
+
+        .checkbox {
+            & > * {
+                display: flex;
+            }
+
+            & > label {
+                order: 1
+            }
+        }
+    }
+}

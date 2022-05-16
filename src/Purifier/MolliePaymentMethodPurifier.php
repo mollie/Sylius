@@ -11,8 +11,8 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Purifier;
 
-use BitBag\SyliusMolliePlugin\Creator\MollieMethodsCreatorInterface;
 use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
+use BitBag\SyliusMolliePlugin\Resolver\MollieMethodsResolverInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 
 final class MolliePaymentMethodPurifier implements MolliePaymentMethodPurifierInterface
@@ -27,7 +27,7 @@ final class MolliePaymentMethodPurifier implements MolliePaymentMethodPurifierIn
 
     public function removeAllNoLongerSupportedMethods(): void
     {
-        foreach (MollieMethodsCreatorInterface::UNSUPPORTED_METHODS as $methodId) {
+        foreach (MollieMethodsResolverInterface::UNSUPPORTED_METHODS as $methodId) {
             $this->removeMethod($methodId);
         }
     }
@@ -37,6 +37,7 @@ final class MolliePaymentMethodPurifier implements MolliePaymentMethodPurifierIn
         $methodConfig = $this->repository->findOneBy(['methodId' => $methodId]);
 
         if ($methodConfig instanceof MollieGatewayConfigInterface) {
+            /** @phpstan-ignore-next-line Ecs yields about doc comment in wrong place */
             $this->repository->remove($methodConfig);
         }
     }

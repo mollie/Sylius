@@ -18,3 +18,5 @@ bitbag_sylius_mollie_plugin_onboarding_wizard_status:
   resource: "admin/onboarding_wizard/status.yaml"
 bitbag_sylius_mollie_plugin_onboarding_wizard_completed:
   resource: "admin/onboarding_wizard/completed.yaml"
+bitbag_sylius_mollie_plugin_mollie_subscription:
+  resource: "admin/mollie_subscription.yaml"

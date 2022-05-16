@@ -16,31 +16,15 @@ use Sylius\Behat\Page\Admin\Crud\CreatePageInterface as BaseCreatePageInterface;
 
 interface CreatePageInterface extends BaseCreatePageInterface
 {
-    /**
-     * @param string $apiKey
-     */
     public function setApiKey(string $apiKey): void;
 
-    /**
-     * @param string $profileId
-     */
     public function setProfileId(string $profileId): void;
 
-    /**
-     * @param int $times
-     */
-    public function setTimes(int $times): void;
+    public function loadPaymentMethods(): void;
 
-    /**
-     * @param string $interval
-     */
-    public function setInterval(string $interval): void;
+    public function enablePaymentMethod(string $paymentMethodName): void;
 
-    /**
-     * @param string $message
-     * @param bool $strict
-     *
-     * @return bool
-     */
     public function containsErrorWithMessage(string $message, bool $strict = true): bool;
+
+    public function containsSuccessMessage(string $message): bool;
 }

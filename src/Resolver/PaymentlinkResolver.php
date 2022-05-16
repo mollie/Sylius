@@ -14,6 +14,7 @@ namespace BitBag\SyliusMolliePlugin\Resolver;
 use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
 use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfig;
 use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
+use BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
 use BitBag\SyliusMolliePlugin\Form\Type\MollieGatewayConfigurationType;
 use BitBag\SyliusMolliePlugin\Helper\IntToStringConverter;
 use BitBag\SyliusMolliePlugin\Preparer\PaymentLinkEmailPreparerInterface;
@@ -23,6 +24,7 @@ use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Core\Model\PaymentMethodInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
+use Webmozart\Assert\Assert;
 
 final class PaymentlinkResolver implements PaymentlinkResolverInterface
 {
@@ -55,8 +57,11 @@ final class PaymentlinkResolver implements PaymentlinkResolverInterface
         $this->paymentTokenProvider = $paymentTokenProvider;
     }
 
-    public function resolve(OrderInterface $order, array $data, string $templateName): string
-    {
+    public function resolve(
+        OrderInterface $order,
+        array $data,
+        string $templateName
+    ): string {
         $methodsArray = [];
         $methods = $data['methods'] ?? $data['methods'] = [];
 
@@ -66,7 +71,12 @@ final class PaymentlinkResolver implements PaymentlinkResolverInterface
         /** @var PaymentMethodInterface $paymentMethod */
         $paymentMethod = $syliusPayment->getMethod();
 
-        if (MollieGatewayFactory::FACTORY_NAME !== $paymentMethod->getGatewayConfig()->getFactoryName()) {
+        Assert::notNull($paymentMethod->getGatewayConfig());
+        if (false === in_array(
+            $paymentMethod->getGatewayConfig()->getFactoryName(),
+            [MollieGatewayFactory::FACTORY_NAME, MollieSubscriptionGatewayFactory::FACTORY_NAME],
+            true
+        )) {
             throw new NotFoundException('No method mollie found in order');
         }
 
@@ -74,7 +84,7 @@ final class PaymentlinkResolver implements PaymentlinkResolverInterface
 
         /** @var MollieGatewayConfig $method */
         foreach ($methods as $method) {
-            if (in_array($method->getMethodId(), self::NO_AVAILABLE_METHODS)) {
+            if (in_array($method->getMethodId(), self::NO_AVAILABLE_METHODS, true)) {
                 continue;
             }
 
@@ -84,7 +94,7 @@ final class PaymentlinkResolver implements PaymentlinkResolverInterface
         $this->mollieApiClient->setApiKey($modusKey);
         $details = $syliusPayment->getDetails();
 
-        if (empty($details) || !isset($details['webhookUrl'])) {
+        if (!isset($details['webhookUrl'])) {
             return '';
         }
 
@@ -94,6 +104,9 @@ final class PaymentlinkResolver implements PaymentlinkResolverInterface
         } catch (\Exception $e) {
             $redirectURL = $details['backurl'];
         }
+
+        Assert::notNull($syliusPayment->getAmount());
+        Assert::notNull($order->getCustomer());
 
         $data = [
             'method' => $methodsArray,

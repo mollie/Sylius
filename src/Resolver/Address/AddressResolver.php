@@ -57,10 +57,11 @@ final class AddressResolver implements AddressResolverInterface
         $address->setFirstName($applePayDirectAddress['givenName']);
         $address->setLastName($applePayDirectAddress['familyName']);
 
-        /** @var CustomerInterface $customer */
+        /** @var ?CustomerInterface $customer */
         $customer = $this->customerRepository->findOneBy(['email' => $applePayDirectAddress['emailAddress']]);
 
         if (null === $customer) {
+            /** @var CustomerInterface $customer */
             $customer = $this->customerFactory->createNew();
             $customer->setEmail($applePayDirectAddress['emailAddress']);
 

@@ -12,11 +12,11 @@ declare(strict_types=1);
 namespace BitBag\SyliusMolliePlugin\Provider\Apple;
 
 use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
+use BitBag\SyliusMolliePlugin\Entity\OrderInterface;
 use BitBag\SyliusMolliePlugin\Provider\Order\OrderPaymentApplePayDirectProviderInterface;
 use BitBag\SyliusMolliePlugin\Resolver\Address\ApplePayAddressResolverInterface;
 use Sylius\AdminOrderCreationPlugin\Provider\CustomerProviderInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
-use Sylius\Component\Order\Model\OrderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Webmozart\Assert\Assert;
 
@@ -54,6 +54,7 @@ final class ApplePayDirectProvider implements ApplePayDirectProviderInterface
     public function provideOrder(OrderInterface $order, Request $request): void
     {
         $applePayPaymentToken = $request->get('token');
+        $applePayAddress = [];
         $applePayAddress['shippingContact'] = $request->get('shippingContact');
         $applePayAddress['billingContact'] = $request->get('billingContact');
 
@@ -68,6 +69,7 @@ final class ApplePayDirectProvider implements ApplePayDirectProviderInterface
         $this->applePayAddressResolver->resolve($order, $applePayAddress);
         $this->paymentApplePayDirectProvider->provideOrderPayment($order, PaymentInterface::STATE_NEW);
 
+        Assert::notNull($order->getShippingAddress());
         if (null !== $customer = $order->getShippingAddress()->getCustomer()) {
             $order->setCustomer($customer);
         }

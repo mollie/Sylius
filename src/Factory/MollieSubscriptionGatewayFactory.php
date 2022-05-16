@@ -15,12 +15,11 @@ use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
 use BitBag\SyliusMolliePlugin\Form\Type\MollieGatewayConfigurationType;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\GatewayFactory;
+use Sylius\Bundle\CoreBundle\Application\Kernel;
 
 final class MollieSubscriptionGatewayFactory extends GatewayFactory
 {
     public const FACTORY_NAME = 'mollie_subscription';
-
-    public const CURRENCIES_AVAILABLE = ['EUR'];
 
     protected function populateConfig(ArrayObject $config): void
     {
@@ -37,18 +36,16 @@ final class MollieSubscriptionGatewayFactory extends GatewayFactory
         if (false === (bool) $config['payum.api']) {
             $config['payum.default_options'] = [
                 'api_key' => null,
-                'interval' => null,
-                'times' => null,
+                'method' => null,
             ];
 
             $config->defaults($config['payum.default_options']);
 
             $config['payum.required_options'] = [
                 $environment,
-                'interval',
             ];
 
-            $config['payum.api'] = function (ArrayObject $config) use ($environment) {
+            $config['payum.api'] = function (ArrayObject $config) use ($environment): MollieApiClient {
                 $config->validateNotEmpty($config['payum.required_options']);
 
                 /** @var MollieApiClient $mollieApiClient */
@@ -56,6 +53,9 @@ final class MollieSubscriptionGatewayFactory extends GatewayFactory
                 $mollieApiClient->setApiKey($config[$environment]);
                 $mollieApiClient->setConfig($config->toUnsafeArray());
                 $mollieApiClient->setIsRecurringSubscription(true);
+                $mollieApiClient->addVersionString(\sprintf('Sylius/%s', Kernel::VERSION));
+                $mollieApiClient->addVersionString(\sprintf('BitBagSyliusMolliePlugin/%s', $mollieApiClient->getVersion()));
+                $mollieApiClient->addVersionString(\sprintf('uap/%s', $mollieApiClient->getUserAgentToken()));
 
                 return $mollieApiClient;
             };

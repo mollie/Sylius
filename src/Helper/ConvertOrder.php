@@ -13,7 +13,6 @@ namespace BitBag\SyliusMolliePlugin\Helper;
 
 use BitBag\SyliusMolliePlugin\Calculator\CalculateTaxAmountInterface;
 use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
-use BitBag\SyliusMolliePlugin\Order\AdjustmentInterface;
 use BitBag\SyliusMolliePlugin\Payments\PaymentTerms\Options;
 use BitBag\SyliusMolliePlugin\Resolver\MealVoucherResolverInterface;
 use BitBag\SyliusMolliePlugin\Resolver\TaxShipmentResolverInterface;
@@ -24,7 +23,9 @@ use Sylius\Component\Core\Model\OrderItem;
 use Sylius\Component\Core\Model\ShipmentInterface;
 use Sylius\Component\Customer\Model\CustomerInterface;
 use Sylius\Component\Order\Model\Adjustment;
+use Sylius\Component\Taxation\Model\TaxableInterface;
 use Sylius\Component\Taxation\Resolver\TaxRateResolverInterface;
+use Webmozart\Assert\Assert;
 
 final class ConvertOrder implements ConvertOrderInterface
 {
@@ -49,7 +50,7 @@ final class ConvertOrder implements ConvertOrderInterface
     /** @var TaxRateResolverInterface */
     private $taxRateResolver;
 
-    /** @var ZoneMatcherInterface  */
+    /** @var ZoneMatcherInterface */
     private $zoneMatcher;
 
     public function __construct(
@@ -70,15 +71,21 @@ final class ConvertOrder implements ConvertOrderInterface
         $this->zoneMatcher = $zoneMatcher;
     }
 
-    public function convert(OrderInterface $order, array $details, int $divisor, MollieGatewayConfigInterface $method): array
-    {
+    public function convert(
+        OrderInterface $order,
+        array $details,
+        int $divisor,
+        MollieGatewayConfigInterface $method
+    ): array {
         $this->order = $order;
 
         $customer = $order->getCustomer();
+
+        Assert::notNull($customer);
         $amount = $this->intToStringConverter->convertIntToString($order->getTotal(), $divisor);
 
         $details['amount']['value'] = $amount;
-        $details['orderNumber'] = (string) $order->getId();
+        $details['orderNumber'] = (string) $order->getNumber();
         $details['shippingAddress'] = $this->createShippingAddress($customer);
         $details['billingAddress'] = $this->createBillingAddress($customer);
         $details['lines'] = $this->createLines($divisor, $method);
@@ -90,6 +97,8 @@ final class ConvertOrder implements ConvertOrderInterface
     private function createShippingAddress(CustomerInterface $customer): array
     {
         $shippingAddress = $this->order->getShippingAddress();
+
+        Assert::notNull($shippingAddress);
 
         return [
             'streetAndNumber' => $shippingAddress->getStreet(),
@@ -106,6 +115,8 @@ final class ConvertOrder implements ConvertOrderInterface
     {
         $billingAddress = $this->order->getBillingAddress();
 
+        Assert::notNull($billingAddress);
+
         return [
             'streetAndNumber' => $billingAddress->getStreet(),
             'postalCode' => $billingAddress->getPostcode(),
@@ -120,8 +131,11 @@ final class ConvertOrder implements ConvertOrderInterface
     private function createLines(int $divisor, MollieGatewayConfigInterface $method): array
     {
         $details = [];
+
+        Assert::notNull($this->order->getChannel());
         $this->order->getChannel()->getDefaultTaxZone();
 
+        /** @var OrderItem $item */
         foreach ($this->order->getItems() as $item) {
             $details[] = [
                 'category' => $this->mealVoucherResolver->resolve($method, $item),
@@ -153,8 +167,9 @@ final class ConvertOrder implements ConvertOrderInterface
             ];
         }
 
+        /** @var Adjustment $adjustment */
         foreach ($this->order->getAdjustments() as $adjustment) {
-            if (array_search($adjustment->getType(), Options::getAvailablePaymentSurchargeFeeType())) {
+            if (false !== array_search($adjustment->getType(), Options::getAvailablePaymentSurchargeFeeType(), true)) {
                 $details[] = $this->createAdjustments($adjustment, $divisor);
             }
         }
@@ -188,7 +203,7 @@ final class ConvertOrder implements ConvertOrderInterface
     {
         $details = [];
 
-        /** @var ShipmentInterface $shipment */
+        /** @var ShipmentInterface|bool $shipment */
         $shipment = $this->order->getShipments()->first();
 
         if (false !== $shipment) {
@@ -227,10 +242,13 @@ final class ConvertOrder implements ConvertOrderInterface
 
     private function getUnitPriceWithTax(OrderItem $item): int
     {
+        Assert::notNull($this->order->getBillingAddress());
         $zone = $this->zoneMatcher->match($this->order->getBillingAddress());
-        $taxRate = $this->taxRateResolver->resolve($item->getVariant(), [self::TAX_RATE_CRITERIA_ZONE => $zone]);
+        /** @var TaxableInterface $taxableVariant */
+        $taxableVariant = $item->getVariant();
+        $taxRate = $this->taxRateResolver->resolve($taxableVariant, [self::TAX_RATE_CRITERIA_ZONE => $zone]);
 
-        if ($taxRate === null) {
+        if (null === $taxRate) {
             return $item->getUnitPrice();
         }
 

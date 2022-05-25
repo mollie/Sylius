@@ -19,7 +19,7 @@ composer config prefer-stable true
 1.Require with composer
 
 ```bash
-composer require bitbag/mollie-plugin
+composer require bitbag/mollie-plugin --no-scripts
 ```
 2.Add traits to your GatewayConfig entity class, when You don't use annotation. 
 

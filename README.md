@@ -1,4 +1,4 @@
-# [![](https://bitbag.io/wp-content/uploads/2020/10/mollie-1024x535.png)](https://bitbag.io/contact-us/?utm_source=github&utm_medium=referral&utm_campaign=plugins_mollie)
+# [![](https://cdn.mollie.com/assets/og-image-mollie.png)](https://mollie.com/en)
 
 # Mollie Payments Plugin for Sylius
 ----

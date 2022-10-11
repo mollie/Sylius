@@ -335,6 +335,7 @@ _bazinga_jstranslation:
 
 Apply migration to your database
 ```
+bin/console doctrine:migrations:diff
 bin/console doctrine:migrations:migrate
 ```
 

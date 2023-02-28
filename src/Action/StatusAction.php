@@ -146,13 +146,13 @@ final class StatusAction extends BaseApiAwareAction implements StatusActionInter
                 /** @var Payment $payment */
                 $payment = current($payments);
 
-                if (MealVoucher::MEAL_VOUCHERS === $payment->method) {
-                    $this->orderVoucherAdjustmentUpdater->update($payment, $order->metadata->order_id);
-                }
-
                 /** @var Payment $molliePayment */
                 $molliePayment = $this->mollieApiClient->payments->get($payment->id);
                 $molliePayment->metadata = $order->metadata;
+
+                if (MealVoucher::MEAL_VOUCHERS === $payment->method) {
+                    $this->orderVoucherAdjustmentUpdater->update($molliePayment, $order->metadata->order_id);
+                }
             } catch (\Exception $e) {
                 $this->loggerAction->addNegativeLog(sprintf('Error with get payment page with id %s', $details['payment_mollie_id']));
 

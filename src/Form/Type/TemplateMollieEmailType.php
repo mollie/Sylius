@@ -11,13 +11,16 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusMolliePlugin\Form\Type;
 
+use BitBag\SyliusMolliePlugin\Entity\TemplateMollieEmail;
 use BitBag\SyliusMolliePlugin\Form\Type\Translation\TemplateMollieEmailTranslationType;
 use BitBag\SyliusMolliePlugin\TemplateEmailTerms\Options;
 use Sylius\Bundle\ResourceBundle\Form\Type\ResourceTranslationsType;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class TemplateMollieEmailType extends AbstractType
 {
@@ -41,5 +44,15 @@ final class TemplateMollieEmailType extends AbstractType
     public function getBlockPrefix(): string
     {
         return 'bitbag_sylius_mollie_plugin_template_mollie_email';
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([
+            'data_class' => TemplateMollieEmail::class,
+            'constraints' => [
+                new UniqueEntity(['fields' => ['type']]),
+            ],
+        ]);
     }
 }

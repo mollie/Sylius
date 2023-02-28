@@ -33,7 +33,7 @@ class Order extends BaseOrder implements OrderInterface
             ->filter(function (OrderItemInterface $orderItem) {
                 $variant = $orderItem->getVariant();
 
-                return $variant instanceof ProductVariantInterface
+                return $variant !== null
                     && true === $variant->isRecurring();
             })
         ;
@@ -46,7 +46,7 @@ class Order extends BaseOrder implements OrderInterface
             ->filter(function (OrderItemInterface $orderItem) {
                 $variant = $orderItem->getVariant();
 
-                return $variant instanceof ProductVariantInterface
+                return $variant !== null
                     && false === $variant->isRecurring();
             })
         ;

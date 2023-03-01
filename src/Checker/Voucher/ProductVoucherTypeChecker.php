@@ -51,7 +51,8 @@ final class ProductVoucherTypeChecker implements ProductVoucherTypeCheckerInterf
             /** @var ProductInterface $product */
             $product = $item->getProduct();
             if (null === $product->getProductType()) {
-                unset($methods['data'][MealVoucher::MEAL_VOUCHERS]);
+                $key = array_search (MealVoucher::MEAL_VOUCHERS, $methods['data']);
+                unset($methods['data'][$key]);
             }
         }
 
@@ -60,6 +61,6 @@ final class ProductVoucherTypeChecker implements ProductVoucherTypeCheckerInterf
 
     private function checkVoucherEnabled(array $methods): bool
     {
-        return array_key_exists(MealVoucher::MEAL_VOUCHERS, $methods['data']);
+        return in_array(MealVoucher::MEAL_VOUCHERS, array_values($methods['data']));
     }
 }

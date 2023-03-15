@@ -1,23 +1,17 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
- */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Action\StateMachine;
+namespace SyliusMolliePlugin\Action\StateMachine;
 
-use BitBag\SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
-use BitBag\SyliusMolliePlugin\Action\StateMachine\Applicator\SubscriptionAndPaymentIdApplicatorInterface;
-use BitBag\SyliusMolliePlugin\Action\StateMachine\Applicator\SubscriptionAndSyliusPaymentApplicatorInterface;
-use BitBag\SyliusMolliePlugin\Action\StateMachine\Transition\StateMachineTransitionInterface;
-use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
-use BitBag\SyliusMolliePlugin\Request\StateMachine\StatusRecurringSubscription;
-use BitBag\SyliusMolliePlugin\Transitions\MollieSubscriptionTransitions;
+use SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
+use SyliusMolliePlugin\Action\StateMachine\Applicator\SubscriptionAndPaymentIdApplicatorInterface;
+use SyliusMolliePlugin\Action\StateMachine\Applicator\SubscriptionAndSyliusPaymentApplicatorInterface;
+use SyliusMolliePlugin\Action\StateMachine\Transition\StateMachineTransitionInterface;
+use SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
+use SyliusMolliePlugin\Request\StateMachine\StatusRecurringSubscription;
+use SyliusMolliePlugin\Transitions\MollieSubscriptionTransitions;
 use Doctrine\ORM\EntityManagerInterface;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;

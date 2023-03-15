@@ -1,19 +1,14 @@
 <?php
 
-/*
-    This file was created by developers working at BitBag
-    Do you need more information about us and what we do? Visit our   website!
-    We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
-*/
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusMolliePlugin\Action\StateMachine\Transition;
+namespace spec\SyliusMolliePlugin\Action\StateMachine\Transition;
 
-use BitBag\SyliusMolliePlugin\Action\StateMachine\Transition\PaymentStateMachineTransition;
-use BitBag\SyliusMolliePlugin\Action\StateMachine\Transition\PaymentStateMachineTransitionInterface;
-use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
-use BitBag\SyliusMolliePlugin\Transitions\MollieSubscriptionPaymentProcessingTransitions;
+use SyliusMolliePlugin\Action\StateMachine\Transition\PaymentStateMachineTransition;
+use SyliusMolliePlugin\Action\StateMachine\Transition\PaymentStateMachineTransitionInterface;
+use SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
+use SyliusMolliePlugin\Transitions\MollieSubscriptionPaymentProcessingTransitions;
 use PhpSpec\ObjectBehavior;
 use SM\Factory\FactoryInterface;
 use SM\StateMachine\StateMachineInterface;

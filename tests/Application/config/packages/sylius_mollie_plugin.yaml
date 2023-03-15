@@ -1,5 +1,5 @@
 imports:
-    - { resource: "@BitBagSyliusMolliePlugin/Resources/config/config.yaml" }
+    - { resource: "@SyliusMolliePlugin/Resources/config/config.yaml" }
 
 sylius_grid:
     grids:

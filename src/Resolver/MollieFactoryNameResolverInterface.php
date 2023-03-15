@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Resolver;
+namespace SyliusMolliePlugin\Resolver;
 
-use BitBag\SyliusMolliePlugin\Entity\OrderInterface;
+use SyliusMolliePlugin\Entity\OrderInterface;
 
 interface MollieFactoryNameResolverInterface
 {

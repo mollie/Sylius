@@ -13,6 +13,7 @@ services:
       - APP_SECRET=EDITME
       - DATABASE_URL=mysql://sylius:nopassword@mysql/sylius
       - PHP_DATE_TIMEZONE=${PHP_DATE_TIMEZONE:-UTC}
+      - WKHTMLTOPDF_PATH=/usr/local/bin/wkhtmltopdf
     volumes:
       - .:/var/www:rw
       - ./tests/Application/public/media:/var/www/tests/Application/public/media:rw

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\BitBag\SyliusMolliePlugin\Application;
+namespace Tests\SyliusMolliePlugin\Application;
 
 use PSS\SymfonyMockerContainer\DependencyInjection\MockerContainer;
 use Sylius\Bundle\CoreBundle\Application\Kernel as SyliusKernel;
@@ -13,6 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
+use SyliusMolliePlugin\SyliusMolliePlugin;
 
 final class Kernel extends BaseKernel
 {

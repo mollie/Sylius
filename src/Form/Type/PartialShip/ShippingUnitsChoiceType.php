@@ -1,15 +1,9 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
- */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Form\Type\PartialShip;
+namespace SyliusMolliePlugin\Form\Type\PartialShip;
 
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Shipping\Model\ShipmentUnitInterface;
@@ -64,6 +58,6 @@ final class ShippingUnitsChoiceType extends AbstractType
 
     public function getBlockPrefix(): string
     {
-        return 'bitbag_shipping_units_choice';
+        return 'mollie_shipping_units_choice';
     }
 }

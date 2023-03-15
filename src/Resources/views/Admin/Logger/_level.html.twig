@@ -1,10 +1,10 @@
 {% if data %}
-    {% set notice = constant('BitBag\\SyliusMolliePlugin\\Logger\\MollieLoggerActionInterface::NOTICE') %}
-    {% set error = constant('BitBag\\SyliusMolliePlugin\\Logger\\MollieLoggerActionInterface::ERROR') %}
+    {% set notice = constant('SyliusMolliePlugin\\Logger\\MollieLoggerActionInterface::NOTICE') %}
+    {% set error = constant('SyliusMolliePlugin\\Logger\\MollieLoggerActionInterface::ERROR') %}
 
     {% if data == notice %}
-        <div class="ui info horizontal label">{{'bitbag_sylius_mollie_plugin.ui.info'|trans}}</div>
+        <div class="ui info horizontal label">{{'sylius_mollie_plugin.ui.info'|trans}}</div>
     {% elseif data == error %}
-        <div class="ui red horizontal label">{{'bitbag_sylius_mollie_plugin.ui.error'|trans}}</div>
+        <div class="ui red horizontal label">{{'sylius_mollie_plugin.ui.error'|trans}}</div>
     {% endif %}
 {% endif %}

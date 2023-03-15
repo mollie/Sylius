@@ -2,4 +2,4 @@ sylius_payment:
   resources:
     payment_method:
       classes:
-        repository: BitBag\SyliusMolliePlugin\Repository\PaymentMethodRepository
+        repository: SyliusMolliePlugin\Repository\PaymentMethodRepository

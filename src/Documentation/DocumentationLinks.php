@@ -1,15 +1,9 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
- */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Documentation;
+namespace SyliusMolliePlugin\Documentation;
 
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -36,10 +30,10 @@ final class DocumentationLinks implements DocumentationLinksInterface
         $link = \sprintf(
             '<a target="_blank" href="%s"> %s </a>',
             self::DOCUMENTATION_LINKS['single_click'],
-            $this->translator->trans('bitbag_sylius_mollie_plugin.ui.mollie_single_click')
+            $this->translator->trans('sylius_mollie_plugin.ui.mollie_single_click')
         );
 
-        return $this->translator->trans('bitbag_sylius_mollie_plugin.ui.read_more_single_click_enabled', [
+        return $this->translator->trans('sylius_mollie_plugin.ui.read_more_single_click_enabled', [
             '%link%' => $link,
         ]);
     }
@@ -49,10 +43,10 @@ final class DocumentationLinks implements DocumentationLinksInterface
         $link = \sprintf(
             '<a target="_blank" href="%s"> %s </a>',
             self::DOCUMENTATION_LINKS['mollie_components'],
-            $this->translator->trans('bitbag_sylius_mollie_plugin.ui.mollie_components')
+            $this->translator->trans('sylius_mollie_plugin.ui.mollie_components')
         );
 
-        return $this->translator->trans('bitbag_sylius_mollie_plugin.ui.read_more_enable_components', [
+        return $this->translator->trans('sylius_mollie_plugin.ui.read_more_enable_components', [
             '%link%' => $link,
         ]);
     }
@@ -61,10 +55,10 @@ final class DocumentationLinks implements DocumentationLinksInterface
     {
         return \sprintf(
             '%s <a target="_blank" href="%s"> %s </a> %s',
-            $this->translator->trans('bitbag_sylius_mollie_plugin.ui.click'),
+            $this->translator->trans('sylius_mollie_plugin.ui.click'),
             self::DOCUMENTATION_LINKS['payment_methods'],
-            $this->translator->trans('bitbag_sylius_mollie_plugin.ui.here'),
-            $this->translator->trans('bitbag_sylius_mollie_plugin.ui.payment_methods_doc')
+            $this->translator->trans('sylius_mollie_plugin.ui.here'),
+            $this->translator->trans('sylius_mollie_plugin.ui.payment_methods_doc')
         );
     }
 
@@ -72,9 +66,9 @@ final class DocumentationLinks implements DocumentationLinksInterface
     {
         return \sprintf(
             '%s <a target="_blank" href="%s"> %s </a>',
-            $this->translator->trans('bitbag_sylius_mollie_plugin.ui.you_can_find_you_profile_id'),
+            $this->translator->trans('sylius_mollie_plugin.ui.you_can_find_you_profile_id'),
             self::DOCUMENTATION_LINKS['profile_id'],
-            $this->translator->trans('bitbag_sylius_mollie_plugin.ui.mollie_profile_id')
+            $this->translator->trans('sylius_mollie_plugin.ui.mollie_profile_id')
         );
     }
 
@@ -82,10 +76,10 @@ final class DocumentationLinks implements DocumentationLinksInterface
     {
         return \sprintf(
             '%s <a target="_blank" href="%s"> %s </a> %s',
-            $this->translator->trans('bitbag_sylius_mollie_plugin.ui.find_you_api_key'),
+            $this->translator->trans('sylius_mollie_plugin.ui.find_you_api_key'),
             self::DOCUMENTATION_LINKS['api_key'],
-            $this->translator->trans('bitbag_sylius_mollie_plugin.ui.mollie_profile'),
-            $this->translator->trans('bitbag_sylius_mollie_plugin.ui.it_starts_with')
+            $this->translator->trans('sylius_mollie_plugin.ui.mollie_profile'),
+            $this->translator->trans('sylius_mollie_plugin.ui.it_starts_with')
         );
     }
 }

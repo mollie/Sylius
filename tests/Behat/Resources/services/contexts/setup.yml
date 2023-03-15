@@ -1,6 +1,6 @@
 services:
-    bitbag_sylius_mollie_plugin.behat.context.setup.mollie:
-        class: Tests\BitBag\SyliusMolliePlugin\Behat\Context\Setup\MollieContext
+    sylius_mollie_plugin.behat.context.setup.mollie:
+        class: Tests\SyliusMolliePlugin\Behat\Context\Setup\MollieContext
         public: true
         arguments:
             - "@sylius.behat.shared_storage"
@@ -9,32 +9,32 @@ services:
             - "@sylius.manager.payment_method"
             - "%env(MOLLIE_TEST_API_KEY)%"
             - "%env(MOLLIE_PROFILE_KEY)%"
-            - "@bitbag_sylius_mollie_plugin.creator.mollie_methods_resolver"
-            - "@bitbag_sylius_mollie_plugin.purifier.mollie_payment_method_purifier"
+            - "@sylius_mollie_plugin.creator.mollie_methods_resolver"
+            - "@sylius_mollie_plugin.purifier.mollie_payment_method_purifier"
             - "@sylius.repository.gateway_config"
-            - "@bitbag_sylius_mollie_plugin.repository.mollie_gateway_config"
+            - "@sylius_mollie_plugin.repository.mollie_gateway_config"
 
-    bitbag_sylius_mollie_plugin.context.setup.order:
-        class: Tests\BitBag\SyliusMolliePlugin\Behat\Context\Setup\OrderContext
+    sylius_mollie_plugin.context.setup.order:
+        class: Tests\SyliusMolliePlugin\Behat\Context\Setup\OrderContext
         public: true
         arguments:
             - "@doctrine.orm.default_entity_manager"
             - "@sm.factory"
             - "@payum"
-            - "@bitbag_sylius_mollie_plugin.checker.gateway.mollie_gateway_factory_checker"
+            - "@sylius_mollie_plugin.checker.gateway.mollie_gateway_factory_checker"
 
-    bitbag_sylius_mollie_plugin.context.setup.subscription:
-        class: Tests\BitBag\SyliusMolliePlugin\Behat\Context\Setup\SubscriptionContext
+    sylius_mollie_plugin.context.setup.subscription:
+        class: Tests\SyliusMolliePlugin\Behat\Context\Setup\SubscriptionContext
         public: true
         arguments:
             - "@doctrine.orm.default_entity_manager"
-            - "@bitbag_sylius_mollie_plugin.factory.mollie_subscription"
+            - "@sylius_mollie_plugin.factory.mollie_subscription"
             - "@sylius.behat.shared_storage"
-            - "@bitbag_sylius_mollie_plugin.processor.subscription_schedule_processor"
-            - "@bitbag_sylius_mollie_plugin.mollie_api_client"
+            - "@sylius_mollie_plugin.processor.subscription_schedule_processor"
+            - "@sylius_mollie_plugin.mollie_api_client"
 
-    bitbag_sylius_mollie_plugin.behat.context.setup.product:
-        class: Tests\BitBag\SyliusMolliePlugin\Behat\Context\Setup\ProductContext
+    sylius_mollie_plugin.behat.context.setup.product:
+        class: Tests\SyliusMolliePlugin\Behat\Context\Setup\ProductContext
         public: true
         arguments:
             - "@sylius.behat.shared_storage"

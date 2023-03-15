@@ -3,12 +3,12 @@
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <parameters>
-        <parameter key="bitbag_sylius_mollie_plugin.admin.version.uri">https://repo.packagist.org/p/bitbag/mollie-plugin.json</parameter>
+        <parameter key="sylius_mollie_plugin.admin.version.uri">https://repo.packagist.org/p/bitbag/mollie-plugin.json</parameter>
     </parameters>
 
     <services>
         <defaults public="true" />
-        <service id="bitbag_sylius_mollie_plugin.checker.gateway.mollie_gateway_factory_checker" class="BitBag\SyliusMolliePlugin\Checker\Gateway\MollieGatewayFactoryChecker">
+        <service id="sylius_mollie_plugin.checker.gateway.mollie_gateway_factory_checker" class="SyliusMolliePlugin\Checker\Gateway\MollieGatewayFactoryChecker">
         </service>
     </services>
 </container>

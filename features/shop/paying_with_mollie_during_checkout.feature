@@ -6,11 +6,11 @@ Feature: Paying with Mollie during checkout
 
     Background:
         Given the store operates on a single channel in "United States"
-        And there is a user "john@bitbag.pl" identified by "password123"
+        And there is a user "john@mollie.pl" identified by "password123"
         And the store has a payment method "Mollie" with a code "mollie" and Mollie payment gateway
         And gateway "mollie" has all methods loaded and enabled
         And the store ships everywhere for free
-        And I am logged in as "john@bitbag.pl"
+        And I am logged in as "john@mollie.pl"
         And I am logged in as an administrator
 
     @ui
@@ -23,7 +23,7 @@ Feature: Paying with Mollie during checkout
         When I confirm my order
         Then I should be notified that my payment has been completed
         When I browse orders
-        Then I should see a single order from customer "john@bitbag.pl"
+        Then I should see a single order from customer "john@mollie.pl"
         And I view summary of last order
         And it should be paid with "Mollie"
 

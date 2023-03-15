@@ -1,20 +1,14 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
- */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Validator\Constraints;
+namespace SyliusMolliePlugin\Validator\Constraints;
 
-use BitBag\SyliusMolliePlugin\Entity\GatewayConfigInterface;
-use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
-use BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
-use BitBag\SyliusMolliePlugin\Repository\PaymentMethodRepositoryInterface;
+use SyliusMolliePlugin\Entity\GatewayConfigInterface;
+use SyliusMolliePlugin\Factory\MollieGatewayFactory;
+use SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
+use SyliusMolliePlugin\Repository\PaymentMethodRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Sylius\Component\Core\Model\ChannelInterface;
@@ -81,7 +75,7 @@ final class PaymentMethodMollieChannelUniqueValidator extends ConstraintValidato
             }
 
             if ($this->isTheSameChannel($paymentMethod->getChannels(), $alreadyUsedChannels)) {
-                $translation = $this->translator->trans('bitbag_sylius_mollie_plugin.form.channel_should_be_unique', [
+                $translation = $this->translator->trans('sylius_mollie_plugin.form.channel_should_be_unique', [
                     '{channels}' => $this->getChannelsNameByChannels($alreadyUsedChannels),
                 ]);
 

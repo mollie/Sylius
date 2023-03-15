@@ -1,29 +1,22 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * another great project.
- * You can find more information about us on https://bitbag.shop and write us
- * an email on mikolaj.krol@bitbag.pl.
- */
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusMolliePlugin\Action\StateMachine;
+namespace spec\SyliusMolliePlugin\Action\StateMachine;
 
-use BitBag\SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
-use BitBag\SyliusMolliePlugin\Action\StateMachine\Applicator\SubscriptionAndPaymentIdApplicatorInterface;
-use BitBag\SyliusMolliePlugin\Action\StateMachine\Applicator\SubscriptionAndSyliusPaymentApplicatorInterface;
-use BitBag\SyliusMolliePlugin\Action\StateMachine\StatusRecurringSubscriptionAction;
-use BitBag\SyliusMolliePlugin\Action\StateMachine\Transition\StateMachineTransitionInterface;
-use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
-use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionConfigurationInterface;
-use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
-use BitBag\SyliusMolliePlugin\Request\Api\CancelRecurringSubscription;
-use BitBag\SyliusMolliePlugin\Request\StateMachine\StatusRecurringSubscription;
-use BitBag\SyliusMolliePlugin\Transitions\MollieSubscriptionPaymentProcessingTransitions;
-use BitBag\SyliusMolliePlugin\Transitions\MollieSubscriptionTransitions;
+use SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
+use SyliusMolliePlugin\Action\StateMachine\Applicator\SubscriptionAndPaymentIdApplicatorInterface;
+use SyliusMolliePlugin\Action\StateMachine\Applicator\SubscriptionAndSyliusPaymentApplicatorInterface;
+use SyliusMolliePlugin\Action\StateMachine\StatusRecurringSubscriptionAction;
+use SyliusMolliePlugin\Action\StateMachine\Transition\StateMachineTransitionInterface;
+use SyliusMolliePlugin\Client\MollieApiClient;
+use SyliusMolliePlugin\Entity\MollieSubscriptionConfigurationInterface;
+use SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
+use SyliusMolliePlugin\Request\Api\CancelRecurringSubscription;
+use SyliusMolliePlugin\Request\StateMachine\StatusRecurringSubscription;
+use SyliusMolliePlugin\Transitions\MollieSubscriptionPaymentProcessingTransitions;
+use SyliusMolliePlugin\Transitions\MollieSubscriptionTransitions;
 use Doctrine\ORM\EntityManagerInterface;
 use Mollie\Api\Endpoints\CustomerEndpoint;
 use Mollie\Api\Endpoints\PaymentEndpoint;

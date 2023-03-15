@@ -1,7 +1,7 @@
 sylius_resource:
   resources:
-    bitbag_sylius_mollie_plugin.mollie_customer:
+    sylius_mollie_plugin.mollie_customer:
       driver: doctrine/orm
       classes:
-        model: BitBag\SyliusMolliePlugin\Entity\MollieCustomer
-        interface: BitBag\SyliusMolliePlugin\Entity\MollieCustomerInterface
+        model: SyliusMolliePlugin\Entity\MollieCustomer
+        interface: SyliusMolliePlugin\Entity\MollieCustomerInterface

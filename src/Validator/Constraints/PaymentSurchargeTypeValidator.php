@@ -1,18 +1,12 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
- */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Validator\Constraints;
+namespace SyliusMolliePlugin\Validator\Constraints;
 
-use BitBag\SyliusMolliePlugin\Entity\PaymentSurchargeFeeInterface;
-use BitBag\SyliusMolliePlugin\Payments\PaymentTerms\Options;
+use SyliusMolliePlugin\Entity\PaymentSurchargeFeeInterface;
+use SyliusMolliePlugin\Payments\PaymentTerms\Options;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;

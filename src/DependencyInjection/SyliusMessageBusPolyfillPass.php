@@ -1,15 +1,9 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
- */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\DependencyInjection;
+namespace SyliusMolliePlugin\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -20,7 +14,7 @@ final class SyliusMessageBusPolyfillPass implements CompilerPassInterface
         'sylius.command_bus' => 'sylius_default.bus',
     ];
 
-    public const COMMAND_BUS_ALIAS = 'bitbag.sylius_mollie_plugin.command_bus';
+    public const COMMAND_BUS_ALIAS = 'sylius_mollie_plugin.command_bus';
 
     private function setupDefaultCommandBus(array $buses, ContainerBuilder $container): void
     {

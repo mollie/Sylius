@@ -1,14 +1,14 @@
-{% set errorStatus = constant('BitBag\\SyliusMolliePlugin\\Creator\\ApiKeysTestCreatorInterface::ERROR_STATUS') %}
+{% set errorStatus = constant('SyliusMolliePlugin\\Creator\\ApiKeysTestCreatorInterface::ERROR_STATUS') %}
 
 <div class="ui segment">
-    {% include '@BitBagSyliusMolliePlugin/Admin/PaymentMethod/_statusTest.html.twig' %}
+    {% include '@SyliusMolliePlugin/Admin/PaymentMethod/_statusTest.html.twig' %}
 
     {% if test.status == errorStatus %}
         {{ test.message }}
     {% endif %}
     <br>
     <i class="cog icon green"></i>
-    {{ 'bitbag_sylius_mollie_plugin.ui.available_methods'|trans }}:
+    {{ 'sylius_mollie_plugin.ui.available_methods'|trans }}:
     {% for method in test.methods %}
         {{ method.description }},
     {% endfor %}

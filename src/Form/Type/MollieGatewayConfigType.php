@@ -1,26 +1,20 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
- */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Form\Type;
+namespace SyliusMolliePlugin\Form\Type;
 
-use BitBag\SyliusMolliePlugin\Documentation\DocumentationLinksInterface;
-use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
-use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfigTranslationInterface;
-use BitBag\SyliusMolliePlugin\Entity\ProductType;
-use BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
-use BitBag\SyliusMolliePlugin\Form\Type\Translation\MollieGatewayConfigTranslationType;
-use BitBag\SyliusMolliePlugin\Options\Country\Options as CountryOptions;
-use BitBag\SyliusMolliePlugin\Payments\Methods\AbstractMethod;
-use BitBag\SyliusMolliePlugin\Payments\PaymentTerms\Options;
-use BitBag\SyliusMolliePlugin\Validator\Constraints\PaymentSurchargeType;
+use SyliusMolliePlugin\Documentation\DocumentationLinksInterface;
+use SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
+use SyliusMolliePlugin\Entity\MollieGatewayConfigTranslationInterface;
+use SyliusMolliePlugin\Entity\ProductType;
+use SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
+use SyliusMolliePlugin\Form\Type\Translation\MollieGatewayConfigTranslationType;
+use SyliusMolliePlugin\Options\Country\Options as CountryOptions;
+use SyliusMolliePlugin\Payments\Methods\AbstractMethod;
+use SyliusMolliePlugin\Payments\PaymentTerms\Options;
+use SyliusMolliePlugin\Validator\Constraints\PaymentSurchargeType;
 use Sylius\Bundle\ProductBundle\Form\Type\ProductType as ProductFormType;
 use Sylius\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use Sylius\Bundle\ResourceBundle\Form\Type\ResourceTranslationsType;
@@ -56,32 +50,32 @@ final class MollieGatewayConfigType extends AbstractResourceType
     {
         $builder
             ->add('enabled', CheckboxType::class, [
-                'label' => 'bitbag_sylius_mollie_plugin.ui.enable',
+                'label' => 'sylius_mollie_plugin.ui.enable',
             ])
             ->add('applePayDirectButton', CheckboxType::class, [
-                'label' => 'bitbag_sylius_mollie_plugin.ui.enabled_buy_now_button',
-                'help' => 'bitbag_sylius_mollie_plugin.form.enabled_buy_now_button_help',
+                'label' => 'sylius_mollie_plugin.ui.enabled_buy_now_button',
+                'help' => 'sylius_mollie_plugin.form.enabled_buy_now_button_help',
             ])
             ->add('defaultCategory', EntityType::class, [
                 'class' => ProductType::class,
-                'label' => 'bitbag_sylius_mollie_plugin.form.product_type_default',
-                'placeholder' => 'bitbag_sylius_mollie_plugin.form.no_category',
+                'label' => 'sylius_mollie_plugin.form.product_type_default',
+                'placeholder' => 'sylius_mollie_plugin.form.no_category',
                 'empty_data' => null,
-                'help' => 'bitbag_sylius_mollie_plugin.form.product_type_default_help',
+                'help' => 'sylius_mollie_plugin.form.product_type_default_help',
             ])
             ->add('translations', ResourceTranslationsType::class, [
-                'label' => 'bitbag_sylius_mollie_plugin.ui.payment_name',
+                'label' => 'sylius_mollie_plugin.ui.payment_name',
                 'entry_type' => MollieGatewayConfigTranslationType::class,
             ])
             ->add('paymentType', ChoiceType::class, [
-                'label' => 'bitbag_sylius_mollie_plugin.ui.payment_type',
+                'label' => 'sylius_mollie_plugin.ui.payment_type',
                 'choices' => Options::getAvailablePaymentType(),
                 'help' => $this->documentationLinks->getPaymentMethodDoc(),
                 'help_html' => true,
             ])
             ->add('paymentDescription', TextType::class, [
-                'label' => 'bitbag_sylius_mollie_plugin.form.payment_methods.payment_description',
-                'help' => 'bitbag_sylius_mollie_plugin.form.payment_methods.payment_description_help',
+                'label' => 'sylius_mollie_plugin.form.payment_methods.payment_description',
+                'help' => 'sylius_mollie_plugin.form.payment_methods.payment_description_help',
                 'empty_data' => '{ordernumber}',
                 'attr' => [
                     'placeholder' => '{ordernumber}',
@@ -95,26 +89,26 @@ final class MollieGatewayConfigType extends AbstractResourceType
                 'label' => false,
             ])
             ->add('country_restriction', ChoiceType::class, [
-                'label' => 'bitbag_sylius_mollie_plugin.ui.country_level_restriction',
+                'label' => 'sylius_mollie_plugin.ui.country_level_restriction',
                 'choices' => CountryOptions::getCountriesConfigOptions(),
             ])
             ->add('countryLevel_excluded', CountryType::class, [
-                'label' => 'bitbag_sylius_mollie_plugin.ui.country_level_exclude',
+                'label' => 'sylius_mollie_plugin.ui.country_level_exclude',
                 'required' => false,
                 'multiple' => true,
             ])
             ->add('countryLevel_allowed', CountryType::class, [
-                'label' => 'bitbag_sylius_mollie_plugin.ui.country_level_allow',
+                'label' => 'sylius_mollie_plugin.ui.country_level_allow',
                 'required' => false,
                 'multiple' => true,
             ])
             ->add('countryLevel', CountryType::class, [
-                'label' => 'bitbag_sylius_mollie_plugin.ui.country_level_restriction',
+                'label' => 'sylius_mollie_plugin.ui.country_level_restriction',
                 'required' => false,
                 'multiple' => true,
             ])
             ->add('orderExpiration', ChoiceType::class, [
-                'label' => 'bitbag_sylius_mollie_plugin.ui.order_expiration_days',
+                'label' => 'sylius_mollie_plugin.ui.order_expiration_days',
                 'required' => false,
                 'choices' => array_combine(
                     range(1, 100, 1),
@@ -122,10 +116,10 @@ final class MollieGatewayConfigType extends AbstractResourceType
                 ),
             ])
             ->add('loggerEnabled', CheckboxType::class, [
-                'label' => 'bitbag_sylius_mollie_plugin.ui.debug_level_enabled',
+                'label' => 'sylius_mollie_plugin.ui.debug_level_enabled',
             ])
             ->add('loggerLevel', ChoiceType::class, [
-                'label' => 'bitbag_sylius_mollie_plugin.ui.debug_level_log',
+                'label' => 'sylius_mollie_plugin.ui.debug_level_log',
                 'choices' => Options::getDebugLevels(),
             ])
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
@@ -139,7 +133,7 @@ final class MollieGatewayConfigType extends AbstractResourceType
                 if (MollieSubscriptionGatewayFactory::FACTORY_NAME === $factoryName) {
                     $form->remove('paymentType');
                     $form->add('paymentType', ChoiceType::class, [
-                        'label' => 'bitbag_sylius_mollie_plugin.ui.payment_type',
+                        'label' => 'sylius_mollie_plugin.ui.payment_type',
                         'choices' => Options::getAvailablePaymentType(),
                         'help' => $this->documentationLinks->getPaymentMethodDoc(),
                         'help_html' => true,
@@ -165,7 +159,7 @@ final class MollieGatewayConfigType extends AbstractResourceType
                 if (in_array($object->getMethodId(), Options::getOnlyOrderAPIMethods(), true)) {
                     $form->remove('paymentType');
                     $form->add('paymentType', ChoiceType::class, [
-                        'label' => 'bitbag_sylius_mollie_plugin.ui.payment_type',
+                        'label' => 'sylius_mollie_plugin.ui.payment_type',
                         'choices' => Options::getAvailablePaymentType(),
                         'help' => $this->documentationLinks->getPaymentMethodDoc(),
                         'help_html' => true,
@@ -192,7 +186,7 @@ final class MollieGatewayConfigType extends AbstractResourceType
 
     public function getBlockPrefix(): string
     {
-        return 'bitbag_mollie_payment_method';
+        return 'mollie_payment_method';
     }
 
     public static function getExtendedTypes(): array

@@ -44,15 +44,15 @@ $(function () {
         });
     });
 
-    $('.bitbag-mollie-components').change(function () {
+    $('.mollie-components').change(function () {
         if ($(this).is(':checked')) {
-            $('.bitbag-single-click-payment').prop('checked', !$(this).is(':checked'));
+            $('.mollie-single-click-payment').prop('checked', !$(this).is(':checked'));
         }
     });
 
-    $('.bitbag-single-click-payment').change(function () {
+    $('.mollie-single-click-payment').change(function () {
         if ($(this).is(':checked')) {
-            $('.bitbag-mollie-components').prop('checked', !$(this).is(':checked'));
+            $('.mollie-components').prop('checked', !$(this).is(':checked'));
         }
     });
 

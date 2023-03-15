@@ -1,17 +1,11 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
- */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\EventListener;
+namespace SyliusMolliePlugin\EventListener;
 
-use BitBag\SyliusMolliePlugin\Entity\OrderInterface;
+use SyliusMolliePlugin\Entity\OrderInterface;
 use Sylius\Bundle\ResourceBundle\Event\ResourceControllerEvent;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
@@ -46,7 +40,7 @@ final class CheckoutOrderCollidingProductsListener
             $url = $this->router->generate('sylius_shop_cart_summary');
             $response = new RedirectResponse($url);
             $event->setResponse($response);
-            $message = $this->translator->trans('bitbag_sylius_mollie_plugin.order_checkout.colliding_products');
+            $message = $this->translator->trans('sylius_mollie_plugin.order_checkout.colliding_products');
             $event->stop(
                 $message,
                 ResourceControllerEvent::TYPE_WARNING

@@ -5,7 +5,7 @@
 !/public/media/image/
 /public/media/image/*
 !/public/media/image/.gitignore
-/public/bitbag/*
+/public/mollie/*
 /public/build/*
 
 /node_modules

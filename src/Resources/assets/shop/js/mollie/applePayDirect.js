@@ -7,34 +7,34 @@ $(function () {
             'mollie_applepay_button'
         );
 
-        const bitbagMollieValidateMerchantUrl =
+        const mollieValidateMerchantUrl =
             applePayButton.getAttribute('data-url-validate');
-        const bitbagMolliePaymentUrl =
+        const molliePaymentUrl =
             applePayButton.getAttribute('data-url-payment');
-        const bitbagMollieCurrency = applePayButton.getAttribute(
+        const mollieCurrency = applePayButton.getAttribute(
             'data-currency-order'
         );
-        const bitbagMollieMerchantName =
+        const mollieMerchantName =
             applePayButton.getAttribute('data-merchant-name');
 
-        let bitbagMollieTotalOrder =
+        let mollieTotalOrder =
             applePayButton.getAttribute('data-total-order');
-        bitbagMollieTotalOrder = bitbagMollieTotalOrder / divider;
-        bitbagMollieTotalOrder = bitbagMollieTotalOrder.toString();
+        mollieTotalOrder = mollieTotalOrder / divider;
+        mollieTotalOrder = mollieTotalOrder.toString();
 
         const session = new ApplePaySession(
             version,
             request(
                 'US',
-                bitbagMollieCurrency,
-                bitbagMollieMerchantName,
-                bitbagMollieTotalOrder
+                mollieCurrency,
+                mollieMerchantName,
+                mollieTotalOrder
             )
         );
 
         session.onvalidatemerchant = (applePayValidateMerchantEvent) => {
             jQuery.ajax({
-                url: bitbagMollieValidateMerchantUrl,
+                url: mollieValidateMerchantUrl,
                 method: 'POST',
                 data: {
                     validationUrl: applePayValidateMerchantEvent.validationURL,
@@ -56,7 +56,7 @@ $(function () {
 
         session.onpaymentauthorized = (ApplePayPayment) => {
             jQuery.ajax({
-                url: bitbagMolliePaymentUrl,
+                url: molliePaymentUrl,
                 method: 'POST',
                 data: {
                     token: ApplePayPayment.payment.token,

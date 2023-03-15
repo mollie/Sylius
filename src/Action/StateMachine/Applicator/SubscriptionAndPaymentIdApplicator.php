@@ -1,23 +1,18 @@
 <?php
 
-/*
-    This file was created by developers working at BitBag
-    Do you need more information about us and what we do? Visit our   website!
-    We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
-*/
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Action\StateMachine\Applicator;
+namespace SyliusMolliePlugin\Action\StateMachine\Applicator;
 
-use BitBag\SyliusMolliePlugin\Action\StateMachine\Transition\PaymentStateMachineTransitionInterface;
-use BitBag\SyliusMolliePlugin\Action\StateMachine\Transition\ProcessingStateMachineTransitionInterface;
-use BitBag\SyliusMolliePlugin\Action\StateMachine\Transition\StateMachineTransitionInterface;
-use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
-use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
-use BitBag\SyliusMolliePlugin\Transitions\MollieSubscriptionPaymentProcessingTransitions;
-use BitBag\SyliusMolliePlugin\Transitions\MollieSubscriptionProcessingTransitions;
-use BitBag\SyliusMolliePlugin\Transitions\MollieSubscriptionTransitions;
+use SyliusMolliePlugin\Action\StateMachine\Transition\PaymentStateMachineTransitionInterface;
+use SyliusMolliePlugin\Action\StateMachine\Transition\ProcessingStateMachineTransitionInterface;
+use SyliusMolliePlugin\Action\StateMachine\Transition\StateMachineTransitionInterface;
+use SyliusMolliePlugin\Client\MollieApiClient;
+use SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
+use SyliusMolliePlugin\Transitions\MollieSubscriptionPaymentProcessingTransitions;
+use SyliusMolliePlugin\Transitions\MollieSubscriptionProcessingTransitions;
+use SyliusMolliePlugin\Transitions\MollieSubscriptionTransitions;
 use Mollie\Api\Types\PaymentStatus;
 
 final class SubscriptionAndPaymentIdApplicator implements SubscriptionAndPaymentIdApplicatorInterface

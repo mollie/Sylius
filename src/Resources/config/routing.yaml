@@ -1,8 +1,8 @@
-bitbag_admin:
+mollie_admin:
     resource: "routing/admin.yaml"
     prefix: /admin
 
-bitbag_shop:
+mollie_shop:
     resource: "routing/shop.yaml"
     prefix: /{_locale}
     requirements:

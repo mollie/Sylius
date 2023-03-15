@@ -1,11 +1,11 @@
 imports:
-    - { resource: "@BitBagSyliusMolliePlugin/Resources/config/services.xml" }
-    - { resource: "@BitBagSyliusMolliePlugin/Resources/config/resources.yaml" }
-    - { resource: "@BitBagSyliusMolliePlugin/Resources/config/state_machine.yaml" }
-    - { resource: "@BitBagSyliusMolliePlugin/Resources/config/grids.yaml" }
-    - { resource: "@BitBagSyliusMolliePlugin/Resources/config/email.yaml" }
-    - { resource: "@BitBagSyliusMolliePlugin/Resources/config/ui.yaml" }
+    - { resource: "@SyliusMolliePlugin/Resources/config/services.xml" }
+    - { resource: "@SyliusMolliePlugin/Resources/config/resources.yaml" }
+    - { resource: "@SyliusMolliePlugin/Resources/config/state_machine.yaml" }
+    - { resource: "@SyliusMolliePlugin/Resources/config/grids.yaml" }
+    - { resource: "@SyliusMolliePlugin/Resources/config/email.yaml" }
+    - { resource: "@SyliusMolliePlugin/Resources/config/ui.yaml" }
 
 twig:
     globals:
-        subscription_mollie_repository: "@bitbag_sylius_mollie_plugin.repository.mollie_subscription"
+        subscription_mollie_repository: "@sylius_mollie_plugin.repository.mollie_subscription"

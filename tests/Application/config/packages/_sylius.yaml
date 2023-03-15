@@ -5,7 +5,7 @@ imports:
 
     - { resource: "@SyliusShopBundle/Resources/config/app/config.yml" }
 
-    - { resource: "@BitBagSyliusMolliePlugin/Resources/config/config.yaml" }
+    - { resource: "@SyliusMolliePlugin/Resources/config/config.yaml" }
 
     - { resource: "../../src/Resources/config/config.yaml" }
 

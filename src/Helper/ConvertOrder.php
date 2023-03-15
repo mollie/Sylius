@@ -1,22 +1,16 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
- */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Helper;
+namespace SyliusMolliePlugin\Helper;
 
-use BitBag\SyliusMolliePlugin\Calculator\CalculateTaxAmountInterface;
-use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
-use BitBag\SyliusMolliePlugin\Payments\PaymentTerms\Options;
-use BitBag\SyliusMolliePlugin\Resolver\MealVoucherResolverInterface;
-use BitBag\SyliusMolliePlugin\Resolver\TaxShipmentResolverInterface;
-use BitBag\SyliusMolliePlugin\Resolver\TaxUnitItemResolverInterface;
+use SyliusMolliePlugin\Calculator\CalculateTaxAmountInterface;
+use SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
+use SyliusMolliePlugin\Payments\PaymentTerms\Options;
+use SyliusMolliePlugin\Resolver\MealVoucherResolverInterface;
+use SyliusMolliePlugin\Resolver\TaxShipmentResolverInterface;
+use SyliusMolliePlugin\Resolver\TaxUnitItemResolverInterface;
 use Sylius\Component\Addressing\Matcher\ZoneMatcherInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\OrderItem;

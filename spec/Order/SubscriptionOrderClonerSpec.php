@@ -1,22 +1,17 @@
 <?php
 
-/*
-    This file was created by developers working at BitBag
-    Do you need more information about us and what we do? Visit our   website!
-    We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
-*/
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusMolliePlugin\Order;
+namespace spec\SyliusMolliePlugin\Order;
 
-use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
-use BitBag\SyliusMolliePlugin\Entity\OrderInterface;
-use BitBag\SyliusMolliePlugin\Order\AdjustmentClonerInterface;
-use BitBag\SyliusMolliePlugin\Order\OrderItemClonerInterface;
-use BitBag\SyliusMolliePlugin\Order\ShipmentClonerInterface;
-use BitBag\SyliusMolliePlugin\Order\SubscriptionOrderCloner;
-use BitBag\SyliusMolliePlugin\Order\SubscriptionOrderClonerInterface;
+use SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
+use SyliusMolliePlugin\Entity\OrderInterface;
+use SyliusMolliePlugin\Order\AdjustmentClonerInterface;
+use SyliusMolliePlugin\Order\OrderItemClonerInterface;
+use SyliusMolliePlugin\Order\ShipmentClonerInterface;
+use SyliusMolliePlugin\Order\SubscriptionOrderCloner;
+use SyliusMolliePlugin\Order\SubscriptionOrderClonerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

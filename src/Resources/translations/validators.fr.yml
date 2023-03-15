@@ -1,4 +1,4 @@
-bitbag_sylius_mollie_plugin:
+sylius_mollie_plugin:
   api_key:
     not_blank: "La clé API ne peut pas être vide."
     invalid_test: "Clé API non valide. Une clé API doit commencer par «test_»."

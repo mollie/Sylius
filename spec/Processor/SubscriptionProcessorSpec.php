@@ -1,24 +1,19 @@
 <?php
 
-/*
-    This file was created by developers working at BitBag
-    Do you need more information about us and what we do? Visit our   website!
-    We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
-*/
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusMolliePlugin\Processor;
+namespace spec\SyliusMolliePlugin\Processor;
 
-use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionConfigurationInterface;
-use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
-use BitBag\SyliusMolliePlugin\Entity\OrderInterface;
-use BitBag\SyliusMolliePlugin\Factory\PaymentDetailsFactoryInterface;
-use BitBag\SyliusMolliePlugin\Order\SubscriptionOrderClonerInterface;
-use BitBag\SyliusMolliePlugin\Processor\SubscriptionProcessor;
-use BitBag\SyliusMolliePlugin\Processor\SubscriptionProcessorInterface;
-use BitBag\SyliusMolliePlugin\Repository\MollieSubscriptionRepositoryInterface;
-use BitBag\SyliusMolliePlugin\Repository\OrderRepositoryInterface;
+use SyliusMolliePlugin\Entity\MollieSubscriptionConfigurationInterface;
+use SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
+use SyliusMolliePlugin\Entity\OrderInterface;
+use SyliusMolliePlugin\Factory\PaymentDetailsFactoryInterface;
+use SyliusMolliePlugin\Order\SubscriptionOrderClonerInterface;
+use SyliusMolliePlugin\Processor\SubscriptionProcessor;
+use SyliusMolliePlugin\Processor\SubscriptionProcessorInterface;
+use SyliusMolliePlugin\Repository\MollieSubscriptionRepositoryInterface;
+use SyliusMolliePlugin\Repository\OrderRepositoryInterface;
 use Payum\Core\GatewayInterface;
 use Payum\Core\Payum;
 use Payum\Core\Request\Capture;

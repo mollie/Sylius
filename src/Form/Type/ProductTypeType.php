@@ -1,18 +1,12 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
- */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Form\Type;
+namespace SyliusMolliePlugin\Form\Type;
 
-use BitBag\SyliusMolliePlugin\Entity\ProductType;
-use BitBag\SyliusMolliePlugin\MealVouchers\Options;
+use SyliusMolliePlugin\Entity\ProductType;
+use SyliusMolliePlugin\MealVouchers\Options;
 use Sylius\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -42,6 +36,6 @@ final class ProductTypeType extends AbstractResourceType
 
     public function getBlockPrefix(): string
     {
-        return 'bitbag_mollie_admin_product_type';
+        return 'mollie_admin_product_type';
     }
 }

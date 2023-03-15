@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Migrations;
+namespace SyliusMolliePlugin\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
@@ -20,12 +20,12 @@ final class Version20210224130423 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE bitbag_mollie_configuration ADD apple_pay_direct TINYINT(1) NOT NULL');
+        $this->addSql('ALTER TABLE mollie_configuration ADD apple_pay_direct TINYINT(1) NOT NULL');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE bitbag_mollie_configuration DROP apple_pay_direct');
+        $this->addSql('ALTER TABLE mollie_configuration DROP apple_pay_direct');
     }
 }

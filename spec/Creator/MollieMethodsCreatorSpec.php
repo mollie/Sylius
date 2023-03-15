@@ -1,26 +1,21 @@
 <?php
 
-/*
-    This file was created by developers working at BitBag
-    Do you need more information about us and what we do? Visit our   website!
-    We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
-*/
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusMolliePlugin\Creator;
+namespace spec\SyliusMolliePlugin\Creator;
 
-use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
-use BitBag\SyliusMolliePlugin\Creator\MollieMethodsCreator;
-use BitBag\SyliusMolliePlugin\Creator\MollieMethodsCreatorInterface;
-use BitBag\SyliusMolliePlugin\Entity\GatewayConfigInterface;
-use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfig;
-use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
-use BitBag\SyliusMolliePlugin\Factory\MethodsFactoryInterface;
-use BitBag\SyliusMolliePlugin\Factory\MollieGatewayConfigFactoryInterface;
-use BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
-use BitBag\SyliusMolliePlugin\Payments\Methods\MethodInterface;
-use BitBag\SyliusMolliePlugin\Payments\MethodsInterface;
+use SyliusMolliePlugin\Client\MollieApiClient;
+use SyliusMolliePlugin\Creator\MollieMethodsCreator;
+use SyliusMolliePlugin\Creator\MollieMethodsCreatorInterface;
+use SyliusMolliePlugin\Entity\GatewayConfigInterface;
+use SyliusMolliePlugin\Entity\MollieGatewayConfig;
+use SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
+use SyliusMolliePlugin\Factory\MethodsFactoryInterface;
+use SyliusMolliePlugin\Factory\MollieGatewayConfigFactoryInterface;
+use SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
+use SyliusMolliePlugin\Payments\Methods\MethodInterface;
+use SyliusMolliePlugin\Payments\MethodsInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Mollie\Api\Resources\Method;
 use Mollie\Api\Resources\MethodCollection;

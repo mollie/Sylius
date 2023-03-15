@@ -1,18 +1,12 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
- */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Validator\Constraints;
+namespace SyliusMolliePlugin\Validator\Constraints;
 
-use BitBag\SyliusMolliePlugin\Checker\Gateway\MollieGatewayFactoryCheckerInterface;
-use BitBag\SyliusMolliePlugin\Resolver\Order\PaymentCheckoutOrderResolverInterface;
+use SyliusMolliePlugin\Checker\Gateway\MollieGatewayFactoryCheckerInterface;
+use SyliusMolliePlugin\Resolver\Order\PaymentCheckoutOrderResolverInterface;
 use Payum\Core\Model\GatewayConfigInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Core\Model\PaymentMethodInterface;
@@ -60,7 +54,7 @@ final class PaymentMethodCheckoutValidator extends ConstraintValidator
             return;
         }
 
-        $this->session->getFlashBag()->add('error', 'bitbag_sylius_mollie_plugin.empty_payment_method_checkout');
+        $this->session->getFlashBag()->add('error', 'sylius_mollie_plugin.empty_payment_method_checkout');
         if (!property_exists($constraint, 'message')) {
             throw new \InvalidArgumentException();
         }

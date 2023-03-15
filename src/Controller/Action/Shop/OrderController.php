@@ -1,18 +1,12 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
- */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Controller\Action\Shop;
+namespace SyliusMolliePlugin\Controller\Action\Shop;
 
-use BitBag\SyliusMolliePlugin\Entity\OrderInterface;
-use BitBag\SyliusMolliePlugin\Provider\Apple\ApplePayDirectProviderInterface;
+use SyliusMolliePlugin\Entity\OrderInterface;
+use SyliusMolliePlugin\Provider\Apple\ApplePayDirectProviderInterface;
 use Sylius\Bundle\OrderBundle\Controller\OrderController as BaseOrderController;
 use Sylius\Bundle\ResourceBundle\Event\ResourceControllerEvent;
 use Sylius\Component\Payment\Model\PaymentInterface;
@@ -102,7 +96,7 @@ final class OrderController extends BaseOrderController
     private function getApplePayProviderService(): ApplePayDirectProviderInterface
     {
         /** @var ApplePayDirectProviderInterface $provider */
-        $provider = $this->get('bitbag_sylius_mollie_plugin.provider.apple.apple_pay_direct_provider');
+        $provider = $this->get('sylius_mollie_plugin.provider.apple.apple_pay_direct_provider');
 
         return $provider;
     }

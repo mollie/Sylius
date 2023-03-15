@@ -2,7 +2,7 @@
 
 {% set orderPromotionAdjustment = constant('Sylius\\Component\\Core\\Model\\AdjustmentInterface::ORDER_PROMOTION_ADJUSTMENT') %}
 {% set unitPromotionAdjustment = constant('Sylius\\Component\\Core\\Model\\AdjustmentInterface::ORDER_UNIT_PROMOTION_ADJUSTMENT') %}
-{% set unitPromotionAdjustmentVoucher = constant('BitBag\\SyliusMolliePlugin\\Payments\\Methods\\MealVoucher::MEAL_VOUCHERS') %}
+{% set unitPromotionAdjustmentVoucher = constant('SyliusMolliePlugin\\Payments\\Methods\\MealVoucher::MEAL_VOUCHERS') %}
 
 <tr>
     <td colspan="5" id="promotion-discounts" class="promotion-disabled">
@@ -35,7 +35,7 @@
 {% if unitPromotionTotalVoucher %}
     <tr>
         <td colspan="9" id="promotion-total" class="right aligned voucher-disabled">
-            <strong>{{ 'bitbag_sylius_mollie_plugin.ui.voucher_promotion'|trans }}</strong>:
+            <strong>{{ 'sylius_mollie_plugin.ui.voucher_promotion'|trans }}</strong>:
             {{ money.format(unitPromotionTotalVoucher, order.currencyCode) }}
         </td>
     </tr>

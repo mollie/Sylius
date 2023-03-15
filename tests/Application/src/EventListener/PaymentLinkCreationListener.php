@@ -1,19 +1,12 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * another great project.
- * You can find more information about us on https://bitbag.shop and write us
- * an email on mikolaj.krol@bitbag.pl.
- */
 
 declare(strict_types=1);
 
-namespace Tests\BitBag\SyliusMolliePlugin\Application\src\EventListener;
+namespace Tests\SyliusMolliePlugin\Application\src\EventListener;
 
-use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
-use BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
+use SyliusMolliePlugin\Factory\MollieGatewayFactory;
+use SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
 use Doctrine\Persistence\ObjectManager;
 use Payum\Core\Model\GatewayConfigInterface;
 use Payum\Core\Payum;

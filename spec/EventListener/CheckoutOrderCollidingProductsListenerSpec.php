@@ -1,17 +1,12 @@
 <?php
 
-/*
-    This file was created by developers working at BitBag
-    Do you need more information about us and what we do? Visit our   website!
-    We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
-*/
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusMolliePlugin\EventListener;
+namespace spec\SyliusMolliePlugin\EventListener;
 
-use BitBag\SyliusMolliePlugin\Entity\OrderInterface;
-use BitBag\SyliusMolliePlugin\EventListener\CheckoutOrderCollidingProductsListener;
+use SyliusMolliePlugin\Entity\OrderInterface;
+use SyliusMolliePlugin\EventListener\CheckoutOrderCollidingProductsListener;
 use PhpSpec\ObjectBehavior;
 use Sylius\Bundle\ResourceBundle\Event\ResourceControllerEvent;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -55,7 +50,7 @@ final class CheckoutOrderCollidingProductsListenerSpec extends ObjectBehavior
         $message = 'There are mixed products (recurring and non-recurring) within your cart.
              Proceeding with mixed content is forbidden.';
 
-        $translator->trans('bitbag_sylius_mollie_plugin.order_checkout.colliding_products')
+        $translator->trans('sylius_mollie_plugin.order_checkout.colliding_products')
             ->willReturn($message);
 
         $flashBag->add('error', $message)->shouldBeCalledOnce();

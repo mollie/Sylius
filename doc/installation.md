@@ -30,8 +30,8 @@ declare(strict_types=1);
 
 namespace App\Entity\Payment;
 
-use BitBag\SyliusMolliePlugin\Entity\GatewayConfigInterface;
-use BitBag\SyliusMolliePlugin\Entity\GatewayConfigTrait;
+use SyliusMolliePlugin\Entity\GatewayConfigInterface;
+use SyliusMolliePlugin\Entity\GatewayConfigTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Sylius\Bundle\PayumBundle\Model\GatewayConfig as BaseGatewayConfig;
 
@@ -57,8 +57,8 @@ declare(strict_types=1);
 namespace App\Entity\Payment;
 
 use Doctrine\ORM\Mapping as ORM;
-use BitBag\SyliusMolliePlugin\Entity\GatewayConfigInterface;
-use BitBag\SyliusMolliePlugin\Entity\GatewayConfigTrait;
+use SyliusMolliePlugin\Entity\GatewayConfigInterface;
+use SyliusMolliePlugin\Entity\GatewayConfigTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Sylius\Bundle\PayumBundle\Model\GatewayConfig as BaseGatewayConfig;
 
@@ -73,7 +73,7 @@ class GatewayConfig extends BaseGatewayConfig implements GatewayConfigInterface
     /**
      * @var ArrayCollection
      * @ORM\OneToMany(
-     *     targetEntity="BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfig",
+     *     targetEntity="SyliusMolliePlugin\Entity\MollieGatewayConfig",
      *     mappedBy="gateway",
      *     orphanRemoval=true,
      *     cascade={"all"}
@@ -101,7 +101,7 @@ If you don't use annotations, define new Entity mapping inside your `src/Resourc
                   http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd"
 >
     <mapped-superclass name="App\Entity\Payment\GatewayConfig" table="sylius_gateway_config">
-        <one-to-many field="mollieGatewayConfig" target-entity="BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfig" mapped-by="gateway" orphan-removal="true">
+        <one-to-many field="mollieGatewayConfig" target-entity="SyliusMolliePlugin\Entity\MollieGatewayConfig" mapped-by="gateway" orphan-removal="true">
             <cascade>
                 <cascade-all />
             </cascade>
@@ -133,8 +133,8 @@ declare(strict_types=1);
 
 namespace App\Entity\Order;
 
-use BitBag\SyliusMolliePlugin\Entity\OrderInterface;
-use BitBag\SyliusMolliePlugin\Entity\OrderTrait;
+use SyliusMolliePlugin\Entity\OrderInterface;
+use SyliusMolliePlugin\Entity\OrderTrait;
 
 use Sylius\Component\Core\Model\Order as BaseOrder;
 
@@ -153,8 +153,8 @@ declare(strict_types=1);
 namespace App\Entity\Order;
 
 use Doctrine\ORM\Mapping as ORM;
-use BitBag\SyliusMolliePlugin\Entity\OrderInterface;
-use BitBag\SyliusMolliePlugin\Entity\OrderTrait;
+use SyliusMolliePlugin\Entity\OrderInterface;
+use SyliusMolliePlugin\Entity\OrderTrait;
 
 use Sylius\Component\Core\Model\Order as BaseOrder;
 
@@ -213,8 +213,8 @@ declare(strict_types=1);
 
 namespace App\Entity\Product;
 
-use BitBag\SyliusMolliePlugin\Entity\ProductInterface;
-use BitBag\SyliusMolliePlugin\Entity\ProductTrait;
+use SyliusMolliePlugin\Entity\ProductInterface;
+use SyliusMolliePlugin\Entity\ProductTrait;
 use Sylius\Component\Core\Model\Product as BaseProduct;
 
 class Product extends BaseProduct implements ProductInterface
@@ -233,8 +233,8 @@ declare(strict_types=1);
 namespace App\Entity\Product;
 
 use Doctrine\ORM\Mapping as ORM;
-use BitBag\SyliusMolliePlugin\Entity\ProductInterface;
-use BitBag\SyliusMolliePlugin\Entity\ProductTrait;
+use SyliusMolliePlugin\Entity\ProductInterface;
+use SyliusMolliePlugin\Entity\ProductTrait;
 use Sylius\Component\Core\Model\Product as BaseProduct;
 
 /**
@@ -246,7 +246,7 @@ class Product extends BaseProduct implements ProductInterface
     use ProductTrait;
 
     /**
-     * @ORM\ManyToOne(targetEntity="BitBag\SyliusMolliePlugin\Entity\ProductType")
+     * @ORM\ManyToOne(targetEntity="SyliusMolliePlugin\Entity\ProductType")
      * @ORM\JoinColumn(name="product_type_id", fieldName="productType", onDelete="SET NULL")
      */
     protected $productType;
@@ -267,7 +267,7 @@ If you don't use annotations, define new Entity mapping inside your src/Resource
     <entity name="App\Entity\Product\Product" table="sylius_product">
         <many-to-one
             field="productType"
-            target-entity="BitBag\SyliusMolliePlugin\Entity\ProductType"
+            target-entity="SyliusMolliePlugin\Entity\ProductType"
         >
             <join-column
                 name="product_type_id"
@@ -296,7 +296,7 @@ sylius_product:
 ```php
 return [
     ...
-    BitBag\SyliusMolliePlugin\BitBagSyliusMolliePlugin::class => ['all' => true],
+    SyliusMolliePlugin\SyliusMolliePlugin::class => ['all' => true],
 ];
 ```
 
@@ -307,7 +307,7 @@ return [
 
 imports:
     ...
-    - { resource: "@BitBagSyliusMolliePlugin/Resources/config/config.yaml" }
+    - { resource: "@SyliusMolliePlugin/Resources/config/config.yaml" }
 ```
 
 7.Import the routing in your `config/routes.yaml` file:
@@ -315,8 +315,8 @@ imports:
 ```yaml
 # config/routes.yaml
 
-bitbag_sylius_mollie_plugin:
-    resource: "@BitBagSyliusMolliePlugin/Resources/config/routing.yaml"
+sylius_mollie_plugin:
+    resource: "@SyliusMolliePlugin/Resources/config/routing.yaml"
     
 _bazinga_jstranslation:
   resource: "@BazingaJsTranslationBundle/Resources/config/routing/routing.yml"

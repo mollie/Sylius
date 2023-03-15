@@ -1,21 +1,15 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
- */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Action\Api;
+namespace SyliusMolliePlugin\Action\Api;
 
-use BitBag\SyliusMolliePlugin\Entity\OrderInterface;
-use BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionFactoryInterface;
-use BitBag\SyliusMolliePlugin\Repository\MollieSubscriptionRepositoryInterface;
-use BitBag\SyliusMolliePlugin\Repository\OrderRepositoryInterface;
-use BitBag\SyliusMolliePlugin\Request\Api\CreateInternalRecurring;
+use SyliusMolliePlugin\Entity\OrderInterface;
+use SyliusMolliePlugin\Factory\MollieSubscriptionFactoryInterface;
+use SyliusMolliePlugin\Repository\MollieSubscriptionRepositoryInterface;
+use SyliusMolliePlugin\Repository\OrderRepositoryInterface;
+use SyliusMolliePlugin\Request\Api\CreateInternalRecurring;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;

@@ -208,5 +208,3 @@ This plugin's source code is completely free and released under the terms of the
 ## Contact
 ---
 If you want to contact us, the best way is to fill the form on [our website](https://www.mollie.com/en/contact/merchants) or send us an e-mail to support@mollie.com with your question(s). We guarantee that we answer as soon as we can!
-
-Plugin was originally developed by BitBag

@@ -81,6 +81,7 @@ Override GatewayConfig resource:
 ```yaml
 # config/packages/_sylius.yaml
 ...
+
 sylius_payum:
     resources:
         gateway_config:
@@ -104,8 +105,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Sylius\Component\Core\Model\Order as BaseOrder;
 use Sylius\Component\Core\Model\OrderItemInterface;
-
-use Sylius\Component\Core\Model\Order as BaseOrder;
 
 /**
  * @ORM\Entity
@@ -173,6 +172,7 @@ Override Order resource:
 ```yaml
 # config/packages/_sylius.yaml
 ...
+
 sylius_order:
     resources:
         order:
@@ -258,7 +258,7 @@ namespace App\Entity\Product;
 use Doctrine\ORM\Mapping as ORM;
 use Sylius\Component\Core\Model\ProductVariant as BaseProductVariant;
 use Sylius\Component\Product\Model\ProductVariantTranslationInterface;
-use App\Entity\Product\RecurringProductVariantTrait;
+
 /**
  * @ORM\Entity
  * @ORM\Table(name="sylius_product_variant")
@@ -347,11 +347,15 @@ You can also define new Entity mapping inside your `src/Resources/config/doctrin
                                   http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd"
                   xmlns:gedmo="http://gediminasm.org/schemas/orm/doctrine-extensions-mapping"
 >
-    <entity name="App\Entity\Product\ProductVariant" table="sylius_product_variant">
-        <field name="recurring" type="boolean" column="recurring" nullable="true"/>
+    <mapped-superclass name="App\Entity\Product\ProductVariant" table="sylius_product_variant">
+        <field name="recurring" type="boolean" column="recurring" nullable="false">
+            <options>
+                <option name="default">0</option>
+            </options>
+        </field>
         <field name="times" type="integer" column="recurring_times" nullable="true"/>
         <field name="interval" column="recurring_interval" nullable="true"/>
-    </entity>
+    </mapped-superclass>
 </doctrine-mapping>
 ```
 Override Order resource:
@@ -362,7 +366,7 @@ Override Order resource:
 
 sylius_product:
         resources:
-            product:
+          product_variant:
                 classes:
                     model: App\Entity\Product\ProductVariant
 ```
@@ -370,6 +374,8 @@ sylius_product:
 #### 7. Ensure that the plugin dependency is added to your `config/bundles.php` file:
 
 ```php
+# config/bundles.php
+
 return [
     ...
     SyliusMolliePlugin\SyliusMolliePlugin::class => ['all' => true],
@@ -386,7 +392,7 @@ imports:
     - { resource: "@SyliusMolliePlugin/Resources/config/config.yaml" }
 ```
 
-#### 9. Add state machine configuration in `config/packages/_sylius.yaml`
+#### 9. Add state machine configuration in `config/packages/_sylius.yaml`:
 ```yaml
 # config/packages/_sylius.yaml
 
@@ -398,16 +404,7 @@ winzou_state_machine:
         to: completed
 ```
 
-#### 10. Import the routing in your `config/routes.yaml` file:
-
-```yaml
-# config/routes.yaml
-
-sylius_mollie_plugin:
-    resource: "@SyliusMolliePlugin/Resources/config/routing.yaml"
-```
-
-#### 11. Add image directory parameter in `config/packages/_sylius.yaml`
+#### 10. Add image directory parameter in `config/packages/_sylius.yaml`:
 
 ```yaml
 # config/packages/_sylius.yaml
@@ -416,9 +413,18 @@ sylius_mollie_plugin:
        images_dir: "/media/image/"
 ```
 
+#### 11. Import the routing in your `config/routes.yaml` file:
+
+```yaml
+# config/routes.yaml
+
+sylius_mollie_plugin:
+    resource: "@SyliusMolliePlugin/Resources/config/routing.yaml"
+```
+
 #### 12. Update your database
 
-Apply migration to your database
+Apply migration to your database:
 ```
 bin/console doctrine:migrations:migrate
 ```
@@ -437,13 +443,68 @@ cp -R vendor/mollie/sylius-plugin/tests/Application/templates/bundles/SyliusUiBu
 cp -R vendor/mollie/sylius-plugin/tests/Application/templates/bundles/SyliusRefundPlugin/* templates/bundles/SyliusRefundPlugin/
 ```
 
-### 14. Require webpack bundle with composer:
+#### 14. Install assets:
+
+```bash
+bin/console assets:install
+```
+
+**Note:** If you are running it on production, add the `-e prod` flag to this command.
+
+#### 15. Add the payment link cronjob:
+
+```shell script
+* * * * * /usr/bin/php /path/to/bin/console mollie:send-payment-link
+```
+
+#### 16. Download the [domain validation file](https://www.mollie.com/.well-known/apple-developer-merchantid-domain-association) and place it on your server at:
+`public/.well-known/apple-developer-merchantid-domain-association`
+
+### Frontend
+
+#### 1. Installing assets without `webpack`
+
+If you're not using `webpack`, you can install assets via:
+
+```bash
+bin/console assets:install
+```
+
+And then import these already built assets into shop/admin `_scripts` and `_styles` .html.twig files:
+For example:`templates/bundles/SyliusAdminBundle/_scripts.html.twig ` using:
+```
+{{ asset('public/bundles/syliusmollieplugin/mollie/admin.css') }}
+{{ asset('public/bundles/syliusmollieplugin/mollie/admin.js') }}
+{{ asset('public/bundles/syliusmollieplugin/mollie/shop.css') }}
+{{ asset('public/bundles/syliusmollieplugin/mollie/shop.js') }}
+```
+These assets are located in:
+```
+public/bundles/syliusmollieplugin/mollie/admin.css
+public/bundles/syliusmollieplugin/mollie/admin.js
+public/bundles/syliusmollieplugin/mollie/shop.css
+public/bundles/syliusmollieplugin/mollie/shop.js
+```
+
+#### 2. Importing pre-built assets without `webpack`
+
+Another way is to import already built assets directly from mollie source files:
+```
+vendor/mollie/sylius-plugin/src/Resources/public/mollie/admin.css
+vendor/mollie/sylius-plugin/src/Resources/public/mollie/admin.js
+vendor/mollie/sylius-plugin/src/Resources/public/mollie/shop.css
+vendor/mollie/sylius-plugin/src/Resources/public/mollie/shop.js
+```
+
+#### 3. Using `webpack`
+
+Require webpack bundle with composer:
 
 ```bash
 composer require symfony/webpack-encore-bundle
 ```
 
-### 15. Ensure the following configuration is present in `config/packages/webpack_encore.yaml`:
+Ensure the following configuration is present in `config/packages/webpack_encore.yaml`:
 
 ```
 webpack_encore:
@@ -459,7 +520,7 @@ framework:
         json_manifest_path: '%kernel.project_dir%/public/build/admin/manifest.json'
 ```
 
-### 16. Ensure that `mollie-shop-entry` and `mollie-admin-entry` are present in `webpackconfig.js`:
+Ensure that `mollie-shop-entry` and `mollie-admin-entry` are present in `webpackconfig.js`:
 
 ```js
 Encore.addEntry(
@@ -479,40 +540,15 @@ Encore.addEntry(
 )
 ```
 
-### 17. Add the following packages:
+Ensure you have the following packages installed:
 
 ```bash
 yarn add babel-preset-env bazinga-translator intl-messageformat lodash.get node-sass@4.14.1 shepherd.js webpack-notifier
 yarn add --dev @babel/core@7.16.0 @babel/register@7.16.0 @babel/plugin-proposal-object-rest-spread@7.16.5 @symfony/webpack-encore@1.5.0
 ```
 
-### 18. Run package build:
-
-```bash
-yarn install
-yarn build
-yarn encore production
-```
-
-#### 19. Install assets:
-
-```bash
-bin/console assets:install
-```
-
-**Note:** If you are running it on production, add the `-e prod` flag to this command.
-
-#### 20. Update the scheme, since webpack and asset require new tables that are not in the migrations:
+Update the scheme, since webpack and asset require new tables that are not in the migrations:
 
 ```bash
 php bin/console doctrine:schema:update --force
 ```
-
-#### 21. Add the payment link cronjob:
-
-```shell script
-* * * * * /usr/bin/php /path/to/bin/console mollie:send-payment-link
-```
-
-#### 22. Download the [domain validation file](https://www.mollie.com/.well-known/apple-developer-merchantid-domain-association) and place it on your server at
-`public/.well-known/apple-developer-merchantid-domain-association`

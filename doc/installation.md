@@ -115,6 +115,25 @@ class Order extends BaseOrder implements OrderInterface
     use AbandonedEmailOrderTrait;
     use RecurringOrderTrait;
 
+    /**
+     * @var bool
+     * @ORM\Column(type="boolean", name="abandoned_email")
+     */
+    protected $abandonedEmail = false;
+
+    /**
+     * @var ?int
+     * @ORM\Column(type="integer", name="recurring_sequence_index", nullable=true)
+     */
+    protected $recurringSequenceIndex;
+
+     /**
+      * @var MollieSubscriptionInterface|null
+      * @ORM\ManyToOne(targetEntity="SyliusMolliePlugin\Entity\MollieSubscription")
+      * @ORM\JoinColumn(name="subscription_id", fieldName="subscription", onDelete="RESTRICT")
+      */
+    protected $subscription = null;
+
     public function getRecurringItems(): Collection
     {
         return $this
@@ -348,7 +367,7 @@ You can also define new Entity mapping inside your `src/Resources/config/doctrin
                   xmlns:gedmo="http://gediminasm.org/schemas/orm/doctrine-extensions-mapping"
 >
     <mapped-superclass name="App\Entity\Product\ProductVariant" table="sylius_product_variant">
-        <field name="recurring" type="boolean" column="recurring" nullable="false">
+        <field name="recurring" type="boolean" column="recurring">
             <options>
                 <option name="default">0</option>
             </options>
@@ -524,18 +543,18 @@ Ensure that `mollie-shop-entry` and `mollie-admin-entry` are present in `webpack
 
 ```js
 Encore.addEntry(
-    "mollie-shop-entry",
+    'mollie-shop-entry',
     path.resolve(
       __dirname,
-      "vendor/mollie/sylius-plugin/src/Resources/assets/shop/entry.js"
+      'vendor/mollie/sylius-plugin/src/Resources/assets/shop/entry.js'
     )
 )
 
 Encore.addEntry(
-    "mollie-admin-entry",
+    'mollie-admin-entry',
     path.resolve(
         __dirname,
-        "vendor/mollie/sylius-plugin/src/Resources/assets/admin/entry.js"
+        'vendor/mollie/sylius-plugin/src/Resources/assets/admin/entry.js'
     )
 )
 ```

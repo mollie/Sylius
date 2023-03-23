@@ -566,6 +566,14 @@ yarn add babel-preset-env bazinga-translator intl-messageformat lodash.get node-
 yarn add --dev @babel/core@7.16.0 @babel/register@7.16.0 @babel/plugin-proposal-object-rest-spread@7.16.5 @symfony/webpack-encore@1.5.0
 ```
 
+Build the front-end assets:
+
+```bash
+yarn install
+yarn build
+yarn encore production
+```
+
 Update the scheme, since webpack and asset require new tables that are not in the migrations:
 
 ```bash

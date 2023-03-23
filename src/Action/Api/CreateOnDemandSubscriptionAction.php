@@ -17,14 +17,10 @@ use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Reply\HttpRedirect;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 final class CreateOnDemandSubscriptionAction extends BaseApiAwareAction implements ActionInterface, GatewayAwareInterface, ApiAwareInterface
 {
     use GatewayAwareTrait;
-
-    /** @var SessionInterface */
-    private $session;
 
     /** @var MollieLoggerActionInterface */
     private $loggerAction;
@@ -33,11 +29,9 @@ final class CreateOnDemandSubscriptionAction extends BaseApiAwareAction implemen
     private $guzzleNegativeResponseParser;
 
     public function __construct(
-        SessionInterface $session,
         MollieLoggerActionInterface $loggerAction,
         GuzzleNegativeResponseParserInterface $guzzleNegativeResponseParser
     ) {
-        $this->session = $session;
         $this->loggerAction = $loggerAction;
         $this->guzzleNegativeResponseParser = $guzzleNegativeResponseParser;
     }

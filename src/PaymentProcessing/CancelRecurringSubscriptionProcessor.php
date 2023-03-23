@@ -10,20 +10,15 @@ use SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
 use SyliusMolliePlugin\Request\Api\CancelRecurringSubscription;
 use Payum\Core\Payum;
 use Sylius\Component\Core\Model\PaymentMethodInterface;
-use Symfony\Component\HttpFoundation\Session\Session;
 
 final class CancelRecurringSubscriptionProcessor implements CancelRecurringSubscriptionProcessorInterface
 {
     /** @var Payum */
     private $payum;
 
-    /** @var Session */
-    private $session;
-
-    public function __construct(Payum $payum, Session $session)
+    public function __construct(Payum $payum)
     {
         $this->payum = $payum;
-        $this->session = $session;
     }
 
     /**

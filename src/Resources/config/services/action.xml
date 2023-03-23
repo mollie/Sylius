@@ -7,7 +7,7 @@
         <service id="sylius_mollie_plugin.action.create_payment" class="SyliusMolliePlugin\Action\Api\CreatePaymentAction">
             <argument type="service" id="sylius_mollie_plugin.logger.mollie_logger_action"/>
             <argument type="service" id="sylius_mollie_plugin.parser.response.guzzle_negative_response_parser"/>
-            <argument type="service" id="session"/>
+            <argument type="service" id="request_stack"/>
             <tag name="payum.action" factory="mollie" alias="payum.action.create_payment"/>
             <tag name="payum.action" factory="mollie_subscription" alias="payum.action.create_payment_subscription"/>
         </service>
@@ -22,7 +22,6 @@
             <tag name="payum.action" factory="mollie_subscription" alias="payum.action.create_on_demand_payment_action"/>
         </service>
         <service class="SyliusMolliePlugin\Action\Api\CreateOnDemandSubscriptionAction" id="sylius_mollie_plugin.action.api.create_on_demand_subscription_action">
-            <argument id="session" type="service"/>
             <argument id="sylius_mollie_plugin.logger.mollie_logger_action" type="service"/>
             <argument id="sylius_mollie_plugin.parser.response.guzzle_negative_response_parser" type="service"/>
             <tag name="payum.action" factory="mollie_subscription" alias="payum.action.create_on_demand_subscription_action"/>
@@ -73,7 +72,6 @@
         </service>
         <service id="sylius_mollie_plugin.action.convert_mollie_payment" class="SyliusMolliePlugin\Action\ConvertMolliePaymentAction">
             <argument type="service" id="sylius_mollie_plugin.helper.payment_description"/>
-            <argument type="service" id="session"/>
             <argument type="service" id="sylius_mollie_plugin.repository.mollie_gateway_config"/>
             <argument type="service" id="sylius_mollie_plugin.payments.order_converter"/>
             <argument type="service" id="sylius.context.customer"/>
@@ -83,7 +81,6 @@
         </service>
         <service id="sylius_mollie_plugin.action.convert_mollie_subscription_payment" class="SyliusMolliePlugin\Action\ConvertMollieSubscriptionPaymentAction">
             <argument type="service" id="sylius_mollie_plugin.helper.payment_description"/>
-            <argument type="service" id="session"/>
             <argument type="service" id="sylius_mollie_plugin.repository.mollie_gateway_config"/>
             <argument type="service" id="sylius_mollie_plugin.payments.order_converter"/>
             <argument type="service" id="sylius.context.customer"/>

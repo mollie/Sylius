@@ -14,7 +14,7 @@ mollie_shop_checkout_apple_complete:
   path: /mollie/apple-direct/complete
   methods: [POST, GET]
   defaults:
-    _controller: sylius_mollie_plugin.controller.action.shop.order_controller:updateAppleOrderAction
+    _controller: sylius_mollie_plugin.controller.action.shop.order_controller::updateAppleOrderAction
     _sylius:
       event: complete
       flash: false

@@ -7,14 +7,14 @@
         <service id="sylius_mollie_plugin.controller.action.admin.refund" class="SyliusMolliePlugin\Controller\Action\Admin\Refund">
             <argument type="service" id="sylius.repository.payment"/>
             <argument type="service" id="payum"/>
-            <argument type="service" id="session"/>
+            <argument type="service" id="request_stack"/>
             <argument type="service" id="sm.factory"/>
             <argument type="service" id="sylius.manager.payment"/>
             <argument type="service" id="sylius_mollie_plugin.logger.mollie_logger_action"/>
         </service>
         <service id="sylius_mollie_plugin.controller.action.admin.methods" class="SyliusMolliePlugin\Controller\Action\Admin\MethodsAction">
             <argument type="service" id="sylius_mollie_plugin.logger.mollie_logger_action"/>
-            <argument type="service" id="session"/>
+            <argument type="service" id="request_stack"/>
             <argument type="service" id="sylius_mollie_plugin.creator.mollie_methods_resolver"/>
             <argument type="service" id="sylius_mollie_plugin.purifier.mollie_payment_method_purifier"/>
             <argument type="service" id="sylius.repository.gateway_config"/>
@@ -44,7 +44,7 @@
         <service id="sylius_mollie_plugin.controller.action.admin.generate_paymentlink_action" class="SyliusMolliePlugin\Controller\Action\Admin\GeneratePaymentlinkAction">
             <argument type="service" id="sylius.repository.order" />
             <argument type="service" id="twig" />
-            <argument type="service" id="session" />
+            <argument type="service" id="request_stack" />
             <argument type="service" id="router" />
             <argument type="service" id="form.factory"/>
             <argument type="service" id="sylius_mollie_plugin.mollie_api_client"/>

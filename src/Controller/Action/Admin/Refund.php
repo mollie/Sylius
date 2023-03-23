@@ -22,8 +22,8 @@ use Sylius\Component\Payment\PaymentTransitions;
 use Sylius\Component\Resource\Exception\UpdateHandlingException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -35,8 +35,8 @@ final class Refund
     /** @var Payum */
     private $payum;
 
-    /** @var Session */
-    private $session;
+    /** @var RequestStack */
+    private $requestStack;
 
     /** @var FactoryInterface */
     private $stateMachineFactory;
@@ -50,14 +50,14 @@ final class Refund
     public function __construct(
         PaymentRepositoryInterface $paymentRepository,
         Payum $payum,
-        Session $session,
+        RequestStack $requestStack,
         FactoryInterface $stateMachineFactory,
         EntityManagerInterface $paymentEntityManager,
         MollieLoggerActionInterface $loggerAction
     ) {
         $this->paymentRepository = $paymentRepository;
         $this->payum = $payum;
-        $this->session = $session;
+        $this->requestStack = $requestStack;
         $this->stateMachineFactory = $stateMachineFactory;
         $this->paymentEntityManager = $paymentEntityManager;
         $this->loggerAction = $loggerAction;
@@ -84,7 +84,7 @@ final class Refund
         if (false === in_array($factoryName, [MollieGatewayFactory::FACTORY_NAME, MollieSubscriptionGatewayFactory::FACTORY_NAME], true)) {
             $this->applyStateMachineTransition($payment);
 
-            $this->session->getFlashBag()->add('success', 'sylius.payment.refunded');
+            $this->requestStack->getSession()->getFlashBag()->add('success', 'sylius.payment.refunded');
             $this->loggerAction->addLog(sprintf('Refunded successfully'));
 
             return $this->redirectToReferer($request);
@@ -95,7 +95,7 @@ final class Refund
         ) {
             $this->applyStateMachineTransition($payment);
 
-            $this->session->getFlashBag()->add('info', 'sylius_mollie_plugin.ui.refunded_only_locally');
+            $this->requestStack->getSession()->getFlashBag()->add('info', 'sylius_mollie_plugin.ui.refunded_only_locally');
             $this->loggerAction->addLog(sprintf('Refunded only locally'));
 
             return $this->redirectToReferer($request);
@@ -123,10 +123,10 @@ final class Refund
 
             $this->applyStateMachineTransition($payment);
 
-            $this->session->getFlashBag()->add('success', 'sylius.payment.refunded');
+            $this->requestStack->getSession()->getFlashBag()->add('success', 'sylius.payment.refunded');
         } catch (UpdateHandlingException $e) {
             $this->loggerAction->addNegativeLog(sprintf('Error with refund: %s', $e->getMessage()));
-            $this->session->getFlashBag()->add('error', $e->getMessage());
+            $this->requestStack->getSession()->getFlashBag()->add('error', $e->getMessage());
         }
 
         return $this->redirectToReferer($request);

@@ -6,10 +6,11 @@ declare(strict_types=1);
 namespace SyliusMolliePlugin\Twig\Parser;
 
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Environment;
 
 final class ContentParser implements ContentParserInterface
 {
-    /** @var \Twig_Environment */
+    /** @var Environment */
     private $twigEnvironment;
 
     /** @var array */
@@ -19,7 +20,7 @@ final class ContentParser implements ContentParserInterface
     private $translator;
 
     public function __construct(
-        \Twig_Environment $twigEnvironment,
+        Environment $twigEnvironment,
         array $enabledFunctions,
         TranslatorInterface $translator
     ) {

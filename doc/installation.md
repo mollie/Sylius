@@ -127,11 +127,11 @@ class Order extends BaseOrder implements OrderInterface
      */
     protected $recurringSequenceIndex;
 
-     /**
-      * @var MollieSubscriptionInterface|null
-      * @ORM\ManyToOne(targetEntity="SyliusMolliePlugin\Entity\MollieSubscription")
-      * @ORM\JoinColumn(name="subscription_id", fieldName="subscription", onDelete="RESTRICT")
-      */
+    /**
+     * @var MollieSubscriptionInterface|null
+     * @ORM\ManyToOne(targetEntity="SyliusMolliePlugin\Entity\MollieSubscription")
+     * @ORM\JoinColumn(name="subscription_id", fieldName="subscription", onDelete="RESTRICT")
+     */
     protected $subscription = null;
 
     public function getRecurringItems(): Collection
@@ -289,6 +289,11 @@ class ProductVariant extends BaseProductVariant
     protected function createTranslation(): ProductVariantTranslationInterface
     {
         return new ProductVariantTranslation();
+    }
+    
+    public function getName(): ?string
+    {
+        return parent::getName() ?: $this->getProduct()->getName();
     }
 }
 ```

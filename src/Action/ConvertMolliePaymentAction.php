@@ -25,7 +25,6 @@ use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Customer\Context\CustomerContextInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Webmozart\Assert\Assert;
 
 final class ConvertMolliePaymentAction extends BaseApiAwareAction implements ActionInterface, GatewayAwareInterface, ApiAwareInterface
@@ -34,9 +33,6 @@ final class ConvertMolliePaymentAction extends BaseApiAwareAction implements Act
 
     /** @var PaymentDescriptionInterface */
     private $paymentDescription;
-
-    /** @var SessionInterface */
-    private $session;
 
     /** @var RepositoryInterface */
     private $mollieMethodsRepository;
@@ -55,7 +51,6 @@ final class ConvertMolliePaymentAction extends BaseApiAwareAction implements Act
 
     public function __construct(
         PaymentDescriptionInterface $paymentDescription,
-        SessionInterface $session,
         RepositoryInterface $mollieMethodsRepository,
         ConvertOrderInterface $orderConverter,
         CustomerContextInterface $customerContext,
@@ -63,7 +58,6 @@ final class ConvertMolliePaymentAction extends BaseApiAwareAction implements Act
         ApiCustomerFactoryInterface $apiCustomerFactory
     ) {
         $this->paymentDescription = $paymentDescription;
-        $this->session = $session;
         $this->mollieMethodsRepository = $mollieMethodsRepository;
         $this->orderConverter = $orderConverter;
         $this->customerContext = $customerContext;

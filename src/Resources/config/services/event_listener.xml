@@ -33,7 +33,7 @@
         <service id="sylius_mollie_plugin.event_listener." class="SyliusMolliePlugin\EventListener\CheckoutOrderCollidingProductsListener">
             <argument type="service" id="router" />
             <argument type="service" id="translator" />
-            <argument type="service" id="session.flash_bag" />
+            <argument type="service" id="request_stack" />
             <tag name="kernel.event_listener" event="sylius.order.initialize_address" method="onUpdate"/>
         </service>
     </services>

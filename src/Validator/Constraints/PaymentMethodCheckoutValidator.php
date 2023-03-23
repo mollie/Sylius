@@ -10,14 +10,14 @@ use SyliusMolliePlugin\Resolver\Order\PaymentCheckoutOrderResolverInterface;
 use Payum\Core\Model\GatewayConfigInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Core\Model\PaymentMethodInterface;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 final class PaymentMethodCheckoutValidator extends ConstraintValidator
 {
-    /** @var Session */
-    private $session;
+    /** @var RequestStack */
+    private $requestStack;
 
     /** @var PaymentCheckoutOrderResolverInterface */
     private $paymentCheckoutOrderResolver;
@@ -26,10 +26,10 @@ final class PaymentMethodCheckoutValidator extends ConstraintValidator
 
     public function __construct(
         PaymentCheckoutOrderResolverInterface $paymentCheckoutOrderResolver,
-        Session $session,
+        RequestStack $requestStack,
         MollieGatewayFactoryCheckerInterface $mollieGatewayFactoryChecker
     ) {
-        $this->session = $session;
+        $this->requestStack = $requestStack;
         $this->paymentCheckoutOrderResolver = $paymentCheckoutOrderResolver;
         $this->mollieGatewayFactoryChecker = $mollieGatewayFactoryChecker;
     }
@@ -54,7 +54,7 @@ final class PaymentMethodCheckoutValidator extends ConstraintValidator
             return;
         }
 
-        $this->session->getFlashBag()->add('error', 'sylius_mollie_plugin.empty_payment_method_checkout');
+        $this->requestStack->getSession()->getFlashBag()->add('error', 'sylius_mollie_plugin.empty_payment_method_checkout');
         if (!property_exists($constraint, 'message')) {
             throw new \InvalidArgumentException();
         }

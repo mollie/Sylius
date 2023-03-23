@@ -8,7 +8,7 @@ namespace SyliusMolliePlugin\EventListener;
 use SyliusMolliePlugin\Entity\OrderInterface;
 use Sylius\Bundle\ResourceBundle\Event\ResourceControllerEvent;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -18,16 +18,16 @@ final class CheckoutOrderCollidingProductsListener
 
     private TranslatorInterface $translator;
 
-    private FlashBagInterface $flashBag;
+    private RequestStack $requestStack;
 
     public function __construct(
         RouterInterface $router,
         TranslatorInterface $translator,
-        FlashBagInterface $flashBag
+        RequestStack $requestStack
     ) {
         $this->router = $router;
         $this->translator = $translator;
-        $this->flashBag = $flashBag;
+        $this->requestStack = $requestStack;
     }
 
     public function onUpdate(ResourceControllerEvent $event): void
@@ -45,7 +45,7 @@ final class CheckoutOrderCollidingProductsListener
                 $message,
                 ResourceControllerEvent::TYPE_WARNING
             );
-            $this->flashBag->add('error', $message);
+            $this->requestStack->getSession()->getFlashBag()->add('error', $message);
         }
     }
 }

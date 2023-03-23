@@ -13,7 +13,7 @@ use Mollie\Api\Resources\Payment;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Reply\HttpRedirect;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Webmozart\Assert\Assert;
 
 final class CreatePaymentAction extends BaseApiAwareAction
@@ -26,17 +26,17 @@ final class CreatePaymentAction extends BaseApiAwareAction
     /** @var GuzzleNegativeResponseParserInterface */
     private $guzzleNegativeResponseParser;
 
-    /** @var Session */
-    private $session;
+    /** @var RequestStack */
+    private $requestStack;
 
     public function __construct(
         MollieLoggerActionInterface $loggerAction,
         GuzzleNegativeResponseParserInterface $guzzleNegativeResponseParser,
-        Session $session
+        RequestStack $requestStack
     ) {
         $this->loggerAction = $loggerAction;
         $this->guzzleNegativeResponseParser = $guzzleNegativeResponseParser;
-        $this->session = $session;
+        $this->requestStack = $requestStack;
     }
 
     public function execute($request): void
@@ -76,7 +76,7 @@ final class CreatePaymentAction extends BaseApiAwareAction
             $details['statusError'] = $message;
 
             $message = \sprintf('%s%s', 'sylius_mollie_plugin.credit_cart_error.', $details['statusError']);
-            $this->session->getFlashBag()->add('info', $message);
+            $this->requestStack->getSession()->getFlashBag()->add('info', $message);
 
             return;
         } catch (\Exception $e) {

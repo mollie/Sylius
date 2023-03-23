@@ -21,7 +21,11 @@ final class MollieFactoryNameResolver implements MollieFactoryNameResolverInterf
     public function resolve(OrderInterface $order = null): string
     {
         if (null === $order) {
-            $order = $this->cartContext->getCart();
+            try {
+                $order = $this->cartContext->getCart();
+            } catch (\Symfony\Component\HttpFoundation\Exception\SessionNotFoundException $e) {
+                $order = null;
+            }
         }
 
         if (true === $order instanceof OrderInterface && true === $order->hasRecurringContents()) {

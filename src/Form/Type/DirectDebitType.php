@@ -10,19 +10,19 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Validator\Constraints\Iban;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class DirectDebitType extends AbstractType
 {
-    /** @var SessionInterface */
-    private $session;
+    /** @var RequestStack */
+    private $requestStack;
 
-    /** @param SessionInterface $session */
-    public function __construct(SessionInterface $session)
+    /** @param RequestStack $requestStack */
+    public function __construct(RequestStack $requestStack)
     {
-        $this->session = $session;
+        $this->requestStack = $requestStack;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -36,7 +36,7 @@ final class DirectDebitType extends AbstractType
                         'groups' => ['sylius'],
                     ]),
                 ],
-                'data' => $this->session->get('mollie_direct_debit_data')['consumerName'] ?? null,
+                'data' => $this->requestStack->getSession()->get('mollie_direct_debit_data')['consumerName'] ?? null,
             ])
             ->add('iban', TextType::class, [
                 'label' => 'sylius_mollie_plugin.ui.iban',
@@ -50,12 +50,12 @@ final class DirectDebitType extends AbstractType
                         'groups' => ['sylius'],
                     ]),
                 ],
-                'data' => $this->session->get('mollie_direct_debit_data')['iban'] ?? null,
+                'data' => $this->requestStack->getSession()->get('mollie_direct_debit_data')['iban'] ?? null,
             ])
             ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
                 $data = $event->getData();
 
-                $this->session->set('mollie_direct_debit_data', $data);
+                $this->requestStack->getSession()->set('mollie_direct_debit_data', $data);
             })
         ;
     }

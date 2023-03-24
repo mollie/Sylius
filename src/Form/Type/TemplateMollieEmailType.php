@@ -15,6 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Valid;
 
 final class TemplateMollieEmailType extends AbstractType
 {
@@ -31,6 +32,10 @@ final class TemplateMollieEmailType extends AbstractType
             ->add('translations', ResourceTranslationsType::class, [
                 'label' => 'sylius_mollie_plugin.ui.template_contents',
                 'entry_type' => TemplateMollieEmailTranslationType::class,
+                'validation_groups' => ['sylius'],
+                'constraints' => [
+                    new Valid(),
+                ],
             ])
         ;
     }

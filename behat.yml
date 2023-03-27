@@ -13,20 +13,21 @@ default:
 
         Behat\MinkExtension:
             files_path: "%paths.base%/vendor/sylius/sylius/src/Sylius/Behat/Resources/fixtures/"
-            base_url: "https://127.0.0.1:8080/"
+            base_url: "http://172.17.0.1/"
             default_session: symfony
-            javascript_session: chrome_headless
+            javascript_session: chrome
             sessions:
                 symfony:
                     symfony: ~
                 chrome_headless:
                     chrome:
                         socket_timeout: 60
-                        api_url: http://127.0.0.1:9222
+                        api_url: http://172.17.0.1:9222
                         validate_certificate: false
                 chrome:
                     selenium2:
                         browser: chrome
+                        wd_host: http://172.17.0.1:4444/wd/hub
                         capabilities:
                             browserName: chrome
                             browser: chrome

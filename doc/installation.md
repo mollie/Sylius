@@ -566,7 +566,7 @@ Encore.addEntry(
 )
 ```
 
-Ensure that nvm version 12 is currently used:
+If you are using Sylius version <= 1.11 ensure that Node version 12 is currently used, otherwise Node version 14 should be used:
 
 ```bash
 nvm install 12

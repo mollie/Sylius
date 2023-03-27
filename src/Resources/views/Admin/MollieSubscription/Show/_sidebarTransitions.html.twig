@@ -1,4 +1,4 @@
-{% set graph = constant("BitBag\\SyliusMolliePlugin\\Transitions\\MollieRecurringTransitions::GRAPH_MANUAL") %}
+{% set graph = constant("SyliusMolliePlugin\\Transitions\\MollieRecurringTransitions::GRAPH_MANUAL") %}
 {% set state_to_icons_map = {
     pause: 'pause',
     resume: 'forward',
@@ -10,8 +10,8 @@
     cancel: 'red'
 } %}
 <div class="ui segment" id="payment-state">
-    {% include "@BitBagSyliusMolliePlugin/Admin/MollieSubscription/_partial/_state.html.twig" with {data: mollie_subscription.state, attached: true} only %}
-    <h3 class="ui dividing header">{{ 'bitbag_sylius_mollie_plugin.ui.subscription.transitions.block_name'|trans }}</h3>
+    {% include "@SyliusMolliePlugin/Admin/MollieSubscription/_partial/_state.html.twig" with {data: mollie_subscription.state, attached: true} only %}
+    <h3 class="ui dividing header">{{ 'sylius_mollie_plugin.ui.subscription.transitions.block_name'|trans }}</h3>
     <div class="ui relaxed divided list" id="sylius-transitions">
         <div class="ui form" id="mollie-subscription-transitions">
             {% for transition in sm_possible_transitions(mollie_subscription, graph) %}
@@ -21,7 +21,7 @@
                         transition: transition,
                         graph: graph,
                         link: {
-                            route: 'bitbag_sylius_mollie_plugin_mollie_subscription_' ~ transition,
+                            route: 'sylius_mollie_plugin_mollie_subscription_' ~ transition,
                             parameters: {
                                 id: mollie_subscription.id
                             }
@@ -29,7 +29,7 @@
                         class: state_to_colors_map[transition] | default('blue'),
                     },
                     action: {
-                        label: 'bitbag_sylius_mollie_plugin.ui.subscription.transitions.' ~ transition,
+                        label: 'sylius_mollie_plugin.ui.subscription.transitions.' ~ transition,
                         icon: state_to_icons_map[transition] | default('')
                     }
                 } %}

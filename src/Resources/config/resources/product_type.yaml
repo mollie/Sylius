@@ -1,8 +1,8 @@
 sylius_resource:
     resources:
-        bitbag_sylius_mollie_plugin.product_type:
+        sylius_mollie_plugin.product_type:
             driver: doctrine/orm
             classes:
-                model: BitBag\SyliusMolliePlugin\Entity\ProductType
-                interface: BitBag\SyliusMolliePlugin\Entity\ProductTypeInterface
-                form: BitBag\SyliusMolliePlugin\Form\Type\ProductTypeType
+                model: SyliusMolliePlugin\Entity\ProductType
+                interface: SyliusMolliePlugin\Entity\ProductTypeInterface
+                form: SyliusMolliePlugin\Form\Type\ProductTypeType

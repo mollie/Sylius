@@ -1,18 +1,12 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
- */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Form\Extension;
+namespace SyliusMolliePlugin\Form\Extension;
 
-use BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
-use BitBag\SyliusMolliePlugin\Form\Type\DirectDebitType;
+use SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
+use SyliusMolliePlugin\Form\Type\DirectDebitType;
 use Mollie\Api\Types\PaymentMethod;
 use Sylius\Bundle\CoreBundle\Form\Type\Checkout\CompleteType;
 use Sylius\Component\Core\Model\OrderInterface;

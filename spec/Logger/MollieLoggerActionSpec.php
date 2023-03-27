@@ -1,21 +1,16 @@
 <?php
 
-/*
-    This file was created by developers working at BitBag
-    Do you need more information about us and what we do? Visit our   website!
-    We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
-*/
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusMolliePlugin\Logger;
+namespace spec\SyliusMolliePlugin\Logger;
 
-use BitBag\SyliusMolliePlugin\Entity\GatewayConfigInterface;
-use BitBag\SyliusMolliePlugin\Entity\MollieLoggerInterface;
-use BitBag\SyliusMolliePlugin\Factory\MollieLoggerFactoryInterface;
-use BitBag\SyliusMolliePlugin\Logger\MollieLoggerAction;
-use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
-use BitBag\SyliusMolliePlugin\Resolver\MollieFactoryNameResolverInterface;
+use SyliusMolliePlugin\Entity\GatewayConfigInterface;
+use SyliusMolliePlugin\Entity\MollieLoggerInterface;
+use SyliusMolliePlugin\Factory\MollieLoggerFactoryInterface;
+use SyliusMolliePlugin\Logger\MollieLoggerAction;
+use SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
+use SyliusMolliePlugin\Resolver\MollieFactoryNameResolverInterface;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\HttpFoundation\Response;

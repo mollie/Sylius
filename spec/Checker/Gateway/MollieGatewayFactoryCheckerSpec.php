@@ -1,21 +1,15 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
- */
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusMolliePlugin\Checker\Gateway;
+namespace spec\SyliusMolliePlugin\Checker\Gateway;
 
-use BitBag\SyliusMolliePlugin\Checker\Gateway\MollieGatewayFactoryChecker;
-use BitBag\SyliusMolliePlugin\Checker\Gateway\MollieGatewayFactoryCheckerInterface;
-use BitBag\SyliusMolliePlugin\Entity\GatewayConfigInterface;
-use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
-use BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
+use SyliusMolliePlugin\Checker\Gateway\MollieGatewayFactoryChecker;
+use SyliusMolliePlugin\Checker\Gateway\MollieGatewayFactoryCheckerInterface;
+use SyliusMolliePlugin\Entity\GatewayConfigInterface;
+use SyliusMolliePlugin\Factory\MollieGatewayFactory;
+use SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
 use PhpSpec\ObjectBehavior;
 
 final class MollieGatewayFactoryCheckerSpec extends ObjectBehavior

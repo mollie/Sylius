@@ -1,23 +1,17 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
- */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Action;
+namespace SyliusMolliePlugin\Action;
 
-use BitBag\SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
-use BitBag\SyliusMolliePlugin\Checker\Refund\MollieOrderRefundCheckerInterface;
-use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
-use BitBag\SyliusMolliePlugin\Payments\Methods\MealVoucher;
-use BitBag\SyliusMolliePlugin\Refund\OrderRefundInterface;
-use BitBag\SyliusMolliePlugin\Refund\PaymentRefundInterface;
-use BitBag\SyliusMolliePlugin\Updater\Order\OrderVoucherAdjustmentUpdaterInterface;
+use SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
+use SyliusMolliePlugin\Checker\Refund\MollieOrderRefundCheckerInterface;
+use SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
+use SyliusMolliePlugin\Payments\Methods\MealVoucher;
+use SyliusMolliePlugin\Refund\OrderRefundInterface;
+use SyliusMolliePlugin\Refund\PaymentRefundInterface;
+use SyliusMolliePlugin\Updater\Order\OrderVoucherAdjustmentUpdaterInterface;
 use Mollie\Api\Exceptions\ApiException;
 use Mollie\Api\Resources\Customer;
 use Mollie\Api\Resources\Payment;

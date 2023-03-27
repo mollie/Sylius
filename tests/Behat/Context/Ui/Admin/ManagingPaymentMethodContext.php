@@ -1,19 +1,12 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * another great project.
- * You can find more information about us on https://bitbag.shop and write us
- * an email on mikolaj.krol@bitbag.pl.
- */
 
 declare(strict_types=1);
 
-namespace Tests\BitBag\SyliusMolliePlugin\Behat\Context\Ui\Admin;
+namespace Tests\SyliusMolliePlugin\Behat\Context\Ui\Admin;
 
 use Behat\Behat\Context\Context;
-use Tests\BitBag\SyliusMolliePlugin\Behat\Page\Admin\PaymentMethod\CreatePageInterface;
+use Tests\SyliusMolliePlugin\Behat\Page\Admin\PaymentMethod\CreatePageInterface;
 use Webmozart\Assert\Assert;
 
 final class ManagingPaymentMethodContext implements Context

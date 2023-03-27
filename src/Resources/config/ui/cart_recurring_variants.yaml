@@ -3,10 +3,10 @@ sylius_ui:
         sylius.shop.cart.items:
             blocks:
                 cart_items_details:
-                    template: "@BitBagSyliusMolliePlugin/Shop/Cart/_productVariantsDetails.html.twig"
+                    template: "@SyliusMolliePlugin/Shop/Cart/_productVariantsDetails.html.twig"
                     priority: -10
         sylius.shop.checkout.complete.summary:
             blocks:
                 cart_items_details:
-                    template: "@BitBagSyliusMolliePlugin/Shop/Summary/_productVariantsDetails.html.twig"
+                    template: "@SyliusMolliePlugin/Shop/Summary/_productVariantsDetails.html.twig"
                     priority: -10

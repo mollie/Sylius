@@ -1,20 +1,14 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
- */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Action\Api;
+namespace SyliusMolliePlugin\Action\Api;
 
-use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
-use BitBag\SyliusMolliePlugin\Parser\Response\GuzzleNegativeResponseParserInterface;
-use BitBag\SyliusMolliePlugin\Request\Api\CreateOnDemandSubscription;
-use BitBag\SyliusMolliePlugin\Request\Api\CreateSepaMandate;
+use SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
+use SyliusMolliePlugin\Parser\Response\GuzzleNegativeResponseParserInterface;
+use SyliusMolliePlugin\Request\Api\CreateOnDemandSubscription;
+use SyliusMolliePlugin\Request\Api\CreateSepaMandate;
 use Mollie\Api\Exceptions\ApiException;
 use Mollie\Api\Resources\Payment;
 use Payum\Core\Action\ActionInterface;
@@ -23,14 +17,10 @@ use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Reply\HttpRedirect;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 final class CreateOnDemandSubscriptionAction extends BaseApiAwareAction implements ActionInterface, GatewayAwareInterface, ApiAwareInterface
 {
     use GatewayAwareTrait;
-
-    /** @var SessionInterface */
-    private $session;
 
     /** @var MollieLoggerActionInterface */
     private $loggerAction;
@@ -39,11 +29,9 @@ final class CreateOnDemandSubscriptionAction extends BaseApiAwareAction implemen
     private $guzzleNegativeResponseParser;
 
     public function __construct(
-        SessionInterface $session,
         MollieLoggerActionInterface $loggerAction,
         GuzzleNegativeResponseParserInterface $guzzleNegativeResponseParser
     ) {
-        $this->session = $session;
         $this->loggerAction = $loggerAction;
         $this->guzzleNegativeResponseParser = $guzzleNegativeResponseParser;
     }

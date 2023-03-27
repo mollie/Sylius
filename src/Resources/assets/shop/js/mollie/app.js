@@ -35,7 +35,7 @@ $(function () {
         fetch(url)
             .then((response) => response.json())
             .then((data) => {
-                const paymentFeeRow = $('#bitbag-paymentFee-row');
+                const paymentFeeRow = $('#mollie-paymentFee-row');
 
                 if (paymentFeeRow.length && data.view) {
                     paymentFeeRow.replaceWith(data.view);
@@ -50,7 +50,7 @@ $(function () {
     }
 
     function restoreOrderTotalValue() {
-        $('#bitbag-paymentFee-row').replaceWith('');
+        $('#mollie-paymentFee-row').replaceWith('');
         orderTotalRow.text(initialOrderTotal);
     }
 

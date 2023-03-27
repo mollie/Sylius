@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Processor;
+namespace SyliusMolliePlugin\Processor;
 
-use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
-use BitBag\SyliusMolliePlugin\Entity\OrderInterface;
-use BitBag\SyliusMolliePlugin\Factory\PaymentDetailsFactoryInterface;
-use BitBag\SyliusMolliePlugin\Order\SubscriptionOrderClonerInterface;
-use BitBag\SyliusMolliePlugin\Repository\MollieSubscriptionRepositoryInterface;
-use BitBag\SyliusMolliePlugin\Repository\OrderRepositoryInterface;
+use SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
+use SyliusMolliePlugin\Entity\OrderInterface;
+use SyliusMolliePlugin\Factory\PaymentDetailsFactoryInterface;
+use SyliusMolliePlugin\Order\SubscriptionOrderClonerInterface;
+use SyliusMolliePlugin\Repository\MollieSubscriptionRepositoryInterface;
+use SyliusMolliePlugin\Repository\OrderRepositoryInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Payum;
 use Payum\Core\Request\Capture;

@@ -1,20 +1,15 @@
 <?php
 
-/*
-    This file was created by developers working at BitBag
-    Do you need more information about us and what we do? Visit our   website!
-    We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
-*/
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusMolliePlugin\Order;
+namespace spec\SyliusMolliePlugin\Order;
 
-use BitBag\SyliusMolliePlugin\Entity\OrderInterface;
-use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
-use BitBag\SyliusMolliePlugin\Order\OrderPaymentRefund;
-use BitBag\SyliusMolliePlugin\Order\OrderPaymentRefundInterface;
-use BitBag\SyliusMolliePlugin\Request\Api\RefundOrder;
+use SyliusMolliePlugin\Entity\OrderInterface;
+use SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
+use SyliusMolliePlugin\Order\OrderPaymentRefund;
+use SyliusMolliePlugin\Order\OrderPaymentRefundInterface;
+use SyliusMolliePlugin\Request\Api\RefundOrder;
 use Doctrine\Common\Collections\ArrayCollection;
 use Payum\Core\GatewayInterface;
 use Payum\Core\Model\GatewayConfigInterface;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Migrations;
+namespace SyliusMolliePlugin\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
@@ -20,12 +20,12 @@ final class Version20220113182105 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE bitbag_mollie_subscription ADD processing_state VARCHAR(255) DEFAULT \'none\' NOT NULL');
+        $this->addSql('ALTER TABLE mollie_subscription ADD processing_state VARCHAR(255) DEFAULT \'none\' NOT NULL');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE bitbag_mollie_subscription DROP processing_state');
+        $this->addSql('ALTER TABLE mollie_subscription DROP processing_state');
     }
 }

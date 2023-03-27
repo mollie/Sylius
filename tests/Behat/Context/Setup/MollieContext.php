@@ -1,26 +1,19 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * another great project.
- * You can find more information about us on https://bitbag.shop and write us
- * an email on mikolaj.krol@bitbag.pl.
- */
 
 declare(strict_types=1);
 
-namespace Tests\BitBag\SyliusMolliePlugin\Behat\Context\Setup;
+namespace Tests\SyliusMolliePlugin\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
-use BitBag\SyliusMolliePlugin\Entity\GatewayConfigInterface;
-use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
-use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
-use BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
-use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
-use BitBag\SyliusMolliePlugin\Purifier\MolliePaymentMethodPurifierInterface;
-use BitBag\SyliusMolliePlugin\Repository\MollieGatewayConfigRepositoryInterface;
-use BitBag\SyliusMolliePlugin\Resolver\MollieMethodsResolverInterface;
+use SyliusMolliePlugin\Entity\GatewayConfigInterface;
+use SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
+use SyliusMolliePlugin\Factory\MollieGatewayFactory;
+use SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
+use SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
+use SyliusMolliePlugin\Purifier\MolliePaymentMethodPurifierInterface;
+use SyliusMolliePlugin\Repository\MollieGatewayConfigRepositoryInterface;
+use SyliusMolliePlugin\Resolver\MollieMethodsResolverInterface;
 use Doctrine\ORM\EntityManager;
 use Sylius\Behat\Service\SharedStorageInterface;
 use Sylius\Bundle\CoreBundle\Fixture\Factory\ExampleFactoryInterface;
@@ -95,7 +88,7 @@ final class MollieContext implements Context
         Assert::notNull($gatewayConfig);
         $gatewayConfig->setConfig([
             'api_key' => 'test',
-            'payum.http_client' => '@bitbag_sylius_mollie_plugin.mollie_api_client',
+            'payum.http_client' => '@sylius_mollie_plugin.mollie_api_client',
             'api_key_test' => $this->mollieApiKeyTest,
             'profile_id' => $this->mollieProfileId,
             'environment' => null,
@@ -138,7 +131,7 @@ final class MollieContext implements Context
         Assert::notNull($gatewayConfig);
         $gatewayConfig->setConfig([
             'api_key' => 'test',
-            'payum.http_client' => '@bitbag_sylius_mollie_plugin.mollie_api_client',
+            'payum.http_client' => '@sylius_mollie_plugin.mollie_api_client',
             'api_key_test' => $this->mollieApiKeyTest,
             'profile_id' => $this->mollieProfileId,
             'environment' => null,

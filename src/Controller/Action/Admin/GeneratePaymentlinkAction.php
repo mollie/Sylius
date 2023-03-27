@@ -1,28 +1,22 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
- */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Controller\Action\Admin;
+namespace SyliusMolliePlugin\Controller\Action\Admin;
 
-use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
-use BitBag\SyliusMolliePlugin\Entity\TemplateMollieEmailInterface;
-use BitBag\SyliusMolliePlugin\Form\Type\PaymentlinkType;
-use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
-use BitBag\SyliusMolliePlugin\Resolver\PaymentlinkResolverInterface;
+use SyliusMolliePlugin\Client\MollieApiClient;
+use SyliusMolliePlugin\Entity\TemplateMollieEmailInterface;
+use SyliusMolliePlugin\Form\Type\PaymentlinkType;
+use SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
+use SyliusMolliePlugin\Resolver\PaymentlinkResolverInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
 
@@ -34,8 +28,8 @@ final class GeneratePaymentlinkAction
     /** @var Environment */
     private $twig;
 
-    /** @var Session */
-    private $session;
+    /** @var RequestStack */
+    private $requestStack;
 
     /** @var UrlGeneratorInterface */
     private $router;
@@ -55,7 +49,7 @@ final class GeneratePaymentlinkAction
     public function __construct(
         OrderRepositoryInterface $orderRepository,
         Environment $twig,
-        Session $session,
+        RequestStack $requestStack,
         UrlGeneratorInterface $router,
         FormFactoryInterface $formFactory,
         MollieApiClient $mollieApiClient,
@@ -63,7 +57,7 @@ final class GeneratePaymentlinkAction
         MollieLoggerActionInterface $loggerAction
     ) {
         $this->twig = $twig;
-        $this->session = $session;
+        $this->requestStack = $requestStack;
         $this->orderRepository = $orderRepository;
         $this->router = $router;
         $this->formFactory = $formFactory;
@@ -84,7 +78,7 @@ final class GeneratePaymentlinkAction
             try {
                 $paymentlink = $this->paymentlinkResolver->resolve($order, $form->getData(), TemplateMollieEmailInterface::PAYMENT_LINK);
 
-                $this->session->getFlashBag()->add('success', $paymentlink);
+                $this->requestStack->getSession()->getFlashBag()->add('success', $paymentlink);
 
                 $this->loggerAction->addLog(sprintf('Created payment link to order with id = %s', $order->getId()));
 
@@ -92,12 +86,12 @@ final class GeneratePaymentlinkAction
             } catch (\Exception $e) {
                 $this->loggerAction->addNegativeLog(sprintf('Error with generate payment link with : %s', $e->getMessage()));
 
-                $this->session->getFlashBag()->add('error', $e->getMessage());
+                $this->requestStack->getSession()->getFlashBag()->add('error', $e->getMessage());
             }
         }
 
         return new Response(
-            $this->twig->render('@BitBagSyliusMolliePlugin/Admin/Paymentlink/_form.html.twig', [
+            $this->twig->render('@SyliusMolliePlugin/Admin/Paymentlink/_form.html.twig', [
                 'order' => $order,
                 'form' => $form->createView(),
             ])

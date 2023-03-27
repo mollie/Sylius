@@ -1,18 +1,13 @@
 <?php
 
-/*
-    This file was created by developers working at BitBag
-    Do you need more information about us and what we do? Visit our   website!
-    We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
-*/
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusMolliePlugin\Entity;
+namespace spec\SyliusMolliePlugin\Entity;
 
-use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionConfiguration;
-use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionConfigurationInterface;
-use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
+use SyliusMolliePlugin\Entity\MollieSubscriptionConfiguration;
+use SyliusMolliePlugin\Entity\MollieSubscriptionConfigurationInterface;
+use SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
 use PhpSpec\ObjectBehavior;
 
 final class MollieSubscriptionConfigurationSpec extends ObjectBehavior

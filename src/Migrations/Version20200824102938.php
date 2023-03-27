@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Migrations;
+namespace SyliusMolliePlugin\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
@@ -19,7 +19,7 @@ final class Version20200824102938 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf('mysql' !== $this->connection->getDatabasePlatform()->getName(), 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE bitbag_mollie_configuration ADD payment_description VARCHAR(255) DEFAULT NULL');
+        $this->addSql('ALTER TABLE mollie_configuration ADD payment_description VARCHAR(255) DEFAULT NULL');
     }
 
     public function down(Schema $schema): void
@@ -27,6 +27,6 @@ final class Version20200824102938 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf('mysql' !== $this->connection->getDatabasePlatform()->getName(), 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE bitbag_mollie_configuration DROP payment_description');
+        $this->addSql('ALTER TABLE mollie_configuration DROP payment_description');
     }
 }

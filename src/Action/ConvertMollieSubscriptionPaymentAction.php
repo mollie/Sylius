@@ -1,22 +1,16 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
- */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Action;
+namespace SyliusMolliePlugin\Action;
 
-use BitBag\SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
-use BitBag\SyliusMolliePlugin\Entity\OrderInterface;
-use BitBag\SyliusMolliePlugin\Helper\ConvertOrderInterface;
-use BitBag\SyliusMolliePlugin\Helper\PaymentDescriptionInterface;
-use BitBag\SyliusMolliePlugin\Request\Api\CreateCustomer;
-use BitBag\SyliusMolliePlugin\Resolver\PaymentLocaleResolverInterface;
+use SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
+use SyliusMolliePlugin\Entity\OrderInterface;
+use SyliusMolliePlugin\Helper\ConvertOrderInterface;
+use SyliusMolliePlugin\Helper\PaymentDescriptionInterface;
+use SyliusMolliePlugin\Request\Api\CreateCustomer;
+use SyliusMolliePlugin\Resolver\PaymentLocaleResolverInterface;
 use Mollie\Api\Types\PaymentMethod;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
@@ -29,7 +23,6 @@ use Sylius\Bundle\CoreBundle\Context\CustomerContext;
 use Sylius\Component\Core\Model\CustomerInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Webmozart\Assert\Assert;
 
 final class ConvertMollieSubscriptionPaymentAction extends BaseApiAwareAction implements ActionInterface, GatewayAwareInterface, ApiAwareInterface
@@ -38,9 +31,6 @@ final class ConvertMollieSubscriptionPaymentAction extends BaseApiAwareAction im
 
     /** @var PaymentDescriptionInterface */
     private $paymentDescription;
-
-    /** @var SessionInterface */
-    private $session;
 
     /** @var RepositoryInterface */
     private $mollieMethodsRepository;
@@ -56,14 +46,12 @@ final class ConvertMollieSubscriptionPaymentAction extends BaseApiAwareAction im
 
     public function __construct(
         PaymentDescriptionInterface $paymentDescription,
-        SessionInterface $session,
         RepositoryInterface $mollieMethodsRepository,
         ConvertOrderInterface $orderConverter,
         CustomerContext $customerContext,
         PaymentLocaleResolverInterface $paymentLocaleResolver
     ) {
         $this->paymentDescription = $paymentDescription;
-        $this->session = $session;
         $this->mollieMethodsRepository = $mollieMethodsRepository;
         $this->orderConverter = $orderConverter;
         $this->customerContext = $customerContext;

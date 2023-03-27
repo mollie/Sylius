@@ -1,18 +1,12 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
- */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Action\StateMachine;
+namespace SyliusMolliePlugin\Action\StateMachine;
 
-use BitBag\SyliusMolliePlugin\PartialShip\CreatePartialShipFromMollieInterface;
-use BitBag\SyliusMolliePlugin\Transitions\PartialShip\ShipmentTransitions as ShipmentTransitionsPartial;
+use SyliusMolliePlugin\PartialShip\CreatePartialShipFromMollieInterface;
+use SyliusMolliePlugin\Transitions\PartialShip\ShipmentTransitions as ShipmentTransitionsPartial;
 use Mollie\Api\Resources\Order;
 use SM\Factory\FactoryInterface;
 use Sylius\Component\Core\Model\OrderInterface;

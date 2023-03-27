@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Migrations;
+namespace SyliusMolliePlugin\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
@@ -20,14 +20,14 @@ final class Version20220112100741 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE bitbag_mollie_subscription ADD mollie_customer_id VARCHAR(255) DEFAULT NULL, CHANGE customer_id customer_id INT DEFAULT NULL');
-        $this->addSql('ALTER TABLE bitbag_mollie_subscription ADD CONSTRAINT FK_5E3463039395C3F3 FOREIGN KEY (customer_id) REFERENCES sylius_customer (id)');
+        $this->addSql('ALTER TABLE mollie_subscription ADD mollie_customer_id VARCHAR(255) DEFAULT NULL, CHANGE customer_id customer_id INT DEFAULT NULL');
+        $this->addSql('ALTER TABLE mollie_subscription ADD CONSTRAINT FK_5E3463039395C3F3 FOREIGN KEY (customer_id) REFERENCES sylius_customer (id)');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE bitbag_mollie_subscription DROP FOREIGN KEY FK_5E3463039395C3F3');
-        $this->addSql('ALTER TABLE bitbag_mollie_subscription DROP mollie_customer_id, CHANGE customer_id customer_id VARCHAR(255) CHARACTER SET utf8 DEFAULT NULL COLLATE `utf8_unicode_ci`');
+        $this->addSql('ALTER TABLE mollie_subscription DROP FOREIGN KEY FK_5E3463039395C3F3');
+        $this->addSql('ALTER TABLE mollie_subscription DROP mollie_customer_id, CHANGE customer_id customer_id VARCHAR(255) CHARACTER SET utf8 DEFAULT NULL COLLATE `utf8_unicode_ci`');
     }
 }

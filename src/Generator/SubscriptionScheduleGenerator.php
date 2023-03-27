@@ -1,19 +1,13 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
- */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Generator;
+namespace SyliusMolliePlugin\Generator;
 
-use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
-use BitBag\SyliusMolliePlugin\Factory\DatePeriodFactoryInterface;
-use BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionScheduleFactoryInterface;
+use SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
+use SyliusMolliePlugin\Factory\DatePeriodFactoryInterface;
+use SyliusMolliePlugin\Factory\MollieSubscriptionScheduleFactoryInterface;
 
 final class SubscriptionScheduleGenerator implements SubscriptionScheduleGeneratorInterface
 {

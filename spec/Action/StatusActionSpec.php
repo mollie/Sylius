@@ -1,24 +1,17 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * another great project.
- * You can find more information about us on https://bitbag.shop and write us
- * an email on mikolaj.krol@bitbag.pl.
- */
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusMolliePlugin\Action;
+namespace spec\SyliusMolliePlugin\Action;
 
-use BitBag\SyliusMolliePlugin\Action\StatusAction;
-use BitBag\SyliusMolliePlugin\Checker\Refund\MollieOrderRefundCheckerInterface;
-use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
-use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
-use BitBag\SyliusMolliePlugin\Refund\OrderRefundInterface;
-use BitBag\SyliusMolliePlugin\Refund\PaymentRefundInterface;
-use BitBag\SyliusMolliePlugin\Updater\Order\OrderVoucherAdjustmentUpdaterInterface;
+use SyliusMolliePlugin\Action\StatusAction;
+use SyliusMolliePlugin\Checker\Refund\MollieOrderRefundCheckerInterface;
+use SyliusMolliePlugin\Client\MollieApiClient;
+use SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
+use SyliusMolliePlugin\Refund\OrderRefundInterface;
+use SyliusMolliePlugin\Refund\PaymentRefundInterface;
+use SyliusMolliePlugin\Updater\Order\OrderVoucherAdjustmentUpdaterInterface;
 use Exception;
 use Mollie\Api\Endpoints\CustomerEndpoint;
 use Mollie\Api\Endpoints\OrderEndpoint;

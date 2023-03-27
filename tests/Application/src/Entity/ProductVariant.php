@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Tests\BitBag\SyliusMolliePlugin\Entity;
+namespace Tests\SyliusMolliePlugin\Entity;
 
-use BitBag\SyliusMolliePlugin\Entity\ProductVariantInterface;
+use SyliusMolliePlugin\Entity\ProductVariantInterface;
 use Sylius\Component\Core\Model\ProductVariant as BaseProductVariant;
-use Tests\BitBag\SyliusMolliePlugin\Application\src\Entity\RecurringProductVariantTrait;
+use Tests\SyliusMolliePlugin\Application\src\Entity\RecurringProductVariantTrait;
 
 class ProductVariant extends BaseProductVariant implements ProductVariantInterface
 {

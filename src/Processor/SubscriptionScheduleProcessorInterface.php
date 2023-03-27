@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Processor;
+namespace SyliusMolliePlugin\Processor;
 
-use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
+use SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
 
 interface SubscriptionScheduleProcessorInterface
 {

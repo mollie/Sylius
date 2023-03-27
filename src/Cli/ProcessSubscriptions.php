@@ -1,20 +1,14 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
- */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Cli;
+namespace SyliusMolliePlugin\Cli;
 
-use BitBag\SyliusMolliePlugin\Processor\SubscriptionProcessorInterface;
-use BitBag\SyliusMolliePlugin\Repository\MollieSubscriptionRepositoryInterface;
-use BitBag\SyliusMolliePlugin\Transitions\MollieSubscriptionPaymentProcessingTransitions;
-use BitBag\SyliusMolliePlugin\Transitions\MollieSubscriptionProcessingTransitions;
+use SyliusMolliePlugin\Processor\SubscriptionProcessorInterface;
+use SyliusMolliePlugin\Repository\MollieSubscriptionRepositoryInterface;
+use SyliusMolliePlugin\Transitions\MollieSubscriptionPaymentProcessingTransitions;
+use SyliusMolliePlugin\Transitions\MollieSubscriptionProcessingTransitions;
 use SM\Factory\Factory;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

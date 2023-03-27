@@ -1,10 +1,10 @@
 sylius_grid:
     grids:
-        bitbag_sylius_mollie_plugin_admin_product_type:
+        sylius_mollie_plugin_admin_product_type:
             driver:
                 name: doctrine/orm
                 options:
-                    class: BitBag\SyliusMolliePlugin\Entity\ProductType
+                    class: SyliusMolliePlugin\Entity\ProductType
             fields:
                 name:
                     type: string

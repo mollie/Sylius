@@ -26,7 +26,7 @@ In order to configure one's, access any product's variants, and modify it's **Re
 ![subscription_admin_variant.png](subscription_admin_variant.png)
 
 
-And then, edit it's settings up to your needs
+And then, edit its settings up to your needs
 
 ![subscription_admin_variant_settings.png](subscription_admin_variant_settings.png)
 
@@ -63,12 +63,12 @@ By default, this plugin comes with labels, that indicate **subscription** state 
 However, they may not fit into your template(s). In order to replace them, override of few templates is necesary:
 
 Copy:
-* `vendor/bitbag/mollie-plugin/src/Resources/views/Shop/_partial/_recurringBadge.html.twig` into `templates/SyliusMolliePlugin/Shop/_partial/_recurringBadge.html.twig`
+* `vendor/mollie/sylius-plugin/src/Resources/views/Shop/_partial/_recurringBadge.html.twig` into `templates/SyliusMolliePlugin/Shop/_partial/_recurringBadge.html.twig`
 
 Check:
-* `vendor/bitbag/mollie-plugin/src/Resources/views/Shop/_partial/_recurringTranslations.html.twig`
-* `vendor/bitbag/mollie-plugin/src/Resources/views/Shop/Product`
-* `vendor/bitbag/mollie-plugin/src/Resources/views/Shop/Cart`
+* `vendor/mollie/sylius-plugin/src/Resources/views/Shop/_partial/_recurringTranslations.html.twig`
+* `vendor/mollie/sylius-plugin/src/Resources/views/Shop/Product`
+* `vendor/mollie/sylius-plugin/src/Resources/views/Shop/Cart`
 
 for more templates to customize.
 

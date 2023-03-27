@@ -1,25 +1,19 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
- */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Action\Api;
+namespace SyliusMolliePlugin\Action\Api;
 
-use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
-use BitBag\SyliusMolliePlugin\Parser\Response\GuzzleNegativeResponseParserInterface;
-use BitBag\SyliusMolliePlugin\Request\Api\CreatePayment;
+use SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
+use SyliusMolliePlugin\Parser\Response\GuzzleNegativeResponseParserInterface;
+use SyliusMolliePlugin\Request\Api\CreatePayment;
 use Mollie\Api\Exceptions\ApiException;
 use Mollie\Api\Resources\Payment;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Reply\HttpRedirect;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Webmozart\Assert\Assert;
 
 final class CreatePaymentAction extends BaseApiAwareAction
@@ -32,17 +26,17 @@ final class CreatePaymentAction extends BaseApiAwareAction
     /** @var GuzzleNegativeResponseParserInterface */
     private $guzzleNegativeResponseParser;
 
-    /** @var Session */
-    private $session;
+    /** @var RequestStack */
+    private $requestStack;
 
     public function __construct(
         MollieLoggerActionInterface $loggerAction,
         GuzzleNegativeResponseParserInterface $guzzleNegativeResponseParser,
-        Session $session
+        RequestStack $requestStack
     ) {
         $this->loggerAction = $loggerAction;
         $this->guzzleNegativeResponseParser = $guzzleNegativeResponseParser;
-        $this->session = $session;
+        $this->requestStack = $requestStack;
     }
 
     public function execute($request): void
@@ -81,8 +75,8 @@ final class CreatePaymentAction extends BaseApiAwareAction
 
             $details['statusError'] = $message;
 
-            $message = \sprintf('%s%s', 'bitbag_sylius_mollie_plugin.credit_cart_error.', $details['statusError']);
-            $this->session->getFlashBag()->add('info', $message);
+            $message = \sprintf('%s%s', 'sylius_mollie_plugin.credit_cart_error.', $details['statusError']);
+            $this->requestStack->getSession()->getFlashBag()->add('info', $message);
 
             return;
         } catch (\Exception $e) {

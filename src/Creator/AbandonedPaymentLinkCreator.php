@@ -1,24 +1,18 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
- */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Creator;
+namespace SyliusMolliePlugin\Creator;
 
-use BitBag\SyliusMolliePlugin\Entity\GatewayConfigInterface;
-use BitBag\SyliusMolliePlugin\Entity\OrderInterface;
-use BitBag\SyliusMolliePlugin\Entity\TemplateMollieEmailInterface;
-use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
-use BitBag\SyliusMolliePlugin\Preparer\PaymentLinkEmailPreparerInterface;
-use BitBag\SyliusMolliePlugin\Repository\OrderRepositoryInterface;
-use BitBag\SyliusMolliePlugin\Repository\PaymentMethodRepositoryInterface;
-use BitBag\SyliusMolliePlugin\Resolver\PaymentlinkResolverInterface;
+use SyliusMolliePlugin\Entity\GatewayConfigInterface;
+use SyliusMolliePlugin\Entity\OrderInterface;
+use SyliusMolliePlugin\Entity\TemplateMollieEmailInterface;
+use SyliusMolliePlugin\Factory\MollieGatewayFactory;
+use SyliusMolliePlugin\Preparer\PaymentLinkEmailPreparerInterface;
+use SyliusMolliePlugin\Repository\OrderRepositoryInterface;
+use SyliusMolliePlugin\Repository\PaymentMethodRepositoryInterface;
+use SyliusMolliePlugin\Resolver\PaymentlinkResolverInterface;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\PaymentInterface;

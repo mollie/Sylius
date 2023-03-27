@@ -1,4 +1,4 @@
-bitbag_sylius_mollie_plugin:
+sylius_mollie_plugin:
     ui:
         api_key_test: 'Test-API-Schlüssel'
         api_key_live: 'Live-API-Schlüssel'
@@ -124,7 +124,6 @@ bitbag_sylius_mollie_plugin:
         you_can_fin_info_about: 'Erfahren Sie mehr über uns auf'
         restart_tour: 'Tour neu starten'
         sylius_bundle: 'Zum Sylius-Paket'
-        contact_bitbag: 'Bitbag kontaktieren'
         contact_mollie: 'Mollie kontaktieren'
         more_info_about_mollie: 'Mehr Informationen über Mollie'
     form:

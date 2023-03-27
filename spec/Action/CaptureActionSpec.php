@@ -1,27 +1,20 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * another great project.
- * You can find more information about us on https://bitbag.shop and write us
- * an email on mikolaj.krol@bitbag.pl.
- */
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusMolliePlugin\Action;
+namespace spec\SyliusMolliePlugin\Action;
 
-use BitBag\SyliusMolliePlugin\Action\CaptureAction;
-use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
-use BitBag\SyliusMolliePlugin\Payments\PaymentTerms\Options;
-use BitBag\SyliusMolliePlugin\Request\Api\CreateCustomer;
-use BitBag\SyliusMolliePlugin\Request\Api\CreateInternalRecurring;
-use BitBag\SyliusMolliePlugin\Request\Api\CreateOnDemandSubscription;
-use BitBag\SyliusMolliePlugin\Request\Api\CreateOnDemandSubscriptionPayment;
-use BitBag\SyliusMolliePlugin\Request\Api\CreateOrder;
-use BitBag\SyliusMolliePlugin\Request\Api\CreatePayment;
-use BitBag\SyliusMolliePlugin\Request\Api\CreateSubscriptionPayment;
+use SyliusMolliePlugin\Action\CaptureAction;
+use SyliusMolliePlugin\Client\MollieApiClient;
+use SyliusMolliePlugin\Payments\PaymentTerms\Options;
+use SyliusMolliePlugin\Request\Api\CreateCustomer;
+use SyliusMolliePlugin\Request\Api\CreateInternalRecurring;
+use SyliusMolliePlugin\Request\Api\CreateOnDemandSubscription;
+use SyliusMolliePlugin\Request\Api\CreateOnDemandSubscriptionPayment;
+use SyliusMolliePlugin\Request\Api\CreateOrder;
+use SyliusMolliePlugin\Request\Api\CreatePayment;
+use SyliusMolliePlugin\Request\Api\CreateSubscriptionPayment;
 use Mollie\Api\Endpoints\PaymentEndpoint;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
@@ -108,7 +101,7 @@ final class CaptureActionSpec extends ObjectBehavior
         $genericTokenFactory->createToken(
             'test',
             $identity,
-            'bitbag_sylius_mollie_plugin_cancel_subscription_mollie',
+            'sylius_mollie_plugin_cancel_subscription_mollie',
             ['orderId' => 'test_order_id']
         )->willReturn($cancelToken);
 
@@ -175,7 +168,7 @@ final class CaptureActionSpec extends ObjectBehavior
         $genericTokenFactory->createToken(
             'test',
             $identity,
-            'bitbag_sylius_mollie_plugin_cancel_subscription_mollie',
+            'sylius_mollie_plugin_cancel_subscription_mollie',
             ['orderId' => 'test_order_id']
         )->willReturn($cancelToken);
 

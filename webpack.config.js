@@ -5,8 +5,8 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
 	Encore.configureRuntimeEnvironment(process.env.NODE_ENV || 'dev');
 }
 
-Encore.setOutputPath('public/bitbag')
-	.setPublicPath('/bitbag')
+Encore.setOutputPath('public/mollie')
+	.setPublicPath('/mollie')
 
 	.addEntry(
 		'mollie/admin',

@@ -1,15 +1,15 @@
-bitbag_sylius_mollie_plugin_mollie_logger:
+sylius_mollie_plugin_mollie_logger:
   resource: |
-    alias: bitbag_sylius_mollie_plugin.mollie_logger
+    alias: sylius_mollie_plugin.mollie_logger
     section: admin
     path: /mollie/logger
     permission: true
     templates: "@SyliusAdmin\\Crud"
     redirect: update
-    grid: bitbag_sylius_mollie_plugin_mollie_logger
+    grid: sylius_mollie_plugin_mollie_logger
     vars:
         all:
-            subheader: bitbag_sylius_mollie_plugin.ui.logger_list
+            subheader: sylius_mollie_plugin.ui.logger_list
         index:
             icon: 'tags'
   type: sylius.resource

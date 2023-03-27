@@ -1,19 +1,13 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
- */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Preparer;
+namespace SyliusMolliePlugin\Preparer;
 
-use BitBag\SyliusMolliePlugin\EmailSender\PaymentLinkEmailSenderInterface;
-use BitBag\SyliusMolliePlugin\Entity\TemplateMollieEmailTranslationInterface;
-use BitBag\SyliusMolliePlugin\Repository\TemplateMollieEmailTranslationRepositoryInterface;
+use SyliusMolliePlugin\EmailSender\PaymentLinkEmailSenderInterface;
+use SyliusMolliePlugin\Entity\TemplateMollieEmailTranslationInterface;
+use SyliusMolliePlugin\Repository\TemplateMollieEmailTranslationRepositoryInterface;
 use Liip\ImagineBundle\Exception\Config\Filter\NotFoundException;
 use Sylius\Component\Core\Model\OrderInterface;
 

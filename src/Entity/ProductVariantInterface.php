@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Entity;
+namespace SyliusMolliePlugin\Entity;
 
 use Sylius\Component\Core\Model\ProductVariantInterface as BaseProductVariantInterface;
 

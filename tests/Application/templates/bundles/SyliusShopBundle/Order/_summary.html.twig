@@ -20,12 +20,12 @@
     </div>
 </h1>
 
-{% include "@BitBagSyliusMolliePlugin/Shop/Grid/Action/cancelSubscriptionMollie.html.twig" with {
+{% include "@SyliusMolliePlugin/Shop/Grid/Action/cancelSubscriptionMollie.html.twig" with {
     'data': order,
     'options': {
         'link': {
-            'url': path('bitbag_sylius_mollie_plugin_cancel_subscription_mollie', {'orderId': order.id}),
-            'route': path('bitbag_sylius_mollie_plugin_cancel_subscription_mollie', {'orderId': order.id}),
+            'url': path('sylius_mollie_plugin_cancel_subscription_mollie', {'orderId': order.id}),
+            'route': path('sylius_mollie_plugin_cancel_subscription_mollie', {'orderId': order.id}),
         }
     }
 } %}

@@ -2,4 +2,4 @@ sylius_order:
     resources:
         order:
             classes:
-                repository: BitBag\SyliusMolliePlugin\Repository\OrderRepository
+                repository: SyliusMolliePlugin\Repository\OrderRepository

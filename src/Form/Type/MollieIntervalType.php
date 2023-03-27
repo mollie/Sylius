@@ -1,17 +1,11 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
- */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Form\Type;
+namespace SyliusMolliePlugin\Form\Type;
 
-use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionConfigurationInterface;
+use SyliusMolliePlugin\Entity\MollieSubscriptionConfigurationInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -53,7 +47,7 @@ final class MollieIntervalType extends AbstractType
             'error_bubbling' => false,
             'choice_label' => function (string $value): string {
                 return sprintf(
-                    'bitbag_sylius_mollie_plugin.form.product_variant.interval_configuration.steps.%s',
+                    'sylius_mollie_plugin.form.product_variant.interval_configuration.steps.%s',
                     $value
                 );
             },
@@ -65,7 +59,7 @@ final class MollieIntervalType extends AbstractType
     {
         $resolver->setDefaults([
             'compound' => true,
-            'label_format' => 'bitbag_sylius_mollie_plugin.form.product_variant.interval_configuration.%name%',
+            'label_format' => 'sylius_mollie_plugin.form.product_variant.interval_configuration.%name%',
             'error_bubbling' => true,
         ]);
     }

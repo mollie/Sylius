@@ -1,4 +1,4 @@
-bitbag_sylius_mollie_plugin:
+sylius_mollie_plugin:
   api_key:
     not_blank: 'API key mag niet leeg zijn.'
     invalid_test: 'Ongeldigde API key. Een API key moet beginnen met "test_".'

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Request\Api;
+namespace SyliusMolliePlugin\Request\Api;
 
 use Payum\Core\Request\Generic;
 

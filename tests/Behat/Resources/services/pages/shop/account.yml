@@ -1,5 +1,5 @@
 services:
-    bitbag_sylius_mollie_plugin.page.shop.account.order.index:
-         class: Tests\BitBag\SyliusMolliePlugin\Behat\Page\Shop\Account\Order\IndexPage
+    sylius_mollie_plugin.page.shop.account.order.index:
+         class: Tests\SyliusMolliePlugin\Behat\Page\Shop\Account\Order\IndexPage
          parent: "sylius.behat.page.shop.account.order.index"
          public: false

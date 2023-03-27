@@ -1,24 +1,17 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * another great project.
- * You can find more information about us on https://bitbag.shop and write us
- * an email on mikolaj.krol@bitbag.pl.
- */
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusMolliePlugin\Action\Api;
+namespace spec\SyliusMolliePlugin\Action\Api;
 
-use BitBag\SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
-use BitBag\SyliusMolliePlugin\Action\Api\CreateCustomerAction;
-use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
-use BitBag\SyliusMolliePlugin\Entity\MollieCustomer;
-use BitBag\SyliusMolliePlugin\Entity\MollieCustomerInterface;
-use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
-use BitBag\SyliusMolliePlugin\Request\Api\CreateCustomer;
+use SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
+use SyliusMolliePlugin\Action\Api\CreateCustomerAction;
+use SyliusMolliePlugin\Client\MollieApiClient;
+use SyliusMolliePlugin\Entity\MollieCustomer;
+use SyliusMolliePlugin\Entity\MollieCustomerInterface;
+use SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
+use SyliusMolliePlugin\Request\Api\CreateCustomer;
 use Mollie\Api\Endpoints\CustomerEndpoint;
 use Mollie\Api\Exceptions\ApiException;
 use Mollie\Api\Resources\Customer;

@@ -1,4 +1,4 @@
-bitbag_sylius_mollie_plugin:
+sylius_mollie_plugin:
   refunded_only_locally: 'Die Rückzahlung ist nur lokal erfolgt'
   subscription:
     cancelled: 'Das Abonnement wurde gekündigt.'

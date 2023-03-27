@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Resolver;
+namespace SyliusMolliePlugin\Resolver;
 
-use BitBag\SyliusMolliePlugin\Entity\OrderInterface;
-use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
-use BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
+use SyliusMolliePlugin\Entity\OrderInterface;
+use SyliusMolliePlugin\Factory\MollieGatewayFactory;
+use SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
 use Sylius\Component\Order\Context\CartContextInterface;
 
 final class MollieFactoryNameResolver implements MollieFactoryNameResolverInterface
@@ -21,7 +21,11 @@ final class MollieFactoryNameResolver implements MollieFactoryNameResolverInterf
     public function resolve(OrderInterface $order = null): string
     {
         if (null === $order) {
-            $order = $this->cartContext->getCart();
+            try {
+                $order = $this->cartContext->getCart();
+            } catch (\Symfony\Component\HttpFoundation\Exception\SessionNotFoundException $e) {
+                $order = null;
+            }
         }
 
         if (true === $order instanceof OrderInterface && true === $order->hasRecurringContents()) {

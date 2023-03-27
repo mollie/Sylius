@@ -1,26 +1,20 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
- */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Resolver;
+namespace SyliusMolliePlugin\Resolver;
 
-use BitBag\SyliusMolliePlugin\Checker\Voucher\ProductVoucherTypeCheckerInterface;
-use BitBag\SyliusMolliePlugin\Entity\GatewayConfigInterface;
-use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfig;
-use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
-use BitBag\SyliusMolliePlugin\Entity\OrderInterface as MollieOrderInterface;
-use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
-use BitBag\SyliusMolliePlugin\Repository\MollieGatewayConfigRepository;
-use BitBag\SyliusMolliePlugin\Repository\MollieGatewayConfigRepositoryInterface;
-use BitBag\SyliusMolliePlugin\Repository\PaymentMethodRepositoryInterface;
-use BitBag\SyliusMolliePlugin\Resolver\Order\PaymentCheckoutOrderResolverInterface;
+use SyliusMolliePlugin\Checker\Voucher\ProductVoucherTypeCheckerInterface;
+use SyliusMolliePlugin\Entity\GatewayConfigInterface;
+use SyliusMolliePlugin\Entity\MollieGatewayConfig;
+use SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
+use SyliusMolliePlugin\Entity\OrderInterface as MollieOrderInterface;
+use SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
+use SyliusMolliePlugin\Repository\MollieGatewayConfigRepository;
+use SyliusMolliePlugin\Repository\MollieGatewayConfigRepositoryInterface;
+use SyliusMolliePlugin\Repository\PaymentMethodRepositoryInterface;
+use SyliusMolliePlugin\Resolver\Order\PaymentCheckoutOrderResolverInterface;
 use Mollie\Api\Exceptions\ApiException;
 use Sylius\Component\Core\Model\OrderInterface;
 use Webmozart\Assert\Assert;

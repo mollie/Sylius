@@ -1,38 +1,26 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
- */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Form\Type;
+namespace SyliusMolliePlugin\Form\Type;
 
-use BitBag\SyliusMolliePlugin\Resolver\MolliePaymentsMethodResolverInterface;
-use BitBag\SyliusMolliePlugin\Validator\Constraints\PaymentMethodCheckout;
+use SyliusMolliePlugin\Resolver\MolliePaymentsMethodResolverInterface;
+use SyliusMolliePlugin\Validator\Constraints\PaymentMethodCheckout;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 final class PaymentMollieType extends AbstractType
 {
-    /** @var SessionInterface */
-    private $session;
-
     /** @var MolliePaymentsMethodResolverInterface */
     private $methodResolver;
 
     public function __construct(
-        SessionInterface $session,
         MolliePaymentsMethodResolverInterface $methodResolver
     ) {
         $this->methodResolver = $methodResolver;
-        $this->session = $session;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void

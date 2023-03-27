@@ -6,6 +6,8 @@
 composer require sylius/refund-plugin
 ```
 
+Ensure that you have `wkhtmltopdf` installed, and that you have the proper path to it set in the .env file (`WKHTMLTOPDF_PATH` and `WKHTMLTOIMAGE_PATH` variables).
+
 #### 2. Require Mollie plugin with composer:
 
 ```bash
@@ -57,7 +59,7 @@ class GatewayConfig extends BaseGatewayConfig implements GatewayConfigInterface
 
 You can find more annotation examples under the [tests/Application/src/Entity/*](/tests/Application/src/Entity/) path.
 
-You can also define new Entity mapping inside your `src/Resources/config/doctrine` directory:
+If you don't use annotations, you can also define new Entity mapping inside your `src/Resources/config/doctrine` directory:
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 
@@ -172,7 +174,7 @@ class Order extends BaseOrder implements OrderInterface
 }
 ```
 
-You can also define new Entity mapping inside your `src/Resources/config/doctrine` directory.
+If you don't use annotations, you can also define new Entity mapping inside your `src/Resources/config/doctrine` directory.
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 
@@ -229,7 +231,7 @@ class Product extends BaseProduct implements ProductInterface
 }
 ```
 
-You can also define new Entity mapping inside your `src/Resources/config/doctrine` directory.
+If you don't use annotations, you can also define new Entity mapping inside your `src/Resources/config/doctrine` directory.
 ```xml
 <?xml version="1.0" encoding="UTF-8" ?>
 
@@ -360,7 +362,7 @@ trait RecurringProductVariantTrait
 }
 ```
 
-You can also define new Entity mapping inside your `src/Resources/config/doctrine` directory.
+If you don't use annotations, you can also define new Entity mapping inside your `src/Resources/config/doctrine` directory.
 
 ```xml
 <?xml version="1.0" encoding="UTF-8" ?>
@@ -564,11 +566,24 @@ Encore.addEntry(
 )
 ```
 
+If you are using Sylius version <= 1.11 ensure that Node version 12 is currently used, otherwise Node version 14 should be used:
+
+```bash
+nvm install 12
+nvm use 12
+```
+
 Ensure you have the following packages installed:
 
 ```bash
 yarn add babel-preset-env bazinga-translator intl-messageformat lodash.get node-sass@4.14.1 shepherd.js webpack-notifier
 yarn add --dev @babel/core@7.16.0 @babel/register@7.16.0 @babel/plugin-proposal-object-rest-spread@7.16.5 @symfony/webpack-encore@1.5.0
+```
+
+Run gulp:
+
+```bash
+yarn run gulp
 ```
 
 Build the front-end assets:

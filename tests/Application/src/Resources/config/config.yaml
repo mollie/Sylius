@@ -14,6 +14,16 @@ sylius_product:
         model: Tests\SyliusMolliePlugin\Entity\ProductVariant
         repository: SyliusMolliePlugin\Repository\ProductVariantRepository
 
+sylius_user:
+  resources:
+    admin:
+      user:
+        classes:
+          model: Tests\SyliusMolliePlugin\Entity\AdminUser
+    shop:
+      user:
+        classes:
+          model: Tests\SyliusMolliePlugin\Entity\ShopUser
 sylius_order:
   resources:
     order:

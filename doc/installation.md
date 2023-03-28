@@ -254,7 +254,7 @@ If you don't use annotations, you can also define new Entity mapping inside your
     </entity>
 </doctrine-mapping>
 ```
-Override Order resource:
+Override Product resource:
 
 ```yaml
 # config/packages/_sylius.yaml
@@ -384,7 +384,7 @@ If you don't use annotations, you can also define new Entity mapping inside your
     </mapped-superclass>
 </doctrine-mapping>
 ```
-Override Order resource:
+Override ProductVariant resource:
 
 ```yaml
 # config/packages/_sylius.yaml

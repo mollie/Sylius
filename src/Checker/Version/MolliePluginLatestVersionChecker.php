@@ -6,9 +6,10 @@ declare(strict_types=1);
 namespace SyliusMolliePlugin\Checker\Version;
 
 use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\GuzzleException;
+//use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\UriInterface;
+use SyliusMolliePlugin\SyliusMolliePlugin;
 
 final class MolliePluginLatestVersionChecker implements MolliePluginLatestVersionCheckerInterface
 {
@@ -28,15 +29,17 @@ final class MolliePluginLatestVersionChecker implements MolliePluginLatestVersio
 
     public function checkLatestVersion(): ?string
     {
-        try {
-            $hubResponse = $this->client->request('GET', $this->hubUri);
-        } catch (GuzzleException $exception) {
-            return null;
-        }
 
-        $hubResponse = json_decode($hubResponse->getBody()->getContents(), true);
-
-        return $this->getMolliePluginLatestVersion($hubResponse);
+        return SyliusMolliePlugin::VERSION;
+//        try {
+//            $hubResponse = $this->client->request('GET', $this->hubUri);
+//        } catch (GuzzleException $exception) {
+//            return null;
+//        }
+//checkLatestVersion
+//        $hubResponse = json_decode($hubResponse->getBody()->getContents(), true);
+//
+//        return $this->getMolliePluginLatestVersion($hubResponse);
     }
 
     private function getMolliePluginLatestVersion(array $data): ?string

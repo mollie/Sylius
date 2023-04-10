@@ -13,6 +13,7 @@ interface PaymentlinkResolverInterface
     public const NO_AVAILABLE_METHODS = [
         PaymentMethod::KLARNA_PAY_LATER,
         PaymentMethod::KLARNA_SLICE_IT,
+        PaymentMethod::IN3
     ];
 
     public function resolve(

@@ -15,6 +15,7 @@ use SyliusMolliePlugin\Payments\Methods\Eps;
 use SyliusMolliePlugin\Payments\Methods\GiftCard;
 use SyliusMolliePlugin\Payments\Methods\Giropay;
 use SyliusMolliePlugin\Payments\Methods\Ideal;
+use SyliusMolliePlugin\Payments\Methods\In3;
 use SyliusMolliePlugin\Payments\Methods\Kbc;
 use SyliusMolliePlugin\Payments\Methods\Klarnapaylater;
 use SyliusMolliePlugin\Payments\Methods\KlarnaPayNow;
@@ -48,6 +49,7 @@ interface MethodsInterface
         SofortBanking::class,
         MealVoucher::class,
         DirectDebit::class,
+        In3::class
     ];
 
     public function getAllEnabled(): array;

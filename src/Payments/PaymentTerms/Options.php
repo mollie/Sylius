@@ -75,6 +75,7 @@ final class Options
             PaymentMethod::KLARNA_PAY_NOW,
             PaymentMethod::KLARNA_PAY_LATER,
             PaymentMethod::KLARNA_SLICE_IT,
+            PaymentMethod::IN3,
             MealVoucher::MEAL_VOUCHERS,
         ];
     }

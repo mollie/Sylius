@@ -66,14 +66,14 @@ This **open-source plugin was developed to help the Sylius community** and make 
 
 We work on stable, supported and up-to-date versions of packages. We recommend you to do the same.
 
-| Package | Version |
-| --- | --- |
-| PHP |  ^7.2 |
-| ext-json: * |  |
-| mollie/mollie-api-php |  ^2.0 |
-| sylius/admin-order-creation-plugin |  ^0.9.0 |
-| sylius/refund-plugin |  ^1.0.0-RC.3 |
-| sylius/sylius |  ^1.7.0 |
+| Package                            | Version                                       |
+|------------------------------------|-----------------------------------------------|
+| PHP                                | ^7.2 \|\| ^8.0                                |
+| ext-json: *                        |                                               |
+| mollie/mollie-api-php              | ^2.0                                          |
+| sylius/admin-order-creation-plugin | ^0.12 \|\| ^0.13 \|\| v0.14                   |
+| sylius/refund-plugin               | ^1.0                                          |
+| sylius/sylius                      | ~1.9.0 \|\| ~1.10.0 \|\| ~1.11.0 \|\| ~1.12.0 |
 
 ----
 

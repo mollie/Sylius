@@ -11,7 +11,7 @@ Ensure that you have `wkhtmltopdf` installed, and that you have the proper path 
 #### 2. Require Mollie plugin with composer:
 
 ```bash
-composer require mollie/sylius-plugin --no-scripts
+composer require mollie/sylius-plugin --no-scripts -w
 ```
 
 #### 3. Update the GatewayConfig entity class with the following code:

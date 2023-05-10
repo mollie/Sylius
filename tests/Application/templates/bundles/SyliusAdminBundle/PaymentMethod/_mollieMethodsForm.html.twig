@@ -1,7 +1,8 @@
-{% set mealvouchersId = constant('BitBag\\SyliusMolliePlugin\\Payments\\Methods\\MealVoucher::MEAL_VOUCHERS') %}
+{% set mealvouchersId = constant('SyliusMolliePlugin\\Payments\\Methods\\MealVoucher::MEAL_VOUCHERS') %}
 {% set applePay = constant('Mollie\\Api\\Types\\PaymentMethod::APPLEPAY') %}
 {% set klarnaPayLater = constant('Mollie\\Api\\Types\\PaymentMethod::KLARNA_PAY_LATER') %}
 {% set klarnaSliceIt = constant('Mollie\\Api\\Types\\PaymentMethod::KLARNA_SLICE_IT') %}
+{% set in3 = constant('Mollie\\Api\\Types\\PaymentMethod::IN3') %}
 {% import '@SyliusUi/Macro/flags.html.twig' as flags %}
 
 <div class="ui segment" id="mollie-payment-form" data-status="{{resource.id}}">
@@ -9,36 +10,36 @@
     <h4 class="ui header">
         <div class="ui two column stackable grid js-onboardingWizard-load-methods">
             <div class="middle aligned column">
-                {{ 'bitbag_sylius_mollie_plugin.ui.payment_mathod_conf_title'|trans }}
+                {{ 'sylius_mollie_plugin.ui.payment_mathod_conf_title'|trans }}
             </div>
         </div>
     </h4>
     <div class="ui mini message center float js-payment-method-not-loaded">
-        {{ 'bitbag_sylius_mollie_plugin.ui.create_methods_before_loading'|trans|raw }}
+        {{ 'sylius_mollie_plugin.ui.create_methods_before_loading'|trans|raw }}
     </div>
 {% else %}
     <h4 class="ui header">
         <div class="ui two column stackable grid js-onboardingWizard-load-methods">
             <div class="middle aligned column">
-                {{ 'bitbag_sylius_mollie_plugin.ui.payment_mathod_conf_title'|trans }}
+                {{ 'sylius_mollie_plugin.ui.payment_mathod_conf_title'|trans }}
             </div>
             <div class="right aligned column">
                 <div class="ui buttons js-header-btn">
-                    <a href="#" id="get_methods" data-url="{{ path('bitbag_admin_methods', {id: resource.id}) }}"
-                       class="ui button primary">{{ 'bitbag_sylius_mollie_plugin.ui.load_methods_button'|trans }}</a>
+                    <a href="#" id="get_methods" data-url="{{ path('mollie_admin_methods', {id: resource.id}) }}"
+                       class="ui button primary">{{ 'sylius_mollie_plugin.ui.load_methods_button'|trans }}</a>
                 </div>
             </div>
         </div>
         <div class="sub header">
             <i class="info circle icon"></i>
-            {{ 'bitbag_sylius_mollie_plugin.ui.you_can_sort_methods_via_drag_and_drop'|trans }}
+            {{ 'sylius_mollie_plugin.ui.you_can_sort_methods_via_drag_and_drop'|trans }}
         </div>
     </h4>
 
     <div
         class="ui styled fluid accordion js-sortable"
         id="payment_methods"
-        data-ajax-url="{{ path('bitbag_admin_change_position') }}"
+        data-ajax-url="{{ path('mollie_admin_change_position') }}"
     >
         {% set nameFieldRendered = false %}
         {% for name, methodForm in form.gatewayConfig.mollieGatewayConfig|sort((a, b) => a.vars.value.position <=> b.vars.value.position) %}
@@ -104,7 +105,7 @@
                                     class="ui button red form_button--delete-img"
                                     id="{{ name }}"
                                     data-value="{{ methodForm.vars.value.name }}"
-                                    data-url="{{ path('bitbag_admin_delete_logo') }}"
+                                    data-url="{{ path('mollie_admin_delete_logo') }}"
                                 >{{ 'sylius.ui.delete'|trans }}
                                 </div>
                             </div>
@@ -131,8 +132,9 @@
                             <div class="twelve wide field">
                                 {% if
                                     methodForm.vars.value.methodId == mealvouchersId or
-                                    methodForm.vars.value.methodId == klarnaPayLater  or
-                                    methodForm.vars.value.methodId == klarnaSliceIt
+                                    methodForm.vars.value.methodId == klarnaPayLater or
+                                    methodForm.vars.value.methodId == klarnaSliceIt or
+                                    methodForm.vars.value.methodId == in3
                                 %}
                                     {{ form_row(methodForm.paymentType, {'attr': {'disabled': 'disabled', 'class': 'js-onboardingWizard-PaymentMethod'}}) }}
                                     {{ form_help(methodForm.paymentType) }}
@@ -155,7 +157,7 @@
                         </div>
                     </div>
                     <h4 class="ui horizontal divider header">
-                        {{ 'bitbag_sylius_mollie_plugin.ui.payment_fee'|trans }}
+                        {{ 'sylius_mollie_plugin.ui.payment_fee'|trans }}
                     </h4>
                     {{ form_row(methodForm.paymentSurchargeFee, { 'attr': { 'class': 'js-onboardingWizard-paymentFee' } }) }}
 
@@ -163,7 +165,7 @@
             </div>
         {% else %}
             <div class="ui mini message center float js-payment-method-not-loaded">
-                {{ 'bitbag_sylius_mollie_plugin.ui.no_methods_found_message'|trans }}
+                {{ 'sylius_mollie_plugin.ui.no_methods_found_message'|trans }}
             </div>
         {% endfor %}
     </div>

@@ -54,6 +54,8 @@ adminConfig.externals = Object.assign({}, adminConfig.externals, {
 });
 adminConfig.name = 'admin';
 
+adminConfig.resolve.alias['chart.js/dist/Chart.min'] = 'chart.js/dist/chart.min'
+
 Encore.reset();
 
 module.exports = [shopConfig, adminConfig];

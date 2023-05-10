@@ -1,20 +1,20 @@
-bitbag_sylius_mollie_plugin_apple_pay_validation:
+sylius_mollie_plugin_apple_pay_validation:
   methods: [POST]
   path: /mollie/apple-direct/validation
   defaults:
-    _controller: bitbag_sylius_mollie_plugin.controller.action.shop.apple_pay_validation_action
+    _controller: sylius_mollie_plugin.controller.action.shop.apple_pay_validation_action
 
-bitbag_sylius_mollie_plugin_apple_pay_payment:
+sylius_mollie_plugin_apple_pay_payment:
   methods: [POST]
   path: /apple-pay-payment
   defaults:
-    _controller: bitbag_sylius_mollie_plugin.controller.action.shop.apple_pay_create_payment
+    _controller: sylius_mollie_plugin.controller.action.shop.apple_pay_create_payment
 
-bitbag_mollie_shop_checkout_apple_complete:
+mollie_shop_checkout_apple_complete:
   path: /mollie/apple-direct/complete
   methods: [POST, GET]
   defaults:
-    _controller: bitbag_sylius_mollie_plugin.controller.action.shop.order_controller:updateAppleOrderAction
+    _controller: sylius_mollie_plugin.controller.action.shop.order_controller::updateAppleOrderAction
     _sylius:
       event: complete
       flash: false

@@ -2,26 +2,36 @@ sylius_payum:
     resources:
         gateway_config:
           classes:
-              model: Tests\BitBag\SyliusMolliePlugin\Entity\GatewayConfig
+              model: Tests\SyliusMolliePlugin\Entity\GatewayConfig
 
 sylius_product:
   resources:
     product:
       classes:
-        model: Tests\BitBag\SyliusMolliePlugin\Entity\Product
+        model: Tests\SyliusMolliePlugin\Entity\Product
     product_variant:
       classes:
-        model: Tests\BitBag\SyliusMolliePlugin\Entity\ProductVariant
-        repository: BitBag\SyliusMolliePlugin\Repository\ProductVariantRepository
+        model: Tests\SyliusMolliePlugin\Entity\ProductVariant
+        repository: SyliusMolliePlugin\Repository\ProductVariantRepository
 
+sylius_user:
+  resources:
+    admin:
+      user:
+        classes:
+          model: Tests\SyliusMolliePlugin\Entity\AdminUser
+    shop:
+      user:
+        classes:
+          model: Tests\SyliusMolliePlugin\Entity\ShopUser
 sylius_order:
   resources:
     order:
       classes:
-        model: Tests\BitBag\SyliusMolliePlugin\Entity\Order
+        model: Tests\SyliusMolliePlugin\Entity\Order
 
 sylius_customer:
     resources:
         customer:
             classes:
-                repository: BitBag\SyliusMolliePlugin\Repository\CustomerRepository
+                repository: SyliusMolliePlugin\Repository\CustomerRepository

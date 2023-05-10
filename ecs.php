@@ -1,23 +1,29 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
- */
-
 declare(strict_types=1);
 
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-use Symplify\EasyCodingStandard\ValueObject\Option;
+use PhpCsFixer\Fixer\Import\NoUnusedImportsFixer;
+use Symplify\EasyCodingStandard\Config\ECSConfig;
 
-return static function (ContainerConfigurator $containerConfigurator): void {
-    $containerConfigurator->import('vendor/bitbag/coding-standard/ecs.php');
-
-    $parameters = $containerConfigurator->parameters();
-    $parameters->set(Option::PATHS, [
+return function (ECSConfig $ecsConfig): void {
+    $ecsConfig->paths([
         __DIR__ . '/src',
         __DIR__ . '/tests',
+    ]);
+
+    // this way you add a single rule
+    $ecsConfig->rules([
+        NoUnusedImportsFixer::class,
+    ]);
+
+    // this way you can add sets - group of rules
+    $ecsConfig->sets([
+        // run and fix, one by one
+        // SetList::SPACES,
+        // SetList::ARRAY,
+        // SetList::DOCBLOCK,
+        // SetList::NAMESPACES,
+        // SetList::COMMENTS,
+        // SetList::PSR_12,
     ]);
 };

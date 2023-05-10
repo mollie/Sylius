@@ -59,11 +59,11 @@
 }
 
 .online-payment__label {
-    display: flex;
+    display: flex!important;
     flex-direction: column;
     align-items: center;
     border: 1px solid #dedede;
-    padding: 1rem;
+    padding: 1rem!important;
     border-radius: 5px;
     cursor: pointer;
     font-weight: bold;

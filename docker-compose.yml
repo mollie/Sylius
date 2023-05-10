@@ -1,59 +1,55 @@
-version: '3.4'
+version: '3.9'
 
 services:
-  php:
-    build:
-      context: .
-      target: root_php
-    depends_on:
-      - mysql
-    environment:
-      - APP_ENV=dev
-      - APP_DEBUG=1
-      - APP_SECRET=EDITME
-      - DATABASE_URL=mysql://sylius:nopassword@mysql/sylius
-      - PHP_DATE_TIMEZONE=${PHP_DATE_TIMEZONE:-UTC}
-    volumes:
-      - .:/var/www:rw
-      - ./tests/Application/public/media:/var/www/tests/Application/public/media:rw
-
-  mysql:
-    image: percona:5.7
-    environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-nopassword}
-      - MYSQL_DATABASE=sylius
-      - MYSQL_USER=sylius
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD:-nopassword}
-    volumes:
-      - mysql-data:/var/lib/mysql:rw
-#       - ./docker/mysql/data:/var/lib/mysql:rw,delegated
+  browser:
+    container_name: browser
     ports:
-      - "3306:3306"
-
-  nodejs:
+      - "9222:9222"
     build:
-      context: .
-      target: nodejs
+      context: .docker/
+      dockerfile: Dockerfile.chromium
+    command: "http://127.0.0.1"
+
+  hub:
+    container_name: selenium-hub
+    image: selenium/hub:3.11.0
+    ports:
+      - "4444:4444"
+    links:
+      - app
+
+  chrome:
+    container_name: selenium-chrome
+    image: selenium/node-chrome-debug:3.11.0
+    depends_on:
+      - hub
+    links:
+      - app
     environment:
-      PHP_HOST: php
-      PHP_PORT: 9000
-    depends_on:
-      - php
-    volumes:
-      - .:/var/www:rw
-
-  nginx:
+      - HUB_HOST=hub
+      - HUB_PORT=4444
+    ports:
+         - "5900:5900"
+  app:
     build:
-      context: .
-      target: nginx
-    depends_on:
-      - php
-      - nodejs # to ensure correct build order
-    volumes:
-      - ./tests/Application/public:/var/www/tests/Application/public:ro
+        context: .docker/
+    container_name: sylius-mollie5-dev
+    tty: true
     ports:
       - "80:80"
+      - "8080:8080"
+      - "443:443"
+      - "2222:22"
+    volumes:
+      - "mollie_db_volume:/var/lib/mysql"
+      - ./.:/var/www/html/public:rw
+      - ./tests/Application/public/media:/var/www/html/public/tests/Application/public/media:rw
+    environment:
+      - XDEBUG_ENABLED=1
+      - XDEBUG_REMOTE_HOST=172.17.0.1
+      - PHP_VERSION=8.0
+      - NODE_VERSION=14
 
 volumes:
-  mysql-data:
-  public-media:
+  mollie_db_volume:
+    name: mollie_db_volume

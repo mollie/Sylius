@@ -2,9 +2,9 @@ winzou_state_machine:
   sylius_order_checkout:
     callbacks:
       after:
-        bitbag_sylius_mollie_plugin_payment_surcharge:
+        sylius_mollie_plugin_payment_surcharge:
           on: ["select_payment"]
-          do: ["@bitbag_sylius_mollie_plugin.processor.payment_surcharge_processor", "process"]
+          do: ["@sylius_mollie_plugin.processor.payment_surcharge_processor", "process"]
           args: ["object"]
   sylius_shipment:
     transitions:
@@ -13,9 +13,9 @@ winzou_state_machine:
         to: shipped
     callbacks:
       before:
-        bitbag_purify_empty_ready_shipments:
+        mollie_purify_empty_ready_shipments:
           on: ["ship", "create_and_ship"]
-          do: ["@bitbag_sylius_mollie_plugin.purifier.partial_ship.order_shipment_purifier", "purify"]
+          do: ["@sylius_mollie_plugin.purifier.partial_ship.order_shipment_purifier", "purify"]
           args: ["object.getOrder()"]
       after:
         sylius_resolve_state:

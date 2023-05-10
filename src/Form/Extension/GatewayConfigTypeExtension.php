@@ -1,17 +1,11 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
- */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Form\Extension;
+namespace SyliusMolliePlugin\Form\Extension;
 
-use BitBag\SyliusMolliePlugin\Form\Type\MollieGatewayConfigType;
+use SyliusMolliePlugin\Form\Type\MollieGatewayConfigType;
 use Sylius\Bundle\PayumBundle\Form\Type\GatewayConfigType;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;

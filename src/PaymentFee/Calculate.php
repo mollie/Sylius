@@ -1,21 +1,15 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
- */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\PaymentFee;
+namespace SyliusMolliePlugin\PaymentFee;
 
-use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfig;
-use BitBag\SyliusMolliePlugin\Exceptions\UnknownPaymentSurchargeTye;
-use BitBag\SyliusMolliePlugin\PaymentFee\Types\FixedAmount;
-use BitBag\SyliusMolliePlugin\PaymentFee\Types\FixedAmountAndPercentage;
-use BitBag\SyliusMolliePlugin\PaymentFee\Types\Percentage;
+use SyliusMolliePlugin\Entity\MollieGatewayConfig;
+use SyliusMolliePlugin\Exceptions\UnknownPaymentSurchargeTye;
+use SyliusMolliePlugin\PaymentFee\Types\FixedAmount;
+use SyliusMolliePlugin\PaymentFee\Types\FixedAmountAndPercentage;
+use SyliusMolliePlugin\PaymentFee\Types\Percentage;
 use Sylius\Component\Order\Model\OrderInterface;
 use Webmozart\Assert\Assert;
 

@@ -1,5 +1,5 @@
 sylius_resource:
   resources:
-    bitbag_sylius_mollie_plugin.mollie_method_image:
+    sylius_mollie_plugin.mollie_method_image:
       classes:
-        model: BitBag\SyliusMolliePlugin\Entity\MollieMethodImage
+        model: SyliusMolliePlugin\Entity\MollieMethodImage

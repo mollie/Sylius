@@ -1,20 +1,15 @@
 <?php
 
-/*
-    This file was created by developers working at BitBag
-    Do you need more information about us and what we do? Visit our   website!
-    We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
-*/
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusMolliePlugin\Payments\MethodResolver;
+namespace spec\SyliusMolliePlugin\Payments\MethodResolver;
 
-use BitBag\SyliusMolliePlugin\Entity\GatewayConfigInterface;
-use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
-use BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
-use BitBag\SyliusMolliePlugin\Payments\MethodResolver\MollieMethodFilter;
-use BitBag\SyliusMolliePlugin\Payments\MethodResolver\MollieMethodFilterInterface;
+use SyliusMolliePlugin\Entity\GatewayConfigInterface;
+use SyliusMolliePlugin\Factory\MollieGatewayFactory;
+use SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
+use SyliusMolliePlugin\Payments\MethodResolver\MollieMethodFilter;
+use SyliusMolliePlugin\Payments\MethodResolver\MollieMethodFilterInterface;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\PaymentMethodInterface;
 

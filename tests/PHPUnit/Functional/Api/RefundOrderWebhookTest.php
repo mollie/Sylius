@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Tests\BitBag\SyliusMolliePlugin\PHPUnit\Functional\Api;
+namespace Tests\SyliusMolliePlugin\PHPUnit\Functional\Api;
 
-use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
-use BitBag\SyliusMolliePlugin\Entity\OrderInterface;
-use BitBag\SyliusMolliePlugin\Repository\CreditMemoRepositoryInterface;
-use BitBag\SyliusMolliePlugin\Repository\OrderRepositoryInterface;
+use SyliusMolliePlugin\Client\MollieApiClient;
+use SyliusMolliePlugin\Entity\OrderInterface;
+use SyliusMolliePlugin\Repository\CreditMemoRepositoryInterface;
+use SyliusMolliePlugin\Repository\OrderRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Payum\Core\Model\Identity;
 use Sylius\Component\Core\Model\Payment;
@@ -19,7 +19,7 @@ use Sylius\RefundPlugin\Entity\LineItemInterface;
 use Sylius\RefundPlugin\Entity\RefundInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\BitBag\SyliusMolliePlugin\PHPUnit\Functional\FunctionalTestCase;
+use Tests\SyliusMolliePlugin\PHPUnit\Functional\FunctionalTestCase;
 
 final class RefundOrderWebhookTest extends FunctionalTestCase
 {
@@ -43,7 +43,7 @@ final class RefundOrderWebhookTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $this->mollieApiClient = self::getContainer()->get('bitbag_sylius_mollie_plugin.mollie_api_client');
+        $this->mollieApiClient = self::getContainer()->get('sylius_mollie_plugin.mollie_api_client');
         $this->mollieApiClient->setApiEndpoint('http://localhost:8217');
         $this->securityTokenRepository = self::getContainer()->get('sylius.repository.payment_security_token');
         $this->orderRepository = self::getContainer()->get('sylius.repository.order');

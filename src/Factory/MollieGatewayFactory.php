@@ -1,18 +1,12 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
- */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Factory;
+namespace SyliusMolliePlugin\Factory;
 
-use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
-use BitBag\SyliusMolliePlugin\Form\Type\MollieGatewayConfigurationType;
+use SyliusMolliePlugin\Client\MollieApiClient;
+use SyliusMolliePlugin\Form\Type\MollieGatewayConfigurationType;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\GatewayFactory;
 use Sylius\Bundle\CoreBundle\Application\Kernel;
@@ -30,7 +24,7 @@ final class MollieGatewayFactory extends GatewayFactory
         $config->defaults([
             'payum.factory_name' => self::FACTORY_NAME,
             'payum.factory_title' => 'Mollie',
-            'payum.http_client' => '@bitbag_sylius_mollie_plugin.mollie_api_client',
+            'payum.http_client' => '@sylius_mollie_plugin.mollie_api_client',
         ]);
 
         if (false === (bool) $config['payum.api']) {
@@ -52,7 +46,7 @@ final class MollieGatewayFactory extends GatewayFactory
                 $mollieApiClient->setApiKey($config[$environment]);
                 $mollieApiClient->setConfig($config->toUnsafeArray());
                 $mollieApiClient->addVersionString(\sprintf('Sylius/%s', Kernel::VERSION));
-                $mollieApiClient->addVersionString(\sprintf('BitBagSyliusMolliePlugin/%s', $mollieApiClient->getVersion()));
+                $mollieApiClient->addVersionString(\sprintf('SyliusMolliePlugin/%s', $mollieApiClient->getVersion()));
                 $mollieApiClient->addVersionString(\sprintf('uap/%s', $mollieApiClient->getUserAgentToken()));
 
                 return $mollieApiClient;

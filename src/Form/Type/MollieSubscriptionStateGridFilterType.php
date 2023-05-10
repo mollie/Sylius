@@ -1,17 +1,11 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
- */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Form\Type;
+namespace SyliusMolliePlugin\Form\Type;
 
-use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
+use SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -36,7 +30,7 @@ final class MollieSubscriptionStateGridFilterType extends AbstractType
                     MollieSubscriptionInterface::STATE_ABORTED,
                 ],
                 'choice_label' => function (string $value): string {
-                    return sprintf('bitbag_sylius_mollie_plugin.ui.subscription.state.%s', $value);
+                    return sprintf('sylius_mollie_plugin.ui.subscription.state.%s', $value);
                 },
                 'expanded' => true,
                 'multiple' => true,

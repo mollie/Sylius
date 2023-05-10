@@ -1,17 +1,17 @@
-bitbag_sylius_mollie_plugin_mollie_logger:
+sylius_mollie_plugin_mollie_logger:
   resource: |
-    alias: bitbag_sylius_mollie_plugin.template_mollie_email
+    alias: sylius_mollie_plugin.template_mollie_email
     section: admin
     path: /mollie/email-template
     templates: "@SyliusAdmin\\Crud"
     redirect: update
     permission: true
-    grid: bitbag_sylius_mollie_plugin_template_mollie_email
+    grid: sylius_mollie_plugin_template_mollie_email
     vars:
         all:
-            subheader: bitbag_sylius_mollie_plugin.ui.mollie_email_template
+            subheader: sylius_mollie_plugin.ui.mollie_email_template
             templates:
-                form: "@BitBagSyliusMolliePlugin/Admin/TemplateMollieEmail/Crud/_form.html.twig"
+                form: "@SyliusMolliePlugin/Admin/TemplateMollieEmail/Crud/_form.html.twig"
         index:
             icon: 'email'
   type: sylius.resource

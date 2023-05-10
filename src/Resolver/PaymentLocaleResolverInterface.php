@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Resolver;
+namespace SyliusMolliePlugin\Resolver;
 
 use Sylius\Component\Core\Model\OrderInterface;
 

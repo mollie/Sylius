@@ -1,19 +1,13 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
- */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Refund;
+namespace SyliusMolliePlugin\Refund;
 
-use BitBag\SyliusMolliePlugin\Creator\PaymentRefundCommandCreatorInterface;
-use BitBag\SyliusMolliePlugin\Exceptions\InvalidRefundAmountException;
-use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
+use SyliusMolliePlugin\Creator\PaymentRefundCommandCreatorInterface;
+use SyliusMolliePlugin\Exceptions\InvalidRefundAmountException;
+use SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use Mollie\Api\Resources\Payment;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Symfony\Component\Messenger\MessageBusInterface;

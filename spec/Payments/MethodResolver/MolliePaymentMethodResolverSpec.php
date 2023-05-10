@@ -1,25 +1,20 @@
 <?php
 
-/*
-    This file was created by developers working at BitBag
-    Do you need more information about us and what we do? Visit our   website!
-    We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
-*/
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusMolliePlugin\Payments\MethodResolver;
+namespace spec\SyliusMolliePlugin\Payments\MethodResolver;
 
-use BitBag\SyliusMolliePlugin\Entity\OrderInterface;
-use BitBag\SyliusMolliePlugin\Payments\MethodResolver\MollieMethodFilterInterface;
-use BitBag\SyliusMolliePlugin\Payments\MethodResolver\MolliePaymentMethodResolver;
-use BitBag\SyliusMolliePlugin\Resolver\MollieFactoryNameResolverInterface;
+use SyliusMolliePlugin\Entity\OrderInterface;
+use SyliusMolliePlugin\Payments\MethodResolver\MollieMethodFilterInterface;
+use SyliusMolliePlugin\Payments\MethodResolver\MolliePaymentMethodResolver;
+use SyliusMolliePlugin\Resolver\MollieFactoryNameResolverInterface;
 use Payum\Core\Model\GatewayConfigInterface;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\PaymentInterface as CorePaymentInterface;
 use Sylius\Component\Core\Model\PaymentMethodInterface;
-use BitBag\SyliusMolliePlugin\Repository\PaymentMethodRepositoryInterface;
+use SyliusMolliePlugin\Repository\PaymentMethodRepositoryInterface;
 use Sylius\Component\Payment\Resolver\PaymentMethodsResolverInterface;
 
 final class MolliePaymentMethodResolverSpec extends ObjectBehavior

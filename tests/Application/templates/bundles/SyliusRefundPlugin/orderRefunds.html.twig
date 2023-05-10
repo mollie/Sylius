@@ -4,7 +4,7 @@
 
 {% set customer = order.customer %}
 {% set disableButton = order.paymentState == constant('Sylius\\Component\\Core\\OrderPaymentStates::STATE_REFUNDED') ? 'disabled' : '' %}
-{% set unitPromotionAdjustmentVoucher = constant('BitBag\\SyliusMolliePlugin\\Payments\\Methods\\MealVoucher::MEAL_VOUCHERS') %}
+{% set unitPromotionAdjustmentVoucher = constant('SyliusMolliePlugin\\Payments\\Methods\\MealVoucher::MEAL_VOUCHERS') %}
 {% set unitPromotionTotalVoucher = order.getAdjustmentsTotalRecursively(unitPromotionAdjustmentVoucher) %}
 
 {% block content %}
@@ -23,6 +23,7 @@
                     </div>
                 </div>
                 <form action="{{ path('sylius_refund_refund_units', {'orderNumber': app.request.attributes.get('orderNumber')}) }}" method="post">
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token(app.request.attributes.get('orderNumber')) }}" />
                     <table id="refunds" class="ui compact celled table">
                         <thead>
                             <tr>

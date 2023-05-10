@@ -1,21 +1,14 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * another great project.
- * You can find more information about us on https://bitbag.shop and write us
- * an email on mikolaj.krol@bitbag.pl.
- */
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusMolliePlugin\PaymentProcessing;
+namespace spec\SyliusMolliePlugin\PaymentProcessing;
 
-use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
-use BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
-use BitBag\SyliusMolliePlugin\PaymentProcessing\CancelRecurringSubscriptionProcessor;
-use BitBag\SyliusMolliePlugin\PaymentProcessing\CancelRecurringSubscriptionProcessorInterface;
+use SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
+use SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
+use SyliusMolliePlugin\PaymentProcessing\CancelRecurringSubscriptionProcessor;
+use SyliusMolliePlugin\PaymentProcessing\CancelRecurringSubscriptionProcessorInterface;
 use Payum\Core\GatewayInterface;
 use Payum\Core\Model\GatewayConfigInterface;
 use Payum\Core\Payum;

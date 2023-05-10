@@ -6,13 +6,13 @@ Feature: Paying with Mollie Subscription during checkout
 
     Background:
         Given the store operates on a single channel in "United States"
-        And there is a user "john@bitbag.pl" identified by "password123"
+        And there is a user "john@mollie.pl" identified by "password123"
         And the store has a payment method "Mollie Subscription" with a code "mollie_subscription" and Mollie Subscription payment gateway
         And gateway "mollie_subscription" has all methods loaded and enabled
         And the store has a product "PHP T-Shirt" priced at "€19.99"
         And the "PHP T-shirt" variant has recurring payment enabled
         And the store ships everywhere for free
-        And I am logged in as "john@bitbag.pl"
+        And I am logged in as "john@mollie.pl"
 
     @ui
     Scenario: Successful payment

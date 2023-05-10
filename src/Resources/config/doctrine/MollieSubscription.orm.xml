@@ -5,7 +5,7 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                                   http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd"
 >
-    <mapped-superclass name="BitBag\SyliusMolliePlugin\Entity\MollieSubscription" table="bitbag_mollie_subscription">
+    <mapped-superclass name="SyliusMolliePlugin\Entity\MollieSubscription" table="mollie_subscription">
         <id name="id" column="id" type="integer">
             <generator strategy="AUTO"/>
         </id>
@@ -28,13 +28,13 @@
             </options>
         </field>
 
-        <one-to-one field="subscriptionConfiguration" inversed-by="subscription" target-entity="BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionConfiguration">
+        <one-to-one field="subscriptionConfiguration" inversed-by="subscription" target-entity="SyliusMolliePlugin\Entity\MollieSubscriptionConfiguration">
             <cascade>
                 <cascade-persist/>
             </cascade>
         </one-to-one>
         <many-to-many field="orders" target-entity="Sylius\Component\Order\Model\OrderInterface">
-            <join-table name="bitbag_mollie_subscription_orders">
+            <join-table name="mollie_subscription_orders">
                 <join-columns>
                     <join-column name="subscription_id" referenced-column-name="id"/>
                 </join-columns>
@@ -50,7 +50,7 @@
             <join-column referenced-column-name="id"/>
         </many-to-one>
         <many-to-many field="payments" target-entity="Sylius\Component\Core\Model\PaymentInterface">
-            <join-table name="bitbag_mollie_subscription_payments">
+            <join-table name="mollie_subscription_payments">
                 <join-columns>
                     <join-column name="subscription_id" referenced-column-name="id"/>
                 </join-columns>
@@ -59,7 +59,7 @@
                 </inverse-join-columns>
             </join-table>
         </many-to-many>
-        <one-to-many field="schedules" target-entity="BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionScheduleInterface" mapped-by="mollieSubscription">
+        <one-to-many field="schedules" target-entity="SyliusMolliePlugin\Entity\MollieSubscriptionScheduleInterface" mapped-by="mollieSubscription">
             <cascade>
                 <cascade-persist/>
             </cascade>

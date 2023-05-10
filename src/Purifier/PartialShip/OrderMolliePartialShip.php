@@ -1,21 +1,15 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
- */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Purifier\PartialShip;
+namespace SyliusMolliePlugin\Purifier\PartialShip;
 
-use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
-use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
-use BitBag\SyliusMolliePlugin\Form\Type\MollieGatewayConfigurationType;
-use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
-use BitBag\SyliusMolliePlugin\Resolver\PartialShip\FromSyliusToMollieLinesResolverInterface;
+use SyliusMolliePlugin\Client\MollieApiClient;
+use SyliusMolliePlugin\Factory\MollieGatewayFactory;
+use SyliusMolliePlugin\Form\Type\MollieGatewayConfigurationType;
+use SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
+use SyliusMolliePlugin\Resolver\PartialShip\FromSyliusToMollieLinesResolverInterface;
 use Doctrine\Common\Collections\Collection;
 use Mollie\Api\Exceptions\ApiException;
 use Sylius\Component\Core\Model\OrderInterface;

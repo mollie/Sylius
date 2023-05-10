@@ -1,22 +1,22 @@
-bitbag_mollie_methods:
+mollie_methods:
   resource: "admin/methods.yaml"
-bitbag_mollie_logger:
+mollie_logger:
   resource: "admin/mollie_logger.yaml"
-bitbag_mollie_logo:
+mollie_logo:
   resource: "admin/mollie_logo.yaml"
-bitbag_mollie_payment_refund:
+mollie_payment_refund:
   resource: "admin/payment_refund.yaml"
-bitbag_mollie_partial_ship:
+mollie_partial_ship:
   resource: "admin/partial_ship.yaml"
-bitbag_mollie_payment_link:
+mollie_payment_link:
   resource: "admin/paymentlink.yaml"
-bitbag_mollie_email_template:
+mollie_email_template:
   resource: "admin/mollie_email_template.yaml"
-bitbag_mollie_product_type:
+mollie_product_type:
   resource: "admin/product_type.yaml"
-bitbag_sylius_mollie_plugin_onboarding_wizard_status:
+sylius_mollie_plugin_onboarding_wizard_status:
   resource: "admin/onboarding_wizard/status.yaml"
-bitbag_sylius_mollie_plugin_onboarding_wizard_completed:
+sylius_mollie_plugin_onboarding_wizard_completed:
   resource: "admin/onboarding_wizard/completed.yaml"
-bitbag_sylius_mollie_plugin_mollie_subscription:
+sylius_mollie_plugin_mollie_subscription:
   resource: "admin/mollie_subscription.yaml"

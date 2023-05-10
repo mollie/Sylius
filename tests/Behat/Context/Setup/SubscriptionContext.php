@@ -1,22 +1,15 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * another great project.
- * You can find more information about us on https://bitbag.shop and write us
- * an email on mikolaj.krol@bitbag.pl.
- */
 
 declare(strict_types=1);
 
-namespace Tests\BitBag\SyliusMolliePlugin\Behat\Context\Setup;
+namespace Tests\SyliusMolliePlugin\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
-use BitBag\SyliusMolliePlugin\Entity\MollieCustomer;
-use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
-use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionScheduleInterface;
-use BitBag\SyliusMolliePlugin\Processor\SubscriptionScheduleProcessorInterface;
+use SyliusMolliePlugin\Entity\MollieCustomer;
+use SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
+use SyliusMolliePlugin\Entity\MollieSubscriptionScheduleInterface;
+use SyliusMolliePlugin\Processor\SubscriptionScheduleProcessorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Behat\Service\SharedStorageInterface;
 use Sylius\Component\Core\Model\OrderInterface;

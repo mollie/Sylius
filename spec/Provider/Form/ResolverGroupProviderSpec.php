@@ -1,18 +1,13 @@
 <?php
 
-/*
-    This file was created by developers working at BitBag
-    Do you need more information about us and what we do? Visit our   website!
-    We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
-*/
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusMolliePlugin\Provider\Form;
+namespace spec\SyliusMolliePlugin\Provider\Form;
 
-use BitBag\SyliusMolliePlugin\Entity\ProductVariantInterface;
-use BitBag\SyliusMolliePlugin\Provider\Form\ResolverGroupProvider;
-use BitBag\SyliusMolliePlugin\Provider\Form\ResolverGroupProviderInterface;
+use SyliusMolliePlugin\Entity\ProductVariantInterface;
+use SyliusMolliePlugin\Provider\Form\ResolverGroupProvider;
+use SyliusMolliePlugin\Provider\Form\ResolverGroupProviderInterface;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\CustomerInterface;
 use Symfony\Component\Form\FormInterface;

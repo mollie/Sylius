@@ -6,7 +6,7 @@
 >
     {% for keyChoice, choice in methodMollie.vars.choices %}
         <div class="online-payment__item online-payment__item--{{ choice.value }}" id="{{ choice.value }}"
-             data-feeurl="{{ path('bitbag_sylius_mollie_plugin_payment_fee_calculate', {methodId: choice.value }) }}">
+             data-feeurl="{{ path('sylius_mollie_plugin_payment_fee_calculate', {methodId: choice.value }) }}">
 
             <input
                     type="radio"
@@ -22,11 +22,11 @@
             </label>
 
             {% if choice.value == 'creditcard' and true == gatewayConfig.config['components'] | default(false) %}
-                {% include '@BitBagSyliusMolliePlugin/Shop/PaymentMollie/_creditCardForm.html.twig' %}
+                {% include '@SyliusMolliePlugin/Shop/PaymentMollie/_creditCardForm.html.twig' %}
             {% elseif choice.value == 'ideal' %}
                 {% for key, method in mollie_payment_options %}
                     {% if key == 'issuers' and method.vars.choices|length > 0 %}
-                        {% include '@BitBagSyliusMolliePlugin/Shop/PaymentMollie/_issuers.html.twig' %}
+                        {% include '@SyliusMolliePlugin/Shop/PaymentMollie/_issuers.html.twig' %}
                     {% endif %}
                 {% endfor %}
             {% endif %}

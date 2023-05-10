@@ -1,24 +1,18 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
- */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Action;
+namespace SyliusMolliePlugin\Action;
 
-use BitBag\SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
-use BitBag\SyliusMolliePlugin\Payments\PaymentTerms\Options;
-use BitBag\SyliusMolliePlugin\Request\Api\CreateCustomer;
-use BitBag\SyliusMolliePlugin\Request\Api\CreateInternalRecurring;
-use BitBag\SyliusMolliePlugin\Request\Api\CreateOnDemandSubscription;
-use BitBag\SyliusMolliePlugin\Request\Api\CreateOnDemandSubscriptionPayment;
-use BitBag\SyliusMolliePlugin\Request\Api\CreateOrder;
-use BitBag\SyliusMolliePlugin\Request\Api\CreatePayment;
+use SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
+use SyliusMolliePlugin\Payments\PaymentTerms\Options;
+use SyliusMolliePlugin\Request\Api\CreateCustomer;
+use SyliusMolliePlugin\Request\Api\CreateInternalRecurring;
+use SyliusMolliePlugin\Request\Api\CreateOnDemandSubscription;
+use SyliusMolliePlugin\Request\Api\CreateOnDemandSubscriptionPayment;
+use SyliusMolliePlugin\Request\Api\CreateOrder;
+use SyliusMolliePlugin\Request\Api\CreatePayment;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\Exception\RuntimeException;
@@ -75,7 +69,7 @@ final class CaptureAction extends BaseApiAwareAction implements CaptureActionInt
                 $cancelToken = $this->tokenFactory->createToken(
                     $token->getGatewayName(),
                     $token->getDetails(),
-                    'bitbag_sylius_mollie_plugin_cancel_subscription_mollie',
+                    'sylius_mollie_plugin_cancel_subscription_mollie',
                     ['orderId' => $details['metadata']['order_id']]
                 );
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\BitBag\SyliusMolliePlugin\PHPUnit\Functional;
+namespace Tests\SyliusMolliePlugin\PHPUnit\Functional;
 
 use ApiTestCase\JsonApiTestCase;
 

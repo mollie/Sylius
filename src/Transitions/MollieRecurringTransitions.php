@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Transitions;
+namespace SyliusMolliePlugin\Transitions;
 
 final class MollieRecurringTransitions
 {

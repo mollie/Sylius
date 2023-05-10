@@ -8,4 +8,5 @@ parameters:
         - 'src/DependencyInjection/Configuration.php'
 
         # Test dependencies
-        - 'tests/Application/*'
+        - 'tests/Application/app/**.php'
+        - 'tests/Application/src/**.php'

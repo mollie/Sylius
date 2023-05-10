@@ -1,23 +1,17 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
- */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Resolver;
+namespace SyliusMolliePlugin\Resolver;
 
-use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
-use BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfig;
-use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
-use BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
-use BitBag\SyliusMolliePlugin\Form\Type\MollieGatewayConfigurationType;
-use BitBag\SyliusMolliePlugin\Helper\IntToStringConverter;
-use BitBag\SyliusMolliePlugin\Preparer\PaymentLinkEmailPreparerInterface;
+use SyliusMolliePlugin\Client\MollieApiClient;
+use SyliusMolliePlugin\Entity\MollieGatewayConfig;
+use SyliusMolliePlugin\Factory\MollieGatewayFactory;
+use SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
+use SyliusMolliePlugin\Form\Type\MollieGatewayConfigurationType;
+use SyliusMolliePlugin\Helper\IntToStringConverter;
+use SyliusMolliePlugin\Preparer\PaymentLinkEmailPreparerInterface;
 use Liip\ImagineBundle\Exception\Config\Filter\NotFoundException;
 use Sylius\AdminOrderCreationPlugin\Provider\PaymentTokenProviderInterface;
 use Sylius\Component\Core\Model\OrderInterface;

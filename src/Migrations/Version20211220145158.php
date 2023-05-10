@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Migrations;
+namespace SyliusMolliePlugin\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
@@ -21,7 +21,7 @@ final class Version20211220145158 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE sylius_order ADD subscription_id INT DEFAULT NULL, ADD recurring_sequence_index INT DEFAULT NULL');
-        $this->addSql('ALTER TABLE sylius_order ADD CONSTRAINT FK_6196A1F99A1887DC FOREIGN KEY (subscription_id) REFERENCES bitbag_mollie_subscription (id) ON DELETE RESTRICT');
+        $this->addSql('ALTER TABLE sylius_order ADD CONSTRAINT FK_6196A1F99A1887DC FOREIGN KEY (subscription_id) REFERENCES mollie_subscription (id) ON DELETE RESTRICT');
         $this->addSql('CREATE INDEX IDX_6196A1F99A1887DC ON sylius_order (subscription_id)');
     }
 

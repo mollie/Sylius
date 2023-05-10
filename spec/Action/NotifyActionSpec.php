@@ -1,24 +1,17 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * another great project.
- * You can find more information about us on https://bitbag.shop and write us
- * an email on mikolaj.krol@bitbag.pl.
- */
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusMolliePlugin\Action;
+namespace spec\SyliusMolliePlugin\Action;
 
-use BitBag\SyliusMolliePlugin\Action\NotifyAction;
-use BitBag\SyliusMolliePlugin\Action\StateMachine\SetStatusOrderActionInterface;
-use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
-use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
-use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
-use BitBag\SyliusMolliePlugin\Repository\MollieSubscriptionRepositoryInterface;
-use BitBag\SyliusMolliePlugin\Request\StateMachine\StatusRecurringSubscription;
+use SyliusMolliePlugin\Action\NotifyAction;
+use SyliusMolliePlugin\Action\StateMachine\SetStatusOrderActionInterface;
+use SyliusMolliePlugin\Client\MollieApiClient;
+use SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
+use SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
+use SyliusMolliePlugin\Repository\MollieSubscriptionRepositoryInterface;
+use SyliusMolliePlugin\Request\StateMachine\StatusRecurringSubscription;
 use Mollie\Api\Endpoints\OrderEndpoint;
 use Mollie\Api\Endpoints\PaymentEndpoint;
 use Mollie\Api\Exceptions\ApiException;

@@ -4,21 +4,21 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
         <defaults public="true" />
-        <service id="bitbag_sylius_mollie_plugin.payment_surcharge.types.fix_amount" class="BitBag\SyliusMolliePlugin\PaymentFee\Types\FixedAmount">
+        <service id="sylius_mollie_plugin.payment_surcharge.types.fix_amount" class="SyliusMolliePlugin\PaymentFee\Types\FixedAmount">
             <argument type="service" id="sylius.factory.adjustment"/>
         </service>
-        <service id="bitbag_sylius_mollie_plugin.payment_surcharge.types.fix_amount_and_percentage" class="BitBag\SyliusMolliePlugin\PaymentFee\Types\FixedAmountAndPercentage">
+        <service id="sylius_mollie_plugin.payment_surcharge.types.fix_amount_and_percentage" class="SyliusMolliePlugin\PaymentFee\Types\FixedAmountAndPercentage">
             <argument type="service" id="sylius.factory.adjustment"/>
-            <argument type="service" id="bitbag_sylius_mollie_plugin.payment_surcharge.types.percentage"/>
-            <argument type="service" id="bitbag_sylius_mollie_plugin.payment_surcharge.types.fix_amount"/>
+            <argument type="service" id="sylius_mollie_plugin.payment_surcharge.types.percentage"/>
+            <argument type="service" id="sylius_mollie_plugin.payment_surcharge.types.fix_amount"/>
         </service>
-        <service id="bitbag_sylius_mollie_plugin.payment_surcharge.types.percentage" class="BitBag\SyliusMolliePlugin\PaymentFee\Types\Percentage">
+        <service id="sylius_mollie_plugin.payment_surcharge.types.percentage" class="SyliusMolliePlugin\PaymentFee\Types\Percentage">
             <argument type="service" id="sylius.factory.adjustment"/>
         </service>
-        <service id="bitbag_sylius_mollie_plugin.payment_surcharge.calculate" class="BitBag\SyliusMolliePlugin\PaymentFee\Calculate">
-            <argument type="service" id="bitbag_sylius_mollie_plugin.payment_surcharge.types.fix_amount"/>
-            <argument type="service" id="bitbag_sylius_mollie_plugin.payment_surcharge.types.percentage"/>
-            <argument type="service" id="bitbag_sylius_mollie_plugin.payment_surcharge.types.fix_amount_and_percentage"/>
+        <service id="sylius_mollie_plugin.payment_surcharge.calculate" class="SyliusMolliePlugin\PaymentFee\Calculate">
+            <argument type="service" id="sylius_mollie_plugin.payment_surcharge.types.fix_amount"/>
+            <argument type="service" id="sylius_mollie_plugin.payment_surcharge.types.percentage"/>
+            <argument type="service" id="sylius_mollie_plugin.payment_surcharge.types.fix_amount_and_percentage"/>
         </service>
     </services>
 </container>

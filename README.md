@@ -3,8 +3,6 @@
 # Mollie Payments Plugin for Sylius
 ----
 
-[![](https://img.shields.io/packagist/l/bitbag/mollie-plugin.svg) ](https://packagist.org/packages/bitbag/mollie-plugin "License") [ ![](https://img.shields.io/packagist/v/bitbag/mollie-plugin.svg) ](https://packagist.org/packages/bitbag/mollie-plugin "Version") [ ![](https://img.shields.io/scrutinizer/g/BitBagCommerce/SyliusMolliePlugin.svg) ](https://scrutinizer-ci.com/g/BitBagCommerce/SyliusMolliePlugin/ "Scrutinizer") [![](https://poser.pugx.org/bitbag/mollie-plugin/downloads)](https://packagist.org/packages/bitbag/mollie-plugin "Total Downloads") [![Slack](https://img.shields.io/badge/community%20chat-slack-FF1493.svg)](http://sylius-devs.slack.com) [![Support](https://img.shields.io/badge/support-contact%20author-blue])](https://www.mollie.com/en/contact/)
-
 ## Table of Content
 
 ***
@@ -68,14 +66,14 @@ This **open-source plugin was developed to help the Sylius community** and make 
 
 We work on stable, supported and up-to-date versions of packages. We recommend you to do the same.
 
-| Package | Version |
-| --- | --- |
-| PHP |  ^7.2 |
-| ext-json: * |  |
-| mollie/mollie-api-php |  ^2.0 |
-| sylius/admin-order-creation-plugin |  ^0.9.0 |
-| sylius/refund-plugin |  ^1.0.0-RC.3 |
-| sylius/sylius |  ^1.7.0 |
+| Package                            | Version                                       |
+|------------------------------------|-----------------------------------------------|
+| PHP                                | ^7.2 \|\| ^8.0                                |
+| ext-json: *                        |                                               |
+| mollie/mollie-api-php              | ^2.0                                          |
+| sylius/admin-order-creation-plugin | ^0.12 \|\| ^0.13 \|\| v0.14                   |
+| sylius/refund-plugin               | ^1.0                                          |
+| sylius/sylius                      | ~1.9.0 \|\| ~1.10.0 \|\| ~1.11.0 \|\| ~1.12.0 |
 
 ----
 
@@ -88,7 +86,7 @@ During configuration first, save the keys to the database and then click "Load m
 
 ### Rendering Mollie credit card form
 
-You can use `BitBagSyliusMolliePlugin:DirectDebit:_form.html.twig` and `@BitBagSyliusMolliePlugin/Grid/Action/cancelSubscriptionMollie.html.twig` templates for adding the form to supplementing the direct debit card data from and cancel the subscription form the Twig UI.
+You can use `SyliusMolliePlugin:DirectDebit:_form.html.twig` and `@SyliusMolliePlugin/Grid/Action/cancelSubscriptionMollie.html.twig` templates for adding the form to supplementing the direct debit card data from and cancel the subscription form the Twig UI.
 
 For an example on how to do that, take a look at [these source files](tests/Application/templates/bundles/SyliusShopBundle).
 
@@ -99,7 +97,7 @@ For an example on how to do that, take a look at [these source files](tests/Appl
 Run the below command to see what Symfony services are shared with this plugin:
 
 ```
-$ bin/console debug:container bitbag_sylius_mollie_plugin
+$ bin/console debug:container sylius_mollie_plugin
 ```
 
 ## Plugin Development
@@ -208,5 +206,3 @@ This plugin's source code is completely free and released under the terms of the
 ## Contact
 ---
 If you want to contact us, the best way is to fill the form on [our website](https://www.mollie.com/en/contact/merchants) or send us an e-mail to support@mollie.com with your question(s). We guarantee that we answer as soon as we can!
-
-Plugin was originally developed by BitBag

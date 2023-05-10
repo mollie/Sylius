@@ -1,15 +1,9 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
- */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Form\Type\PartialShip;
+namespace SyliusMolliePlugin\Form\Type\PartialShip;
 
 use Sylius\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use Sylius\Component\Core\Model\ShipmentInterface;
@@ -27,12 +21,12 @@ final class PartialShipType extends AbstractResourceType
         $builder
             ->add('tracking', TextType::class, [
                 'required' => false,
-                'label' => 'bitbag_sylius_mollie_plugin.form.shipment.tracking_code',
-                'attr' => ['placeholder' => 'bitbag_sylius_mollie_plugin.form.shipment.tracking_code'],
+                'label' => 'sylius_mollie_plugin.form.shipment.tracking_code',
+                'attr' => ['placeholder' => 'sylius_mollie_plugin.form.shipment.tracking_code'],
             ])
             ->add('units', ShippingUnitsChoiceType::class, [
                 'choices' => $options['shipment']->getUnits(),
-                'label' => 'bitbag_sylius_mollie_plugin.form.shipment.units',
+                'label' => 'sylius_mollie_plugin.form.shipment.units',
                 'multiple' => true,
                 'constraints' => [
                     new Count(['min' => 1, 'groups' => ['sylius']]),
@@ -64,6 +58,6 @@ final class PartialShipType extends AbstractResourceType
 
     public function getBlockPrefix(): string
     {
-        return 'bitbag_partial_shipment_ship';
+        return 'mollie_partial_shipment_ship';
     }
 }

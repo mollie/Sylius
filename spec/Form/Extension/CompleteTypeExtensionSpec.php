@@ -1,17 +1,12 @@
 <?php
 
-/*
-    This file was created by developers working at BitBag
-    Do you need more information about us and what we do? Visit our   website!
-    We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
-*/
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusMolliePlugin\Form\Extension;
+namespace spec\SyliusMolliePlugin\Form\Extension;
 
-use BitBag\SyliusMolliePlugin\Form\Extension\CompleteTypeExtension;
-use BitBag\SyliusMolliePlugin\Form\Type\DirectDebitType;
+use SyliusMolliePlugin\Form\Extension\CompleteTypeExtension;
+use SyliusMolliePlugin\Form\Type\DirectDebitType;
 use Payum\Core\Model\GatewayConfigInterface;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\OrderInterface;

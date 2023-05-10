@@ -3,7 +3,7 @@ default:
         ui_refunding_mollie_payment:
             contexts:
                 - sylius.behat.context.hook.doctrine_orm
-                - sylius.behat.context.hook.email_spool
+                - sylius.behat.context.hook.mailer
 
                 - sylius.behat.context.setup.channel
                 - sylius.behat.context.setup.currency
@@ -23,8 +23,8 @@ default:
                 - sylius.behat.context.setup.admin_user
                 - sylius.behat.context.setup.user
 
-                - bitbag_sylius_mollie_plugin.behat.context.setup.mollie
-                - bitbag_sylius_mollie_plugin.context.setup.order
+                - sylius_mollie_plugin.behat.context.setup.mollie
+                - sylius_mollie_plugin.context.setup.order
 
                 - sylius.behat.context.transform.address
                 - sylius.behat.context.transform.channel
@@ -53,7 +53,7 @@ default:
                 - sylius.behat.context.ui.shop.checkout.complete
                 - sylius.behat.context.ui.shop.currency
 
-                - bitbag_sylius_mollie_plugin.behat.context.ui.admin.refund
+                - sylius_mollie_plugin.behat.context.ui.admin.refund
             filters:
                 tags: "@refunding_mollie_payment && @ui"
 

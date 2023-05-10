@@ -1,19 +1,14 @@
 <?php
 
-/*
-    This file was created by developers working at BitBag
-    Do you need more information about us and what we do? Visit our   website!
-    We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
-*/
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusMolliePlugin\Factory;
+namespace spec\SyliusMolliePlugin\Factory;
 
-use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
-use BitBag\SyliusMolliePlugin\Entity\MollieSubscriptionScheduleInterface;
-use BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionScheduleFactory;
-use BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionScheduleFactoryInterface;
+use SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
+use SyliusMolliePlugin\Entity\MollieSubscriptionScheduleInterface;
+use SyliusMolliePlugin\Factory\MollieSubscriptionScheduleFactory;
+use SyliusMolliePlugin\Factory\MollieSubscriptionScheduleFactoryInterface;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 use Webmozart\Assert\Assert;

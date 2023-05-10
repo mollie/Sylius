@@ -1,20 +1,14 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
- */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Creator\OnboardingWizard;
+namespace SyliusMolliePlugin\Creator\OnboardingWizard;
 
-use BitBag\SyliusMolliePlugin\Context\Admin\AdminUserContextInterface;
-use BitBag\SyliusMolliePlugin\Entity\OnboardingWizardStatusInterface;
-use BitBag\SyliusMolliePlugin\Exceptions\AdminUserNotFound;
-use BitBag\SyliusMolliePlugin\Resolver\OnboardingWizard\StatusResolverInterface;
+use SyliusMolliePlugin\Context\Admin\AdminUserContextInterface;
+use SyliusMolliePlugin\Entity\OnboardingWizardStatusInterface;
+use SyliusMolliePlugin\Exceptions\AdminUserNotFound;
+use SyliusMolliePlugin\Resolver\OnboardingWizard\StatusResolverInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
 final class StatusCreator implements StatusCreatorInterface

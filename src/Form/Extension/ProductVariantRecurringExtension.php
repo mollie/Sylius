@@ -1,18 +1,12 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
- */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Form\Extension;
+namespace SyliusMolliePlugin\Form\Extension;
 
-use BitBag\SyliusMolliePlugin\Form\Type\MollieIntervalType;
-use BitBag\SyliusMolliePlugin\Provider\Form\ResolverGroupProviderInterface;
+use SyliusMolliePlugin\Form\Type\MollieIntervalType;
+use SyliusMolliePlugin\Provider\Form\ResolverGroupProviderInterface;
 use Sylius\Bundle\ProductBundle\Form\Type\ProductVariantType as ProductVariantFormType;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -39,21 +33,21 @@ final class ProductVariantRecurringExtension extends AbstractTypeExtension
     {
         $builder
             ->add('recurring', CheckboxType::class, [
-                'label' => 'bitbag_sylius_mollie_plugin.form.product_variant.recurring',
-                'help' => 'bitbag_sylius_mollie_plugin.form.product_variant.recurring_help',
+                'label' => 'sylius_mollie_plugin.form.product_variant.recurring',
+                'help' => 'sylius_mollie_plugin.form.product_variant.recurring_help',
                 'required' => false,
                 'constraints' => [
                     new NotNull(),
                 ],
             ])
             ->add('times', NumberType::class, [
-                'label' => 'bitbag_sylius_mollie_plugin.form.product_variant.times',
-                'help' => 'bitbag_sylius_mollie_plugin.form.product_variant.times_help',
+                'label' => 'sylius_mollie_plugin.form.product_variant.times',
+                'help' => 'sylius_mollie_plugin.form.product_variant.times_help',
                 'required' => false,
                 'constraints' => [
                     new Range([
                         'min' => 2,
-                        'minMessage' => 'bitbag_sylius_mollie_plugin.times.min_range',
+                        'minMessage' => 'sylius_mollie_plugin.times.min_range',
                         'groups' => ['recurring_product_variant'],
                     ]),
                     new IsNull([
@@ -72,7 +66,7 @@ final class ProductVariantRecurringExtension extends AbstractTypeExtension
                         'groups' => ['recurring_product_variant'],
                     ]),
                     new NotBlank([
-                        'message' => 'bitbag_sylius_mollie_plugin.interval.not_blank',
+                        'message' => 'sylius_mollie_plugin.interval.not_blank',
                         'groups' => ['recurring_product_variant'],
                     ]),
                 ],

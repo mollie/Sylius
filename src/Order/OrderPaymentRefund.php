@@ -1,20 +1,14 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
- */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Order;
+namespace SyliusMolliePlugin\Order;
 
-use BitBag\SyliusMolliePlugin\Factory\MollieGatewayFactory;
-use BitBag\SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
-use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
-use BitBag\SyliusMolliePlugin\Request\Api\RefundOrder;
+use SyliusMolliePlugin\Factory\MollieGatewayFactory;
+use SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
+use SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
+use SyliusMolliePlugin\Request\Api\RefundOrder;
 use Payum\Core\Payum;
 use Payum\Core\Request\Refund as RefundAction;
 use Payum\Core\Security\TokenInterface;

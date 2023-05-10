@@ -1,21 +1,14 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * another great project.
- * You can find more information about us on https://bitbag.shop and write us
- * an email on mikolaj.krol@bitbag.pl.
- */
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusMolliePlugin\Action;
+namespace spec\SyliusMolliePlugin\Action;
 
-use BitBag\SyliusMolliePlugin\Action\RefundAction;
-use BitBag\SyliusMolliePlugin\Client\MollieApiClient;
-use BitBag\SyliusMolliePlugin\Helper\ConvertRefundDataInterface;
-use BitBag\SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
+use SyliusMolliePlugin\Action\RefundAction;
+use SyliusMolliePlugin\Client\MollieApiClient;
+use SyliusMolliePlugin\Helper\ConvertRefundDataInterface;
+use SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use Mollie\Api\Endpoints\PaymentEndpoint;
 use Mollie\Api\Exceptions\ApiException;
 use Mollie\Api\Resources\Payment;

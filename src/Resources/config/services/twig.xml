@@ -3,26 +3,26 @@
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <parameters>
-        <parameter key="bitbag_sylius_mollie_plugin.twig.functions" type="collection">
-            <parameter>bitbag_sylius_mollie_plugin_render_email_template</parameter>
+        <parameter key="sylius_mollie_plugin.twig.functions" type="collection">
+            <parameter>sylius_mollie_plugin_render_email_template</parameter>
         </parameter>
     </parameters>
 
     <services>
         <defaults public="true" />
-        <service id="bitbag_sylius_mollie_plugin.twig.parser.content_parser" class="BitBag\SyliusMolliePlugin\Twig\Parser\ContentParser" public="true">
+        <service id="sylius_mollie_plugin.twig.parser.content_parser" class="SyliusMolliePlugin\Twig\Parser\ContentParser" public="true">
             <argument type="service" id="twig"/>
-            <argument>%bitbag_sylius_mollie_plugin.twig.functions%</argument>
+            <argument>%sylius_mollie_plugin.twig.functions%</argument>
             <argument type="service" id="translator"/>
         </service>
 
-        <service id="bitbag_sylius_mollie_plugin.twig.extension.mollie_plugin_latest_version" class="BitBag\SyliusMolliePlugin\Twig\Extension\MolliePluginLatestVersion" public="false">
-            <argument type="service" id="bitbag_sylius_mollie_plugin.checker.version.mollie_plugin_latest_version_checker"/>
+        <service id="sylius_mollie_plugin.twig.extension.mollie_plugin_latest_version" class="SyliusMolliePlugin\Twig\Extension\MolliePluginLatestVersion" public="false">
+            <argument type="service" id="sylius_mollie_plugin.checker.version.mollie_plugin_latest_version_checker"/>
             <tag name="twig.extension" />
         </service>
 
-        <service id="bitbag_sylius_mollie_plugin.twig.extension.apple_pay_direct_enabled" class="BitBag\SyliusMolliePlugin\Twig\Extension\ApplePayDirectEnabled" public="false">
-            <argument type="service" id="bitbag_sylius_mollie_plugin.checker.apple_pay.apple_pay_enabled_checker"/>
+        <service id="sylius_mollie_plugin.twig.extension.apple_pay_direct_enabled" class="SyliusMolliePlugin\Twig\Extension\ApplePayDirectEnabled" public="false">
+            <argument type="service" id="sylius_mollie_plugin.checker.apple_pay.apple_pay_enabled_checker"/>
             <tag name="twig.extension" />
         </service>
     </services>

@@ -1,17 +1,11 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
- */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusMolliePlugin\Client;
+namespace SyliusMolliePlugin\Client;
 
-use BitBag\SyliusMolliePlugin\BitBagSyliusMolliePlugin;
+use SyliusMolliePlugin\SyliusMolliePlugin;
 use Mollie\Api\MollieApiClient as BaseMollieApiClient;
 
 class MollieApiClient extends BaseMollieApiClient
@@ -24,12 +18,12 @@ class MollieApiClient extends BaseMollieApiClient
 
     public function getVersion(): string
     {
-        return BitBagSyliusMolliePlugin::VERSION;
+        return SyliusMolliePlugin::VERSION;
     }
 
     public function getUserAgentToken(): string
     {
-        return BitBagSyliusMolliePlugin::USER_AGENT_TOKEN;
+        return SyliusMolliePlugin::USER_AGENT_TOKEN;
     }
 
     public function setConfig(array $config): void

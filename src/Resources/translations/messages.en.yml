@@ -1,4 +1,4 @@
-bitbag_sylius_mollie_plugin:
+sylius_mollie_plugin:
     ui:
         product_variant:
             tab:
@@ -175,7 +175,6 @@ bitbag_sylius_mollie_plugin:
         you_can_fin_info_about: 'You can find more information about us on'
         restart_tour: 'Restart tour'
         sylius_bundle: 'Visit the Sylius bundle'
-        contact_bitbag: 'Contact Bitbag'
         contact_mollie: 'Contact Mollie'
         more_info_about_mollie: 'More info on Mollie'
     form:

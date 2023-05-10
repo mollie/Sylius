@@ -1,13 +1,13 @@
 sylius_resource:
   resources:
-    bitbag_sylius_mollie_plugin.template_mollie_email:
+    sylius_mollie_plugin.template_mollie_email:
       driver: doctrine/orm
       classes:
-        model: BitBag\SyliusMolliePlugin\Entity\TemplateMollieEmail
-        interface: BitBag\SyliusMolliePlugin\Entity\TemplateMollieEmailInterface
-        form: BitBag\SyliusMolliePlugin\Form\Type\TemplateMollieEmailType
+        model: SyliusMolliePlugin\Entity\TemplateMollieEmail
+        interface: SyliusMolliePlugin\Entity\TemplateMollieEmailInterface
+        form: SyliusMolliePlugin\Form\Type\TemplateMollieEmailType
       translation:
         classes:
-            model: BitBag\SyliusMolliePlugin\Entity\TemplateMollieEmailTranslation
-            interface: BitBag\SyliusMolliePlugin\Entity\TemplateMollieEmailTranslationInterface
-            repository: BitBag\SyliusMolliePlugin\Repository\TemplateMollieEmailTranslationRepository
+            model: SyliusMolliePlugin\Entity\TemplateMollieEmailTranslation
+            interface: SyliusMolliePlugin\Entity\TemplateMollieEmailTranslationInterface
+            repository: SyliusMolliePlugin\Repository\TemplateMollieEmailTranslationRepository

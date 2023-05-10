@@ -1,11 +1,11 @@
 sylius_resource:
   resources:
-    bitbag_sylius_mollie_plugin.mollie_gateway_config:
+    sylius_mollie_plugin.mollie_gateway_config:
       driver: doctrine/orm
       classes:
-        model: BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfig
-        repository: BitBag\SyliusMolliePlugin\Repository\MollieGatewayConfigRepository
+        model: SyliusMolliePlugin\Entity\MollieGatewayConfig
+        repository: SyliusMolliePlugin\Repository\MollieGatewayConfigRepository
       translation:
         classes:
-          model: BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfigTranslation
-          interface: BitBag\SyliusMolliePlugin\Entity\MollieGatewayConfigTranslationInterface
+          model: SyliusMolliePlugin\Entity\MollieGatewayConfigTranslation
+          interface: SyliusMolliePlugin\Entity\MollieGatewayConfigTranslationInterface

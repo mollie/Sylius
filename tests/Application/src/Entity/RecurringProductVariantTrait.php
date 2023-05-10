@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\BitBag\SyliusMolliePlugin\Application\src\Entity;
+namespace Tests\SyliusMolliePlugin\Application\src\Entity;
 
 trait RecurringProductVariantTrait
 {

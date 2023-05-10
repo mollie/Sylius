@@ -1,4 +1,4 @@
-bitbag_sylius_mollie_plugin_onboarding_wizard_completed:
+sylius_mollie_plugin_onboarding_wizard_completed:
   path: /onboarding-wizard/completed
-  controller: bitbag_sylius_mollie_plugin.controller.onboarding_wizard.completed
+  controller: sylius_mollie_plugin.controller.onboarding_wizard.completed
   methods: [POST]

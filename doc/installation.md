@@ -397,7 +397,42 @@ sylius_product:
                     model: App\Entity\Product\ProductVariant
 ```
 
-#### 7. Ensure that the plugin dependency is added to your `config/bundles.php` file:
+#### 7. Add the ProductMethodRepository to your ProductMethodRepository:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Repository\Payment;
+
+
+use Sylius\Bundle\CoreBundle\Doctrine\ORM\PaymentMethodRepository as BasePaymentMethodRepository;
+use SyliusMolliePlugin\Repository\PaymentMethodRepository as MolliePaymentMethodRepository;
+use SyliusMolliePlugin\Repository\PaymentMethodRepositoryInterface as MolliePaymentMethodRepositoryInterface;
+
+class PaymentMethodRepository extends BasePaymentMethodRepository implements MolliePaymentMethodRepositoryInterface
+{
+    use MolliePaymentMethodRepository;
+}
+```
+
+Override PaymentMethod repository if not already:
+
+```yaml
+# config/packages/_sylius.yaml
+...
+sylius_payment:
+    resources:
+        payment_method:
+            classes:
+                repository: App\Repository\Payment\PaymentMethodRepository
+```
+
+
+
+
+#### 8. Ensure that the plugin dependency is added to your `config/bundles.php` file:
 
 ```php
 # config/bundles.php
@@ -408,7 +443,7 @@ return [
 ];
 ```
 
-#### 8. Import required config in your `config/packages/_sylius.yaml` file:
+#### 9. Import required config in your `config/packages/_sylius.yaml` file:
 
 ```yaml
 # config/packages/_sylius.yaml
@@ -418,7 +453,7 @@ imports:
     - { resource: "@SyliusMolliePlugin/Resources/config/config.yaml" }
 ```
 
-#### 9. Add state machine configuration in `config/packages/_sylius.yaml`:
+#### 10. Add state machine configuration in `config/packages/_sylius.yaml`:
 ```yaml
 # config/packages/_sylius.yaml
 
@@ -430,7 +465,7 @@ winzou_state_machine:
         to: completed
 ```
 
-#### 10. Add image directory parameter in `config/packages/_sylius.yaml`:
+#### 11. Add image directory parameter in `config/packages/_sylius.yaml`:
 
 ```yaml
 # config/packages/_sylius.yaml
@@ -439,7 +474,7 @@ winzou_state_machine:
        images_dir: "/media/image/"
 ```
 
-#### 11. Import the routing in your `config/routes.yaml` file:
+#### 12. Import the routing in your `config/routes.yaml` file:
 
 ```yaml
 # config/routes.yaml
@@ -448,14 +483,14 @@ sylius_mollie_plugin:
     resource: "@SyliusMolliePlugin/Resources/config/routing.yaml"
 ```
 
-#### 12. Update your database
+#### 13. Update your database
 
 Apply migration to your database:
 ```
 bin/console doctrine:migrations:migrate
 ```
 
-#### 13. Copy Sylius templates overridden in plugin to your templates directory (e.g templates/bundles/):
+#### 14. Copy Sylius templates overridden in plugin to your templates directory (e.g templates/bundles/):
 
 ```
 mkdir -p templates/bundles/SyliusAdminBundle/
@@ -469,7 +504,7 @@ cp -R vendor/mollie/sylius-plugin/tests/Application/templates/bundles/SyliusUiBu
 cp -R vendor/mollie/sylius-plugin/tests/Application/templates/bundles/SyliusRefundPlugin/* templates/bundles/SyliusRefundPlugin/
 ```
 
-#### 14. Install assets:
+#### 15. Install assets:
 
 ```bash
 bin/console assets:install
@@ -477,13 +512,13 @@ bin/console assets:install
 
 **Note:** If you are running it on production, add the `-e prod` flag to this command.
 
-#### 15. Add the payment link cronjob:
+#### 16. Add the payment link cronjob:
 
 ```shell script
 * * * * * /usr/bin/php /path/to/bin/console mollie:send-payment-link
 ```
 
-#### 16. Download the [domain validation file](https://www.mollie.com/.well-known/apple-developer-merchantid-domain-association) and place it on your server at:
+#### 17. Download the [domain validation file](https://www.mollie.com/.well-known/apple-developer-merchantid-domain-association) and place it on your server at:
 `public/.well-known/apple-developer-merchantid-domain-association`
 
 ### Frontend

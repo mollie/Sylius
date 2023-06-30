@@ -1,27 +1,27 @@
 sylius_mollie_plugin:
-  api_key:
-    not_blank: 'API key mag niet leeg zijn.'
-    invalid_test: 'Ongeldigde API key. Een API key moet beginnen met "test_".'
-    invalid_live: 'Ongeldigde API key. Een API key moet beginnen met "live_".'
-    min_length: 'API key moet minimaal uit {{ limit }} karakters bestaan.'
-  profile_id:
-    not_blank: 'Profiel-ID mag niet leeg zijn'
-  channel:
-    required_currency: 'De basisvaluta van het kanaal moet {{currencies}} zijn.'
-  times:
-    min_range: 'Tijden kunnen niet lager zijn dan {{limit}}.'
-  interval:
-    not_blank: 'Interval mag niet leeg zijn.'
-    invalid: '"Ongeldig intervalformaat. Mogelijke waarden: ... maanden ... weken ... dagen '
-  consumer_name:
-    not_blank: 'Consumentennaam mag niet leeg zijn.'
-  iban:
-    not_blank: 'IBAN mag niet leeg zijn.'
-    incorrect: 'Onjuist IBAN-nummer'
-  payment_method:
-    not_blank: 'Waarde mag niet leeg zijn'
-  form:
-    error:
-      payment_surcharge_not_empty: 'Waarde mag niet leeg zijn'
-      greater_than: 'De waarde moet groter zijn dan nul'
-      key_not_empty: 'Afhankelijk van de omgeving mag de Mollie key niet leeg zijn'
+    api_key:
+        not_blank: 'API key mag niet leeg zijn.'
+        invalid_test: 'Ongeldigde API key. Een API key moet beginnen met "test_".'
+        invalid_live: 'Ongeldigde API key. Een API key moet beginnen met "live_".'
+        min_length: 'API key moet minimaal uit {{ limit }} karakters bestaan.'
+    profile_id:
+        not_blank: 'Profiel-ID mag niet leeg zijn'
+    channel:
+        required_currency: 'De basisvaluta van het kanaal moet {{currencies}} zijn.'
+    times:
+        min_range: 'Tijden kunnen niet lager zijn dan {{limit}}.'
+    interval:
+        not_blank: 'Interval mag niet leeg zijn.'
+        invalid: 'Ongeldig intervalformaat. Mogelijke waarden: ... maanden ... weken ... dagen '
+    consumer_name:
+        not_blank: 'Consumentennaam mag niet leeg zijn.'
+    iban:
+        not_blank: 'IBAN mag niet leeg zijn.'
+        incorrect: 'Onjuist IBAN-nummer'
+    payment_method:
+        not_blank: 'Waarde mag niet leeg zijn'
+    form:
+        error:
+            payment_surcharge_not_empty: 'Waarde mag niet leeg zijn'
+            greater_than: 'De waarde moet groter zijn dan nul'
+            key_not_empty: 'Afhankelijk van de omgeving mag de Mollie key niet leeg zijn'

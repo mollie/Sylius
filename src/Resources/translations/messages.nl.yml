@@ -1,5 +1,53 @@
 sylius_mollie_plugin:
     ui:
+        product_variant:
+            tab:
+                recurring: 'Recurring instellingen'
+        breadcrumbs:
+            subscriptions: 'Abonnementen'
+        subscription_list: ''
+        subscription:
+            block_name: 'Abonnement'
+            contents: 'Abonnement inhoud'
+            orders: 'Bestellingen'
+            payments: 'Betalingen'
+            subscription_duration: 'Komt %times% keer voor, met een interval van %interval%.'
+            schedule:
+                block_name: 'Betalingsschema'
+                index: '#'
+                scheduled_date: 'Geplande datum'
+                fulfilled_date: 'Vervulde datum'
+            transitions:
+                block_name: 'Abonnementsstatusbeheer'
+                cancel: 'Annuleer'
+                pause: 'Pauzeer'
+                resume: 'Hervat'
+            fields:
+                state: 'Staat'
+                started_at: 'Gestart op'
+                interval: 'Interval'
+                orders: 'Bestellingen'
+                recent_failed_payments_count: 'Aantal recent mislukte betalingen'
+                payment_state: 'Recente betalingsstatus'
+            state:
+                new: 'Nieuw'
+                active: 'Actief'
+                processing: 'Verwerken'
+                canceled: 'Geannuleerd'
+                aborted: 'Automatisch geannuleerd vanwege mislukte betalingen'
+                completed: 'Afgerond'
+                paused: 'Gepauzeerd'
+            payment_state:
+                pending: 'In behandeling'
+                fail: 'Mislukt'
+                ok: 'Ok'
+            grid:
+                filters:
+                    created_at: 'Aangemaakt op'
+                    started_at: 'Gestart op'
+        yes: 'Ja'
+        no: 'Nee'
+        per_interval: ' / %interval%'
         api_key_test: 'Test API Key'
         api_key_live: 'Live API Key'
         api_key_choice_test: 'Test'
@@ -12,7 +60,7 @@ sylius_mollie_plugin:
         interval: 'Interval'
         mollie_subscription_gateway_label: 'Mollie abonnement'
         mollie_order_gateway_label: 'Mollie order'
-        consumer_name: 'Consumer name'
+        consumer_name: 'Naam consument'
         iban: 'IBAN'
         cancel_subscription: 'Abonnement opzeggen'
         payment_mathod_conf_title: 'Configuratie Betaalmethode'
@@ -56,7 +104,7 @@ sylius_mollie_plugin:
         splitting_shipment_for_order: 'Verzending opsplitsen voor Bestelnr. #%number%'
         split_shipment: 'Verzending opsplitsen'
         partially_ship: 'Gedeeltelijk verzenden'
-        create_methods_before_loading: 'Vul de benodigde velden in en klik op de knop ''Creëren'' om de betalingsmethoden te configureren.'
+        create_methods_before_loading: 'Vul de benodigde velden in en klik op de knop "Creëren" om de betalingsmethoden te configureren.'
         no_methods_found_message: 'Geen betaalmethodes gevonden. Klik op de knop "Methodes inladen", maar voer eerst je profiel-ID en API-sleutel in.'
         paymentlink_generate: 'Betaallink aanmaken'
         paymentlink_generate_subtitle: 'Betaallink aanmaken en naar de klant sturen'
@@ -95,6 +143,9 @@ sylius_mollie_plugin:
         selected_countries: 'Geselecteerde landen'
         country_level_allow: 'Sta betaling toe vanuit specifieke landen'
         country_level_exclude: 'Betalingen uit specifieke landen uitsluiten'
+        mollie_subscriptions: 'Subscriptions'
+        mollie_recurring_payments: 'Recurring payments'
+        order_recurring: 'Is recurring (terugkomend)'
         you_can_find_you_profile_id: |-
             Profiel-ID *
             Je kunt je profiel-ID vinden in je
@@ -111,7 +162,7 @@ sylius_mollie_plugin:
         enjoy_latest_version: 'om van de meest recente functies te kunnen genieten.'
         update: 'update'
         test_api_keys: 'Test API-sleutels'
-        inser_you_key_first: "Voer eerst uw sleutel in"
+        insert_you_key_first: "Voer eerst uw sleutel in"
         api_key_start_with_api_key_test: 'API-sleutel moet beginnen met test_'
         api_key_start_with_api_key_live: 'API-sleutel moet beginnen met live_'
         failed_with_test_api_key: 'Mislukt met test API-sleutel'
@@ -129,6 +180,20 @@ sylius_mollie_plugin:
     form:
         channel_should_be_unique: 'De Mollie-betalingsmethode is al ingeschakeld voor het {channels} kanaal. Mollie kan slecht een keer per kanaal worden geconfigureerd.'
         enabled_buy_now_button_help: 'De knop wordt getoond op de betalingspagina'
+        product_variant:
+            recurring: Is recurring? (terugkomend)
+            times: Recurring duur
+            times_help: Recurring duur als numerieke waarde die het aantal terugkerende keren beschrijft
+            interval: Recurring interval
+            complete_recurring_price: De productprijs verdelen over alle betalingen?
+            interval_configuration:
+                step: 'Interval stap eenheid'
+                amount: 'Interval stap'
+                steps:
+                    days: 'Dag(en)'
+                    weeks: 'Week(en)'
+                    months: 'Maand(en)'
+
         payment_methods:
             payment_description: 'Beschrijving'
             payment_description_help: |-
@@ -147,6 +212,14 @@ sylius_mollie_plugin:
             tracking_code: 'Trackingcode'
         methods: 'Kies geactiveerde methodes'
         expiration_date_time: 'Vervaldatum tijd'
+    shop:
+        product_variant:
+            recurring: 'Abonnement'
+            times: 'tijd(en)'
+            every:
+                days: 'elke %amount% dag(en)'
+                weeks: 'elke %amount% week(en)'
+                months: 'elke %amount% maand(en)'
     subscription:
         cancel: 'Abonnement is succesvol opgezegd.'
     onboardingMollie:
@@ -171,7 +244,7 @@ sylius_mollie_plugin:
                 <p>U hoeft slecht één keer te configureren om over TEST + LIVE-omgevingen te kunnen beschikken. Probeer eenvoudig van de een naar de ander over te schakelen.</p>
         step_4:
             text: >-
-                <p>Vul uw juiste details in en klik op ''Test API-sleutel'', dit levert een geslaagd of mislukt resultaat op voor zowel de LIVE- als de Test-omgevingen</p>
+                <p>Vul uw juiste details in en klik op "Test API-sleutel", dit levert een geslaagd of mislukt resultaat op voor zowel de LIVE- als de Test-omgevingen</p>
         step_5:
             text: >-
                 <p>Vervolgens richten we de sleutelinstellingen voor de weergave van het betalingsscherm van uw webshop in.</p>
@@ -182,12 +255,12 @@ sylius_mollie_plugin:
                 <p>Meer informatie over Mollie-componenten vindt u <a href="https://www.mollie.com/en/news/post/better-checkout-flows-with-mollie-components" target="_blank">hier</a>.</p>
         step_7:
             text: >-
-                <p>Het inschakelen van ''Betalen met één klik'' onthoudt de betalingsvoorkeuren van uw klant om volgende betalingen te versnellen. Uw klant hoeft geen verdere acties uit te voeren om te kunnen genieten van snelle en gemakkelijke betalingen.</p>
+                <p>Het inschakelen van "Betalen met één klik" onthoudt de betalingsvoorkeuren van uw klant om volgende betalingen te versnellen. Uw klant hoeft geen verdere acties uit te voeren om te kunnen genieten van snelle en gemakkelijke betalingen.</p>
                 <p>Meer informatie over betalen met één klik vindt u <a href="https://help.mollie.com/hc/en-us/articles/115000671249-What-are-single-click-payments-and-how-does-it-work-" target="_blank">hier</a>.</p>
         step_8:
             text: >-
                 <p>Het is nu tijd om functies aan te passen voor individuele betalingsmethoden.</p>
-                <p>De eerste stap is het selecteren van de knop ''Laad betalingsmethoden''. Alleen betalingsmethoden die in uw Mollie-account zijn geactiveerd, worden hier getoond.</p>
+                <p>De eerste stap is het selecteren van de knop "Laad betalingsmethoden". Alleen betalingsmethoden die in uw Mollie-account zijn geactiveerd, worden hier getoond.</p>
                 <p>Gebruik vervolgens de activeer/deactiveer keuzemogelijkheid om in te stellen wat er op de betalingspagina van uw webshop wordt getoond.</p>
                 <p>Opmerking: zonder het laden van de betalingsmethoden kan de introductiehulp niet worden voortgezet.</p>
         step_9:
@@ -210,10 +283,10 @@ sylius_mollie_plugin:
             2:
                 title: 'Orders API'
                 text: >-
-                    <p>Dit is de door Mollie aangeraden API voor het gebruik voor webshops, omdat hij de mogelijkheid biedt om ''orders'' te creëren. Een bestelling bevat de persoonlijke gegevens van een klant (bijv. het adres) en de producten die de klant heeft besteld. Wanneer er een bestelling is geplaatst, wordt er automatisch een corresponderende betaling gecreëerd.</p>
+                    <p>Dit is de door Mollie aangeraden API voor het gebruik voor webshops, omdat hij de mogelijkheid biedt om "orders" te creëren. Een bestelling bevat de persoonlijke gegevens van een klant (bijv. het adres) en de producten die de klant heeft besteld. Wanneer er een bestelling is geplaatst, wordt er automatisch een corresponderende betaling gecreëerd.</p>
         step_14:
             text: >-
-                <p>Wanneer u onkosten heeft, die u wilt doorbelasten aan de klant, kunt u deze hier toevoegen. Lees <a href=""https://help.mollie.com/hc/en-us/articles/360012564454-Can-I-pass-over-the-costs-for-the-use-of-a-payment-method-to-my-customers-"" target=""_blank"">hier</a> meer over onkosten.</p>
+                <p>Wanneer u onkosten heeft, die u wilt doorbelasten aan de klant, kunt u deze hier toevoegen. Lees <a href="https://help.mollie.com/hc/en-us/articles/360012564454-Can-I-pass-over-the-costs-for-the-use-of-a-payment-method-to-my-customers-" target="_blank">hier</a> meer over onkosten.</p>
         step_15:
             text: >-
                 <p>Vergeet niet om uw configuraties op te slaan.</p>
@@ -232,4 +305,4 @@ sylius_mollie_plugin:
             confirm: 'Verlaat de introductiehulp'
             cancel: 'Ga verder met de introductie'
         step_open: 'Open'
-        create: "Klik op ''Creëren'' voordat u individuele betalingsmethoden configureert. Hiermee wordt Mollie als betalingsmethode opgeslagen in het Sylius administratiepaneel."
+        create: 'Klik op "Creëren" voordat u individuele betalingsmethoden configureert. Hiermee wordt Mollie als betalingsmethode opgeslagen in het Sylius administratiepaneel.'

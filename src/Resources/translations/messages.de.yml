@@ -111,7 +111,7 @@ sylius_mollie_plugin:
         enjoy_latest_version: 'um die neuesten Funktionen nutzen zu können.'
         update: 'das Update durchzuführen'
         test_api_keys: 'API-Schlüssel testen'
-        inser_you_key_first: "Geben Sie zunächst Ihren Schlüssel ein"
+        insert_you_key_first: "Geben Sie zunächst Ihren Schlüssel ein"
         api_key_start_with_api_key_test: 'Der API-Schlüssel muss mit test_ beginnen'
         api_key_start_with_api_key_live: 'Der API-Schlüssel muss mit live_ beginnen'
         failed_with_test_api_key: 'Zugriff über Test-API-Schlüssel fehlgeschlagen'

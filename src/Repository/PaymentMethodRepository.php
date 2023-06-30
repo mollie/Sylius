@@ -7,11 +7,10 @@ namespace SyliusMolliePlugin\Repository;
 
 use SyliusMolliePlugin\Factory\MollieGatewayFactory;
 use SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
-use Sylius\Bundle\CoreBundle\Doctrine\ORM\PaymentMethodRepository as BasePaymentMethodRepository;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\PaymentMethodInterface;
 
-class PaymentMethodRepository extends BasePaymentMethodRepository implements PaymentMethodRepositoryInterface
+trait PaymentMethodRepository
 {
     public function findAllByFactoryNameAndCode(string $code): array
     {

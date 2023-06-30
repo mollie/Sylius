@@ -7,7 +7,6 @@ imports:
     - { resource: "@SyliusMolliePlugin/Resources/config/resources/mollie_email_template.yaml" }
     - { resource: "@SyliusMolliePlugin/Resources/config/resources/order.yaml" }
     - { resource: "@SyliusMolliePlugin/Resources/config/resources/product_type.yaml" }
-    - { resource: "@SyliusMolliePlugin/Resources/config/resources/payment_method.yaml" }
     - { resource: "@SyliusMolliePlugin/Resources/config/resources/onboarding_wizard_status.yaml" }
     - { resource: "@SyliusMolliePlugin/Resources/config/resources/mollie_subscription.yaml" }
     - { resource: "@SyliusMolliePlugin/Resources/config/resources/mollie_subscription_schedule.yaml" }

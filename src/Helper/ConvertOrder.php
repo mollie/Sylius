@@ -101,6 +101,7 @@ final class ConvertOrder implements ConvertOrderInterface
             'country' => $shippingAddress->getCountryCode(),
             'givenName' => $shippingAddress->getFirstName(),
             'familyName' => $shippingAddress->getLastName(),
+            'organizationName' => $shippingAddress->getCompany(),
             'email' => $customer->getEmail(),
         ];
     }
@@ -118,6 +119,7 @@ final class ConvertOrder implements ConvertOrderInterface
             'country' => $billingAddress->getCountryCode(),
             'givenName' => $billingAddress->getFirstName(),
             'familyName' => $billingAddress->getLastName(),
+            'organizationName' => $billingAddress->getCompany(),
             'email' => $customer->getEmail(),
         ];
     }

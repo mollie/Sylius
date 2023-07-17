@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace SyliusMolliePlugin\Validator\Constraints;
 
+use Mollie\Api\Types\PaymentMethod;
 use SyliusMolliePlugin\Checker\Gateway\MollieGatewayFactoryCheckerInterface;
 use SyliusMolliePlugin\Resolver\Order\PaymentCheckoutOrderResolverInterface;
 use Payum\Core\Model\GatewayConfigInterface;
@@ -50,14 +51,28 @@ final class PaymentMethodCheckoutValidator extends ConstraintValidator
         /** @var GatewayConfigInterface $gateway */
         $gateway = $paymentMethod->getGatewayConfig();
 
-        if ((null !== $value) || (!$this->mollieGatewayFactoryChecker->isMollieGateway($gateway))) {
-            return;
+        if ($value === null && $this->mollieGatewayFactoryChecker->isMollieGateway($gateway)) {
+            $this->flashMessage($constraint, 'error', 'sylius_mollie_plugin.empty_payment_method_checkout');
         }
 
-        $this->requestStack->getSession()->getFlashBag()->add('error', 'sylius_mollie_plugin.empty_payment_method_checkout');
+        if ($value === PaymentMethod::BILLIE && empty($order->getBillingAddress()->getCompany())) {
+            $this->flashMessage($constraint, 'error', 'sylius_mollie_plugin.billie.error.company_missing');
+        }
+    }
+
+    /**
+     * @param Constraint $constraint
+     * @param string $type
+     * @param string $messageKey
+     * @return void
+     */
+    private function flashMessage(Constraint $constraint, string $type, string $messageKey)
+    {
+        $this->requestStack->getSession()->getFlashBag()->add($type, $messageKey);
         if (!property_exists($constraint, 'message')) {
             throw new \InvalidArgumentException();
         }
+
         $this->context->buildViolation($constraint->message)->setTranslationDomain('messages')->addViolation();
     }
 }

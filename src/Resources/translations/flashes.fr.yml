@@ -21,5 +21,5 @@ sylius_mollie_plugin:
     authentication_failed: "Échec de l'authentification"
     empty_payment_method_checkout: 'Veuillez choisir une méthode de paiement Mollie'
   billie.error:
-    company_missing: 'Company name is required when Billie payment method is used. Please set company name or choose another payment method'
+    company_missing: "Le nom de l'entreprise est requis lorsque la méthode de paiement Billie est utilisée. Veuillez indiquer le nom de l'entreprise ou choisir une autre méthode de paiement"
 

@@ -5,6 +5,7 @@
     <services>
         <defaults public="true" />
         <service id="sylius_mollie_plugin.helper.int_to_string" class="SyliusMolliePlugin\Helper\IntToStringConverter">
+            <argument type="service" id="sylius_mollie_plugin.provider.divisor.divisor_provider"/>
         </service>
         <service id="sylius_mollie_plugin.payments.order_converter" class="SyliusMolliePlugin\Helper\ConvertOrder">
             <argument type="service" id="sylius_mollie_plugin.helper.int_to_string"/>

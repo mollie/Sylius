@@ -14,6 +14,7 @@ use SM\Factory\FactoryInterface as StateMachineFactoryInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\PaymentMethodInterface;
 use Sylius\Component\Payment\PaymentTransitions;
+use SyliusMolliePlugin\Provider\Divisor\DivisorProviderInterface;
 use Webmozart\Assert\Assert;
 
 final class OrderContext implements Context
@@ -27,18 +28,23 @@ final class OrderContext implements Context
     /** @var RegistryInterface|Payum */
     private $payum;
 
+    /** @var DivisorProviderInterface */
+    private $divisorProvider;
+
     private MollieGatewayFactoryCheckerInterface $mollieGatewayFactoryChecker;
 
     public function __construct(
         EntityManager $entityManager,
         StateMachineFactoryInterface $stateMachineFactory,
         RegistryInterface $payum,
-        MollieGatewayFactoryCheckerInterface $mollieGatewayFactoryChecker
+        MollieGatewayFactoryCheckerInterface $mollieGatewayFactoryChecker,
+        DivisorProviderInterface $divisorProvider
     ) {
         $this->entityManager = $entityManager;
         $this->stateMachineFactory = $stateMachineFactory;
         $this->payum = $payum;
         $this->mollieGatewayFactoryChecker = $mollieGatewayFactoryChecker;
+        $this->divisorProvider = $divisorProvider;
     }
 
     /**
@@ -72,7 +78,7 @@ final class OrderContext implements Context
                 $model['metadata'] = $metadata;
 
                 Assert::notNull($payment->getAmount());
-                $model['amount'] = $payment->getAmount() / 100;
+                $model['amount'] = $payment->getAmount() / $this->divisorProvider->getDivisor();
                 $model['payment_mollie_id'] = 'test';
 
                 $payment->setDetails($model);

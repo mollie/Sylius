@@ -7,6 +7,7 @@ namespace SyliusMolliePlugin\Resolver\ApplePayDirect;
 
 use SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
 use SyliusMolliePlugin\Entity\OrderInterface;
+use SyliusMolliePlugin\Helper\IntToStringConverterInterface;
 use SyliusMolliePlugin\Payments\Methods\AbstractMethod;
 use Sylius\Component\Core\Model\PaymentInterface;
 
@@ -18,12 +19,17 @@ final class ApplePayDirectPaymentTypeResolver implements ApplePayDirectPaymentTy
     /** @var ApplePayDirectApiOrderPaymentResolverInterface */
     private $apiOrderPaymentResolver;
 
+    /** @var IntToStringConverterInterface */
+    private $intToStringConverter;
+
     public function __construct(
         ApplePayDirectApiPaymentResolverInterface $apiPaymentResolver,
-        ApplePayDirectApiOrderPaymentResolverInterface $apiOrderPaymentResolver
+        ApplePayDirectApiOrderPaymentResolverInterface $apiOrderPaymentResolver,
+        IntToStringConverterInterface $intToStringConverter
     ) {
         $this->apiPaymentResolver = $apiPaymentResolver;
         $this->apiOrderPaymentResolver = $apiOrderPaymentResolver;
+        $this->intToStringConverter = $intToStringConverter;
     }
 
     public function resolve(
@@ -38,7 +44,7 @@ final class ApplePayDirectPaymentTypeResolver implements ApplePayDirectPaymentTy
         if (null === $payment->getAmount()) {
             return;
         }
-        $amount = number_format(abs($payment->getAmount() / 100), 2, '.', '');
+        $amount = $this->intToStringConverter->convertIntToString($payment->getAmount());
 
         $details['amount'] = [
             'currency' => $payment->getCurrencyCode(),

@@ -77,6 +77,8 @@
             <argument type="service" id="sylius.context.customer"/>
             <argument type="service" id="sylius_mollie_plugin.resolver.payment_locale_resolver"/>
             <argument type="service" id="bit_bag.sylius_mollie_plugin.factory.api_customer_factory"/>
+            <argument type="service" id="sylius_mollie_plugin.helper.int_to_string"/>
+            <argument type="service" id="sylius_mollie_plugin.provider.divisor.divisor_provider"/>
             <tag name="payum.action" factory="mollie" alias="payum.action.convert_mollie_payment"/>
         </service>
         <service id="sylius_mollie_plugin.action.convert_mollie_subscription_payment" class="SyliusMolliePlugin\Action\ConvertMollieSubscriptionPaymentAction">
@@ -85,6 +87,8 @@
             <argument type="service" id="sylius_mollie_plugin.payments.order_converter"/>
             <argument type="service" id="sylius.context.customer"/>
             <argument type="service" id="sylius_mollie_plugin.resolver.payment_locale_resolver"/>
+            <argument type="service" id="sylius_mollie_plugin.helper.int_to_string"/>
+            <argument type="service" id="sylius_mollie_plugin.provider.divisor.divisor_provider"/>
             <tag name="payum.action" factory="mollie_subscription" alias="payum.action.convert_mollie_subscription_payment"/>
         </service>
         <service id="sylius_mollie_plugin.payum_action.state_machine.status_recurring_subscription" class="SyliusMolliePlugin\Action\StateMachine\StatusRecurringSubscriptionAction">

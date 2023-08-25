@@ -29,7 +29,8 @@ final class MolliePaymentMethodResolver implements PaymentMethodsResolverInterfa
         PaymentMethodRepositoryInterface $paymentMethodRepository,
         MollieFactoryNameResolverInterface $factoryNameResolver,
         MollieMethodFilterInterface $mollieMethodFilter
-    ) {
+    )
+    {
         $this->decoratedService = $decoratedService;
         $this->paymentMethodRepository = $paymentMethodRepository;
         $this->factoryNameResolver = $factoryNameResolver;
@@ -66,7 +67,7 @@ final class MolliePaymentMethodResolver implements PaymentMethodsResolverInterfa
             $parentMethods = $this->mollieMethodFilter->recurringFilter($parentMethods);
         }
 
-        return $parentMethods;
+        return $this->sortMethodsByPosition($parentMethods);
     }
 
     public function supports(PaymentInterface $subject): bool
@@ -83,5 +84,23 @@ final class MolliePaymentMethodResolver implements PaymentMethodsResolverInterfa
 
         return $order->hasRecurringContents() || $order->hasNonRecurringContents()
             && null !== $subject->getOrder()->getChannel();
+    }
+
+    /**
+     * Sorts  payment methods by their position before returning the result
+     * @param array $methods
+     *
+     * @return array
+     */
+    private function sortMethodsByPosition(array $methods): array
+    {
+        $paymentMethods = [];
+
+        foreach ($methods as $method) {
+            $paymentMethods[$method->getPosition()] = $method;
+        }
+        ksort($paymentMethods);
+
+        return $paymentMethods;
     }
 }

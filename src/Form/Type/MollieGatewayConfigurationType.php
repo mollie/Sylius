@@ -130,7 +130,7 @@ final class MollieGatewayConfigurationType extends AbstractType
             ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event): void {
                 $data = $event->getData();
 
-                if (isset($data['environment'])) {
+                if ($data['environment']) {
                     $apiKey = $this->getMollieApiKey($data);
 
                     $this->apiClient->setApiKey($apiKey);

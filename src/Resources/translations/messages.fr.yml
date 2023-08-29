@@ -95,9 +95,6 @@ sylius_mollie_plugin:
         selected_countries: "Les pays sélectionnés"
         country_level_allow: "Autoriser les paiements depuis certains pays"
         country_level_exclude: "Refuser les paiements depuis certains pays :"
-        you_can_find_you_profile_id: |-
-            Identifiant *
-            Vous trouverez votre identifiant dans votre
         mollie_profile_id: "Profil Mollie"
         find_you_api_key: |-
             Test clé API *

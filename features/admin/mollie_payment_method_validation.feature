@@ -20,7 +20,6 @@ Feature: Mollie payment method validation
     Scenario: Trying to add a new mollie payment method without the correct api key
         Given I want to create a new Mollie payment method
         When I name it "Mollie" in "English (United States)"
-        And I fill the Profile ID with "MOLLIE_PROFILE_KEY"
         And I fill the API key with "tttt_jdqkCbp55GRnfb9nFRz7R555pJMW4"
         And I add it
         And I should be notified with error 'Invalid API key. An API key must start with "test_".' message

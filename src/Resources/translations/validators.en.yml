@@ -4,8 +4,6 @@ sylius_mollie_plugin:
         invalid_test: 'Invalid API key. An API key must start with "test_".'
         invalid_live: 'Invalid API key. An API key must start with "live_".'
         min_length: 'API key must be at least {{ limit }} characters long.'
-    profile_id:
-        not_blank: 'Profile ID cannot be blank'
     channel:
         required_currency: 'The base currency of the channel must be {{ currencies }}.'
     times:

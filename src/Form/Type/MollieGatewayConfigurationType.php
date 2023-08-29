@@ -33,7 +33,7 @@ final class MollieGatewayConfigurationType extends AbstractType
     /** @var MollieApiClient */
     private $apiClient;
 
-    public function __construct(DocumentationLinksInterface $documentationLinks,   MollieApiClient $apiClient)
+    public function __construct(DocumentationLinksInterface $documentationLinks, MollieApiClient $apiClient)
     {
         $this->documentationLinks = $documentationLinks;
         $this->apiClient = $apiClient;
@@ -118,17 +118,26 @@ final class MollieGatewayConfigurationType extends AbstractType
             ])
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
                 $data = $event->getData();
-                $apiKey = $this->getMollieApiKey($data);
-
-                $this->apiClient->setApiKey($apiKey);
-                $profile = $this->apiClient->profiles->getCurrent();
 
                 if (isset($data['components']) && true === $data['components']) {
                     $data['single_click_enabled'] = false;
                 }
 
                 $data['payum.http_client'] = '@sylius_mollie_plugin.mollie_api_client';
-                $data['profile_id'] = $profile->id;
+
+                $event->setData($data);
+            })
+            ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event): void {
+                $data = $event->getData();
+
+                if (isset($data['environment'])) {
+                    $apiKey = $this->getMollieApiKey($data);
+
+                    $this->apiClient->setApiKey($apiKey);
+                    $profile = $this->apiClient->profiles->getCurrent();
+
+                    $data['profile_id'] = $profile->id;
+                }
 
                 $event->setData($data);
             });

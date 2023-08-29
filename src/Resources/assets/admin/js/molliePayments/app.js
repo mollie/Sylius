@@ -180,5 +180,19 @@ $(function () {
         }
     };
 
+    const hideProfileIdInput = () => {
+        let labelFor = "sylius_payment_method_gatewayConfig_config_profile_id";
+        let labelElement = document.querySelector(`label[for="${labelFor}"]`);
+
+        if (labelElement) {
+            let parentElement = labelElement.parentNode;
+
+            if (parentElement) {
+                parentElement.classList.remove('required');
+            }
+        }
+    };
+
     turnOnHandlers();
+    hideProfileIdInput();
 });

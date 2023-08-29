@@ -4,8 +4,6 @@ sylius_mollie_plugin:
     invalid_test: 'Ongeldigde API key. Een API key moet beginnen met "test_".'
     invalid_live: 'Ongeldigde API key. Een API key moet beginnen met "live_".'
     min_length: 'API key moet minimaal uit {{ limit }} karakters bestaan.'
-  profile_id:
-    not_blank: 'Profiel-ID mag niet leeg zijn'
   channel:
     required_currency: 'De basisvaluta van het kanaal moet {{currencies}} zijn.'
   times:

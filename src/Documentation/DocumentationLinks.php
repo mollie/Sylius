@@ -13,7 +13,6 @@ final class DocumentationLinks implements DocumentationLinksInterface
         'single_click' => 'https://help.mollie.com/hc/en-us/articles/115000671249-What-are-single-click-payments-and-how-does-it-work-',
         'mollie_components' => 'https://www.mollie.com/en/news/post/better-checkout-flows-with-mollie-components',
         'payment_methods' => 'https://docs.mollie.com/orders/why-use-orders',
-        'profile_id' => 'https://www.mollie.com/dashboard/developers/api-keys',
         'api_key' => 'https://www.mollie.com/dashboard/developers/api-keys',
     ];
 
@@ -59,16 +58,6 @@ final class DocumentationLinks implements DocumentationLinksInterface
             self::DOCUMENTATION_LINKS['payment_methods'],
             $this->translator->trans('sylius_mollie_plugin.ui.here'),
             $this->translator->trans('sylius_mollie_plugin.ui.payment_methods_doc')
-        );
-    }
-
-    public function getProfileIdDoc(): string
-    {
-        return \sprintf(
-            '%s <a target="_blank" href="%s"> %s </a>',
-            $this->translator->trans('sylius_mollie_plugin.ui.you_can_find_you_profile_id'),
-            self::DOCUMENTATION_LINKS['profile_id'],
-            $this->translator->trans('sylius_mollie_plugin.ui.mollie_profile_id')
         );
     }
 

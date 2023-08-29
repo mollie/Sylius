@@ -4,8 +4,6 @@ sylius_mollie_plugin:
     invalid_test: 'Ungültiger API-Schlüssel. Ein API-Schlüssel muss mit „Test_“ beginnen.'
     invalid_live: 'Ungültiger API-Schlüssel. Ein API-Schlüssel muss mit „Live_“ beginnen.'
     min_length: 'API-Schlüssel muss mindestens {{ limit }} Zeichen enthalten.'
-  profile_id:
-    not_blank: 'Profil-ID darf nicht leer sein'
   channel:
     required_currency: 'Die Basiswährung des Kanals muss {{ currencies }} sein.'
   times:

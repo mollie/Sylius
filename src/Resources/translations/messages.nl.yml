@@ -95,9 +95,6 @@ sylius_mollie_plugin:
         selected_countries: 'Geselecteerde landen'
         country_level_allow: 'Sta betaling toe vanuit specifieke landen'
         country_level_exclude: 'Betalingen uit specifieke landen uitsluiten'
-        you_can_find_you_profile_id: |-
-            Profiel-ID *
-            Je kunt je profiel-ID vinden in je
         mollie_profile_id: 'Mollie Profiel'
         find_you_api_key: |-
             Test API Key
@@ -161,7 +158,7 @@ sylius_mollie_plugin:
         step_2:
             title: 'Verbind met uw Mollie account'
             text: >-
-                 <p>Om de Mollie plug-in te synchroniseren met uw webshop heeft u Mollie API-sleutels en profiel-ID's nodig.</p>
+                <p>Om de Mollie plug-in te synchroniseren met uw webshop heeft u Mollie API-sleutels en profiel-ID's nodig.</p>
             btnLogin: 'Log in op mijn account'
             btnRegister: 'Maak een Mollie account aan'
         step_3:

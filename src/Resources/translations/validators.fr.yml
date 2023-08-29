@@ -4,8 +4,6 @@ sylius_mollie_plugin:
     invalid_test: "Clé API non valide. Une clé API doit commencer par «test_»."
     invalid_live: "Clé API non valide. Une clé API doit commencer par «live_»."
     min_length: "La clé API doit comporter au moins {{ limite }} caractères."
-  profile_id:
-    not_blank: "L'identifiant ne peut pas être vide"
   channel:
     required_currency: "La devise de référence du canal doit être {{ devises }}."
   times:

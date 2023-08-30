@@ -119,10 +119,6 @@ final class MollieGatewayConfigurationType extends AbstractType
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
                 $data = $event->getData();
 
-                if (isset($data['components']) && true === $data['components']) {
-                    $data['single_click_enabled'] = false;
-                }
-
                 $data['payum.http_client'] = '@sylius_mollie_plugin.mollie_api_client';
 
                 $event->setData($data);

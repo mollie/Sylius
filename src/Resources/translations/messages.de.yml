@@ -52,6 +52,8 @@ sylius_mollie_plugin:
         card_number: 'Kartennummer'
         expiry_date: 'Ablaufdatum'
         veryfication_code: 'Verifizierungscode'
+        save_card: 'Save credit card for the future purchases'
+        use_saved_card: 'Use saved credit card information'
         surcharge_title: 'Aufschlag'
         splitting_shipment_for_order: 'Lieferung für Auftrag #%number% teilen'
         split_shipment: 'Lieferung teilen'

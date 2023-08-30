@@ -1,5 +1,14 @@
 <div class="online-payment__credit-card" id="mollie_cart_data">
-    <div class="form-fields">
+    {% if (true == gatewayConfig.config['single_click_enabled'] | default(false)) and order.customer.user %}
+        <div class="mollie-components-use-saved-card">
+            <div class="ui toggle checkbox">
+                <input type="checkbox" id="mollie-sylius-use-saved-credit-card" name="mollie-sylius-use-saved-credit-card" value="1" tabindex="0" class="hidden" checked>
+                <label for="mollie-sylius-use-saved-credit-card">{{ 'sylius_mollie_plugin.ui.use_saved_card'|trans }}</label>
+            </div>
+        </div>
+
+    {% endif %}
+    <div class="form-fields mollie-component-fields">
         <div class="form-group">
             <label class="label" for="card-holder">{{ 'sylius_mollie_plugin.ui.card_holder'|trans }}</label>
             <div id="card-holder"></div>
@@ -23,6 +32,13 @@
             <div id="verification-code"></div>
             <div id="verification-code-error" class="field-error" role="alert"></div>
         </div>
+
+        {% if (true == gatewayConfig.config['single_click_enabled'] | default(false)) and order.customer.user %}
+            <div class="ui toggle checkbox">
+                <input type="checkbox" id="mollie-sylius-save-credit-card" name="mollie-sylius-save-credit-card" value="1" tabindex="0" class="hidden" checked>
+                <label for="mollie-sylius-save-credit-card">{{ 'sylius_mollie_plugin.ui.save_card'|trans }}</label>
+            </div>
+        {% endif %}
         <div id="form-error" class="form-error" role="alert"></div>
     </div>
 </div>

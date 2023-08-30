@@ -100,6 +100,8 @@ sylius_mollie_plugin:
         card_number: 'Card number'
         expiry_date: 'Expiry date'
         veryfication_code: 'CVC/CVV'
+        save_card: 'Save credit card for the future purchases'
+        use_saved_card: 'Use saved credit card information'
         surcharge_title: 'Surcharge'
         splitting_shipment_for_order: 'Splitting shipment for Order no. #%number%'
         split_shipment: 'Split shipment'

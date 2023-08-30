@@ -1,6 +1,7 @@
 const { Mollie } = window;
 
 $(function () {
+    var disableValidationMollieComponents = false;
     let selectedValue = false;
     let mollieData = $('.online-online-payment__container');
     const initialOrderTotal = $('#sylius-summary-grand-total').text();
@@ -63,13 +64,37 @@ $(function () {
                 let creditCartComponents = document.querySelectorAll('div[data-testid*="mollie-container--"]');
 
                 if (target.value === 'creditcard' && creditCartComponents.length === 0) {
+                    toggleMollieComponents();
                     initializeCreditCartFields(selectedValue);
                 }
             }
         }
     }
 
+    function toggleMollieComponents() {
+        const useSavedCreditCardCheckbox = document.getElementById('mollie-sylius-use-saved-credit-card');
+        if (!useSavedCreditCardCheckbox) {
+            return;
+        }
+
+        useSavedCreditCardCheckbox.addEventListener('change', function (event) {
+            const mollieComponentFields = document.querySelector('.mollie-component-fields');
+            if (!mollieComponentFields) {
+                return;
+            }
+
+            if (event.target.checked) {
+                disableValidationMollieComponents = true;
+                mollieComponentFields.style.display = 'none';
+            } else {
+                disableValidationMollieComponents = false;
+                mollieComponentFields.style.display = 'grid';
+            }
+        });
+    }
+
     function initializeCreditCartFields(selectedValue) {
+
         const environment = mollieData.data('environment');
         let testmode = true;
 
@@ -149,7 +174,7 @@ $(function () {
         }
 
         form.addEventListener('submit', async (event) => {
-            if ($('.online-payment__input:checked').val() === 'creditcard') {
+            if ($('.online-payment__input:checked').val() === 'creditcard' && disableValidationMollieComponents === false) {
                 event.preventDefault();
                 disableForm();
 

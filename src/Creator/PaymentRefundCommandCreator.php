@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace SyliusMolliePlugin\Creator;
 
 use SyliusMolliePlugin\Exceptions\OfflineRefundPaymentMethodNotFound;
+use SyliusMolliePlugin\Provider\Divisor\DivisorProviderInterface;
 use SyliusMolliePlugin\Refund\Units\PaymentUnitsItemRefundInterface;
 use SyliusMolliePlugin\Refund\Units\ShipmentUnitRefundInterface;
 use Mollie\Api\Resources\Payment;
@@ -36,13 +37,17 @@ final class PaymentRefundCommandCreator implements PaymentRefundCommandCreatorIn
     /** @var RefundPaymentMethodsProviderInterface */
     private $refundPaymentMethodProvider;
 
+    /** @var DivisorProviderInterface */
+    private $divisorProvider;
+
     public function __construct(
         RepositoryInterface $orderRepository,
         RepositoryInterface $refundUnitsRepository,
         PaymentUnitsItemRefundInterface $itemRefund,
         ShipmentUnitRefundInterface $shipmentRefund,
         AdjustmentFactoryInterface $adjustmentFactory,
-        RefundPaymentMethodsProviderInterface $refundPaymentMethodProvider
+        RefundPaymentMethodsProviderInterface $refundPaymentMethodProvider,
+        DivisorProviderInterface $divisorProvider
     ) {
         $this->orderRepository = $orderRepository;
         $this->refundUnitsRepository = $refundUnitsRepository;
@@ -50,6 +55,7 @@ final class PaymentRefundCommandCreator implements PaymentRefundCommandCreatorIn
         $this->shipmentRefund = $shipmentRefund;
         $this->adjustmentFactory = $adjustmentFactory;
         $this->refundPaymentMethodProvider = $refundPaymentMethodProvider;
+        $this->divisorProvider = $divisorProvider;
     }
 
     public function fromPayment(Payment $payment): RefundUnits
@@ -65,7 +71,7 @@ final class PaymentRefundCommandCreator implements PaymentRefundCommandCreatorIn
         $refunded = $this->getSumOfAmountExistingRefunds($allRefunded);
 
         Assert::notNull($payment->amountRefunded);
-        $mollieRefund = (float) $payment->amountRefunded->value * 100;
+        $mollieRefund = (float) $payment->amountRefunded->value * $this->divisorProvider->getDivisor();
         $toRefund = (int) $mollieRefund - $refunded;
 
         Assert::notNull($order->getChannel());

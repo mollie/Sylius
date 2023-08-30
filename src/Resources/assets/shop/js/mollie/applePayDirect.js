@@ -1,12 +1,13 @@
 $(function () {
     let applePaySession = () => {
         const version = 3;
-        const divider = 100;
 
         const applePayButton = document.getElementById(
             'mollie_applepay_button'
         );
 
+        const divider =
+            Number(applePayButton.getAttribute('data-divisor'));
         const mollieValidateMerchantUrl =
             applePayButton.getAttribute('data-url-validate');
         const molliePaymentUrl =
@@ -16,11 +17,10 @@ $(function () {
         );
         const mollieMerchantName =
             applePayButton.getAttribute('data-merchant-name');
+        const mollieTotalOrderValue =
+            Number(applePayButton.getAttribute('data-total-order'));
 
-        let mollieTotalOrder =
-            applePayButton.getAttribute('data-total-order');
-        mollieTotalOrder = mollieTotalOrder / divider;
-        mollieTotalOrder = mollieTotalOrder.toString();
+        let mollieTotalOrder = (mollieTotalOrderValue/divider).toFixed(2);
 
         const session = new ApplePaySession(
             version,

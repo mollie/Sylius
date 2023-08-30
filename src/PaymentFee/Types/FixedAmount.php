@@ -10,6 +10,7 @@ use SyliusMolliePlugin\Order\AdjustmentInterface;
 use SyliusMolliePlugin\Payments\PaymentTerms\Options;
 use Sylius\Component\Order\Factory\AdjustmentFactoryInterface;
 use Sylius\Component\Order\Model\OrderInterface;
+use SyliusMolliePlugin\Provider\Divisor\DivisorProviderInterface;
 use Webmozart\Assert\Assert;
 
 final class FixedAmount implements SurchargeTypeInterface
@@ -17,9 +18,15 @@ final class FixedAmount implements SurchargeTypeInterface
     /** @var AdjustmentFactoryInterface */
     private $adjustmentFactory;
 
-    public function __construct(AdjustmentFactoryInterface $adjustmentFactory)
-    {
+    /** @var DivisorProviderInterface */
+    private $divisorProvider;
+
+    public function __construct(
+        AdjustmentFactoryInterface $adjustmentFactory,
+        DivisorProviderInterface $divisorProvider
+    ) {
         $this->adjustmentFactory = $adjustmentFactory;
+        $this->divisorProvider = $divisorProvider;
     }
 
     public function calculate(OrderInterface $order, MollieGatewayConfig $paymentMethod): OrderInterface
@@ -35,7 +42,7 @@ final class FixedAmount implements SurchargeTypeInterface
         $adjustment = $this->adjustmentFactory->createNew();
         $adjustment->setType(AdjustmentInterface::FIXED_AMOUNT_ADJUSTMENT);
         Assert::notNull($fixedAmount);
-        $adjustment->setAmount((int) ($fixedAmount * 100));
+        $adjustment->setAmount((int) ($fixedAmount * $this->divisorProvider->getDivisor()));
         $adjustment->setNeutral(false);
 
         $order->addAdjustment($adjustment);

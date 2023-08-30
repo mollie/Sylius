@@ -9,8 +9,10 @@ use SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
 use SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
 use SyliusMolliePlugin\Factory\ApiCustomerFactoryInterface;
 use SyliusMolliePlugin\Helper\ConvertOrderInterface;
+use SyliusMolliePlugin\Helper\IntToStringConverterInterface;
 use SyliusMolliePlugin\Helper\PaymentDescriptionInterface;
 use SyliusMolliePlugin\Payments\PaymentTerms\Options;
+use SyliusMolliePlugin\Provider\Divisor\DivisorProviderInterface;
 use SyliusMolliePlugin\Resolver\PaymentLocaleResolverInterface;
 use Mollie\Api\Types\PaymentMethod;
 use Payum\Core\Action\ActionInterface;
@@ -49,13 +51,21 @@ final class ConvertMolliePaymentAction extends BaseApiAwareAction implements Act
     /** @var ApiCustomerFactoryInterface */
     private $apiCustomerFactory;
 
+    /** @var IntToStringConverterInterface */
+    private $intToStringConverter;
+
+    /** @var DivisorProviderInterface */
+    private $divisorProvider;
+
     public function __construct(
         PaymentDescriptionInterface $paymentDescription,
         RepositoryInterface $mollieMethodsRepository,
         ConvertOrderInterface $orderConverter,
         CustomerContextInterface $customerContext,
         PaymentLocaleResolverInterface $paymentLocaleResolver,
-        ApiCustomerFactoryInterface $apiCustomerFactory
+        ApiCustomerFactoryInterface $apiCustomerFactory,
+        IntToStringConverterInterface $intToStringConverter,
+        DivisorProviderInterface $divisorProvider
     ) {
         $this->paymentDescription = $paymentDescription;
         $this->mollieMethodsRepository = $mollieMethodsRepository;
@@ -63,6 +73,8 @@ final class ConvertMolliePaymentAction extends BaseApiAwareAction implements Act
         $this->customerContext = $customerContext;
         $this->paymentLocaleResolver = $paymentLocaleResolver;
         $this->apiCustomerFactory = $apiCustomerFactory;
+        $this->intToStringConverter = $intToStringConverter;
+        $this->divisorProvider = $divisorProvider;
     }
 
     /** @param Convert|mixed $request */
@@ -82,10 +94,10 @@ final class ConvertMolliePaymentAction extends BaseApiAwareAction implements Act
         Assert::notNull($payment->getCurrencyCode());
         $this->gateway->execute($currency = new GetCurrency($payment->getCurrencyCode()));
 
-        $divisor = 10 ** $currency->exp;
+        $divisor = $this->divisorProvider->getDivisorForCurrency($currency);
 
         Assert::notNull($payment->getAmount());
-        $amount = number_format(abs($payment->getAmount() / $divisor), 2, '.', '');
+        $amount = $this->intToStringConverter->convertIntToString($payment->getAmount(), $divisor);
 
         $paymentOptions = $payment->getDetails();
 

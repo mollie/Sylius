@@ -7,7 +7,6 @@ namespace SyliusMolliePlugin\Resolver;
 
 use Mollie\Api\Resources\Method;
 use Sylius\Component\Core\Model\OrderInterface;
-use SyliusMolliePlugin\Helper\IntToStringConverterInterface;
 
 final class MollieAllowedMethodsResolver implements MollieAllowedMethodsResolverInterface
 {
@@ -17,17 +16,12 @@ final class MollieAllowedMethodsResolver implements MollieAllowedMethodsResolver
     /** @var PaymentLocaleResolverInterface */
     private $paymentLocaleResolver;
 
-    /** @var IntToStringConverterInterface */
-    private $intToStringConverter;
-
     public function __construct(
         MollieApiClientKeyResolverInterface $mollieApiClientKeyResolver,
-        PaymentLocaleResolverInterface $paymentLocaleResolver,
-        IntToStringConverterInterface $intToStringConverter
+        PaymentLocaleResolverInterface $paymentLocaleResolver
     ) {
         $this->mollieApiClientKeyResolver = $mollieApiClientKeyResolver;
         $this->paymentLocaleResolver = $paymentLocaleResolver;
-        $this->intToStringConverter = $intToStringConverter;
     }
 
     public function resolve(OrderInterface $order): array
@@ -52,7 +46,7 @@ final class MollieAllowedMethodsResolver implements MollieAllowedMethodsResolver
         $parameters = array_merge(
             [
                 'amount' => [
-                    'value' => $this->intToStringConverter->convertIntToString($order->getTotal()),
+                    'value' => $this->parseTotalToString($order->getTotal()),
                     'currency' => $order->getCurrencyCode(),
                 ],
                 'billingCountry' => null !== $order->getBillingAddress()
@@ -67,5 +61,10 @@ final class MollieAllowedMethodsResolver implements MollieAllowedMethodsResolver
         }
 
         return $parameters;
+    }
+
+    private function parseTotalToString(int $total): string
+    {
+        return substr_replace((string) $total, '.', -2, 0);
     }
 }

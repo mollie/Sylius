@@ -10,7 +10,6 @@ use Mollie\Api\Resources\Payment;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Order\Factory\AdjustmentFactoryInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
-use SyliusMolliePlugin\Provider\Divisor\DivisorProviderInterface;
 
 final class OrderVoucherAdjustmentUpdater implements OrderVoucherAdjustmentUpdaterInterface
 {
@@ -23,19 +22,14 @@ final class OrderVoucherAdjustmentUpdater implements OrderVoucherAdjustmentUpdat
     /** @var OrderVoucherDistributorInterface */
     private $orderVoucherDistributor;
 
-    /** @var DivisorProviderInterface */
-    private $divisorProvider;
-
     public function __construct(
         RepositoryInterface $orderRepository,
         AdjustmentFactoryInterface $adjustmentFactory,
-        OrderVoucherDistributorInterface $orderVoucherDistributor,
-        DivisorProviderInterface $divisorProvider
+        OrderVoucherDistributorInterface $orderVoucherDistributor
     ) {
         $this->orderRepository = $orderRepository;
         $this->adjustmentFactory = $adjustmentFactory;
         $this->orderVoucherDistributor = $orderVoucherDistributor;
-        $this->divisorProvider = $divisorProvider;
     }
 
     public function update(Payment $molliePayment, int $orderId): void
@@ -51,7 +45,7 @@ final class OrderVoucherAdjustmentUpdater implements OrderVoucherAdjustmentUpdat
             }
         }
 
-        $amount = (int) ($amount * $this->divisorProvider->getDivisor());
+        $amount = (int) ($amount * 100);
 
         $this->orderVoucherDistributor->distribute($order, $amount);
     }

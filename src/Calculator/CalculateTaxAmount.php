@@ -21,6 +21,6 @@ final class CalculateTaxAmount implements CalculateTaxAmountInterface
     {
         $shippingTaxAmount = round($amount - ($amount / (1 + $taxRateAmount)));
 
-        return $this->converter->convertIntToString((int) $shippingTaxAmount);
+        return $this->converter->convertIntToString((int) $shippingTaxAmount, 100);
     }
 }

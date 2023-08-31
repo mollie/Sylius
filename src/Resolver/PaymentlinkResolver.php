@@ -10,7 +10,7 @@ use SyliusMolliePlugin\Entity\MollieGatewayConfig;
 use SyliusMolliePlugin\Factory\MollieGatewayFactory;
 use SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
 use SyliusMolliePlugin\Form\Type\MollieGatewayConfigurationType;
-use SyliusMolliePlugin\Helper\IntToStringConverterInterface;
+use SyliusMolliePlugin\Helper\IntToStringConverter;
 use SyliusMolliePlugin\Preparer\PaymentLinkEmailPreparerInterface;
 use Liip\ImagineBundle\Exception\Config\Filter\NotFoundException;
 use Sylius\AdminOrderCreationPlugin\Provider\PaymentTokenProviderInterface;
@@ -25,7 +25,7 @@ final class PaymentlinkResolver implements PaymentlinkResolverInterface
     /** @var MollieApiClient */
     private $mollieApiClient;
 
-    /** @var IntToStringConverterInterface */
+    /** @var IntToStringConverter */
     private $intToStringConverter;
 
     /** @var RepositoryInterface */
@@ -39,7 +39,7 @@ final class PaymentlinkResolver implements PaymentlinkResolverInterface
 
     public function __construct(
         MollieApiClient $mollieApiClient,
-        IntToStringConverterInterface $intToStringConverter,
+        IntToStringConverter $intToStringConverter,
         RepositoryInterface $orderRepository,
         PaymentLinkEmailPreparerInterface $emailPreparer,
         PaymentTokenProviderInterface $paymentTokenProvider
@@ -67,10 +67,10 @@ final class PaymentlinkResolver implements PaymentlinkResolverInterface
 
         Assert::notNull($paymentMethod->getGatewayConfig());
         if (false === in_array(
-                $paymentMethod->getGatewayConfig()->getFactoryName(),
-                [MollieGatewayFactory::FACTORY_NAME, MollieSubscriptionGatewayFactory::FACTORY_NAME],
-                true
-            )) {
+            $paymentMethod->getGatewayConfig()->getFactoryName(),
+            [MollieGatewayFactory::FACTORY_NAME, MollieSubscriptionGatewayFactory::FACTORY_NAME],
+            true
+        )) {
             throw new NotFoundException('No method mollie found in order');
         }
 
@@ -106,7 +106,7 @@ final class PaymentlinkResolver implements PaymentlinkResolverInterface
             'method' => $methodsArray,
             'amount' => [
                 'currency' => (string) $syliusPayment->getCurrencyCode(),
-                'value' => $this->intToStringConverter->convertIntToString($syliusPayment->getAmount()),
+                'value' => $this->intToStringConverter->convertIntToString($syliusPayment->getAmount(), 100),
             ],
             'description' => $order->getNumber(),
             'redirectUrl' => $redirectURL,

@@ -10,10 +10,10 @@ use Sylius\RefundPlugin\Model\ShipmentRefund;
 
 final class ConvertRefundData implements ConvertRefundDataInterface
 {
-    /** @var IntToStringConverterInterface */
+    /** @var IntToStringConverter */
     private $intToStringConverter;
 
-    public function __construct(IntToStringConverterInterface $intToStringConverter)
+    public function __construct(IntToStringConverter $intToStringConverter)
     {
         $this->intToStringConverter = $intToStringConverter;
     }
@@ -30,7 +30,7 @@ final class ConvertRefundData implements ConvertRefundDataInterface
 
         return [
             'currency' => $currency,
-            'value' => $this->intToStringConverter->convertIntToString($value),
+            'value' => $this->intToStringConverter->convertIntToString($value, 100),
         ];
     }
 

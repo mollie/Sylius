@@ -10,7 +10,6 @@ use SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
 use SyliusMolliePlugin\Entity\OrderInterface;
 use SyliusMolliePlugin\Helper\ConvertOrderInterface;
 use SyliusMolliePlugin\Payments\PaymentTerms\Options;
-use SyliusMolliePlugin\Provider\Divisor\DivisorProviderInterface;
 use SyliusMolliePlugin\Provider\Order\OrderPaymentApplePayDirectProvider;
 use SyliusMolliePlugin\Resolver\MollieApiClientKeyResolverInterface;
 use SyliusMolliePlugin\Resolver\PaymentLocaleResolverInterface;
@@ -36,23 +35,18 @@ final class ApplePayDirectApiOrderPaymentResolver implements ApplePayDirectApiOr
     /** @var PaymentLocaleResolverInterface */
     private $paymentLocaleResolver;
 
-    /** @var DivisorProviderInterface */
-    private $divisorProvider;
-
     public function __construct(
         MollieApiClient $mollieApiClient,
         MollieApiClientKeyResolverInterface $apiClientKeyResolver,
         ConvertOrderInterface $convertOrder,
         OrderPaymentApplePayDirectProvider $paymentApplePayDirectProvider,
-        PaymentLocaleResolverInterface $paymentLocaleResolver,
-        DivisorProviderInterface $divisorProvider
+        PaymentLocaleResolverInterface $paymentLocaleResolver
     ) {
         $this->mollieApiClient = $mollieApiClient;
         $this->apiClientKeyResolver = $apiClientKeyResolver;
         $this->convertOrder = $convertOrder;
         $this->paymentApplePayDirectProvider = $paymentApplePayDirectProvider;
         $this->paymentLocaleResolver = $paymentLocaleResolver;
-        $this->divisorProvider = $divisorProvider;
     }
 
     public function resolve(
@@ -61,7 +55,7 @@ final class ApplePayDirectApiOrderPaymentResolver implements ApplePayDirectApiOr
         array $details
     ): void {
         $this->apiClientKeyResolver->getClientWithKey();
-        $details = $this->convertOrder->convert($order, $details, $this->divisorProvider->getDivisor(), $mollieGatewayConfig);
+        $details = $this->convertOrder->convert($order, $details, 100, $mollieGatewayConfig);
         $customer = $order->getCustomer();
 
         $orderExpiredTime = $mollieGatewayConfig->getOrderExpiration();

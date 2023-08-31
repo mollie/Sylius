@@ -26,7 +26,7 @@ final class ConvertOrder implements ConvertOrderInterface
     /** @var OrderInterface */
     private $order;
 
-    /** @var IntToStringConverterInterface */
+    /** @var IntToStringConverter */
     private $intToStringConverter;
 
     /** @var CalculateTaxAmountInterface */
@@ -48,7 +48,7 @@ final class ConvertOrder implements ConvertOrderInterface
     private $zoneMatcher;
 
     public function __construct(
-        IntToStringConverterInterface $intToStringConverter,
+        IntToStringConverter $intToStringConverter,
         CalculateTaxAmountInterface $calculateTaxAmount,
         TaxUnitItemResolverInterface $taxUnitItemResolver,
         TaxShipmentResolverInterface $taxShipmentResolver,

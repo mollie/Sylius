@@ -95,7 +95,6 @@
             <argument type="service" id="sylius.repository.gateway_config"/>
             <argument type="service" id="bit_bag.sylius_mollie_plugin.creator.mollie_methods_creator"/>
         </service>
-        <service id="sylius_mollie_plugin.resolver.mollie_amount_restriction_resolver" class="SyliusMolliePlugin\Resolver\MollieAmountRestrictionResolver"/>
         <service id="sylius_mollie_plugin.resolver.mollie_allowed_methods_resolver" class="SyliusMolliePlugin\Resolver\MollieAllowedMethodsResolver">
             <argument type="service" id="sylius_mollie_plugin.resolver.mollie_api_client_key_resolver"/>
             <argument type="service" id="sylius_mollie_plugin.resolver.payment_locale_resolver"/>

@@ -19,9 +19,9 @@ use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Convert;
 use Payum\Core\Request\GetCurrency;
-use Sylius\Bundle\CoreBundle\Context\CustomerContext;
 use Sylius\Component\Core\Model\CustomerInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
+use Sylius\Component\Customer\Context\CustomerContextInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Webmozart\Assert\Assert;
 
@@ -38,7 +38,7 @@ final class ConvertMollieSubscriptionPaymentAction extends BaseApiAwareAction im
     /** @var ConvertOrderInterface */
     private $orderConverter;
 
-    /** @var CustomerContext */
+    /** @var CustomerContextInterface */
     private $customerContext;
 
     /** @var PaymentLocaleResolverInterface */
@@ -48,7 +48,7 @@ final class ConvertMollieSubscriptionPaymentAction extends BaseApiAwareAction im
         PaymentDescriptionInterface $paymentDescription,
         RepositoryInterface $mollieMethodsRepository,
         ConvertOrderInterface $orderConverter,
-        CustomerContext $customerContext,
+        CustomerContextInterface $customerContext,
         PaymentLocaleResolverInterface $paymentLocaleResolver
     ) {
         $this->paymentDescription = $paymentDescription;

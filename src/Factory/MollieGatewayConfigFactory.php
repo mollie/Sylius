@@ -61,4 +61,9 @@ final class MollieGatewayConfigFactory implements MollieGatewayConfigFactoryInte
 
         return $mollieGatewayConfig;
     }
+
+    public function createNew(): MollieGatewayConfigInterface
+    {
+        return $this->mollieGatewayConfigFactory->createNew();
+    }
 }

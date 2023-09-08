@@ -20,14 +20,6 @@
         <service id="sylius_mollie_plugin.resolver.payment_config" class="SyliusMolliePlugin\Resolver\PaymentMethodConfigResolver">
             <argument type="service" id="sylius_mollie_plugin.repository.mollie_gateway_config"/>
         </service>
-        <service id="sylius_mollie_plugin.resolver.tax_unit_item" class="SyliusMolliePlugin\Resolver\TaxUnitItemResolver">
-            <argument type="service" id="sylius.tax_rate_resolver"/>
-            <argument type="service" id="sylius.tax_calculator"/>
-        </service>
-        <service id="sylius_mollie_plugin.resolver.tax_shipment" class="SyliusMolliePlugin\Resolver\TaxShipmentResolver">
-            <argument type="service" id="sylius.tax_rate_resolver"/>
-            <argument type="service" id="sylius.tax_calculator"/>
-        </service>
         <service id="sylius_mollie_plugin.resolver.partial_ship.from_sylius_to_mollie_lines_resolver" class="SyliusMolliePlugin\Resolver\PartialShip\FromSyliusToMollieLinesResolver">
         </service>
         <service id="sylius_mollie_plugin.resolver.partial_ship.from_mollie_to_sylius_resolver" class="SyliusMolliePlugin\Resolver\PartialShip\FromMollieToSyliusResolver">

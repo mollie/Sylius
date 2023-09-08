@@ -5,19 +5,20 @@ declare(strict_types=1);
 
 namespace SyliusMolliePlugin\Helper;
 
+use Sylius\Component\Addressing\Model\ZoneInterface;
+use Sylius\Component\Core\Model\Scope;
+use Sylius\Component\Core\Model\ShippingMethodInterface;
+use Sylius\Component\Taxation\Model\TaxRateInterface;
 use SyliusMolliePlugin\Calculator\CalculateTaxAmountInterface;
 use SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
 use SyliusMolliePlugin\Payments\PaymentTerms\Options;
 use SyliusMolliePlugin\Resolver\MealVoucherResolverInterface;
-use SyliusMolliePlugin\Resolver\TaxShipmentResolverInterface;
-use SyliusMolliePlugin\Resolver\TaxUnitItemResolverInterface;
 use Sylius\Component\Addressing\Matcher\ZoneMatcherInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\OrderItem;
 use Sylius\Component\Core\Model\ShipmentInterface;
 use Sylius\Component\Customer\Model\CustomerInterface;
 use Sylius\Component\Order\Model\Adjustment;
-use Sylius\Component\Taxation\Model\TaxableInterface;
 use Sylius\Component\Taxation\Resolver\TaxRateResolverInterface;
 use Webmozart\Assert\Assert;
 
@@ -26,17 +27,14 @@ final class ConvertOrder implements ConvertOrderInterface
     /** @var OrderInterface */
     private $order;
 
+    /** @var ZoneInterface */
+    private $zone;
+
     /** @var IntToStringConverter */
     private $intToStringConverter;
 
     /** @var CalculateTaxAmountInterface */
     private $calculateTaxAmount;
-
-    /** @var TaxUnitItemResolverInterface */
-    private $taxUnitItemResolver;
-
-    /** @var TaxShipmentResolverInterface */
-    private $taxShipmentResolver;
 
     /** @var MealVoucherResolverInterface */
     private $mealVoucherResolver;
@@ -50,16 +48,12 @@ final class ConvertOrder implements ConvertOrderInterface
     public function __construct(
         IntToStringConverter $intToStringConverter,
         CalculateTaxAmountInterface $calculateTaxAmount,
-        TaxUnitItemResolverInterface $taxUnitItemResolver,
-        TaxShipmentResolverInterface $taxShipmentResolver,
         MealVoucherResolverInterface $mealVoucherResolver,
         TaxRateResolverInterface $taxRateResolver,
         ZoneMatcherInterface $zoneMatcher
     ) {
         $this->intToStringConverter = $intToStringConverter;
         $this->calculateTaxAmount = $calculateTaxAmount;
-        $this->taxUnitItemResolver = $taxUnitItemResolver;
-        $this->taxShipmentResolver = $taxShipmentResolver;
         $this->mealVoucherResolver = $mealVoucherResolver;
         $this->taxRateResolver = $taxRateResolver;
         $this->zoneMatcher = $zoneMatcher;
@@ -72,6 +66,15 @@ final class ConvertOrder implements ConvertOrderInterface
         MollieGatewayConfigInterface $method
     ): array {
         $this->order = $order;
+
+        Assert::notNull($this->order->getBillingAddress());
+        $this->zone = $this->zoneMatcher->match($this->order->getBillingAddress(), Scope::TAX);
+
+        if(null === $this->zone && null !== $this->order->getChannel())
+        {
+            Assert::notNull($this->order->getChannel());
+            $this->zone = $this->order->getChannel()->getDefaultTaxZone();
+        }
 
         $customer = $order->getCustomer();
 
@@ -128,20 +131,18 @@ final class ConvertOrder implements ConvertOrderInterface
     {
         $details = [];
 
-        Assert::notNull($this->order->getChannel());
-        $this->order->getChannel()->getDefaultTaxZone();
-
         /** @var OrderItem $item */
         foreach ($this->order->getItems() as $item) {
+            $taxRate = $this->taxRateResolver->resolve($item->getVariant(), [self::TAX_RATE_CRITERIA_ZONE => $this->zone]);
             $details[] = [
                 'category' => $this->mealVoucherResolver->resolve($method, $item),
                 'type' => 'physical',
                 'name' => $item->getProductName(),
                 'quantity' => $item->getQuantity(),
-                'vatRate' => null === $this->getTaxRatesUnitItem($item) ? '0.00' : (string) ($this->getTaxRatesUnitItem($item) * 100),
+                'vatRate' => null === $taxRate ? '0.00' : (string) $taxRate->getAmountAsPercentage(),
                 'unitPrice' => [
                     'currency' => $this->order->getCurrencyCode(),
-                    'value' => $this->intToStringConverter->convertIntToString($this->getUnitPriceWithTax($item), $divisor),
+                    'value' => $this->intToStringConverter->convertIntToString($this->getUnitPriceWithTax($item, $taxRate), $divisor),
                 ],
                 'totalAmount' => [
                     'currency' => $this->order->getCurrencyCode(),
@@ -149,9 +150,9 @@ final class ConvertOrder implements ConvertOrderInterface
                 ],
                 'vatAmount' => [
                     'currency' => $this->order->getCurrencyCode(),
-                    'value' => null === $this->getTaxRatesUnitItem($item) ?
+                    'value' => null === $taxRate ?
                         '0.00' :
-                        $this->calculateTaxAmount->calculate($this->getTaxRatesUnitItem($item), $item->getTotal()),
+                        $this->calculateTaxAmount->calculate($taxRate->getAmount(), $item->getTotal()),
                 ],
                 'discountAmount' => [
                     'currency' => $this->order->getCurrencyCode(),
@@ -203,11 +204,14 @@ final class ConvertOrder implements ConvertOrderInterface
         $shipment = $this->order->getShipments()->first();
 
         if (false !== $shipment) {
+            /** @var ShippingMethodInterface $shipmentMethod */
+            $shipmentMethod = $shipment->getMethod();
+            $taxRate = $this->taxRateResolver->resolve($shipmentMethod, [self::TAX_RATE_CRITERIA_ZONE => $this->zone]);
             $details[] = [
                 'type' => self::SHIPPING_TYPE,
                 'name' => self::SHIPPING_FEE,
                 'quantity' => 1,
-                'vatRate' => null === $this->getTaxRatesShipments() ? '0.00' : (string) ($this->getTaxRatesShipments() * 100),
+                'vatRate' => null === $taxRate ? '0.00' : (string) $taxRate->getAmountAsPercentage(),
                 'unitPrice' => [
                     'currency' => $this->order->getCurrencyCode(),
                     'value' => $this->intToStringConverter->convertIntToString($this->order->getShippingTotal(), $divisor),
@@ -218,7 +222,7 @@ final class ConvertOrder implements ConvertOrderInterface
                 ],
                 'vatAmount' => [
                     'currency' => $this->order->getCurrencyCode(),
-                    'value' => null === $this->getTaxRatesShipments() ? '0.00' : $this->calculateTaxAmount->calculate($this->getTaxRatesShipments(), $this->order->getShippingTotal()),
+                    'value' => null === $taxRate ? '0.00' : $this->calculateTaxAmount->calculate($taxRate->getAmount(), $this->order->getShippingTotal()),
                 ],
             ];
         }
@@ -226,24 +230,8 @@ final class ConvertOrder implements ConvertOrderInterface
         return $details;
     }
 
-    private function getTaxRatesUnitItem(OrderItem $item): ?float
+    private function getUnitPriceWithTax(OrderItem $item, ?TaxRateInterface $taxRate): int
     {
-        return $this->taxUnitItemResolver->resolve($this->order, $item);
-    }
-
-    private function getTaxRatesShipments(): ?float
-    {
-        return $this->taxShipmentResolver->resolve($this->order);
-    }
-
-    private function getUnitPriceWithTax(OrderItem $item): int
-    {
-        Assert::notNull($this->order->getBillingAddress());
-        $zone = $this->zoneMatcher->match($this->order->getBillingAddress());
-        /** @var TaxableInterface $taxableVariant */
-        $taxableVariant = $item->getVariant();
-        $taxRate = $this->taxRateResolver->resolve($taxableVariant, [self::TAX_RATE_CRITERIA_ZONE => $zone]);
-
         if (null === $taxRate) {
             return $item->getUnitPrice();
         }

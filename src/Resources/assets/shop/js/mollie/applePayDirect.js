@@ -1,3 +1,5 @@
+import { request } from './applePayRequest.js'; // Import the request function
+
 $(function () {
     let applePaySession = () => {
         const version = 3;

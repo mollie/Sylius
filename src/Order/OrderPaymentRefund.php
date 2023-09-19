@@ -50,7 +50,7 @@ final class OrderPaymentRefund implements OrderPaymentRefundInterface
 
         /** @var PaymentInterface|null $payment */
         $payment = $order->getPayments()->last();
-        if (null === $payment) {
+        if (null === $payment || false === $payment) {
             $this->loggerAction->addNegativeLog(sprintf('Not fount payment in refund'));
 
             throw new NotFoundHttpException();

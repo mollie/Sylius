@@ -39,8 +39,13 @@ final class PaymentMethodCheckoutValidator extends ConstraintValidator
     {
         $order = $this->paymentCheckoutOrderResolver->resolve();
 
-        /** @var PaymentInterface $payment */
+        /** @var PaymentInterface|null $payment */
         $payment = $order->getPayments()->last();
+
+        if(null === $payment || false === $payment)
+        {
+            return;
+        }
 
         /** @var ?PaymentMethodInterface $paymentMethod */
         $paymentMethod = $payment->getMethod();

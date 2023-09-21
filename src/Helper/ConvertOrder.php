@@ -30,7 +30,7 @@ final class ConvertOrder implements ConvertOrderInterface
     /** @var ZoneInterface */
     private $zone;
 
-    /** @var IntToStringConverter */
+    /** @var IntToStringConverterInterface */
     private $intToStringConverter;
 
     /** @var CalculateTaxAmountInterface */
@@ -46,7 +46,7 @@ final class ConvertOrder implements ConvertOrderInterface
     private $zoneMatcher;
 
     public function __construct(
-        IntToStringConverter $intToStringConverter,
+        IntToStringConverterInterface $intToStringConverter,
         CalculateTaxAmountInterface $calculateTaxAmount,
         MealVoucherResolverInterface $mealVoucherResolver,
         TaxRateResolverInterface $taxRateResolver,

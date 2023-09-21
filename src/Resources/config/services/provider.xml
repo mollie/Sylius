@@ -19,6 +19,7 @@
             <argument type="service" id="Sylius\AdminOrderCreationPlugin\Provider\PaymentTokenProvider"/>
             <argument type="service" id="payum"/>
         </service>
+        <service id="sylius_mollie_plugin.provider.divisor.divisor_provider" class="SyliusMolliePlugin\Provider\Divisor\DivisorProvider"/>
         <service id="sylius_mollie_plugin.provider.apple.apple_pay_direct_payment_provider" class="SyliusMolliePlugin\Provider\Apple\ApplePayDirectPaymentProvider">
             <argument type="service" id="sylius_mollie_plugin.resolver.apple_pay_direct.apple_pay_direct_payment_type_resolver"/>
         </service>

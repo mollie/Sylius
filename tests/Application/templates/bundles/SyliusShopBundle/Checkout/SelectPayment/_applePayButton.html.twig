@@ -1,4 +1,5 @@
 <div class="apple-pay-button-with-text apple-pay-button apple-pay-button-black" id="mollie_applepay_button"
+     data-divisor="{{ mollie_get_divisor() }}"
      data-url-validate="{{ path('sylius_mollie_plugin_apple_pay_validation') }}"
      data-url-payment="{{ path('mollie_shop_checkout_apple_complete') }}"
      data-total-order="{{ order.total }}"

@@ -65,6 +65,6 @@ final class MollieAllowedMethodsResolver implements MollieAllowedMethodsResolver
 
     private function parseTotalToString(int $total): string
     {
-        return substr_replace((string) $total, '.', -2, 0);
+        return sprintf('%.2F', $total / 100);
     }
 }

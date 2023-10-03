@@ -22,6 +22,7 @@ services:
             - "@sm.factory"
             - "@payum"
             - "@sylius_mollie_plugin.checker.gateway.mollie_gateway_factory_checker"
+            - '@sylius_mollie_plugin.provider.divisor.divisor_provider'
 
     sylius_mollie_plugin.context.setup.subscription:
         class: Tests\SyliusMolliePlugin\Behat\Context\Setup\SubscriptionContext
@@ -41,4 +42,5 @@ services:
             - "@sylius.repository.product"
             - "@sylius.repository.product_variant"
             - "@sylius.repository.channel_pricing"
+            - '@sylius_mollie_plugin.provider.divisor.divisor_provider'
 

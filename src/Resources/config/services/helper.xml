@@ -5,12 +5,11 @@
     <services>
         <defaults public="true" />
         <service id="sylius_mollie_plugin.helper.int_to_string" class="SyliusMolliePlugin\Helper\IntToStringConverter">
+            <argument type="service" id="sylius_mollie_plugin.provider.divisor.divisor_provider"/>
         </service>
         <service id="sylius_mollie_plugin.payments.order_converter" class="SyliusMolliePlugin\Helper\ConvertOrder">
             <argument type="service" id="sylius_mollie_plugin.helper.int_to_string"/>
             <argument type="service" id="sylius_mollie_plugin.calculator.calculate"/>
-            <argument type="service" id="sylius_mollie_plugin.resolver.tax_unit_item"/>
-            <argument type="service" id="sylius_mollie_plugin.resolver.tax_shipment"/>
             <argument type="service" id="sylius_mollie_plugin.resolver.meal_voucher_resolver"/>
             <argument type="service" id="sylius.tax_rate_resolver"/>
             <argument type="service" id="sylius.zone_matcher"/>

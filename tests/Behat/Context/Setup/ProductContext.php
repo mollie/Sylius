@@ -15,6 +15,7 @@ use Sylius\Component\Core\Formatter\StringInflector;
 use Sylius\Component\Core\Model\ChannelPricingInterface;
 use Sylius\Component\Product\Model\ProductInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
+use SyliusMolliePlugin\Provider\Divisor\DivisorProviderInterface;
 
 final class ProductContext extends RawMinkContext implements Context
 {
@@ -29,16 +30,21 @@ final class ProductContext extends RawMinkContext implements Context
 
     private RepositoryInterface $channelPricingRepository;
 
+    /** @var DivisorProviderInterface */
+    private $divisorProvider;
+
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ProductRepository $productRepository,
         ProductVariantRepository $productVariantRepository,
-        RepositoryInterface $channelPricingRepository
+        RepositoryInterface $channelPricingRepository,
+        DivisorProviderInterface $divisorProvider
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->productRepository = $productRepository;
         $this->productVariantRepository = $productVariantRepository;
         $this->channelPricingRepository = $channelPricingRepository;
+        $this->divisorProvider = $divisorProvider;
     }
 
     /**
@@ -76,7 +82,7 @@ final class ProductContext extends RawMinkContext implements Context
             'productVariant' => $productVariant->getId(),
         ]);
 
-        $channelPricing->setPrice((int) $price * 100);
+        $channelPricing->setPrice((int) $price * $this->divisorProvider->getDivisor());
 
         $this->channelPricingRepository->add($channelPricing);
     }

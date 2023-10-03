@@ -20,4 +20,6 @@ sylius_mollie_plugin:
     possible_fraud: 'Mogelijke fraude'
     authentication_failed: 'Authenticatie mislukt'
     empty_payment_method_checkout: 'Kies een van de Mollie-betalingsmethoden'
+  billie.error:
+    company_missing: 'De bedrijfsnaam is vereist bij het gebruik van Billie. Geef de bedrijfsnaam op of kies voor een andere betaalmethode.'
 

@@ -1,4 +1,4 @@
-function request(countryCode, currencyCode, totalLabel, subtotal) {
+export function request(countryCode, currencyCode, totalLabel, subtotal) {
     return {
         countryCode: countryCode,
         currencyCode: currencyCode,

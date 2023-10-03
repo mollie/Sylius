@@ -11,6 +11,7 @@ use SyliusMolliePlugin\Payments\PaymentTerms\Options;
 use Doctrine\Common\Collections\Collection;
 use Sylius\Component\Order\Factory\AdjustmentFactoryInterface;
 use Sylius\Component\Order\Model\OrderInterface;
+use SyliusMolliePlugin\Provider\Divisor\DivisorProviderInterface;
 use Webmozart\Assert\Assert;
 
 final class FixedAmountAndPercentage implements SurchargeTypeInterface
@@ -24,14 +25,19 @@ final class FixedAmountAndPercentage implements SurchargeTypeInterface
     /** @var FixedAmount */
     private $fixedAmount;
 
+    /** @var DivisorProviderInterface */
+    private $divisorProvider;
+
     public function __construct(
         AdjustmentFactoryInterface $adjustmentFactory,
         Percentage $percentage,
-        FixedAmount $fixedAmount
+        FixedAmount $fixedAmount,
+        DivisorProviderInterface $divisorProvider
     ) {
         $this->adjustmentFactory = $adjustmentFactory;
         $this->percentage = $percentage;
         $this->fixedAmount = $fixedAmount;
+        $this->divisorProvider = $divisorProvider;
     }
 
     public function calculate(OrderInterface $order, MollieGatewayConfig $paymentMethod): OrderInterface
@@ -39,7 +45,7 @@ final class FixedAmountAndPercentage implements SurchargeTypeInterface
         $paymentSurchargeFee = $paymentMethod->getPaymentSurchargeFee();
         Assert::notNull($paymentSurchargeFee);
         Assert::notNull($paymentSurchargeFee->getSurchargeLimit());
-        $limit = $paymentSurchargeFee->getSurchargeLimit() * 100;
+        $limit = $paymentSurchargeFee->getSurchargeLimit() * $this->divisorProvider->getDivisor();
 
         $percentage = $this->percentage->calculate($order, $paymentMethod);
         $fixed = $this->fixedAmount->calculate($order, $paymentMethod);

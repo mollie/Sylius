@@ -10,6 +10,7 @@ interface MollieGatewayFactoryInterface
     /** @deprecated since 3.7.0 use MollieGatewayFactoryInterface::LOCALES_AVAILABLE_MAP instead */
     public const LOCALES_AVAILABLE = [
         'en_US',
+        'en_GB',
         'nl_NL',
         'nl_BE',
         'fr_FR',
@@ -34,6 +35,7 @@ interface MollieGatewayFactoryInterface
 
     public const LOCALES_AVAILABLE_MAP = [
         'en_US' => 'en_US',
+        'en_GB' => 'en_GB',
         'nl_NL' => 'nl_NL',
         'nl_BE' => 'nl_BE',
         'fr_FR' => 'fr_FR',

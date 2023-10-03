@@ -8,7 +8,9 @@ namespace SyliusMolliePlugin\Action;
 use SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
 use SyliusMolliePlugin\Entity\OrderInterface;
 use SyliusMolliePlugin\Helper\ConvertOrderInterface;
+use SyliusMolliePlugin\Helper\IntToStringConverterInterface;
 use SyliusMolliePlugin\Helper\PaymentDescriptionInterface;
+use SyliusMolliePlugin\Provider\Divisor\DivisorProviderInterface;
 use SyliusMolliePlugin\Request\Api\CreateCustomer;
 use SyliusMolliePlugin\Resolver\PaymentLocaleResolverInterface;
 use Mollie\Api\Types\PaymentMethod;
@@ -19,9 +21,9 @@ use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Convert;
 use Payum\Core\Request\GetCurrency;
-use Sylius\Bundle\CoreBundle\Context\CustomerContext;
 use Sylius\Component\Core\Model\CustomerInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
+use Sylius\Component\Customer\Context\CustomerContextInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Webmozart\Assert\Assert;
 
@@ -38,24 +40,34 @@ final class ConvertMollieSubscriptionPaymentAction extends BaseApiAwareAction im
     /** @var ConvertOrderInterface */
     private $orderConverter;
 
-    /** @var CustomerContext */
+    /** @var CustomerContextInterface */
     private $customerContext;
 
     /** @var PaymentLocaleResolverInterface */
     private $paymentLocaleResolver;
 
+    /** @var IntToStringConverterInterface */
+    private $intToStringConverter;
+
+    /** @var DivisorProviderInterface */
+    private $divisorProvider;
+
     public function __construct(
         PaymentDescriptionInterface $paymentDescription,
         RepositoryInterface $mollieMethodsRepository,
         ConvertOrderInterface $orderConverter,
-        CustomerContext $customerContext,
-        PaymentLocaleResolverInterface $paymentLocaleResolver
+        CustomerContextInterface $customerContext,
+        PaymentLocaleResolverInterface $paymentLocaleResolver,
+        IntToStringConverterInterface $intToStringConverter,
+        DivisorProviderInterface $divisorProvider
     ) {
         $this->paymentDescription = $paymentDescription;
         $this->mollieMethodsRepository = $mollieMethodsRepository;
         $this->orderConverter = $orderConverter;
         $this->customerContext = $customerContext;
         $this->paymentLocaleResolver = $paymentLocaleResolver;
+        $this->intToStringConverter = $intToStringConverter;
+        $this->divisorProvider = $divisorProvider;
     }
 
     /** @param Convert|mixed $request */
@@ -78,10 +90,10 @@ final class ConvertMollieSubscriptionPaymentAction extends BaseApiAwareAction im
         Assert::notNull($payment->getCurrencyCode());
         $this->gateway->execute($currency = new GetCurrency($payment->getCurrencyCode()));
 
-        $divisor = 10 ** $currency->exp;
+        $divisor = $this->divisorProvider->getDivisorForCurrency($currency);
 
         Assert::notNull($payment->getAmount());
-        $amount = number_format(abs($payment->getAmount() / $divisor), 2, '.', '');
+        $amount = $this->intToStringConverter->convertIntToString($payment->getAmount(), $divisor);
         $paymentOptions = $payment->getDetails();
 
         $cartToken = $paymentOptions['cartToken'];

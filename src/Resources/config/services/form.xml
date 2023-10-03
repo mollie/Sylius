@@ -19,6 +19,7 @@
     <services>
         <service id="sylius_mollie_plugin.form.type.mollie_gateway_configuration" class="SyliusMolliePlugin\Form\Type\MollieGatewayConfigurationType">
             <argument type="service" id="sylius_mollie_plugin.documentation.documentation_links"/>
+            <argument type="service" id="sylius_mollie_plugin.mollie_api_client"/>
             <tag name="sylius.gateway_configuration_type" type="mollie" label="sylius_mollie_plugin.ui.mollie_gateway_label"/>
             <tag name="form.type"/>
         </service>

@@ -10,7 +10,7 @@ use SyliusMolliePlugin\Entity\MollieGatewayConfig;
 use SyliusMolliePlugin\Factory\MollieGatewayFactory;
 use SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
 use SyliusMolliePlugin\Form\Type\MollieGatewayConfigurationType;
-use SyliusMolliePlugin\Helper\IntToStringConverter;
+use SyliusMolliePlugin\Helper\IntToStringConverterInterface;
 use SyliusMolliePlugin\Preparer\PaymentLinkEmailPreparerInterface;
 use Liip\ImagineBundle\Exception\Config\Filter\NotFoundException;
 use Sylius\AdminOrderCreationPlugin\Provider\PaymentTokenProviderInterface;
@@ -25,7 +25,7 @@ final class PaymentlinkResolver implements PaymentlinkResolverInterface
     /** @var MollieApiClient */
     private $mollieApiClient;
 
-    /** @var IntToStringConverter */
+    /** @var IntToStringConverterInterface */
     private $intToStringConverter;
 
     /** @var RepositoryInterface */
@@ -39,7 +39,7 @@ final class PaymentlinkResolver implements PaymentlinkResolverInterface
 
     public function __construct(
         MollieApiClient $mollieApiClient,
-        IntToStringConverter $intToStringConverter,
+        IntToStringConverterInterface $intToStringConverter,
         RepositoryInterface $orderRepository,
         PaymentLinkEmailPreparerInterface $emailPreparer,
         PaymentTokenProviderInterface $paymentTokenProvider
@@ -106,7 +106,7 @@ final class PaymentlinkResolver implements PaymentlinkResolverInterface
             'method' => $methodsArray,
             'amount' => [
                 'currency' => (string) $syliusPayment->getCurrencyCode(),
-                'value' => $this->intToStringConverter->convertIntToString($syliusPayment->getAmount(), 100),
+                'value' => $this->intToStringConverter->convertIntToString($syliusPayment->getAmount()),
             ],
             'description' => $order->getNumber(),
             'redirectUrl' => $redirectURL,

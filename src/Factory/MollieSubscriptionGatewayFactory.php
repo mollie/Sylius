@@ -48,7 +48,7 @@ final class MollieSubscriptionGatewayFactory extends GatewayFactory
                 $mollieApiClient->setConfig($config->toUnsafeArray());
                 $mollieApiClient->setIsRecurringSubscription(true);
                 $mollieApiClient->addVersionString(\sprintf('Sylius/%s', Kernel::VERSION));
-                $mollieApiClient->addVersionString(\sprintf('SyliusMolliePlugin/%s', $mollieApiClient->getVersion()));
+                $mollieApiClient->addVersionString(\sprintf('SubscriptionSyliusMolliePlugin/%s', $mollieApiClient->getVersion()));
                 $mollieApiClient->addVersionString(\sprintf('uap/%s', $mollieApiClient->getUserAgentToken()));
 
                 return $mollieApiClient;

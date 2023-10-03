@@ -19,6 +19,8 @@ sylius_mollie_plugin:
         inactive_card: 'Inactive card'
         possible_fraud: 'Possible fraud'
         authentication_failed: 'Authentication failed'
+    billie.error:
+        company_missing: 'Company name is required when Billie payment method is used. Please set company name or choose another payment method'
     empty_payment_method_checkout: 'Choose one of mollie payment method'
     order_checkout:
         colliding_products: 'There are mixed products (recurring and non-recurring) within your cart. Proceeding with mixed content is forbidden.'

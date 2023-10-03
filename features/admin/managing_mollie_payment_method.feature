@@ -13,7 +13,6 @@ Feature: Adding a new mollie payment method
         Given I want to create a new Mollie payment method
         When I name it "Mollie" in "English (United States)"
         And I specify its code as "mollie_test"
-        And I fill the Profile ID with "MOLLIE_PROFILE_KEY"
         And I fill the API key with "MOLLIE_TEST_API_KEY"
         And make it available in channel "Web-EUR"
         And I add it

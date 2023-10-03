@@ -20,4 +20,6 @@ sylius_mollie_plugin:
     possible_fraud: 'Möglicher Betrug'
     authentication_failed: 'Authentifizierung fehlgeschlagen'
     empty_payment_method_checkout: 'Wählen Sie eine Mollie-Bezahlmethode'
+  billie.error:
+    company_missing: 'Die Angabe eines Firmennamens ist für die Zahlungsart Billie verpflichtend. Bitte geben Sie einen Firmennamen an oder wählen Sie eine andere Zahlungsart.'
 

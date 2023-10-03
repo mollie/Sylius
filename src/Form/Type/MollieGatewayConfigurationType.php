@@ -5,12 +5,14 @@ declare(strict_types=1);
 
 namespace SyliusMolliePlugin\Form\Type;
 
+use SyliusMolliePlugin\Client\MollieApiClient;
 use SyliusMolliePlugin\Documentation\DocumentationLinksInterface;
 use SyliusMolliePlugin\Payments\PaymentTerms\Options;
 use SyliusMolliePlugin\Validator\Constraints\LiveApiKeyIsNotBlank;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -28,10 +30,13 @@ final class MollieGatewayConfigurationType extends AbstractType
 
     /** @var DocumentationLinksInterface */
     private $documentationLinks;
+    /** @var MollieApiClient */
+    private $apiClient;
 
-    public function __construct(DocumentationLinksInterface $documentationLinks)
+    public function __construct(DocumentationLinksInterface $documentationLinks, MollieApiClient $apiClient)
     {
         $this->documentationLinks = $documentationLinks;
+        $this->apiClient = $apiClient;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -44,14 +49,7 @@ final class MollieGatewayConfigurationType extends AbstractType
                     'sylius_mollie_plugin.ui.api_key_choice_live' => true,
                 ],
             ])
-            ->add('profile_id', TextType::class, [
-                'label' => $this->documentationLinks->getProfileIdDoc(),
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'sylius_mollie_plugin.profile_id.not_blank',
-                        'groups' => ['sylius'],
-                    ]),
-                ],
+            ->add('profile_id', HiddenType::class, [
             ])
             ->add(self::API_KEY_TEST, PasswordType::class, [
                 'always_empty' => false,
@@ -128,6 +126,20 @@ final class MollieGatewayConfigurationType extends AbstractType
                 $data['payum.http_client'] = '@sylius_mollie_plugin.mollie_api_client';
 
                 $event->setData($data);
+            })
+            ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event): void {
+                $data = $event->getData();
+
+                if (array_key_exists('environment', $data)) {
+                    $apiKey = $this->getMollieApiKey($data);
+
+                    $this->apiClient->setApiKey($apiKey);
+                    $profile = $this->apiClient->profiles->getCurrent();
+
+                    $data['profile_id'] = $profile->id;
+                }
+
+                $event->setData($data);
             });
     }
 
@@ -146,5 +158,19 @@ final class MollieGatewayConfigurationType extends AbstractType
         $resolver->setDefault('constraints', [
             new LiveApiKeyIsNotBlank($defaults),
         ]);
+    }
+
+    /**
+     * @param array $config
+     *
+     * @return string
+     */
+    private function getMollieApiKey(array $config): string
+    {
+        if ($config['environment']) {
+            return $config[MollieGatewayConfigurationType::API_KEY_LIVE];
+        }
+
+        return $config[MollieGatewayConfigurationType::API_KEY_TEST];
     }
 }

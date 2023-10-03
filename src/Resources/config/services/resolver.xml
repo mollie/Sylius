@@ -20,14 +20,6 @@
         <service id="sylius_mollie_plugin.resolver.payment_config" class="SyliusMolliePlugin\Resolver\PaymentMethodConfigResolver">
             <argument type="service" id="sylius_mollie_plugin.repository.mollie_gateway_config"/>
         </service>
-        <service id="sylius_mollie_plugin.resolver.tax_unit_item" class="SyliusMolliePlugin\Resolver\TaxUnitItemResolver">
-            <argument type="service" id="sylius.tax_rate_resolver"/>
-            <argument type="service" id="sylius.tax_calculator"/>
-        </service>
-        <service id="sylius_mollie_plugin.resolver.tax_shipment" class="SyliusMolliePlugin\Resolver\TaxShipmentResolver">
-            <argument type="service" id="sylius.tax_rate_resolver"/>
-            <argument type="service" id="sylius.tax_calculator"/>
-        </service>
         <service id="sylius_mollie_plugin.resolver.partial_ship.from_sylius_to_mollie_lines_resolver" class="SyliusMolliePlugin\Resolver\PartialShip\FromSyliusToMollieLinesResolver">
         </service>
         <service id="sylius_mollie_plugin.resolver.partial_ship.from_mollie_to_sylius_resolver" class="SyliusMolliePlugin\Resolver\PartialShip\FromMollieToSyliusResolver">
@@ -71,6 +63,7 @@
             <argument type="service" id="sylius_mollie_plugin.payments.order_converter"/>
             <argument type="service" id="sylius_mollie_plugin.provider.order.order_payment_apple_pay_direct_provider"/>
             <argument type="service" id="sylius_mollie_plugin.resolver.payment_locale_resolver"/>
+            <argument type="service" id="sylius_mollie_plugin.provider.divisor.divisor_provider"/>
         </service>
         <service id="sylius_mollie_plugin.resolver.apple_pay_direct.apple_pay_direct_api_payment_resolver" class="SyliusMolliePlugin\Resolver\ApplePayDirect\ApplePayDirectApiPaymentResolver">
             <argument type="service" id="sylius_mollie_plugin.mollie_api_client"/>
@@ -80,6 +73,7 @@
         <service id="sylius_mollie_plugin.resolver.apple_pay_direct.apple_pay_direct_payment_type_resolver" class="SyliusMolliePlugin\Resolver\ApplePayDirect\ApplePayDirectPaymentTypeResolver">
             <argument type="service" id="sylius_mollie_plugin.resolver.apple_pay_direct.apple_pay_direct_api_payment_resolver"/>
             <argument type="service" id="sylius_mollie_plugin.resolver.apple_pay_direct.apple_pay_direct_api_order_payment_resolver"/>
+            <argument type="service" id="sylius_mollie_plugin.helper.int_to_string"/>
         </service>
         <service id="sylius_mollie_plugin.resolver.api_keys_test_resolver" class="SyliusMolliePlugin\Resolver\ApiKeysTestResolver">
             <argument type="service" id="sylius_mollie_plugin.creator.api_keys_test_creator"/>
@@ -95,10 +89,10 @@
             <argument type="service" id="sylius.repository.gateway_config"/>
             <argument type="service" id="bit_bag.sylius_mollie_plugin.creator.mollie_methods_creator"/>
         </service>
-        <service id="sylius_mollie_plugin.resolver.mollie_amount_restriction_resolver" class="SyliusMolliePlugin\Resolver\MollieAmountRestrictionResolver"/>
         <service id="sylius_mollie_plugin.resolver.mollie_allowed_methods_resolver" class="SyliusMolliePlugin\Resolver\MollieAllowedMethodsResolver">
             <argument type="service" id="sylius_mollie_plugin.resolver.mollie_api_client_key_resolver"/>
             <argument type="service" id="sylius_mollie_plugin.resolver.payment_locale_resolver"/>
+            <argument type="service" id="sylius_mollie_plugin.helper.int_to_string"/>
         </service>
         <service id="sylius_mollie_plugin.resolver.onboarding_wizard.status_resolver" class="SyliusMolliePlugin\Resolver\OnboardingWizard\StatusResolver">
             <argument type="service" id="sylius_mollie_plugin.repository.onboarding_wizard_status"/>

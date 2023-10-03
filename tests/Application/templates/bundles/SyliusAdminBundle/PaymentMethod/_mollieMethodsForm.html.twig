@@ -2,6 +2,7 @@
 {% set applePay = constant('Mollie\\Api\\Types\\PaymentMethod::APPLEPAY') %}
 {% set klarnaPayLater = constant('Mollie\\Api\\Types\\PaymentMethod::KLARNA_PAY_LATER') %}
 {% set klarnaSliceIt = constant('Mollie\\Api\\Types\\PaymentMethod::KLARNA_SLICE_IT') %}
+{% set billie = constant('Mollie\\Api\\Types\\PaymentMethod::BILLIE') %}
 {% set in3 = constant('Mollie\\Api\\Types\\PaymentMethod::IN3') %}
 {% import '@SyliusUi/Macro/flags.html.twig' as flags %}
 
@@ -134,6 +135,7 @@
                                     methodForm.vars.value.methodId == mealvouchersId or
                                     methodForm.vars.value.methodId == klarnaPayLater or
                                     methodForm.vars.value.methodId == klarnaSliceIt or
+                                    methodForm.vars.value.methodId == billie or
                                     methodForm.vars.value.methodId == in3
                                 %}
                                     {{ form_row(methodForm.paymentType, {'attr': {'disabled': 'disabled', 'class': 'js-onboardingWizard-PaymentMethod'}}) }}

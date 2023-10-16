@@ -55,7 +55,18 @@ $(function () {
     }
 
     if (mollieData.length > 0 && true === components) {
-        initializeCreditCartFields(selectedValue);
+        let paymentMethods = document.querySelectorAll('div[class*="online-payment__item--"]');
+
+        for (let i = 0; i < paymentMethods.length; i++) {
+            paymentMethods[i].onchange = function (event) {
+                let target = event.target;
+                let creditCartComponents = document.querySelectorAll('div[data-testid*="mollie-container--"]');
+
+                if (target.value === 'creditcard' && creditCartComponents.length === 0) {
+                    initializeCreditCartFields(selectedValue);
+                }
+            }
+        }
     }
 
     function initializeCreditCartFields(selectedValue) {

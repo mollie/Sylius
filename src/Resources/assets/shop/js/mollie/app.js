@@ -1,4 +1,4 @@
-const { Mollie } = window;
+const {Mollie} = window;
 
 $(function () {
     var disableValidationMollieComponents = false;
@@ -66,9 +66,38 @@ $(function () {
                 if (target.value === 'creditcard' && creditCartComponents.length === 0) {
                     toggleMollieComponents();
                     initializeCreditCartFields(selectedValue);
+
+                    if (isSavedCreditCardCheckboxChecked()) {
+                        const mollieComponentFields = document.querySelector('.mollie-component-fields');
+                        if (!mollieComponentFields) {
+                            return;
+                        }
+
+                        hideMollieComponents(mollieComponentFields);
+                    }
                 }
             }
         }
+    }
+
+    function isSavedCreditCardCheckboxChecked() {
+        let checkbox = document.getElementById('mollie-sylius-use-saved-credit-card');
+        if (!checkbox) {
+            return false;
+        }
+        let parentElement = checkbox.parentNode;
+
+        return parentElement.classList.contains('checked');
+    }
+
+    function isSaveCreditCardForFutureUseChecked() {
+        let checkbox = document.getElementById('mollie-sylius-save-credit-card');
+        if (!checkbox) {
+            return false;
+        }
+        let parentElement = checkbox.parentNode;
+
+        return parentElement.classList.contains('checked');
     }
 
     function toggleMollieComponents() {
@@ -84,13 +113,23 @@ $(function () {
             }
 
             if (event.target.checked) {
-                disableValidationMollieComponents = true;
-                mollieComponentFields.style.display = 'none';
+                hideMollieComponents(mollieComponentFields);
             } else {
-                disableValidationMollieComponents = false;
-                mollieComponentFields.style.display = 'grid';
+                showMollieComponents(mollieComponentFields);
             }
         });
+    }
+
+    function showMollieComponents(mollieComponentFields) {
+        disableValidationMollieComponents = false;
+        mollieComponentFields.classList.remove('mollie-hidden');
+        mollieComponentFields.classList.add('display-grid');
+    }
+
+    function hideMollieComponents(mollieComponentFields) {
+        disableValidationMollieComponents = true;
+        mollieComponentFields.classList.add('mollie-hidden');
+        mollieComponentFields.classList.remove('display-grid');
     }
 
     function initializeCreditCartFields(selectedValue) {
@@ -112,7 +151,8 @@ $(function () {
         const formError = document.getElementById('form-error');
         const submitButton = document.getElementById('next-step') || document.getElementById('sylius-pay-link');
         const tokenField = document.querySelector('[id*="_details_cartToken"]');
-
+        const saveCardInfoInput = document.querySelector('[id*="_details_saveCardInfo"]');
+        const useSavedCardsInput = document.querySelector('[id*="_details_useSavedCards"]');
         const cardHolder = mollie.createComponent('cardHolder');
 
         cardHolder.mount('#card-holder');
@@ -174,6 +214,8 @@ $(function () {
         }
 
         form.addEventListener('submit', async (event) => {
+            useSavedCardsInput.value = isSavedCreditCardCheckboxChecked() ? 1 : 0;
+
             if ($('.online-payment__input:checked').val() === 'creditcard' && disableValidationMollieComponents === false) {
                 event.preventDefault();
                 disableForm();
@@ -191,6 +233,7 @@ $(function () {
                 }
 
                 tokenField.value = token;
+                saveCardInfoInput.value = isSaveCreditCardForFutureUseChecked() ? 1 : 0;
 
                 form.submit();
             }

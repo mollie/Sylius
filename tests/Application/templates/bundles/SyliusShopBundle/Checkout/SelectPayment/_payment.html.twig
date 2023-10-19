@@ -10,6 +10,8 @@
             {% if form.method.vars.choices[key].data.gatewayConfig.factoryName in [mollieFactoryName, mollieRecurringFactoryName] %}
                 {% if not isRendered %}
                     {{ form_row(form.details.cartToken) }}
+                    {{ form_row(form.details.saveCardInfo) }}
+                    {{ form_row(form.details.useSavedCards) }}
                     {% set isRendered = true %}
                 {% endif %}
                 {% include '@SyliusShop/Checkout/SelectPayment/_choiceMollie.html.twig' with {

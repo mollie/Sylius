@@ -19,7 +19,8 @@ final class PaymentMollieType extends AbstractType
 
     public function __construct(
         MolliePaymentsMethodResolverInterface $methodResolver
-    ) {
+    )
+    {
         $this->methodResolver = $methodResolver;
     }
 
@@ -56,6 +57,8 @@ final class PaymentMollieType extends AbstractType
                     return ['image' => $value->image->svg];
                 },
             ])
-            ->add('cartToken', HiddenType::class);
+            ->add('cartToken', HiddenType::class)
+            ->add('saveCardInfo', HiddenType::class)
+            ->add('useSavedCards', HiddenType::class);
     }
 }

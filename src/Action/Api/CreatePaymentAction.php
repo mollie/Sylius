@@ -63,6 +63,14 @@ final class CreatePaymentAction extends BaseApiAwareAction
                 $paymentDetails['locale'] = $details['locale'];
             }
 
+            if (isset($details['metadata']['saveCardInfo']) && $details['metadata']['saveCardInfo'] === "0") {
+                unset($paymentDetails['customerId']);
+            }
+
+            if (isset($details['metadata']['useSavedCards']) && $details['metadata']['useSavedCards'] === "1") {
+                unset($paymentDetails['cardToken']);
+            }
+
             /** @var Payment $payment */
             $payment = $this->mollieApiClient->payments->create($paymentDetails);
         } catch (ApiException $e) {

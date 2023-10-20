@@ -5,8 +5,10 @@ declare(strict_types=1);
 
 namespace SyliusMolliePlugin\Action\Api;
 
+use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 use SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use SyliusMolliePlugin\Parser\Response\GuzzleNegativeResponseParserInterface;
+use SyliusMolliePlugin\Repository\CustomerRepository;
 use SyliusMolliePlugin\Request\Api\CreatePayment;
 use Mollie\Api\Exceptions\ApiException;
 use Mollie\Api\Resources\Payment;
@@ -29,14 +31,21 @@ final class CreatePaymentAction extends BaseApiAwareAction
     /** @var RequestStack */
     private $requestStack;
 
+    /**
+     * @var CustomerRepository
+     */
+    private $customerRepository;
+
     public function __construct(
         MollieLoggerActionInterface $loggerAction,
         GuzzleNegativeResponseParserInterface $guzzleNegativeResponseParser,
-        RequestStack $requestStack
+        RequestStack $requestStack,
+        EntityRepository $customerRepository
     ) {
         $this->loggerAction = $loggerAction;
         $this->guzzleNegativeResponseParser = $guzzleNegativeResponseParser;
         $this->requestStack = $requestStack;
+        $this->customerRepository = $customerRepository;
     }
 
     public function execute($request): void
@@ -73,6 +82,16 @@ final class CreatePaymentAction extends BaseApiAwareAction
 
             /** @var Payment $payment */
             $payment = $this->mollieApiClient->payments->create($paymentDetails);
+
+            if (isset($details['metadata']['saveCardInfo'])) {
+                $valueToUpdate = $details['metadata']['saveCardInfo'] === '1' ? '1' : null;
+                $existingCustomer = $this->customerRepository->findOneBy(['profileId' => $details['customerId']]);
+
+                if ($existingCustomer) {
+                    $existingCustomer->setIsCreditCardSaved($valueToUpdate);
+                    $this->customerRepository->add($existingCustomer);
+                }
+            }
         } catch (ApiException $e) {
             $message = $this->guzzleNegativeResponseParser->parse($e);
             $this->loggerAction->addNegativeLog(sprintf('Error with create payment with: %s', $e->getMessage()));

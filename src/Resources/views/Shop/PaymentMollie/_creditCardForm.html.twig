@@ -1,9 +1,6 @@
 <div class="online-payment__credit-card" id="mollie_cart_data">
-    {% set savedCardsCount = 0 %}
     {% if (true == gatewayConfig.config['single_click_enabled'] | default(false)) and getCustomerFromContext() %}
-        {% set mollieCustomerId = getMollieCustomerId(order.customer.email) %}
-        {% set savedCardsCount = getCustomerCreditCardsCount(mollieCustomerId) %}
-        {% if (savedCardsCount > 0) %}
+        {% if (isCardSaved(order.customer.email)) %}
             <div class="mollie-components-use-saved-card">
                 <div class="ui toggle checkbox checked">
                     <input type="checkbox" id="mollie-sylius-use-saved-credit-card"

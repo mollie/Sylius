@@ -83,21 +83,21 @@ $(function () {
     function isSavedCreditCardCheckboxChecked() {
         let checkbox = document.getElementById('mollie-sylius-use-saved-credit-card');
         if (!checkbox) {
-            return false;
+            return null;
         }
         let parentElement = checkbox.parentNode;
 
-        return parentElement.classList.contains('checked');
+        return parentElement.classList.contains('checked') ? 1 : 0;
     }
 
     function isSaveCreditCardForFutureUseChecked() {
         let checkbox = document.getElementById('mollie-sylius-save-credit-card');
         if (!checkbox) {
-            return false;
+            return null;
         }
         let parentElement = checkbox.parentNode;
 
-        return parentElement.classList.contains('checked');
+        return parentElement.classList.contains('checked') ? 1 : 0;
     }
 
     function toggleMollieComponents() {
@@ -214,7 +214,7 @@ $(function () {
         }
 
         form.addEventListener('submit', async (event) => {
-            useSavedCardsInput.value = isSavedCreditCardCheckboxChecked() ? 1 : 0;
+            useSavedCardsInput.value = isSavedCreditCardCheckboxChecked();
 
             if ($('.online-payment__input:checked').val() === 'creditcard' && disableValidationMollieComponents === false) {
                 event.preventDefault();
@@ -233,7 +233,7 @@ $(function () {
                 }
 
                 tokenField.value = token;
-                saveCardInfoInput.value = isSaveCreditCardForFutureUseChecked() ? 1 : 0;
+                saveCardInfoInput.value = isSaveCreditCardForFutureUseChecked();
 
                 form.submit();
             }

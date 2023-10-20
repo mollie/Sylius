@@ -24,13 +24,6 @@ class CustomerCreditCards extends AbstractExtension
      */
     private $customerContext;
 
-    /**
-     * CustomerCreditCards constructor
-     *
-     * @param MollieApiClient $apiClient
-     * @param EntityRepository $customerRepository
-     * @param CustomerContextInterface $customerContext
-     */
     public function __construct(MollieApiClient $apiClient, EntityRepository $customerRepository, CustomerContextInterface $customerContext)
     {
         $this->apiClient = $apiClient;
@@ -44,27 +37,25 @@ class CustomerCreditCards extends AbstractExtension
     public function getFunctions()
     {
         return [
-            new TwigFunction('getCustomerCreditCardsCount', [$this, 'getCustomerCreditCardsCount']),
-            new TwigFunction('getMollieCustomerId', [$this, 'getMollieCustomerId']),
+            new TwigFunction('isCardSaved', [$this, 'isCardSaved']),
             new TwigFunction('getCustomerFromContext', [$this, 'getCustomerFromContext'])
         ];
     }
 
     /**
-     * @param string|null $customerId
+     * @param string $customerEmail
      *
-     * @return int
-     * @throws \Mollie\Api\Exceptions\ApiException
+     * @return bool
      */
-    public function getCustomerCreditCardsCount(?string $customerId)
+    public function isCardSaved(string $customerEmail)
     {
-        if ($customerId) {
-            $mandates = $this->apiClient->mandates->listForId($customerId);
+        $existingCustomer = $this->customerRepository->findOneBy(['email' => $customerEmail]);
 
-            return $mandates->count();
+        if ($existingCustomer) {
+            return $existingCustomer->isCreditCardSaved() === '1';
         }
 
-        return 0;
+        return false;
     }
 
     /**
@@ -73,17 +64,5 @@ class CustomerCreditCards extends AbstractExtension
     public function getCustomerFromContext()
     {
         return $this->customerContext->getCustomer();
-    }
-
-    /**
-     * @param string $customerEmail
-     *
-     * @return null
-     */
-    public function getMollieCustomerId(string $customerEmail)
-    {
-        $existingCustomer = $this->customerRepository->findOneBy(['email' => $customerEmail]);
-
-        return $existingCustomer ? $existingCustomer->getProfileId() : null;
     }
 }

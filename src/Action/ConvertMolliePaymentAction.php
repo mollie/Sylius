@@ -108,7 +108,10 @@ final class ConvertMolliePaymentAction extends BaseApiAwareAction implements Act
         } else {
             $paymentMethod = $paymentOptions['molliePaymentMethods'] ?? null;
             $cartToken = $paymentOptions['cartToken'];
-            $selectedIssuer = PaymentMethod::IDEAL === $paymentMethod ? $paymentOptions['issuers']['id'] : null;
+            $selectedIssuer = null;
+            if (PaymentMethod::IDEAL === $paymentMethod && null !== $paymentOptions['issuers']) {
+                $selectedIssuer = $paymentOptions['issuers']['id'];
+            }
         }
 
         /** @var MollieGatewayConfigInterface $method */

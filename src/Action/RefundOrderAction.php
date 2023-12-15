@@ -46,7 +46,7 @@ final class RefundOrderAction extends BaseApiAwareAction implements ActionInterf
 
         $details = ArrayObject::ensureArrayObject($request->getModel());
 
-        if (!array_key_exists('refund', $details['metadata'])) {
+        if (!array_key_exists('refund', $details['metadata']) || !$this->shouldBeRefunded($details)) {
             return;
         }
 
@@ -75,10 +75,6 @@ final class RefundOrderAction extends BaseApiAwareAction implements ActionInterf
         }
 
         Assert::notNull($molliePayment);
-
-        if ($molliePayment->hasRefunds()) {
-            return;
-        }
 
         /** @var PaymentInterface $payment */
         $payment = $request->getFirstModel();

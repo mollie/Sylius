@@ -176,6 +176,9 @@ sylius_mollie_plugin:
         sylius_bundle: 'Visit the Sylius bundle'
         contact_mollie: 'Contact Mollie'
         more_info_about_mollie: 'More info on Mollie'
+        min_max: 'Amount limits'
+        min_amount: 'Minimum amount'
+        max_amount: 'Maximum amount'
     form:
         channel_should_be_unique: 'Mollie payment method is already enabled for {channels} channel. Mollie can only be configured once per channel.'
         enabled_buy_now_button_help: 'The button is shown on the checkout page'
@@ -211,6 +214,7 @@ sylius_mollie_plugin:
             tracking_code: 'Tracking Code'
         methods: 'Choose enabled methods'
         expiration_date_time: 'Expiration date time'
+        amount_limit_help: 'Please specify the minimum and maximum amount to be applied to the cart. If left blank, the default settings provided by Mollie will be utilized'
     shop:
         product_variant:
             recurring: 'Subscription'

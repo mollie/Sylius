@@ -162,7 +162,11 @@
                         {{ 'sylius_mollie_plugin.ui.payment_fee'|trans }}
                     </h4>
                     {{ form_row(methodForm.paymentSurchargeFee, { 'attr': { 'class': 'js-onboardingWizard-paymentFee' } }) }}
-
+                    <h4 class="ui horizontal divider header">
+                        {{ 'sylius_mollie_plugin.ui.min_max'|trans }}
+                    </h4>
+                    <h5>{{ 'sylius_mollie_plugin.form.amount_limit_help'|trans }}</h5>
+                    {{ form_row(methodForm.amountLimits, { 'attr': { 'class': 'js-onboardingWizard-minMax fields' } }) }}
                 </div>
             </div>
         {% else %}

@@ -30,6 +30,9 @@ class MollieGatewayConfig extends AbstractMethod implements ResourceInterface, M
     /** @var PaymentSurchargeFeeInterface|null */
     protected $paymentSurchargeFee;
 
+    /** @var MollieMinMaxInterface|null */
+    protected $amountLimits;
+
     /** @var MollieMethodImageInterface|null */
     protected $customizeMethodImage;
 
@@ -203,6 +206,16 @@ class MollieGatewayConfig extends AbstractMethod implements ResourceInterface, M
     public function setPosition(?int $position): void
     {
         $this->position = $position;
+    }
+
+    public function getAmountLimits(): ?MollieMinMaxInterface
+    {
+        return $this->amountLimits;
+    }
+
+    public function setAmountLimits(?MollieMinMaxInterface $amountLimits): void
+    {
+        $this->amountLimits = $amountLimits;
     }
 
     protected function createTranslation(): TranslationInterface

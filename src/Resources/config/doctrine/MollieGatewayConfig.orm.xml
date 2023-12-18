@@ -24,6 +24,8 @@
         <field name="countryLevelExcluded" column="country_level_excluded" type="array" nullable="true" />
         <field name="countryLevelAllowed" column="country_level_allowed" type="array" nullable="true" />
         <field name="orderExpiration" column="order_expiration" type="integer" nullable="true" />
+        <field name="minMax.minimumAmount" column="min_amount_limit" type="float" nullable="true" />
+        <field name="minMax.maximumAmount" column="max_amount_limit" type="float" nullable="true" />
         <field name="applePayDirectButton" column="apple_pay_direct" type="boolean" />
         <field name="position" column="position" type="integer" />
         <many-to-one field="gateway" target-entity="Sylius\Bundle\PayumBundle\Model\GatewayConfigInterface" inversed-by="mollieGatewayConfig">
@@ -35,6 +37,13 @@
                 <cascade-remove/>
             </cascade>
             <join-column name="payment_surcharge_fee"/>
+        </one-to-one>
+        <one-to-one field="amountLimits" target-entity="SyliusMolliePlugin\Entity\MollieMinMax" inversed-by="mollieGatewayConfig">
+            <cascade>
+                <cascade-persist/>
+                <cascade-remove/>
+            </cascade>
+            <join-column name="amount_limits_id"/>
         </one-to-one>
         <one-to-one field="customizeMethodImage" target-entity="SyliusMolliePlugin\Entity\MollieMethodImage" inversed-by="mollieGatewayConfig">
             <cascade>

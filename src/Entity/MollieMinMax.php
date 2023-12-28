@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace SyliusMolliePlugin\Entity;
 
-class MollieMinMax implements MollieMinMaxInterface
+use Sylius\Component\Resource\Model\ResourceInterface;
+
+class MollieMinMax implements ResourceInterface, MollieMinMaxInterface
 {
     /** @var int|null */
     protected $id;

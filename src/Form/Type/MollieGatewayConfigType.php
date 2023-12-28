@@ -89,7 +89,6 @@ final class MollieGatewayConfigType extends AbstractResourceType
             ->add('amountLimits', MollieMinMaxType::class, [
                 'label' => false,
                 'required' => false,
-                'constraints' => [new MollieMinMaxValidatorType(['groups' => 'sylius'])],
             ])
             ->add('customizeMethodImage', CustomizeMethodImageType::class, [
                 'label' => false,

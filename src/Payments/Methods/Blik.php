@@ -2,8 +2,6 @@
 
 namespace SyliusMolliePlugin\Payments\Methods;
 
-use Mollie\Api\Types\PaymentMethod;
-
 class Blik extends AbstractMethod
 {
     public function getMethodId(): string

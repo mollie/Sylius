@@ -11,15 +11,20 @@ use Mollie\Api\Types\PaymentMethod;
 interface MollieMethodsResolverInterface
 {
     /** @var string[] */
-    public const  PARAMETERS = [
+    public const PARAMETERS = [
         'include' => 'issuers',
         'includeWallets' => 'applepay',
         'resource' => 'orders',
     ];
 
-    public const  PARAMETERS_RECURRING = [
+    public const PARAMETERS_RECURRING = [
         'include' => 'issuers',
         'sequenceType' => 'recurring',
+    ];
+
+    /** @var string[] */
+    public const PARAMETERS_AVAILABLE = [
+        'include' => 'issuers',
     ];
 
     /** @var string[] */

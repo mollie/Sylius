@@ -2,7 +2,7 @@
 
 namespace SyliusMolliePlugin\Payments\Methods;
 
-class Blik extends AbstractMethod
+final class Blik extends AbstractMethod
 {
     public function getMethodId(): string
     {

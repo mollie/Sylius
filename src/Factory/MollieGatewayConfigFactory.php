@@ -51,7 +51,7 @@ final class MollieGatewayConfigFactory implements MollieGatewayConfigFactoryInte
         $mollieGatewayConfig->setMethodId($method->getMethodId());
         $mollieGatewayConfig->setName($method->getName());
         $mollieGatewayConfig->setMinimumAmount($method->getMinimumAmount());
-        $mollieGatewayConfig->setMaximumAmount($method->getMinimumAmount());
+        $mollieGatewayConfig->setMaximumAmount($method->getMaximumAmount());
         $mollieGatewayConfig->setImage($method->getImage());
         $mollieGatewayConfig->setGateway($gateway);
         $mollieGatewayConfig->setIssuers($method->getIssuers());

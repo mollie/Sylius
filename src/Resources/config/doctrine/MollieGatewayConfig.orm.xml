@@ -36,6 +36,13 @@
             </cascade>
             <join-column name="payment_surcharge_fee"/>
         </one-to-one>
+        <one-to-one field="amountLimits" target-entity="SyliusMolliePlugin\Entity\MollieMinMax" inversed-by="mollieGatewayConfig">
+            <cascade>
+                <cascade-persist/>
+                <cascade-remove/>
+            </cascade>
+            <join-column name="amount_limits_id"/>
+        </one-to-one>
         <one-to-one field="customizeMethodImage" target-entity="SyliusMolliePlugin\Entity\MollieMethodImage" inversed-by="mollieGatewayConfig">
             <cascade>
                 <cascade-all />

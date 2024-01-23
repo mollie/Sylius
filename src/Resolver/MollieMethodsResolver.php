@@ -77,7 +77,11 @@ final class MollieMethodsResolver implements MollieMethodsResolverInterface
             $this->mollieMethodsCreator->createMethods($baseCollection, $gateway);
         } elseif (MollieGatewayFactory::FACTORY_NAME === $gateway->getFactoryName()) {
             /** @var MethodCollection $allMollieMethods */
-            $allMollieMethods = $client->methods->allActive(self::PARAMETERS);
+            $allMollieMethods = $client->methods->allAvailable(self::PARAMETERS_AVAILABLE);
+
+            $filteredMethods = array_filter($allMollieMethods->getArrayCopy(), array($this, 'filterActiveMethods'));
+            $allMollieMethods->exchangeArray($filteredMethods);
+
             $this->mollieMethodsCreator->createMethods($allMollieMethods, $gateway);
         } else {
             $this->loggerAction->addLog(sprintf('Unable to download methods for "%s"', $gateway->getGatewayName()));
@@ -86,5 +90,10 @@ final class MollieMethodsResolver implements MollieMethodsResolverInterface
         }
 
         $this->loggerAction->addLog(sprintf('Downloaded all methods from mollie API'));
+    }
+
+    private function filterActiveMethods($method): bool
+    {
+        return $method->status === 'activated';
     }
 }

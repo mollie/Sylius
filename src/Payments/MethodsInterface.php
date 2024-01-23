@@ -27,6 +27,7 @@ use SyliusMolliePlugin\Payments\Methods\PayPal;
 use SyliusMolliePlugin\Payments\Methods\Przelewy24;
 use SyliusMolliePlugin\Payments\Methods\SofortBanking;
 use Mollie\Api\Resources\Method;
+use SyliusMolliePlugin\Payments\Methods\Twint;
 
 interface MethodsInterface
 {
@@ -52,6 +53,7 @@ interface MethodsInterface
         DirectDebit::class,
         In3::class,
         Billie::class,
+        Twint::class,
     ];
 
     public function getAllEnabled(): array;

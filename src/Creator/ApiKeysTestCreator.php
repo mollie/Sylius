@@ -65,7 +65,10 @@ final class ApiKeysTestCreator implements ApiKeysTestCreatorInterface
             $client = $this->mollieApiClient->setApiKey($apiKey);
 
             /** @var MethodCollection $methods */
-            $methods = $client->methods->allActive(MollieMethodsResolverInterface::PARAMETERS);
+            $methods = $client->methods->allAvailable(MollieMethodsResolverInterface::PARAMETERS_AVAILABLE);
+            $filteredMethods = array_filter($methods->getArrayCopy(), array($this, 'filterActiveMethods'));
+            $methods->exchangeArray($filteredMethods);
+
             $apiKeyTest->setMethods($methods);
 
             return $apiKeyTest;
@@ -84,5 +87,10 @@ final class ApiKeysTestCreator implements ApiKeysTestCreatorInterface
 
             return $apiKeyTest;
         }
+    }
+
+    private function filterActiveMethods($method): bool
+    {
+        return $method->status === 'activated';
     }
 }

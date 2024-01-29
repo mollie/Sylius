@@ -450,7 +450,18 @@ sylius_mollie_plugin:
 
 #### 12. Update your database
 
-Apply migration to your database:
+Apply migration to your database: (this is for the plugin fresh installation only)
+```
+bin/console doctrine:migrations:migrate
+```
+
+In case if you are updating from older version of plugin (versions < 5.0), you will need to run the following commands before running migrate command.
+```
+bin/console doctrine:migrations:version --add --range-from='SyliusMolliePlugin\Migrations\Version20200513092722' --range-to='SyliusMolliePlugin\Migrations\Version20220211040328'
+bin/console doctrine:migrations:execute --up 'SyliusMolliePlugin\Migrations\Version20231225151033'
+```
+
+After running all the above-mentioned commands, run migrate command
 ```
 bin/console doctrine:migrations:migrate
 ```

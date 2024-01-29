@@ -7,6 +7,7 @@ namespace SyliusMolliePlugin\Form\Extension;
 
 use SyliusMolliePlugin\Form\Type\MollieGatewayConfigType;
 use Sylius\Bundle\PayumBundle\Form\Type\GatewayConfigType;
+use SyliusMolliePlugin\Validator\Constraints\MollieGatewayConfigValidatorType;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -24,6 +25,7 @@ final class GatewayConfigTypeExtension extends AbstractTypeExtension
                 'validation_groups' => ['sylius'],
                 'constraints' => [
                     new Valid(),
+                    new MollieGatewayConfigValidatorType(['groups' => 'sylius'])
                 ],
             ]
         );

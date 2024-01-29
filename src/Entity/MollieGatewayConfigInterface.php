@@ -68,5 +68,9 @@ interface MollieGatewayConfigInterface extends MethodInterface, TranslatableInte
 
     public function setPosition(?int $position): void;
 
+    public function getAmountLimits(): ?MollieMinMaxInterface;
+
+    public function setAmountLimits(?MollieMinMaxInterface $amountLimits): void;
+
     public function hasTranslationLocale(string $localeCode): bool;
 }

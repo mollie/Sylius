@@ -57,7 +57,7 @@ final class RefundAction extends BaseApiAwareAction implements ActionInterface, 
             throw new \Exception(sprintf('API call failed: %s', htmlspecialchars($e->getMessage())));
         }
 
-        if ($molliePayment->hasRefunds()) {
+        if (!$this->shouldBeRefunded($details)) {
             return;
         }
 

@@ -1,6 +1,7 @@
-const { Mollie } = window;
+const {Mollie} = window;
 
 $(function () {
+    var disableValidationMollieComponents = false;
     let selectedValue = false;
     let mollieData = $('.online-online-payment__container');
     const initialOrderTotal = $('#sylius-summary-grand-total').text();
@@ -55,10 +56,84 @@ $(function () {
     }
 
     if (mollieData.length > 0 && true === components) {
-        initializeCreditCartFields(selectedValue);
+        let paymentMethods = document.querySelectorAll('div[class*="online-payment__item--"]');
+
+        for (let i = 0; i < paymentMethods.length; i++) {
+            paymentMethods[i].onchange = function (event) {
+                let target = event.target;
+                let creditCartComponents = document.querySelectorAll('div[data-testid*="mollie-container--"]');
+
+                if (target.value === 'creditcard' && creditCartComponents.length === 0) {
+                    toggleMollieComponents();
+                    initializeCreditCartFields(selectedValue);
+
+                    if (isSavedCreditCardCheckboxChecked()) {
+                        const mollieComponentFields = document.querySelector('.mollie-component-fields');
+                        if (!mollieComponentFields) {
+                            return;
+                        }
+
+                        hideMollieComponents(mollieComponentFields);
+                    }
+                }
+            }
+        }
+    }
+
+    function isSavedCreditCardCheckboxChecked() {
+        let checkbox = document.getElementById('mollie-sylius-use-saved-credit-card');
+        if (!checkbox) {
+            return null;
+        }
+        let parentElement = checkbox.parentNode;
+
+        return parentElement.classList.contains('checked') ? 1 : 0;
+    }
+
+    function isSaveCreditCardForFutureUseChecked() {
+        let checkbox = document.getElementById('mollie-sylius-save-credit-card');
+        if (!checkbox) {
+            return null;
+        }
+        let parentElement = checkbox.parentNode;
+
+        return parentElement.classList.contains('checked') ? 1 : 0;
+    }
+
+    function toggleMollieComponents() {
+        const useSavedCreditCardCheckbox = document.getElementById('mollie-sylius-use-saved-credit-card');
+        if (!useSavedCreditCardCheckbox) {
+            return;
+        }
+
+        useSavedCreditCardCheckbox.addEventListener('change', function (event) {
+            const mollieComponentFields = document.querySelector('.mollie-component-fields');
+            if (!mollieComponentFields) {
+                return;
+            }
+
+            if (event.target.checked) {
+                hideMollieComponents(mollieComponentFields);
+            } else {
+                showMollieComponents(mollieComponentFields);
+            }
+        });
+    }
+
+    function showMollieComponents(mollieComponentFields) {
+        disableValidationMollieComponents = false;
+        mollieComponentFields.classList.remove('mollie-hidden');
+        mollieComponentFields.classList.add('display-grid');
+    }
+
+    function hideMollieComponents(mollieComponentFields) {
+        disableValidationMollieComponents = true;
+        mollieComponentFields.classList.add('mollie-hidden');
+        mollieComponentFields.classList.remove('display-grid');
     }
 
     function initializeCreditCartFields(selectedValue) {
+
         const environment = mollieData.data('environment');
         let testmode = true;
 
@@ -76,7 +151,8 @@ $(function () {
         const formError = document.getElementById('form-error');
         const submitButton = document.getElementById('next-step') || document.getElementById('sylius-pay-link');
         const tokenField = document.querySelector('[id*="_details_cartToken"]');
-
+        const saveCardInfoInput = document.querySelector('[id*="_details_saveCardInfo"]');
+        const useSavedCardsInput = document.querySelector('[id*="_details_useSavedCards"]');
         const cardHolder = mollie.createComponent('cardHolder');
 
         cardHolder.mount('#card-holder');
@@ -138,7 +214,9 @@ $(function () {
         }
 
         form.addEventListener('submit', async (event) => {
-            if ($('.online-payment__input:checked').val() === 'creditcard') {
+            useSavedCardsInput.value = isSavedCreditCardCheckboxChecked();
+
+            if ($('.online-payment__input:checked').val() === 'creditcard' && disableValidationMollieComponents === false) {
                 event.preventDefault();
                 disableForm();
 
@@ -155,6 +233,7 @@ $(function () {
                 }
 
                 tokenField.value = token;
+                saveCardInfoInput.value = isSaveCreditCardForFutureUseChecked();
 
                 form.submit();
             }

@@ -32,10 +32,10 @@ final class PaymentLinkEmailSender implements PaymentLinkEmailSenderInterface
 
     public function sendConfirmationEmail(OrderInterface $order, TemplateMollieEmailTranslationInterface $template): void
     {
-        /** @var PaymentInterface $payment */
+        /** @var PaymentInterface|null $payment */
         $payment = $order->getPayments()->last();
 
-        if (0 === count($payment->getDetails())) {
+        if (false === $payment || 0 === count($payment->getDetails())) {
             return;
         }
 

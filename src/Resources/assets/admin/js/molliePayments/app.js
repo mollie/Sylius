@@ -44,18 +44,6 @@ $(function () {
         });
     });
 
-    $('.mollie-components').change(function () {
-        if ($(this).is(':checked')) {
-            $('.mollie-single-click-payment').prop('checked', !$(this).is(':checked'));
-        }
-    });
-
-    $('.mollie-single-click-payment').change(function () {
-        if ($(this).is(':checked')) {
-            $('.mollie-components').prop('checked', !$(this).is(':checked'));
-        }
-    });
-
     $('[id$="_paymentType"]').each(function (index) {
         setPaymentDescription($(this), index);
 

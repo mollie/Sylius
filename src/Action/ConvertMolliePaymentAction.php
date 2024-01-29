@@ -104,10 +104,14 @@ final class ConvertMolliePaymentAction extends BaseApiAwareAction implements Act
         if (isset($paymentOptions['metadata'])) {
             $paymentMethod = $paymentOptions['metadata']['molliePaymentMethods'] ?? null;
             $cartToken = $paymentOptions['metadata']['cartToken'];
+            $saveCardInfo = $paymentOptions['metadata']['saveCardInfo'];
+            $useSavedCards = $paymentOptions['metadata']['useSavedCards'];
             $selectedIssuer = PaymentMethod::IDEAL === $paymentMethod ? $paymentOptions['metadata']['selected_issuer'] : null;
         } else {
             $paymentMethod = $paymentOptions['molliePaymentMethods'] ?? null;
             $cartToken = $paymentOptions['cartToken'];
+            $saveCardInfo = $paymentOptions['saveCardInfo'];
+            $useSavedCards = $paymentOptions['useSavedCards'];
             $selectedIssuer = PaymentMethod::IDEAL === $paymentMethod ? $paymentOptions['issuers']['id'] : null;
         }
 
@@ -125,6 +129,8 @@ final class ConvertMolliePaymentAction extends BaseApiAwareAction implements Act
                 'customer_id' => $customer->getId() ?? null,
                 'molliePaymentMethods' => $paymentMethod ?? null,
                 'cartToken' => $cartToken ?? null,
+                'saveCardInfo' => $saveCardInfo ?? null,
+                'useSavedCards' => $useSavedCards ?? null,
                 'selected_issuer' => $selectedIssuer ?? null,
             ],
             'full_name' => $customer->getFullName() ?? null,

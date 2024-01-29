@@ -11,4 +11,6 @@ use Sylius\Component\Resource\Repository\RepositoryInterface;
 interface MollieGatewayConfigRepositoryInterface extends RepositoryInterface
 {
     public function findAllEnabledByGateway(GatewayConfigInterface $gateway): array;
+
+    public function getExistingAmountLimitsById(int $id): array;
 }

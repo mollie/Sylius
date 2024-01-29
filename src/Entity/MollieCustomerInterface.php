@@ -16,4 +16,8 @@ interface MollieCustomerInterface
     public function getEmail(): string;
 
     public function setEmail(string $email): void;
+
+    public function isCreditCardSaved(): ?string;
+
+    public function setIsCreditCardSaved(?string $isCreditCardSaved): void;
 }

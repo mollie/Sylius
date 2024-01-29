@@ -21,6 +21,10 @@ use Webmozart\Assert\Assert;
 
 final class MolliePaymentsMethodResolver implements MolliePaymentsMethodResolverInterface
 {
+    private const MINIMUM_FIELD = 'minimumAmount';
+    private const MAXIMUM_FIELD = 'maximumAmount';
+    private const FIELD_VALUE = 'value';
+
     /** @var MollieGatewayConfigRepositoryInterface */
     private $mollieGatewayRepository;
 
@@ -90,7 +94,6 @@ final class MolliePaymentsMethodResolver implements MolliePaymentsMethodResolver
 
     private function getMolliePaymentOptions(MollieOrderInterface $order, string $countryCode): array
     {
-        $allowedMethods = [];
         $methods = $this->getDefaultOptions();
         $factoryName = $this->mollieFactoryNameResolver->resolve($order);
 
@@ -125,12 +128,7 @@ final class MolliePaymentsMethodResolver implements MolliePaymentsMethodResolver
             return $this->getDefaultOptions();
         }
 
-        /** @var MollieGatewayConfig $allowedMethod */
-        foreach ($paymentConfigs as $allowedMethod) {
-            if (in_array($allowedMethod->getMethodId(), $allowedMethodsIds, true)) {
-                $allowedMethods[] = $allowedMethod;
-            }
-        }
+        $allowedMethods = $this->filterPaymentMethods($paymentConfigs, $allowedMethodsIds, (float)$order->getTotal()/100);
 
         if (0 === count($allowedMethods)) {
             return $this->getDefaultOptions();
@@ -146,6 +144,39 @@ final class MolliePaymentsMethodResolver implements MolliePaymentsMethodResolver
         }
 
         return $this->productVoucherTypeChecker->checkTheProductTypeOnCart($order, $methods);
+    }
+
+    private function filterPaymentMethods(array $paymentConfigs, array $allowedMethodsIds, float $orderTotal) : array
+    {
+        $allowedMethods = [];
+
+        /** @var MollieGatewayConfig $allowedMethod */
+        foreach ($paymentConfigs as $allowedMethod) {
+            if (!empty($allowedMethod[0]) && in_array($allowedMethod[0]->getMethodId(), $allowedMethodsIds, true)) {
+
+                $minAmountLimit = $allowedMethod[self::MINIMUM_FIELD];
+                if ($minAmountLimit === null && $allowedMethod !== null && $allowedMethod[0]->getMinimumAmount()) {
+                    $minAmountLimit = $allowedMethod[0]->getMinimumAmount()[self::FIELD_VALUE];
+                }
+
+                if ($minAmountLimit !== null && $minAmountLimit > $orderTotal) {
+                    continue;
+                }
+
+                $maxAmountLimit = $allowedMethod[self::MAXIMUM_FIELD];
+                if ($maxAmountLimit === null && $allowedMethod !== null && $allowedMethod[0]->getMaximumAmount()) {
+                    $maxAmountLimit = $allowedMethod[0]->getMaximumAmount()[self::FIELD_VALUE];
+                }
+
+                if ($maxAmountLimit !== null && $maxAmountLimit < $orderTotal) {
+                    continue;
+                }
+
+                $allowedMethods[] = $allowedMethod[0];
+            }
+        }
+
+        return $allowedMethods;
     }
 
     private function getDefaultOptions(): array

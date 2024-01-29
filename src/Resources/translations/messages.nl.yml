@@ -52,6 +52,8 @@ sylius_mollie_plugin:
         card_number: 'Kaartnummer'
         expiry_date: 'Vervaldatum'
         veryfication_code: 'Verificatiecode'
+        save_card: 'Save credit card for the future purchases'
+        use_saved_card: 'Use saved credit card information'
         surcharge_title: 'Toeslag'
         splitting_shipment_for_order: 'Verzending opsplitsen voor Bestelnr. #%number%'
         split_shipment: 'Verzending opsplitsen'
@@ -123,6 +125,9 @@ sylius_mollie_plugin:
         sylius_bundle: 'Bezoek de Sylius-bundel'
         contact_mollie: 'Neem contact op met Mollie'
         more_info_about_mollie: 'Meer informatie vindt u onder Mollie'
+        min_max: 'Amount limits'
+        min_amount: 'Minimum amount'
+        max_amount: 'Maximum amount'
     form:
         channel_should_be_unique: 'De Mollie-betalingsmethode is al ingeschakeld voor het {channels} kanaal. Mollie kan slecht een keer per kanaal worden geconfigureerd.'
         enabled_buy_now_button_help: 'De knop wordt getoond op de betalingspagina'
@@ -144,6 +149,7 @@ sylius_mollie_plugin:
             tracking_code: 'Trackingcode'
         methods: 'Kies geactiveerde methodes'
         expiration_date_time: 'Vervaldatum tijd'
+        amount_limit_help: 'Please specify the minimum and maximum amount to be applied to the cart. If left blank, the default settings provided by Mollie will be utilized'
     subscription:
         cancel: 'Abonnement is succesvol opgezegd.'
     onboardingMollie:

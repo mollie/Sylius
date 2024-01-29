@@ -13,6 +13,9 @@ class MollieGatewayConfigRepository extends EntityRepository implements MollieGa
     public function findAllEnabledByGateway(GatewayConfigInterface $gateway): array
     {
         return $this->createQueryBuilder('m')
+            ->leftJoin('m.amountLimits', 'al')
+            ->addSelect('al.minimumAmount')
+            ->addSelect('al.maximumAmount')
             ->where('m.enabled = true')
             ->andWhere('m.gateway = :gateway')
             ->setParameter('gateway', $gateway)
@@ -20,5 +23,16 @@ class MollieGatewayConfigRepository extends EntityRepository implements MollieGa
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    public function getExistingAmountLimitsById(int $id): array
+    {
+        return $this->createQueryBuilder('m')
+            ->select('m.minimumAmount')
+            ->addSelect('m.maximumAmount')
+            ->where('m.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getResult();
     }
 }

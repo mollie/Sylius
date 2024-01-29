@@ -18,6 +18,9 @@ class MollieCustomer implements ResourceInterface, MollieCustomerInterface
     /** @var string */
     protected $email;
 
+    /** @var string|null */
+    protected $isCreditCardSaved;
+
     public function getId(): int
     {
         return $this->id;
@@ -41,5 +44,15 @@ class MollieCustomer implements ResourceInterface, MollieCustomerInterface
     public function setEmail(string $email): void
     {
         $this->email = $email;
+    }
+
+    public function isCreditCardSaved(): ?string
+    {
+        return $this->isCreditCardSaved;
+    }
+
+    public function setIsCreditCardSaved(?string $isCreditCardSaved): void
+    {
+        $this->isCreditCardSaved = $isCreditCardSaved;
     }
 }

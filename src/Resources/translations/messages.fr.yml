@@ -52,6 +52,8 @@ sylius_mollie_plugin:
         card_number: "Numéro de carte"
         expiry_date: "Date d'expiration"
         veryfication_code: "Code de vérification"
+        save_card: 'Save credit card for the future purchases'
+        use_saved_card: 'Use saved credit card information'
         surcharge_title: "Supplément"
         splitting_shipment_for_order: "Fractionner l'envoi de la commande nº #%number%"
         split_shipment: "Expédition fractionnée"
@@ -123,6 +125,9 @@ sylius_mollie_plugin:
         sylius_bundle: 'Visiter le lot Sylius'
         contact_mollie: 'Contacter Mollie'
         more_info_about_mollie: "Plus d'informations sur Mollie"
+        min_max: 'Amount limits'
+        min_amount: 'Minimum amount'
+        max_amount: 'Maximum amount'
     form:
         channel_should_be_unique: "La méthode de paiement Mollie est déjà activée pour le canal {channels}. Mollie ne peut être configuré qu'une seule fois par canal."
         enabled_buy_now_button_help: 'Le bouton est affiché sur la page de paiement'
@@ -144,6 +149,7 @@ sylius_mollie_plugin:
             tracking_code: "Code de suivi"
         methods: "Sélectionner les moyens de paiement activés"
         expiration_date_time: "Date et heure d'expiration"
+        amount_limit_help: 'Please specify the minimum and maximum amount to be applied to the cart. If left blank, the default settings provided by Mollie will be utilized'
     subscription:
         cancel: "L'abonnement a été correctement annulé."
     onboardingMollie:

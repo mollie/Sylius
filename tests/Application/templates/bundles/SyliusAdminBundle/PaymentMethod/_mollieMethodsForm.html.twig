@@ -1,5 +1,6 @@
 {% set mealvouchersId = constant('SyliusMolliePlugin\\Payments\\Methods\\MealVoucher::MEAL_VOUCHERS') %}
 {% set applePay = constant('Mollie\\Api\\Types\\PaymentMethod::APPLEPAY') %}
+{% set klarnaOne = constant('Mollie\\Api\\Types\\PaymentMethod::KLARNA_ONE') %}
 {% set klarnaPayLater = constant('Mollie\\Api\\Types\\PaymentMethod::KLARNA_PAY_LATER') %}
 {% set klarnaSliceIt = constant('Mollie\\Api\\Types\\PaymentMethod::KLARNA_SLICE_IT') %}
 {% set billie = constant('Mollie\\Api\\Types\\PaymentMethod::BILLIE') %}
@@ -133,6 +134,7 @@
                             <div class="twelve wide field">
                                 {% if
                                     methodForm.vars.value.methodId == mealvouchersId or
+                                    methodForm.vars.value.methodId == klarnaOne or
                                     methodForm.vars.value.methodId == klarnaPayLater or
                                     methodForm.vars.value.methodId == klarnaSliceIt or
                                     methodForm.vars.value.methodId == billie or

@@ -10,6 +10,7 @@ use SyliusMolliePlugin\Payments\Methods\Bancontact;
 use SyliusMolliePlugin\Payments\Methods\BankTransfer;
 use SyliusMolliePlugin\Payments\Methods\Belfius;
 use SyliusMolliePlugin\Payments\Methods\Billie;
+use SyliusMolliePlugin\Payments\Methods\Blik;
 use SyliusMolliePlugin\Payments\Methods\CreditCard;
 use SyliusMolliePlugin\Payments\Methods\DirectDebit;
 use SyliusMolliePlugin\Payments\Methods\Eps;
@@ -54,6 +55,7 @@ interface MethodsInterface
         In3::class,
         Billie::class,
         Twint::class,
+        Blik::class,
     ];
 
     public function getAllEnabled(): array;

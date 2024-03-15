@@ -17,6 +17,8 @@ final class PaymentSurchargeTypeValidator extends ConstraintValidator
 
     public const FIXED_AMOUNT_FIELD = 'fixedAmount';
 
+    public const SURCHARGE_LIMIT_FIELD = 'surchargeLimit';
+
     public function validate($value, Constraint $constraint): void
     {
         if ($value instanceof PaymentSurchargeFeeInterface) {
@@ -30,6 +32,9 @@ final class PaymentSurchargeTypeValidator extends ConstraintValidator
     {
         if (Options::PERCENTAGE === $paymentSurchargeFee->getType() && null === $paymentSurchargeFee->getPercentage()) {
             $this->createNegativeResponse($constraint, self::PERCENTAGE_FIELD);
+        }
+        if (Options::PERCENTAGE === $paymentSurchargeFee->getType() && null === $paymentSurchargeFee->getSurchargeLimit()) {
+            $this->createNegativeResponse($constraint, self::SURCHARGE_LIMIT_FIELD);
         }
         if (Options::FIXED_FEE === $paymentSurchargeFee->getType() && null === $paymentSurchargeFee->getFixedAmount()) {
             $this->createNegativeResponse($constraint, self::FIXED_AMOUNT_FIELD);

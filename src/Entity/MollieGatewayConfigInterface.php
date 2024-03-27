@@ -73,4 +73,8 @@ interface MollieGatewayConfigInterface extends MethodInterface, TranslatableInte
     public function setAmountLimits(?MollieMinMaxInterface $amountLimits): void;
 
     public function hasTranslationLocale(string $localeCode): bool;
+
+    public function isQrCodeEnabled(): ?bool;
+
+    public function setQrCodeEnabled(?bool $qrCodeEnabled): void;
 }

@@ -26,6 +26,7 @@ sylius_mollie_plugin:
         payment_type: 'Zahlungstyp'
         payment_method_id: 'ID Zahlungsmethode'
         payment_name: 'Zahlungsbezeichnung'
+        qr_code: 'Turn on QR mode option on checkout.'
         customize_image: 'Bild anpassen auswählen'
         country_level_restriction: 'Beschränkung auf Länderebene'
         payment_fee_type: 'Typ'

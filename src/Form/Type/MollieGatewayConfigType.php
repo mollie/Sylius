@@ -74,6 +74,9 @@ final class MollieGatewayConfigType extends AbstractResourceType
                 'help' => $this->documentationLinks->getPaymentMethodDoc(),
                 'help_html' => true,
             ])
+            ->add('qrCodeEnabled', CheckboxType::class, [
+                'label' => 'sylius_mollie_plugin.ui.qr_code',
+            ])
             ->add('paymentDescription', TextType::class, [
                 'label' => 'sylius_mollie_plugin.form.payment_methods.payment_description',
                 'help' => 'sylius_mollie_plugin.form.payment_methods.payment_description_help',

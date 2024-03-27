@@ -7,7 +7,7 @@ namespace Tests\SyliusMolliePlugin\Entity;
 
 use SyliusMolliePlugin\Entity\AbandonedEmailOrderTrait;
 use SyliusMolliePlugin\Entity\OrderInterface;
-use SyliusMolliePlugin\Entity\ProductVariantInterface;
+use SyliusMolliePlugin\Entity\QRCodeOrderTrait;
 use SyliusMolliePlugin\Entity\RecurringOrderTrait;
 use Doctrine\Common\Collections\Collection;
 use Sylius\Component\Core\Model\Order as BaseOrder;
@@ -18,6 +18,8 @@ class Order extends BaseOrder implements OrderInterface
     use AbandonedEmailOrderTrait;
 
     use RecurringOrderTrait;
+
+    use QRCodeOrderTrait;
 
     public function getRecurringItems(): Collection
     {

@@ -19,6 +19,7 @@ use SyliusMolliePlugin\Payments\Methods\Giropay;
 use SyliusMolliePlugin\Payments\Methods\Ideal;
 use SyliusMolliePlugin\Payments\Methods\In3;
 use SyliusMolliePlugin\Payments\Methods\Kbc;
+use SyliusMolliePlugin\Payments\Methods\KlarnaOne;
 use SyliusMolliePlugin\Payments\Methods\Klarnapaylater;
 use SyliusMolliePlugin\Payments\Methods\KlarnaPayNow;
 use SyliusMolliePlugin\Payments\Methods\Klarnasliceit;
@@ -43,6 +44,7 @@ interface MethodsInterface
         Giropay::class,
         Ideal::class,
         Kbc::class,
+        KlarnaOne::class,
         Klarnapaylater::class,
         Klarnasliceit::class,
         KlarnaPayNow::class,

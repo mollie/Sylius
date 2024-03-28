@@ -29,10 +29,11 @@ final class SyliusMollieExtension extends Extension implements PrependExtensionI
             return;
         }
 
+        $doctrineConfig = $container->getExtensionConfig('doctrine_migrations');
         $container->prependExtensionConfig('doctrine_migrations', [
-            'migrations_paths' => [
+            'migrations_paths' => \array_merge(\array_pop($doctrineConfig)['migrations_paths'] ?? [], [
                 'SyliusMolliePlugin\Migrations' => __DIR__ . '/../Migrations',
-            ],
+            ]),
         ]);
 
         $container->prependExtensionConfig('sylius_labs_doctrine_migrations_extra', [

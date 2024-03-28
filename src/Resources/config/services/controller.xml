@@ -41,6 +41,11 @@
             <argument type="service" id="sylius_mollie_plugin.helper.convert_price_to_amount" />
             <argument type="service" id="twig"/>
         </service>
+        <service id="sylius_mollie_plugin.sylius_mollie_plugin.controller.action.shop.qr_code_controller" class="SyliusMolliePlugin\Controller\Action\Shop\QrCodeController">
+            <argument type="service" id="sylius_mollie_plugin.logger.mollie_logger_action"/>
+            <argument type="service" id="sylius.context.cart"/>
+            <argument type="service" id="sylius_mollie_plugin.mollie_api_client"/>
+        </service>
         <service id="sylius_mollie_plugin.controller.action.admin.generate_paymentlink_action" class="SyliusMolliePlugin\Controller\Action\Admin\GeneratePaymentlinkAction">
             <argument type="service" id="sylius.repository.order" />
             <argument type="service" id="twig" />

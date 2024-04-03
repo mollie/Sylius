@@ -4,3 +4,5 @@ mollie_payment_fee_ajax:
   resource: "shop/paymentFee.yaml"
 mollie_apple_pay:
   resource: "shop/applePay.yaml"
+mollie_qr_code:
+  resource: "shop/qrCode.yaml"

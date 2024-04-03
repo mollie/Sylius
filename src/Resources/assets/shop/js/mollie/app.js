@@ -11,6 +11,11 @@ $(function () {
 
     $('input[id*="sylius_checkout_select_payment_"][type=radio]').on('change', ({currentTarget}) => {
         if (!currentTarget.classList.contains('mollie-payments')) {
+            let paymentMethodsContainer = document.getElementsByClassName('online-online-payment__container');
+            if (mollieData && mollieData[0]) {
+                let removeQrCodeUrl = mollieData[0].getAttribute('data-removeQrCode');
+                removeQrCode(removeQrCodeUrl);
+            }
             restoreOrderTotalValue();
             $(`.${cardActiveClass} input[type="radio"]`).prop('checked', false);
             $(`.${cardActiveClass}`).removeClass(cardActiveClass);
@@ -76,6 +81,10 @@ $(function () {
                         hideMollieComponents(mollieComponentFields);
                     }
                 }
+
+                if (target && (target.value === 'creditcard' || target.value === 'bancontact')) {
+                    createMolliePayment(target.getAttribute('data-qrcode'));
+                }
             }
         }
     }
@@ -88,6 +97,125 @@ $(function () {
         let parentElement = checkbox.parentNode;
 
         return parentElement.classList.contains('checked') ? 1 : 0;
+    }
+
+    function createMolliePayment(url) {
+        url = url + '?XDEBUG_SESSION_START=debug';
+
+        fetch(url)
+            .then((response) => response.json())
+            .then((data) => {});
+    }
+
+    function fetchQrCode(url) {
+        fetch(url)
+            .then((response) => response.json())
+            .then((data) => {
+                let qrCode = data.qrCode;
+                if (qrCode) {
+                    createPopup(qrCode);
+                }
+            });
+    }
+
+    function removeQrCode(url, closePopUp = false) {
+        fetch(url)
+            .then((response) => response.json())
+            .then((data) => {
+                if (closePopUp) {
+                    closePopup();
+                }
+            });
+    }
+
+    function showQrCodePopUp() {
+        let cartVariantDetails = document.getElementById('cart-variant-details')
+
+        if (cartVariantDetails) {
+            let qrCodeGetUrl = cartVariantDetails.getAttribute('data-getQrCode');
+            fetchQrCode(qrCodeGetUrl);
+        }
+    }
+
+    showQrCodePopUp();
+
+    function createPopup(qrCode) {
+        // Create popup container
+        var popupContainer = document.createElement('div');
+        popupContainer.id = 'popup-container';
+        popupContainer.classList.add('popup-container');
+
+        // Create popup
+        var popup = document.createElement('div');
+        popup.classList.add('popup');
+
+        // Create popup header
+        var popupHeader = document.createElement('div');
+        popupHeader.classList.add('popup-header');
+        var title = document.createElement('h2');
+        title.textContent = 'Scan QR';
+        var hr = document.createElement('hr');
+        popupHeader.appendChild(title);
+        popupHeader.appendChild(hr);
+
+        // Create popup content
+        var popupContent = document.createElement('div');
+        popupContent.classList.add('popup-content');
+        var paragraph = document.createElement('p');
+        paragraph.textContent = 'Open your Bancontact app to scan the QR code.';
+        var qrCodeImg = document.createElement('img');
+        qrCodeImg.src = qrCode;
+        qrCodeImg.width = 180;
+        qrCodeImg.height = 180;
+        popupContent.appendChild(paragraph);
+        popupContent.appendChild(qrCodeImg);
+        popupContent.insertAdjacentHTML('beforeend', '<p>Or</p>');
+
+        // Create popup buttons
+        var popupButtons = document.createElement('div');
+        popupButtons.classList.add('popup-buttons');
+        var continueButton = document.createElement('button');
+        continueButton.textContent = 'CONTINUE WITHOUT QR CODE';
+        continueButton.id = 'continue-button';
+        var cancelButton = document.createElement('button');
+        cancelButton.textContent = 'CANCEL';
+        cancelButton.id = 'cancel-button';
+        cancelButton.style.border = 'none'; // Remove button border
+        popupButtons.appendChild(continueButton);
+        popupButtons.appendChild(cancelButton);
+
+        // Append elements to popup
+        popup.appendChild(popupHeader);
+        popup.appendChild(popupContent);
+        popup.appendChild(popupButtons);
+
+        // Append popup to container
+        popupContainer.appendChild(popup);
+
+        // Add event listeners to buttons
+        cancelButton.addEventListener('click', function (event) {
+            let cartVariantContainer = document.getElementById('cart-variant-details');
+            if (cartVariantContainer) {
+                let deleteQrCodeUrl = cartVariantContainer.getAttribute('data-removeQrCode');
+                removeQrCode(deleteQrCodeUrl, true);
+            }
+        });
+
+        continueButton.addEventListener('click', function (event) {
+            closePopup();
+            window.location.href = 'select-payment';
+        });
+
+        // Append popup container to body
+        document.body.appendChild(popupContainer);
+    }
+
+    // Function to close the popup
+    function closePopup() {
+        var popupContainer = document.getElementById('popup-container');
+        if (popupContainer) {
+            popupContainer.parentNode.removeChild(popupContainer);
+        }
     }
 
     function isSaveCreditCardForFutureUseChecked() {

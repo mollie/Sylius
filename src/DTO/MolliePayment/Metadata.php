@@ -7,39 +7,39 @@ class Metadata
     /**
      * @var int|null
      */
-    private $orderId;
-    /**
-     * @var int|null
-     */
-    private $customerId;
+    private ?int $orderId;
     /**
      * @var string|null
      */
-    private $molliePaymentMethods;
+    private ?string $customerId;
     /**
      * @var string|null
      */
-    private $cartToken;
+    private ?string $molliePaymentMethods;
+    /**
+     * @var string|null
+     */
+    private ?string $cartToken;
     /**
      * @var bool|null
      */
-    private $saveCardInfo;
+    private ?bool $saveCardInfo;
     /**
      * @var bool|null
      */
-    private $useSavedCards;
+    private ?bool $useSavedCards;
     /**
      * @var string|null
      */
-    private $selectedIssuer;
+    private ?string $selectedIssuer;
     /**
      * @var string|null
      */
-    private $methodType;
+    private ?string $methodType;
 
     /**
      * @param int|null $orderId
-     * @param int|null $customerId
+     * @param string|null $customerId
      * @param string|null $molliePaymentMethods
      * @param string|null $cartToken
      * @param bool|null $saveCardInfo
@@ -47,8 +47,16 @@ class Metadata
      * @param string|null $selectedIssuer
      * @param string|null $methodType
      */
-    public function __construct(?int $orderId, ?int $customerId, ?string $molliePaymentMethods, ?string $cartToken,
-                                ?bool $saveCardInfo, ?bool $useSavedCards, ?string $selectedIssuer, ?string $methodType)
+    public function __construct(
+        ?int  $orderId,
+        ?string $customerId,
+        ?string $molliePaymentMethods,
+        ?string $cartToken,
+        ?bool $saveCardInfo,
+        ?bool $useSavedCards,
+        ?string $selectedIssuer,
+        ?string $methodType
+    )
     {
         $this->orderId = $orderId;
         $this->customerId = $customerId;
@@ -72,24 +80,24 @@ class Metadata
      * @param int|null $orderId
      * @return void
      */
-    public function setOrderId(?int $orderId): void
+    public function setOrderId(?int $orderId)
     {
         $this->orderId = $orderId;
     }
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getCustomerId(): ?int
+    public function getCustomerId(): ?string
     {
         return $this->customerId;
     }
 
     /**
-     * @param int|null $customerId
+     * @param string|null $customerId
      * @return void
      */
-    public function setCustomerId(?int $customerId): void
+    public function setCustomerId(?string $customerId)
     {
         $this->customerId = $customerId;
     }
@@ -106,7 +114,7 @@ class Metadata
      * @param string|null $molliePaymentMethods
      * @return void
      */
-    public function setMolliePaymentMethods(?string $molliePaymentMethods): void
+    public function setMolliePaymentMethods(?string $molliePaymentMethods)
     {
         $this->molliePaymentMethods = $molliePaymentMethods;
     }
@@ -123,7 +131,7 @@ class Metadata
      * @param string|null $cartToken
      * @return void
      */
-    public function setCartToken(?string $cartToken): void
+    public function setCartToken(?string $cartToken)
     {
         $this->cartToken = $cartToken;
     }
@@ -140,7 +148,7 @@ class Metadata
      * @param bool|null $saveCardInfo
      * @return void
      */
-    public function setSaveCardInfo(?bool $saveCardInfo): void
+    public function setSaveCardInfo(?bool $saveCardInfo)
     {
         $this->saveCardInfo = $saveCardInfo;
     }
@@ -157,7 +165,7 @@ class Metadata
      * @param bool|null $useSavedCards
      * @return void
      */
-    public function setUseSavedCards(?bool $useSavedCards): void
+    public function setUseSavedCards(?bool $useSavedCards)
     {
         $this->useSavedCards = $useSavedCards;
     }
@@ -174,7 +182,7 @@ class Metadata
      * @param string|null $selectedIssuer
      * @return void
      */
-    public function setSelectedIssuer(?string $selectedIssuer): void
+    public function setSelectedIssuer(?string $selectedIssuer)
     {
         $this->selectedIssuer = $selectedIssuer;
     }
@@ -191,7 +199,7 @@ class Metadata
      * @param string|null $methodType
      * @return void
      */
-    public function setMethodType(?string $methodType): void
+    public function setMethodType(?string $methodType)
     {
         $this->methodType = $methodType;
     }
@@ -199,7 +207,7 @@ class Metadata
     /**
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         return [
             'order_id' => $this->getOrderId(),
@@ -209,7 +217,7 @@ class Metadata
             'saveCardInfo' => $this->getSaveCardInfo(),
             'useSavedCards' => $this->getUseSavedCards(),
             'selected_issuer' => $this->getSelectedIssuer(),
-            'methodType' => $this->getMethodType()
+            'methodType' => $this->getMethodType(),
         ];
     }
 }

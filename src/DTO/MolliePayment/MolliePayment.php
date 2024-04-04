@@ -7,31 +7,35 @@ class MolliePayment
     /**
      * @var Amount $amount
      */
-    private $amount;
+    private Amount $amount;
     /**
      * @var string|null
      */
-    private $description;
+    private ?string $description;
     /**
      * @var Metadata $metadata
      */
-    private $metadata;
+    private Metadata $metadata;
     /**
      * @var string|null
      */
-    private $fullName;
+    private ?string $customerId;
     /**
      * @var string|null
      */
-    private $email;
-    /**
-     * @var int|null
-     */
-    private $customerId;
+    private ?string $locale;
     /**
      * @var string|null
      */
-    private $locale;
+    private ?string $method;
+    /**
+     * @var string|null
+     */
+    private ?string $webhookUrl;
+    /**
+     * @var string|null
+     */
+    private ?string $redirectUrl;
 
     /**
      * @return Amount
@@ -87,50 +91,16 @@ class MolliePayment
     /**
      * @return string|null
      */
-    public function getFullName(): ?string
-    {
-        return $this->fullName;
-    }
-
-    /**
-     * @param string|null $fullName
-     * @return void
-     */
-    public function setFullName(?string $fullName): void
-    {
-        $this->fullName = $fullName;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    /**
-     * @param string|null $email
-     * @return void
-     */
-    public function setEmail(?string $email): void
-    {
-        $this->email = $email;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getCustomerId(): ?int
+    public function getCustomerId(): ?string
     {
         return $this->customerId;
     }
 
     /**
-     * @param int|null $customerId
+     * @param string|null $customerId
      * @return void
      */
-    public function setCustomerId(?int $customerId): void
+    public function setCustomerId(?string $customerId): void
     {
         $this->customerId = $customerId;
     }
@@ -153,18 +123,70 @@ class MolliePayment
     }
 
     /**
+     * @return string|null
+     */
+    public function getMethod(): ?string
+    {
+        return $this->method;
+    }
+
+    /**
+     * @param string|null $method
+     * @return void
+     */
+    public function setMethod(?string $method): void
+    {
+        $this->method = $method;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getWebhookUrl(): ?string
+    {
+        return $this->webhookUrl;
+    }
+
+    /**
+     * @param string|null $webhookUrl
+     * @return void
+     */
+    public function setWebhookUrl(?string $webhookUrl): void
+    {
+        $this->webhookUrl = $webhookUrl;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getRedirectUrl(): ?string
+    {
+        return $this->redirectUrl;
+    }
+
+    /**
+     * @param string|null $redirectUrl
+     * @return void
+     */
+    public function setRedirectUrl(?string $redirectUrl): void
+    {
+        $this->redirectUrl = $redirectUrl;
+    }
+
+    /**
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         return [
             'amount' => $this->getAmount()->toArray(),
+            'method' => $this->getMethod(),
             'description' => $this->getDescription(),
             'metadata' => $this->getMetadata()->toArray(),
-            'full_name' => $this->getFullName(),
-            'email' => $this->getEmail(),
             'customerId' => $this->getCustomerId(),
-            'locale' => $this->getLocale()
+            'locale' => $this->getLocale(),
+            'redirectUrl' => $this->getRedirectUrl(),
+            'webhookUrl' => $this->getWebhookUrl()
         ];
     }
 }

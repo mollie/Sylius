@@ -5,45 +5,62 @@ namespace SyliusMolliePlugin\DTO\MolliePayment;
 class Amount
 {
     /**
-     * @var float|null
+     * @var string|null
      */
-    private $value;
+    private ?string $value;
     /**
      * @var string|null
      */
-    private $currency;
+    private ?string $currency;
 
     /**
-     * @param float|null $value
-     * @param string|null $currency
+     * Amount constructor
      */
-    public function __construct(?float $value, ?string $currency)
+    public function __construct(?string $value, ?string $currency)
     {
         $this->value = $value;
         $this->currency = $currency;
     }
 
-    public function getValue(): ?float
+    /**
+     * @return string|null
+     */
+    public function getValue(): ?string
     {
         return $this->value;
     }
 
-    public function setValue(?float $value): void
+    /**
+     * @param string|null $value
+     * @return void
+     */
+    public function setValue(?string $value): void
     {
         $this->value = $value;
     }
 
+    /**
+     * @return string|null
+     */
     public function getCurrency(): ?string
     {
         return $this->currency;
     }
 
+    /**
+     * @param string|null $currency
+     *
+     * @return void
+     */
     public function setCurrency(?string $currency): void
     {
         $this->currency = $currency;
     }
 
-    public function toArray()
+    /**
+     * @return array
+     */
+    public function toArray(): array
     {
         return [
             'value' => $this->getValue(),

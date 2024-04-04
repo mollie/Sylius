@@ -43,7 +43,8 @@ final class CaptureAction extends BaseApiAwareAction implements CaptureActionInt
 
         if (true === isset($details['payment_mollie_id']) ||
             true === isset($details['subscription_mollie_id']) ||
-            true === isset($details['order_mollie_id'])) {
+            true === isset($details['order_mollie_id']) ||
+            $request->getFirstModel()->getOrder()->getQrCode()) {
             return;
         }
 

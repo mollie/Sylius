@@ -45,4 +45,9 @@ class MollieApiClient extends BaseMollieApiClient
     {
         return $this->isRecurringSubscription;
     }
+
+    public function getApiKey()
+    {
+        return $this->apiKey;
+    }
 }

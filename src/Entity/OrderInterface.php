@@ -32,4 +32,16 @@ interface OrderInterface extends BaseOrderInterface
 
     /** @return Collection|OrderItemInterface[] */
     public function getNonRecurringItems(): Collection;
+
+    /**
+     * @return string|null
+     */
+    public function getQrCode(): ?string;
+
+    /**
+     * @param string|null $qrCode
+     *
+     * @return void
+     */
+    public function setQrCode(?string $qrCode): void;
 }

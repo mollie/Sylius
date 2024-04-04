@@ -157,12 +157,15 @@ final class QrCodeAction
         $redirectUrl .= '?orderId=' . $order->getId();
         $webhookUrl .= '?orderId=' . $order->getId();
         $molliePayment->setWebhookUrl($webhookUrl);
+        //fetch payment method from request
+        parse_str($request->getQueryString(), $variables);
+        $paymentMethod = $variables['paymentMethod'];
 
         $molliePayment->setRedirectUrl($redirectUrl);
         $metadata = new Metadata(
             $order->getId(),
             (string)$order->getCustomer()->getId(),
-            $request->get('paymentMethod') ?? 'ideal',
+            $paymentMethod,
             null,
             null,
             null,

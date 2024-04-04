@@ -82,8 +82,8 @@ $(function () {
                     }
                 }
 
-                if (target && (target.value === 'creditcard' || target.value === 'bancontact')) {
-                    createMolliePayment(target.getAttribute('data-qrcode'));
+                if (target && (target.value === 'ideal' || target.value === 'bancontact')) {
+                    createMolliePayment(target.getAttribute('data-qrcode'), target.value);
                 }
             }
         }
@@ -99,8 +99,8 @@ $(function () {
         return parentElement.classList.contains('checked') ? 1 : 0;
     }
 
-    function createMolliePayment(url) {
-        url = url + '?XDEBUG_SESSION_START=debug';
+    function createMolliePayment(url, paymentMethod) {
+        url = url + '?paymentMethod=' + paymentMethod;
 
         fetch(url)
             .then((response) => response.json())

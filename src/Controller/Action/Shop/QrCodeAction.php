@@ -149,7 +149,7 @@ final class QrCodeAction
     private function buildPaymentObject(Request $request, OrderInterface $order)
     {
         $molliePayment = new MolliePayment();
-        $molliePayment->setAmount(new Amount((string)($order->getTotal() / 100), 'EUR'));
+        $molliePayment->setAmount(new Amount((string)($order->getTotal() / 100), $order->getCurrencyCode()));
         $molliePayment->setMethod('ideal');
         $molliePayment->setDescription((string)$order->getId());
         $redirectUrl = $this->urlGenerator->generate('sylius_mollie_plugin_payum', [], UrlGeneratorInterface::ABSOLUTE_URL);

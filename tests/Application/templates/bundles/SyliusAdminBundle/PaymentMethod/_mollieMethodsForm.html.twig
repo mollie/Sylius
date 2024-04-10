@@ -2,6 +2,7 @@
 {% set ideal = constant('Mollie\\Api\\Types\\PaymentMethod::IDEAL') %}
 {% set bancontact = constant('Mollie\\Api\\Types\\PaymentMethod::BANCONTACT') %}
 {% set applePay = constant('Mollie\\Api\\Types\\PaymentMethod::APPLEPAY') %}
+{% set klarnaOne = constant('Mollie\\Api\\Types\\PaymentMethod::KLARNA_ONE') %}
 {% set klarnaPayLater = constant('Mollie\\Api\\Types\\PaymentMethod::KLARNA_PAY_LATER') %}
 {% set klarnaSliceIt = constant('Mollie\\Api\\Types\\PaymentMethod::KLARNA_SLICE_IT') %}
 {% set billie = constant('Mollie\\Api\\Types\\PaymentMethod::BILLIE') %}
@@ -115,40 +116,41 @@
                             {% endif %}
                         </div>
 
-                        <div class="js-onboardingWizard-countryRestrictions">
-                            <div class="field">
-                                {{ form_row(methodForm.country_restriction, { 'attr': { 'class': 'js-onboardingWizard-countryRestriction' } }) }}
-                            </div>
-                            <div class="field">
-                                <div id="country-allowed_{{ loop.index0 }}">
-                                    {{ form_row(methodForm.countryLevel_allowed, { 'attr': {'class': 'fluid search'} }) }}
-                                </div>
-                            </div>
+                    <div class="js-onboardingWizard-countryRestrictions">
+                        <div class="field">
+                            {{ form_row(methodForm.country_restriction, { 'attr': { 'class': 'js-onboardingWizard-countryRestriction' } }) }}
                         </div>
                         <div class="field">
-                            <div id="country-excluded_{{ loop.index0 }}">
-                                {{ form_row(methodForm.countryLevel_excluded, { 'attr': {'class': 'fluid search'} }) }}
+                            <div id="country-allowed_{{ loop.index0 }}">
+                                {{ form_row(methodForm.countryLevel_allowed, { 'attr': {'class': 'fluid search'} }) }}
                             </div>
                         </div>
-                        <div class="field">
-                            <div class="fields">
-                                <div class="twelve wide field">
-                                    {% if
-                                        methodForm.vars.value.methodId == mealvouchersId or
-                                        methodForm.vars.value.methodId == klarnaPayLater or
-                                        methodForm.vars.value.methodId == klarnaSliceIt or
-                                        methodForm.vars.value.methodId == billie or
-                                        methodForm.vars.value.methodId == in3 %}
-                                        {{ form_row(methodForm.paymentType, {'attr': {'disabled': 'disabled', 'class': 'js-onboardingWizard-PaymentMethod'}}) }}
-                                        {{ form_help(methodForm.paymentType) }}
-                                    {% else %}
-                                        {{ form_row(methodForm.paymentType, { 'attr': { 'class': 'js-onboardingWizard-PaymentMethod' } }) }}
-                                        {{ form_help(methodForm.paymentType) }}
-                                    {% endif %}
-                                </div>
-                                <div class="four wide field">
-                                    {{ form_row(methodForm.orderExpiration) }}
-                                </div>
+                    </div>
+                    <div class="field">
+                        <div id="country-excluded_{{ loop.index0 }}">
+                            {{ form_row(methodForm.countryLevel_excluded, { 'attr': {'class': 'fluid search'} }) }}
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="fields">
+                            <div class="twelve wide field">
+                                {% if
+                                    methodForm.vars.value.methodId == mealvouchersId or
+                                    methodForm.vars.value.methodId == klarnaOne or
+                                    methodForm.vars.value.methodId == klarnaPayLater or
+                                    methodForm.vars.value.methodId == klarnaSliceIt or
+                                    methodForm.vars.value.methodId == billie or
+                                    methodForm.vars.value.methodId == in3
+                                %}
+                                    {{ form_row(methodForm.paymentType, {'attr': {'disabled': 'disabled', 'class': 'js-onboardingWizard-PaymentMethod'}}) }}
+                                    {{ form_help(methodForm.paymentType) }}
+                                {% else %}
+                                    {{ form_row(methodForm.paymentType, { 'attr': { 'class': 'js-onboardingWizard-PaymentMethod' } }) }}
+                                    {{ form_help(methodForm.paymentType) }}
+                                {% endif %}
+                            </div>
+                            <div class="four wide field">
+                                {{ form_row(methodForm.orderExpiration) }}
                             </div>
                         </div>
                         <div class="field">

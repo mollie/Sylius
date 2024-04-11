@@ -2,10 +2,13 @@
 
 namespace SyliusMolliePlugin\Controller\Action\Shop;
 
+use App\Entity\Order\Order;
+use Doctrine\ORM\EntityManagerInterface;
 use Payum\Core\Model\GatewayConfigInterface;
 use Payum\Core\Payum;
 use Payum\Core\Security\GenericTokenFactoryInterface;
 use Payum\Core\Security\TokenInterface;
+use SM\Factory\FactoryInterface;
 use Sylius\Bundle\ResourceBundle\Controller\RequestConfigurationFactoryInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
@@ -25,22 +28,29 @@ final class PayumController
         private OrderRepositoryInterface $orderRepository,
         private MetadataInterface $orderMetadata,
         private RequestConfigurationFactoryInterface $requestConfigurationFactory,
-        private RouterInterface $router
+        private RouterInterface $router,
+        private FactoryInterface $stateMachineFactory,
+        private EntityManagerInterface $entityManager
     ) {
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return Response
+     * @throws \SM\SMException
+     */
     public function __invoke(Request $request): Response
     {
-        $configuration = $this->requestConfigurationFactory->create($this->orderMetadata, $request);
         $orderId = $request->get('orderId');
 
         /** @var OrderInterface|null $order */
         $order = $this->orderRepository->findOneBy(['id' => $orderId]);
 
         if (null === $order) {
-            throw new NotFoundHttpException(sprintf('Order with token "%s" does not exist.', $tokenValue));
+            throw new NotFoundHttpException(sprintf('Order with id "%s" does not exist.', $order));
         }
-
+        $this->updateOrder($order);
         $request->getSession()->set('sylius_order_id', $order->getId());
         $payment = $order->getLastPayment();
 
@@ -50,14 +60,34 @@ final class PayumController
             return new RedirectResponse($url);
         }
         $redirectOptions = ['route' => 'sylius_shop_order_after_pay'];
-
         $token = $this->provideTokenBasedOnPayment($payment, $redirectOptions);
-        $url = $token->getTargetUrl();
-        $url = str_replace('http://127.0.0.1', 'https://a2c6-178-222-249-248.ngrok-free.app', $url);
 
-        return new RedirectResponse($url);
+        return new RedirectResponse($token->getTargetUrl());
     }
 
+    /**
+     * Updates DB order
+     *
+     * @param Order $resource
+     *
+     * @return void
+     * @throws \SM\SMException
+     */
+    private function updateOrder(Order $resource): void
+    {
+        $this->entityManager->beginTransaction();
+
+        $this->stateMachineFactory->get($resource, 'sylius_order_checkout')->apply('complete');
+
+        $this->entityManager->commit();
+    }
+
+    /**
+     * @param PaymentInterface $payment
+     * @param array $redirectOptions
+     *
+     * @return TokenInterface
+     */
     private function provideTokenBasedOnPayment(PaymentInterface $payment, array $redirectOptions): TokenInterface
     {
         /** @var PaymentMethodInterface $paymentMethod */
@@ -89,6 +119,9 @@ final class PayumController
         return $token;
     }
 
+    /**
+     * @return GenericTokenFactoryInterface
+     */
     private function getTokenFactory(): GenericTokenFactoryInterface
     {
         return $this->payum->getTokenFactory();

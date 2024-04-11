@@ -60,6 +60,8 @@
             </argument>
             <argument type="service" id="sylius.resource_controller.request_configuration_factory" />
             <argument type="service" id="router" />
+            <argument type="service" id="SM\Factory\Factory"/>
+            <argument type="service" id="doctrine.orm.default_entity_manager"/>
         </service>
         <service id="sylius_mollie_plugin.controller.action.shop.payment_webhook_controller" class="SyliusMolliePlugin\Controller\Action\Shop\PaymentWebhookController">
             <argument type="service" id="sylius_mollie_plugin.mollie_api_client"/>

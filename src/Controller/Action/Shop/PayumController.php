@@ -23,6 +23,9 @@ use Symfony\Component\Routing\RouterInterface;
 
 final class PayumController
 {
+    private const CHECKOUT_STATE_COMPLETED_STATUS = 'completed';
+    private const STATE_MACHINE_COMPLETE_STATE = 'complete';
+
     public function __construct(
         private Payum $payum,
         private OrderRepositoryInterface $orderRepository,
@@ -75,11 +78,11 @@ final class PayumController
      */
     private function updateOrder(Order $resource): void
     {
-        $this->entityManager->beginTransaction();
-
-        $this->stateMachineFactory->get($resource, 'sylius_order_checkout')->apply('complete');
-
-        $this->entityManager->commit();
+        if ($resource->getCheckoutState() !== self::CHECKOUT_STATE_COMPLETED_STATUS) {
+            $this->entityManager->beginTransaction();
+            $this->stateMachineFactory->get($resource, 'sylius_order_checkout')->apply(self::STATE_MACHINE_COMPLETE_STATE);
+            $this->entityManager->commit();
+        }
     }
 
     /**

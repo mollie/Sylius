@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace SyliusMolliePlugin\Action;
 
 use SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
+use SyliusMolliePlugin\Entity\OrderInterface;
 use SyliusMolliePlugin\Payments\PaymentTerms\Options;
 use SyliusMolliePlugin\Request\Api\CreateCustomer;
 use SyliusMolliePlugin\Request\Api\CreateInternalRecurring;
@@ -29,6 +30,17 @@ final class CaptureAction extends BaseApiAwareAction implements CaptureActionInt
     /** @var GenericTokenFactoryInterface|null */
     private $tokenFactory;
 
+    /** @var \Sylius\Component\Core\Repository\OrderRepositoryInterface */
+    private $orderRepository;
+
+    /**
+     * @param \Sylius\Component\Core\Repository\OrderRepositoryInterface $orderRepository
+     */
+    public function __construct(\Sylius\Component\Core\Repository\OrderRepositoryInterface $orderRepository)
+    {
+        $this->orderRepository = $orderRepository;
+    }
+
     public function setGenericTokenFactory(GenericTokenFactoryInterface $genericTokenFactory = null): void
     {
         $this->tokenFactory = $genericTokenFactory;
@@ -45,6 +57,8 @@ final class CaptureAction extends BaseApiAwareAction implements CaptureActionInt
             true === isset($details['subscription_mollie_id']) ||
             true === isset($details['order_mollie_id']) ||
             $request->getFirstModel()->getOrder()->getQrCode()) {
+            $this->setQrCodeOnOrder($request->getFirstModel()->getOrder());
+
             return;
         }
 
@@ -105,5 +119,21 @@ final class CaptureAction extends BaseApiAwareAction implements CaptureActionInt
         return
             $request instanceof Capture &&
             $request->getModel() instanceof \ArrayAccess;
+    }
+
+    /**
+     * @param OrderInterface $order
+     * @param string|null $qrCode
+     *
+     * @return void
+     */
+    private function setQrCodeOnOrder(OrderInterface $order, ?string $qrCode = null)
+    {
+        try {
+            $order->setQrCode($qrCode);
+            $this->orderRepository->add($order);
+        } catch (\Exception $exception) {
+
+        }
     }
 }

@@ -4,6 +4,8 @@ $(function () {
     var disableValidationMollieComponents = false;
     let selectedValue = false;
     let mollieData = $('.online-online-payment__container');
+    let orderId = null;
+    let qrCodeInterval = null;
     const initialOrderTotal = $('#sylius-summary-grand-total').text();
     const cardActiveClass = 'online-payment__item--active';
     const orderTotalRow = $('#sylius-summary-grand-total');
@@ -112,20 +114,32 @@ $(function () {
             .then((response) => response.json())
             .then((data) => {
                 let qrCode = data.qrCode;
+                if (orderId === null) {
+                    orderId = data.orderId;
+                }
+
                 if (qrCode) {
                     createPopup(qrCode);
+                    qrCodeInterval = setInterval(() => checkQrCode(url + '?orderId=' + orderId), 1000);
                 }
             });
     }
 
-    function removeQrCode(url, closePopUp = false) {
+    function checkQrCode(url) {
         fetch(url)
             .then((response) => response.json())
             .then((data) => {
-                if (closePopUp) {
-                    closePopup();
+                let qrCode = data.qrCode;
+                if (!qrCode) {
+                    window.location.reload();
                 }
             });
+    }
+
+    function removeQrCode(url) {
+        fetch(url)
+            .then((response) => response.json())
+            .then((data) => {});
     }
 
     function showQrCodePopUp() {
@@ -194,11 +208,8 @@ $(function () {
 
         // Add event listeners to buttons
         cancelButton.addEventListener('click', function (event) {
-            let cartVariantContainer = document.getElementById('cart-variant-details');
-            if (cartVariantContainer) {
-                let deleteQrCodeUrl = cartVariantContainer.getAttribute('data-removeQrCode');
-                removeQrCode(deleteQrCodeUrl, true);
-            }
+            closePopup();
+            clearInterval(qrCodeInterval);
         });
 
         continueButton.addEventListener('click', function (event) {

@@ -49,19 +49,18 @@ final class PayumController
 
         /** @var OrderInterface|null $order */
         $order = $this->orderRepository->findOneBy(['id' => $orderId]);
-
         if (null === $order) {
             throw new NotFoundHttpException(sprintf('Order with id "%s" does not exist.', $order));
         }
+
         $this->updateOrder($order);
         $request->getSession()->set('sylius_order_id', $order->getId());
         $payment = $order->getLastPayment();
-
         if (null === $payment) {
             $url = $this->router->generate('sylius_shop_order_thank_you');
-
             return new RedirectResponse($url);
         }
+
         $redirectOptions = ['route' => 'sylius_shop_order_after_pay'];
         $token = $this->provideTokenBasedOnPayment($payment, $redirectOptions);
 

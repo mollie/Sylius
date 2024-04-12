@@ -48,6 +48,7 @@
             <argument type="service" id="sylius_mollie_plugin.resolver.mollie_api_client_key_resolver"/>
             <argument type="service" id="sylius.repository.order" />
             <argument type="service" id="router" />
+            <argument type="service" id="sylius_mollie_plugin.repository.mollie_gateway_config"/>
         </service>
         <service id="sylius_mollie_plugin.controller.action.shop.payum_controller" class="SyliusMolliePlugin\Controller\Action\Shop\PayumController">
             <argument type="service" id="payum" />

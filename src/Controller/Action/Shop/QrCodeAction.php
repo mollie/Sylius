@@ -5,6 +5,7 @@ namespace SyliusMolliePlugin\Controller\Action\Shop;
 use Mollie\Api\Exceptions\ApiException;
 use Mollie\Api\Resources\Payment;
 use Sylius\Component\Order\Context\CartContextInterface;
+use Sylius\Component\Resource\Repository\RepositoryInterface;
 use SyliusMolliePlugin\Client\MollieApiClient;
 use SyliusMolliePlugin\DTO\MolliePayment\Amount;
 use SyliusMolliePlugin\DTO\MolliePayment\Metadata;
@@ -41,6 +42,9 @@ final class QrCodeAction
     /** @var UrlGeneratorInterface */
     private $router;
 
+    /** @var RepositoryInterface */
+    private $methodRepository;
+
     /**
      * QrCodeAction constructor
      */
@@ -50,7 +54,8 @@ final class QrCodeAction
         MollieApiClient $mollieApiClient,
         MollieApiClientKeyResolverInterface $apiClientKeyResolver,
         OrderRepositoryInterface $orderRepository,
-        UrlGeneratorInterface $urlGenerator
+        UrlGeneratorInterface $urlGenerator,
+        RepositoryInterface $methodRepository
     )
     {
         $this->loggerAction = $loggerAction;
@@ -59,6 +64,7 @@ final class QrCodeAction
         $this->apiClientKeyResolver = $apiClientKeyResolver;
         $this->orderRepository = $orderRepository;
         $this->urlGenerator = $urlGenerator;
+        $this->methodRepository = $methodRepository;
     }
 
     /**
@@ -69,25 +75,32 @@ final class QrCodeAction
      */
     public function createPayment(Request $request): Response
     {
-        /** @var OrderInterface $order */
-        $order = $this->cartContext->getCart();
-        $molliePayment = $this->buildPaymentObject($request, $order);
+        $method = $this->methodRepository->findOneBy(['methodId' => $request->get('paymentMethod')]);
+        $qrCodeEnabled = $method->isQrCodeEnabled();
 
-        try {
-            $this->mollieApiClient->setApiKey($this->apiClientKeyResolver->getClientWithKey()->getApiKey());
-            /** @var Payment $payment */
-            $payment = $this->mollieApiClient->payments->create($molliePayment->toArray(), ['include' => 'details.qrCode']);
+        if ($qrCodeEnabled) {
+            /** @var OrderInterface $order */
+            $order = $this->cartContext->getCart();
+            $molliePayment = $this->buildPaymentObject($request, $order);
 
-            // save qr code to the db order
-            $qrCodeObject = $payment->details->qrCode;
-            $this->setQrCodeOnOrder($order, $qrCodeObject->src);
-        } catch (\Exception $e) {
-            $this->loggerAction->addNegativeLog(sprintf('Error with payment creation: %s', $e->getMessage()));
+            try {
+                $this->mollieApiClient->setApiKey($this->apiClientKeyResolver->getClientWithKey()->getApiKey());
+                /** @var Payment $payment */
+                $payment = $this->mollieApiClient->payments->create($molliePayment->toArray(), ['include' => 'details.qrCode']);
 
-            throw new ApiException(sprintf('Error with payment creation: %s', $e->getMessage()));
+                // save qr code to the db order
+                $qrCodeObject = $payment->details->qrCode;
+                $this->setQrCodeOnOrder($order, $qrCodeObject->src);
+            } catch (\Exception $e) {
+                $this->loggerAction->addNegativeLog(sprintf('Error with payment creation: %s', $e->getMessage()));
+
+                throw new ApiException(sprintf('Error with payment creation: %s', $e->getMessage()));
+            }
+
+            return new JsonResponse(['qrCode' => $qrCodeObject], Response::HTTP_OK);
         }
 
-        return new JsonResponse(['qrCode' => $qrCodeObject], Response::HTTP_OK);
+        return new JsonResponse(['qrCode' => null], Response::HTTP_OK);
     }
 
     /**
@@ -95,17 +108,22 @@ final class QrCodeAction
      *
      * @return JsonResponse
      */
-    public function fetchQrCodeFromOrder(Request $request)
+    public function fetchQrCodeFromOrder(Request $request): JsonResponse
     {
         /** @var OrderInterface $order */
         $order = $this->cartContext->getCart();
         $qrCode = null;
+        $orderId = $request->get('orderId');
+
+        if ($orderId) {
+            $order = $this->orderRepository->findOneBy(['id' => $orderId]);
+        }
 
         if ($order && $order->getQrCode()) {
             $qrCode = $order->getQrCode();
         }
 
-        return new JsonResponse(['qrCode' => $qrCode], Response::HTTP_OK);
+        return new JsonResponse(['qrCode' => $qrCode, 'orderId' => $order->getId()], Response::HTTP_OK);
     }
 
     /**
@@ -113,7 +131,7 @@ final class QrCodeAction
      *
      * @return JsonResponse
      */
-    public function removeQrCodeFromOrder(Request $request)
+    public function removeQrCodeFromOrder(Request $request): JsonResponse
     {
         /** @var OrderInterface $order */
         $order = $this->cartContext->getCart();
@@ -128,7 +146,7 @@ final class QrCodeAction
      *
      * @return void
      */
-    private function setQrCodeOnOrder(OrderInterface $order, ?string $qrCode = null)
+    private function setQrCodeOnOrder(OrderInterface $order, ?string $qrCode = null): void
     {
         try {
             $order->setQrCode($qrCode);

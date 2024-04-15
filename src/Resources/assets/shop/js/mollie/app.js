@@ -86,6 +86,9 @@ $(function () {
 
                 if (target && (target.value === 'ideal' || target.value === 'bancontact')) {
                     createMolliePayment(target.getAttribute('data-qrcode'), target.value);
+                } else {
+                    let removeQrCodeUrl = mollieData[0].getAttribute('data-removeQrCode');
+                    removeQrCode(removeQrCodeUrl);
                 }
             }
         }

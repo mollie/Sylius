@@ -90,7 +90,7 @@ final class QrCodeAction
 
                 // save qr code to the db order
                 $qrCodeObject = $payment->details->qrCode;
-                $this->setQrCodeOnOrder($order, $qrCodeObject->src);
+                $this->setQrCodeOnOrder($order, $qrCodeObject->src, $payment->id);
             } catch (\Exception $e) {
                 $this->loggerAction->addNegativeLog(sprintf('Error with payment creation: %s', $e->getMessage()));
 
@@ -119,8 +119,9 @@ final class QrCodeAction
             $order = $this->orderRepository->findOneBy(['id' => $orderId]);
         }
 
-        if ($order && $order->getQrCode()) {
-            $qrCode = $order->getQrCode();
+        if ($order && $qrCodeValue = $order->getQrCode()) {
+            $separator = strpos($qrCodeValue, '|id:');
+            $qrCode = substr($qrCodeValue, 0, $separator);
         }
 
         return new JsonResponse(['qrCode' => $qrCode, 'orderId' => $order->getId()], Response::HTTP_OK);
@@ -143,13 +144,15 @@ final class QrCodeAction
     /**
      * @param OrderInterface $order
      * @param string|null $qrCode
+     * @param string $paymentId
      *
      * @return void
      */
-    private function setQrCodeOnOrder(OrderInterface $order, ?string $qrCode = null): void
+    private function setQrCodeOnOrder(OrderInterface $order, ?string $qrCode = null, string $paymentId = ''): void
     {
         try {
-            $order->setQrCode($qrCode);
+            $value = $qrCode ? $qrCode . '|id:' . $paymentId : null;
+            $order->setQrCode($value);
             $this->orderRepository->add($order);
         } catch (\Exception $exception) {
             $this->loggerAction->addNegativeLog(sprintf('Could not update qr code url on order: %s', $e->getMessage()));
@@ -164,7 +167,7 @@ final class QrCodeAction
      *
      * @return MolliePayment
      */
-    private function buildPaymentObject(Request $request, OrderInterface $order)
+    private function buildPaymentObject(Request $request, OrderInterface $order): MolliePayment
     {
         $molliePayment = new MolliePayment();
         $molliePayment->setAmount(new Amount((string)($order->getTotal() / 100), $order->getCurrencyCode()));

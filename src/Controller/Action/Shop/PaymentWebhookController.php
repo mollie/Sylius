@@ -57,6 +57,10 @@ class PaymentWebhookController
 
         /** @var OrderInterface $order */
         $order = $this->orderRepository->findOneBy(['id' => $request->get('orderId')]);
+        if ($order === null) {
+            return new JsonResponse(Response::HTTP_OK);
+        }
+
         $payment = $order->getLastPayment();
         $status = $this->getStatus($molliePayment);
 

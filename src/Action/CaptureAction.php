@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace SyliusMolliePlugin\Action;
 
+use Payum\Core\Reply\HttpRedirect;
 use SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
 use SyliusMolliePlugin\Entity\OrderInterface;
 use SyliusMolliePlugin\Payments\PaymentTerms\Options;
@@ -22,6 +23,7 @@ use Payum\Core\Request\Capture;
 use Payum\Core\Security\GenericTokenFactoryInterface;
 use Payum\Core\Security\TokenInterface;
 use Psr\Log\InvalidArgumentException;
+use SyliusMolliePlugin\Resolver\MollieApiClientKeyResolverInterface;
 
 final class CaptureAction extends BaseApiAwareAction implements CaptureActionInterface
 {
@@ -33,12 +35,18 @@ final class CaptureAction extends BaseApiAwareAction implements CaptureActionInt
     /** @var \Sylius\Component\Core\Repository\OrderRepositoryInterface */
     private $orderRepository;
 
+    /** @var MollieApiClientKeyResolverInterface */
+    private $apiClientKeyResolver;
+
     /**
      * @param \Sylius\Component\Core\Repository\OrderRepositoryInterface $orderRepository
      */
-    public function __construct(\Sylius\Component\Core\Repository\OrderRepositoryInterface $orderRepository)
+    public function __construct(
+        \Sylius\Component\Core\Repository\OrderRepositoryInterface $orderRepository,
+        MollieApiClientKeyResolverInterface $apiClientKeyResolver)
     {
         $this->orderRepository = $orderRepository;
+        $this->apiClientKeyResolver = $apiClientKeyResolver;
     }
 
     public function setGenericTokenFactory(GenericTokenFactoryInterface $genericTokenFactory = null): void
@@ -57,7 +65,16 @@ final class CaptureAction extends BaseApiAwareAction implements CaptureActionInt
             true === isset($details['subscription_mollie_id']) ||
             true === isset($details['order_mollie_id']) ||
             $request->getFirstModel()->getOrder()->getQrCode()) {
-            $this->setQrCodeOnOrder($request->getFirstModel()->getOrder());
+            $qrCodeValue = $request->getFirstModel()->getOrder()->getQrCode();
+            if ($qrCodeValue) {
+                $molliePaymentId = $this->fetchMolliePaymentId($qrCodeValue);
+                $this->setQrCodeOnOrder($request->getFirstModel()->getOrder());
+
+                $this->mollieApiClient->setApiKey($this->apiClientKeyResolver->getClientWithKey()->getApiKey());
+                $payment = $this->mollieApiClient->payments->get($molliePaymentId);
+
+                throw new HttpRedirect($payment->getCheckoutUrl());
+            }
 
             return;
         }
@@ -119,6 +136,19 @@ final class CaptureAction extends BaseApiAwareAction implements CaptureActionInt
         return
             $request instanceof Capture &&
             $request->getModel() instanceof \ArrayAccess;
+    }
+
+    /**
+     * @param string $url
+     *
+     * @return string
+     */
+    private function fetchMolliePaymentId(string $url): string
+    {
+        $separator = strpos($url, '|id:');
+        $molliePaymentId = substr($url, $separator + 4); // Adding 4 to skip '|id:'
+
+        return $molliePaymentId;
     }
 
     /**

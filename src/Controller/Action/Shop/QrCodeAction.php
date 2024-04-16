@@ -40,7 +40,7 @@ final class QrCodeAction
     private $orderRepository;
 
     /** @var UrlGeneratorInterface */
-    private $router;
+    private $urlGenerator;
 
     /** @var RepositoryInterface */
     private $methodRepository;
@@ -171,7 +171,7 @@ final class QrCodeAction
     {
         $molliePayment = new MolliePayment();
         $molliePayment->setAmount(new Amount((string)($order->getTotal() / 100), $order->getCurrencyCode()));
-        $molliePayment->setMethod($request->get('paymentMethod'));
+        $molliePayment->setMethod('ideal');
         $molliePayment->setDescription((string)$order->getId());
         $redirectUrl = $this->urlGenerator->generate('sylius_mollie_plugin_payum', [], UrlGeneratorInterface::ABSOLUTE_URL);
         $webhookUrl = $this->urlGenerator->generate('sylius_mollie_plugin_payment_webhook', [], UrlGeneratorInterface::ABSOLUTE_URL);
@@ -180,10 +180,14 @@ final class QrCodeAction
         $molliePayment->setWebhookUrl($webhookUrl);
         $molliePayment->setRedirectUrl($redirectUrl);
 
+        //fetch payment method from request
+        parse_str($request->getQueryString(), $variables);
+        $paymentMethod = $variables['paymentMethod'];
+
         $metadata = new Metadata(
             $order->getId(),
             (string)$order->getCustomer()->getId(),
-            $request->get('paymentMethod'),
+            $paymentMethod,
             null,
             null,
             null,

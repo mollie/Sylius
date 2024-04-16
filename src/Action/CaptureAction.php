@@ -73,7 +73,9 @@ final class CaptureAction extends BaseApiAwareAction implements CaptureActionInt
                 $this->mollieApiClient->setApiKey($this->apiClientKeyResolver->getClientWithKey()->getApiKey());
                 $payment = $this->mollieApiClient->payments->get($molliePaymentId);
 
-                throw new HttpRedirect($payment->getCheckoutUrl());
+                if ($checkoutUrl = $payment->getCheckoutUrl()) {
+                    throw new HttpRedirect($checkoutUrl);
+                }
             }
 
             return;

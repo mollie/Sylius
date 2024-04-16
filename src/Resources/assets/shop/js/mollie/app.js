@@ -139,7 +139,11 @@ $(function () {
             .then((data) => {
                 let qrCode = data.qrCode;
                 if (!qrCode) {
-                    window.location.reload();
+                    let cartVariantDetails = document.getElementById('cart-variant-details')
+                    if (cartVariantDetails) {
+                        let thankYouPageUrl = cartVariantDetails.getAttribute('data-thankYouPage');
+                        window.location.href = thankYouPageUrl + '?orderId=' + orderId;
+                    }
                 }
             });
     }

@@ -5,8 +5,10 @@ mollie_payment_fee_ajax:
 mollie_apple_pay:
   resource: "shop/applePay.yaml"
 mollie_qr_code:
-    resource: "shop/qrCode.yaml"
+  resource: "shop/qrCode.yaml"
 mollie_payum:
-    resource: "shop/payum.yaml"
+  resource: "shop/payum.yaml"
 mollie_payment_webhook:
-    resource: "shop/paymentWebhook.yaml"
+  resource: "shop/paymentWebhook.yaml"
+mollie_page_redirect:
+  resource: "shop/pageRedirect.yaml"

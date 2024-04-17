@@ -14,7 +14,6 @@ use SyliusMolliePlugin\Form\Type\Translation\MollieGatewayConfigTranslationType;
 use SyliusMolliePlugin\Options\Country\Options as CountryOptions;
 use SyliusMolliePlugin\Payments\Methods\AbstractMethod;
 use SyliusMolliePlugin\Payments\PaymentTerms\Options;
-use SyliusMolliePlugin\Validator\Constraints\MollieMinMaxValidatorType;
 use SyliusMolliePlugin\Validator\Constraints\PaymentSurchargeType;
 use Sylius\Bundle\ProductBundle\Form\Type\ProductType as ProductFormType;
 use Sylius\Bundle\ResourceBundle\Form\Type\AbstractResourceType;

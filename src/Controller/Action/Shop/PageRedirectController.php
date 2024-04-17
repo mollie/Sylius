@@ -42,7 +42,6 @@ class PageRedirectController
             return new RedirectResponse($thankYouPageUrl);
         }
         $cartSummaryUrl = str_replace('thank-you', $orderToken, $thankYouPageUrl);
-        $cartSummaryUrl = '/' . implode('/', array_slice(explode('/', $cartSummaryUrl), 2));
 
         return new RedirectResponse($cartSummaryUrl);
     }

@@ -6,7 +6,6 @@ declare(strict_types=1);
 namespace SyliusMolliePlugin\Action\Api;
 
 use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
-use Sylius\Component\Resource\Repository\RepositoryInterface;
 use SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use SyliusMolliePlugin\Parser\Response\GuzzleNegativeResponseParserInterface;
 use SyliusMolliePlugin\Repository\CustomerRepository;
@@ -37,21 +36,16 @@ final class CreatePaymentAction extends BaseApiAwareAction
      */
     private $customerRepository;
 
-    /** @var RepositoryInterface */
-    private $methodRepository;
-
     public function __construct(
         MollieLoggerActionInterface $loggerAction,
         GuzzleNegativeResponseParserInterface $guzzleNegativeResponseParser,
         RequestStack $requestStack,
-        EntityRepository $customerRepository,
-        RepositoryInterface $methodRepository
+        EntityRepository $customerRepository
     ) {
         $this->loggerAction = $loggerAction;
         $this->guzzleNegativeResponseParser = $guzzleNegativeResponseParser;
         $this->requestStack = $requestStack;
         $this->customerRepository = $customerRepository;
-        $this->methodRepository = $methodRepository;
     }
 
     public function execute($request): void
@@ -122,10 +116,7 @@ final class CreatePaymentAction extends BaseApiAwareAction
 
         $this->loggerAction->addLog(sprintf('Create payment in mollie with id: %s', $payment->id));
 
-        $method = $this->methodRepository->findOneBy(['methodId' => $details['metadata']['molliePaymentMethods']]);
-        $qrCodeEnabled = $method->isQrCodeEnabled();
-
-        if (null === $payment->getCheckoutUrl() || $qrCodeEnabled) {
+        if (null === $payment->getCheckoutUrl()) {
             throw new HttpRedirect($details['backurl']);
         }
 

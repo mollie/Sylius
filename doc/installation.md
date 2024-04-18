@@ -135,6 +135,12 @@ class Order extends BaseOrder implements OrderInterface
      * @ORM\Column(type="text", name="qr_code", nullable=true)
      */
     protected ?string $qrCode = null;
+    
+    /**
+     * @var string|null
+     * @ORM\Column(type="text", name="mollie_payment_id", nullable=true)
+     */
+    protected ?string $molliePaymentId = null;
 
     /**
      * @var MollieSubscriptionInterface|null

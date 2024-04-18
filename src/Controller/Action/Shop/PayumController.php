@@ -46,7 +46,6 @@ final class PayumController
     public function __invoke(Request $request): Response
     {
         $orderId = $request->get('orderId');
-
         /** @var OrderInterface|null $order */
         $order = $this->orderRepository->findOneBy(['id' => $orderId]);
         if (null === $order) {
@@ -60,7 +59,6 @@ final class PayumController
             $url = $this->router->generate('sylius_shop_order_thank_you');
             return new RedirectResponse($url);
         }
-
         $redirectOptions = ['route' => 'sylius_shop_order_after_pay'];
         $token = $this->provideTokenBasedOnPayment($payment, $redirectOptions);
 

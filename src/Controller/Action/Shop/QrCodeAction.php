@@ -90,7 +90,8 @@ final class QrCodeAction
 
                 // save qr code to the db order
                 $qrCodeObject = $payment->details->qrCode;
-                $this->setQrCodeOnOrder($order, $qrCodeObject->src, $payment->id);
+                $this->setQrCodeOnOrder($order, $qrCodeObject->src);
+                $this->setMolliePaymentIdOnOrder($order, $payment->id);
             } catch (\Exception $e) {
                 $this->loggerAction->addNegativeLog(sprintf('Error with payment creation: %s', $e->getMessage()));
 
@@ -119,9 +120,8 @@ final class QrCodeAction
             $order = $this->orderRepository->findOneBy(['id' => $orderId]);
         }
 
-        if ($order && $qrCodeValue = $order->getQrCode()) {
-            $separator = strpos($qrCodeValue, '|id:');
-            $qrCode = substr($qrCodeValue, 0, $separator);
+        if ($order) {
+            $qrCode = $order->getQrCode();
         }
 
         return new JsonResponse(['qrCode' => $qrCode, 'orderId' => $order->getId()], Response::HTTP_OK);
@@ -134,9 +134,15 @@ final class QrCodeAction
      */
     public function removeQrCodeFromOrder(Request $request): JsonResponse
     {
+        $shouldDeletePaymentId = (bool)$request->get('shouldDeletePaymentId');
+
         /** @var OrderInterface $order */
         $order = $this->cartContext->getCart();
-        $this->setQrCodeOnOrder($order);
+        $orderToken = $request->get('orderToken');
+        if ($orderToken) {
+            $order = $this->orderRepository->findOneByTokenValue($orderToken);
+        }
+        $this->setQrCodeOnOrder($order, null, $shouldDeletePaymentId);
 
         return new JsonResponse(['status' => Response::HTTP_OK]);
     }
@@ -144,18 +150,36 @@ final class QrCodeAction
     /**
      * @param OrderInterface $order
      * @param string|null $qrCode
-     * @param string $paymentId
+     * @param bool $shouldDeletePaymentId
      *
      * @return void
      */
-    private function setQrCodeOnOrder(OrderInterface $order, ?string $qrCode = null, string $paymentId = ''): void
+    private function setQrCodeOnOrder(OrderInterface $order, ?string $qrCode = null, bool $shouldDeletePaymentId = false)
     {
         try {
-            $value = $qrCode ? $qrCode . '|id:' . $paymentId : null;
-            $order->setQrCode($value);
+            $order->setQrCode($qrCode);
+            if ($shouldDeletePaymentId) {
+                $order->setMolliePaymentId(null);
+            }
             $this->orderRepository->add($order);
         } catch (\Exception $exception) {
             $this->loggerAction->addNegativeLog(sprintf('Could not update qr code url on order: %s', $e->getMessage()));
+        }
+    }
+
+    /**
+     * @param OrderInterface $order
+     * @param string|null $molliePaymentId
+     *
+     * @return void
+     */
+    private function setMolliePaymentIdOnOrder(OrderInterface $order, ?string $molliePaymentId = null)
+    {
+        try {
+            $order->setMolliePaymentId($molliePaymentId);
+            $this->orderRepository->add($order);
+        } catch (\Exception $exception) {
+            $this->loggerAction->addNegativeLog(sprintf('Could not update mollie payment id on order: %s', $e->getMessage()));
         }
     }
 

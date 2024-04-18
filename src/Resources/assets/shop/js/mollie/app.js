@@ -84,13 +84,17 @@ $(function () {
                     }
                 }
 
+                if (isOrderSummaryPage()) {
+                    let removeQrCodeUrl = mollieData[0].getAttribute('data-removeQrCode');
+                    removeQrCode(removeQrCodeUrl);
+
+                    return;
+                }
+
                 if (target && (target.value === 'ideal' || target.value === 'bancontact')) {
                     createMolliePayment(target.getAttribute('data-qrcode'), target.value);
                 } else {
-                    let issuers = document.getElementById('issuers_data');
-                    let children = issuers.querySelectorAll("*");
-
-                    if (!Array.from(children).includes(target)) {
+                    if (target.id.indexOf("choice-issuer") === -1) {
                         let removeQrCodeUrl = mollieData[0].getAttribute('data-removeQrCode');
                         removeQrCode(removeQrCodeUrl);
                     }
@@ -148,10 +152,32 @@ $(function () {
             });
     }
 
-    function removeQrCode(url) {
+    function removeQrCode(url, shouldDeletePaymentId = true){
+        url = url + '?orderToken=' + extractOrderToken();
+        url = shouldDeletePaymentId ? url + '&shouldDeletePaymentId=true' : url;
+
         fetch(url)
             .then((response) => response.json())
             .then((data) => {});
+    }
+
+    function isOrderSummaryPage() {
+        let currentURL = window.location.href;
+        let parts = currentURL.split('/');
+
+        return !!(parts[parts.length - 2] && parts[parts.length - 2] === 'order');
+    }
+
+    function extractOrderToken() {
+        let currentURL = window.location.href;
+        let parts = currentURL.split('/');
+        let orderToken = '';
+
+        if (parts[parts.length - 2] && parts[parts.length - 2] === 'order') {
+            orderToken = parts[parts.length - 1];
+        }
+
+        return orderToken;
     }
 
     function showQrCodePopUp() {

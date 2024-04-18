@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace Tests\SyliusMolliePlugin\Entity;
 
 use SyliusMolliePlugin\Entity\AbandonedEmailOrderTrait;
+use SyliusMolliePlugin\Entity\MolliePaymentIdOrderTrait;
 use SyliusMolliePlugin\Entity\OrderInterface;
 use SyliusMolliePlugin\Entity\QRCodeOrderTrait;
 use SyliusMolliePlugin\Entity\RecurringOrderTrait;
@@ -20,6 +21,8 @@ class Order extends BaseOrder implements OrderInterface
     use RecurringOrderTrait;
 
     use QRCodeOrderTrait;
+
+    use MolliePaymentIdOrderTrait;
 
     public function getRecurringItems(): Collection
     {

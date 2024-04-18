@@ -44,4 +44,16 @@ interface OrderInterface extends BaseOrderInterface
      * @return void
      */
     public function setQrCode(?string $qrCode): void;
+
+    /**
+     * @return string|null
+     */
+    public function getMolliePaymentId(): ?string;
+
+    /**
+     * @param string|null $molliePaymentId
+     *
+     * @return void
+     */
+    public function setMolliePaymentId(?string $molliePaymentId): void;
 }

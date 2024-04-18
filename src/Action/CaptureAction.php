@@ -78,10 +78,11 @@ final class CaptureAction extends BaseApiAwareAction implements CaptureActionInt
         if (true === isset($details['payment_mollie_id']) ||
             true === isset($details['subscription_mollie_id']) ||
             true === isset($details['order_mollie_id']) ||
-            $request->getFirstModel()->getOrder()->getQrCode()) {
+            $request->getFirstModel()->getOrder()->getQrCode() ||
+            $request->getFirstModel()->getOrder()->getMolliePaymentId()) {
             $qrCodeValue = $request->getFirstModel()->getOrder()->getQrCode();
-            if ($qrCodeValue) {
-                $molliePaymentId = $this->fetchMolliePaymentId($qrCodeValue);
+            $molliePaymentId = $request->getFirstModel()->getOrder()->getMolliePaymentId();
+            if ($qrCodeValue || $molliePaymentId) {
                 $this->setQrCodeOnOrder($request->getFirstModel()->getOrder());
                 $payment = $request->getFirstModel();
 
@@ -184,19 +185,6 @@ final class CaptureAction extends BaseApiAwareAction implements CaptureActionInt
         $newPayment->setUpdatedAt($paymentDate);
 
         return $newPayment;
-    }
-
-    /**
-     * @param string $url
-     *
-     * @return string
-     */
-    private function fetchMolliePaymentId(string $url): string
-    {
-        $separator = strpos($url, '|id:');
-        $molliePaymentId = substr($url, $separator + 4); // Adding 4 to skip '|id:'
-
-        return $molliePaymentId;
     }
 
     /**

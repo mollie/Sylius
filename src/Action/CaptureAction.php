@@ -38,7 +38,7 @@ final class CaptureAction extends BaseApiAwareAction implements CaptureActionInt
     /** @var GenericTokenFactoryInterface|null */
     private $tokenFactory;
 
-    /** @var \Sylius\Component\Core\Repository\OrderRepositoryInterface */
+    /** @var OrderRepositoryInterface */
     private $orderRepository;
 
     /** @var MollieApiClientKeyResolverInterface */
@@ -53,7 +53,7 @@ final class CaptureAction extends BaseApiAwareAction implements CaptureActionInt
      * @param PaymentRepositoryInterface $paymentRepository
      */
     public function __construct(
-        \Sylius\Component\Core\Repository\OrderRepositoryInterface $orderRepository,
+        OrderRepositoryInterface $orderRepository,
         MollieApiClientKeyResolverInterface $apiClientKeyResolver,
         PaymentRepositoryInterface $paymentRepository
     )

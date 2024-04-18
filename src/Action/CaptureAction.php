@@ -7,6 +7,8 @@ namespace SyliusMolliePlugin\Action;
 
 use App\Entity\Payment\Payment;
 use Payum\Core\Reply\HttpRedirect;
+use Sylius\Component\Core\Repository\PaymentRepositoryInterface;
+use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
 use SyliusMolliePlugin\Entity\OrderInterface;
 use SyliusMolliePlugin\Payments\PaymentTerms\Options;
@@ -42,15 +44,23 @@ final class CaptureAction extends BaseApiAwareAction implements CaptureActionInt
     /** @var MollieApiClientKeyResolverInterface */
     private $apiClientKeyResolver;
 
+    /** @var PaymentRepositoryInterface */
+    private $paymentRepository;
+
     /**
-     * @param \Sylius\Component\Core\Repository\OrderRepositoryInterface $orderRepository
+     * @param OrderRepositoryInterface $orderRepository
+     * @param MollieApiClientKeyResolverInterface $apiClientKeyResolver
+     * @param PaymentRepositoryInterface $paymentRepository
      */
     public function __construct(
         \Sylius\Component\Core\Repository\OrderRepositoryInterface $orderRepository,
-        MollieApiClientKeyResolverInterface $apiClientKeyResolver)
+        MollieApiClientKeyResolverInterface $apiClientKeyResolver,
+        PaymentRepositoryInterface $paymentRepository
+    )
     {
         $this->orderRepository = $orderRepository;
         $this->apiClientKeyResolver = $apiClientKeyResolver;
+        $this->paymentRepository = $paymentRepository;
     }
 
     public function setGenericTokenFactory(GenericTokenFactoryInterface $genericTokenFactory = null): void

@@ -27,7 +27,7 @@ class PageRedirectController
      *
      * @return RedirectResponse
      */
-    public function thankYouAction(Request $request, SessionInterface $session)
+    public function thankYouAction(Request $request, SessionInterface $session): RedirectResponse
     {
         $orderId = $request->get('orderId');
         $session->set('sylius_order_id', $orderId);

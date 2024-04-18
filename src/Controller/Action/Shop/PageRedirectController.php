@@ -41,7 +41,7 @@ class PageRedirectController
         if ($payment && $payment->getState() === self::ORDER_COMPLETED_STATE) {
             return new RedirectResponse($thankYouPageUrl);
         }
-        $cartSummaryUrl = str_replace('thank-you', $orderToken, $thankYouPageUrl);
+        $cartSummaryUrl = $this->router->generate('sylius_shop_order_show', ['tokenValue' => $orderToken]);
 
         return new RedirectResponse($cartSummaryUrl);
     }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace SyliusMolliePlugin\Action;
 
+use App\Entity\Payment\Payment;
 use Payum\Core\Reply\HttpRedirect;
 use SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
 use SyliusMolliePlugin\Entity\OrderInterface;
@@ -27,6 +28,9 @@ use SyliusMolliePlugin\Resolver\MollieApiClientKeyResolverInterface;
 
 final class CaptureAction extends BaseApiAwareAction implements CaptureActionInterface
 {
+    const PAYMENT_FAILED_STATUS = 'failed';
+    const PAYMENT_NEW_STATUS = 'new';
+
     use GatewayAwareTrait;
 
     /** @var GenericTokenFactoryInterface|null */
@@ -69,11 +73,16 @@ final class CaptureAction extends BaseApiAwareAction implements CaptureActionInt
             if ($qrCodeValue) {
                 $molliePaymentId = $this->fetchMolliePaymentId($qrCodeValue);
                 $this->setQrCodeOnOrder($request->getFirstModel()->getOrder());
+                $payment = $request->getFirstModel();
+
+                if ($payment->getState() === self::PAYMENT_FAILED_STATUS) {
+                    $this->paymentRepository->add($this->createNewPayment($payment));
+                }
 
                 $this->mollieApiClient->setApiKey($this->apiClientKeyResolver->getClientWithKey()->getApiKey());
-                $payment = $this->mollieApiClient->payments->get($molliePaymentId);
+                $molliePayment = $this->mollieApiClient->payments->get($molliePaymentId);
 
-                if ($checkoutUrl = $payment->getCheckoutUrl()) {
+                if ($checkoutUrl = $molliePayment->getCheckoutUrl()) {
                     throw new HttpRedirect($checkoutUrl);
                 }
             }
@@ -133,11 +142,38 @@ final class CaptureAction extends BaseApiAwareAction implements CaptureActionInt
         }
     }
 
+    /**
+     * @param $request
+     *
+     * @return bool
+     */
     public function supports($request): bool
     {
         return
             $request instanceof Capture &&
             $request->getModel() instanceof \ArrayAccess;
+    }
+
+    /**
+     * @param Payment $payment
+     *
+     * @return Payment
+     * @throws \Exception
+     */
+    private function createNewPayment(Payment $payment): Payment
+    {
+        $newPayment = new Payment();
+        $newPayment->setMethod($payment->getMethod());
+        $newPayment->setOrder($payment->getOrder());
+        $newPayment->setCurrencyCode($payment->getCurrencyCode());
+        $newPayment->setAmount($payment->getAmount());
+        $newPayment->setState(self::PAYMENT_NEW_STATUS);
+        $newPayment->setDetails([]);
+        $paymentDate = new \DateTime('now', $payment->getCreatedAt()->getTimezone());
+        $newPayment->setCreatedAt($paymentDate);
+        $newPayment->setUpdatedAt($paymentDate);
+
+        return $newPayment;
     }
 
     /**

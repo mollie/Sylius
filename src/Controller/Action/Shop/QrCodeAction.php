@@ -2,7 +2,6 @@
 
 namespace SyliusMolliePlugin\Controller\Action\Shop;
 
-use Mollie\Api\Exceptions\ApiException;
 use Mollie\Api\Resources\Payment;
 use Sylius\Component\Order\Context\CartContextInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
@@ -12,7 +11,6 @@ use SyliusMolliePlugin\DTO\MolliePayment\Metadata;
 use SyliusMolliePlugin\DTO\MolliePayment\MolliePayment;
 use SyliusMolliePlugin\Entity\OrderInterface;
 use SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
-use SyliusMolliePlugin\Payments\Methods\AbstractMethod;
 use SyliusMolliePlugin\Resolver\MollieApiClientKeyResolverInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -70,8 +68,7 @@ final class QrCodeAction
     /**
      * @param Request $request
      *
-     * @return JsonResponse
-     * @throws ApiException
+     * @return Response
      */
     public function createPayment(Request $request): Response
     {
@@ -92,13 +89,11 @@ final class QrCodeAction
                 $qrCodeObject = $payment->details->qrCode;
                 $this->setQrCodeOnOrder($order, $qrCodeObject->src);
                 $this->setMolliePaymentIdOnOrder($order, $payment->id);
+
+                return new JsonResponse(['qrCode' => $qrCodeObject], Response::HTTP_OK);
             } catch (\Exception $e) {
                 $this->loggerAction->addNegativeLog(sprintf('Error with payment creation: %s', $e->getMessage()));
-
-                throw new ApiException(sprintf('Error with payment creation: %s', $e->getMessage()));
             }
-
-            return new JsonResponse(['qrCode' => $qrCodeObject], Response::HTTP_OK);
         }
 
         return new JsonResponse(['qrCode' => null], Response::HTTP_OK);
@@ -195,8 +190,9 @@ final class QrCodeAction
     {
         $molliePayment = new MolliePayment();
         $molliePayment->setAmount(new Amount((string)($order->getTotal() / 100), $order->getCurrencyCode()));
-        $molliePayment->setMethod('ideal');
+        $molliePayment->setMethod($request->get('paymentMethod'));
         $molliePayment->setDescription((string)$order->getId());
+        $molliePayment->setIssuer($request->get('issuer') ?? '');
         $redirectUrl = $this->urlGenerator->generate('sylius_mollie_plugin_payum', [], UrlGeneratorInterface::ABSOLUTE_URL);
         $webhookUrl = $this->urlGenerator->generate('sylius_mollie_plugin_payment_webhook', [], UrlGeneratorInterface::ABSOLUTE_URL);
         $redirectUrl .= '?orderId=' . $order->getId();

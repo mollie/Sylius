@@ -36,6 +36,10 @@ class MolliePayment
      * @var string|null
      */
     private ?string $redirectUrl;
+    /**
+     * @var string|null
+     */
+    private ?string $issuer;
 
     /**
      * @return Amount
@@ -174,6 +178,24 @@ class MolliePayment
     }
 
     /**
+     * @return string|null
+     */
+    public function getIssuer(): ?string
+    {
+        return $this->issuer;
+    }
+
+    /**
+     * @param string|null $issuer
+     *
+     * @return void
+     */
+    public function setIssuer(?string $issuer): void
+    {
+        $this->issuer = $issuer;
+    }
+
+    /**
      * @return array
      */
     public function toArray(): array
@@ -182,6 +204,7 @@ class MolliePayment
             'amount' => $this->getAmount()->toArray(),
             'method' => $this->getMethod(),
             'description' => $this->getDescription(),
+            'issuer' => $this->getIssuer(),
             'metadata' => $this->getMetadata()->toArray(),
             'customerId' => $this->getCustomerId(),
             'locale' => $this->getLocale(),

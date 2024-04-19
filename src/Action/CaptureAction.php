@@ -31,6 +31,7 @@ use SyliusMolliePlugin\Resolver\MollieApiClientKeyResolverInterface;
 final class CaptureAction extends BaseApiAwareAction implements CaptureActionInterface
 {
     const PAYMENT_FAILED_STATUS = 'failed';
+    const PAYMENT_CANCELLED_STATUS = 'cancelled';
     const PAYMENT_NEW_STATUS = 'new';
 
     use GatewayAwareTrait;
@@ -68,7 +69,12 @@ final class CaptureAction extends BaseApiAwareAction implements CaptureActionInt
         $this->tokenFactory = $genericTokenFactory;
     }
 
-    /** @param Capture|mixed $request */
+    /**
+     * @param $request
+     *
+     * @return void
+     * @throws \Exception
+     */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
@@ -86,7 +92,8 @@ final class CaptureAction extends BaseApiAwareAction implements CaptureActionInt
                 $this->setQrCodeOnOrder($request->getFirstModel()->getOrder());
                 $payment = $request->getFirstModel();
 
-                if ($payment->getState() === self::PAYMENT_FAILED_STATUS) {
+                if ($payment->getState() === self::PAYMENT_FAILED_STATUS ||
+                    $payment->getState() === self::PAYMENT_CANCELLED_STATUS) {
                     $this->paymentRepository->add($this->createNewPayment($payment));
                 }
 

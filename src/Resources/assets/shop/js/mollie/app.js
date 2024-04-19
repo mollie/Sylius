@@ -6,6 +6,7 @@ $(function () {
     let mollieData = $('.online-online-payment__container');
     let orderId = null;
     let qrCodeInterval = null;
+    let qrCodeUrl = null;
     const initialOrderTotal = $('#sylius-summary-grand-total').text();
     const cardActiveClass = 'online-payment__item--active';
     const orderTotalRow = $('#sylius-summary-grand-total');
@@ -91,16 +92,37 @@ $(function () {
                     return;
                 }
 
-                if (target && (target.value === 'ideal' || target.value === 'bancontact')) {
+                if (target && target.value === 'bancontact') {
                     createMolliePayment(target.getAttribute('data-qrcode'), target.value);
                 } else {
-                    if (target.id.indexOf("choice-issuer") === -1) {
+                    if (target.id.indexOf("choice-issuer") !== -1 || target.value === 'ideal') {
+                        if (target.value === 'ideal') {
+                            qrCodeUrl = target.getAttribute('data-qrcode');
+                            return;
+                        }
+                        let issuer = fetchIssuer(target);
+                        createMolliePayment(qrCodeUrl, 'ideal', issuer);
+                    } else {
                         let removeQrCodeUrl = mollieData[0].getAttribute('data-removeQrCode');
                         removeQrCode(removeQrCodeUrl);
                     }
                 }
             }
         }
+    }
+
+    function fetchIssuer(target) {
+        let parentDiv = target.parentNode;
+        let img = parentDiv.querySelector('.online-payment__image');
+        if (img) {
+            let urlParts = img.src.split('/');
+            let filename = urlParts[urlParts.length - 1];
+            let issuer = filename.replace('.svg', '');
+
+            return 'ideal_' + issuer;
+        }
+
+        return null;
     }
 
     function isSavedCreditCardCheckboxChecked() {
@@ -113,8 +135,11 @@ $(function () {
         return parentElement.classList.contains('checked') ? 1 : 0;
     }
 
-    function createMolliePayment(url, paymentMethod) {
+    function createMolliePayment(url, paymentMethod, issuer = null) {
         url = url + '?paymentMethod=' + paymentMethod;
+        if (issuer) {
+            url = url + '&issuer=' + issuer;
+        }
 
         fetch(url)
             .then((response) => response.json())

@@ -14,7 +14,6 @@ use SyliusMolliePlugin\Helper\PaymentDescriptionInterface;
 use SyliusMolliePlugin\Payments\PaymentTerms\Options;
 use SyliusMolliePlugin\Provider\Divisor\DivisorProviderInterface;
 use SyliusMolliePlugin\Resolver\PaymentLocaleResolverInterface;
-use Mollie\Api\Types\PaymentMethod;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Exception\RequestNotSupportedException;
@@ -106,16 +105,11 @@ final class ConvertMolliePaymentAction extends BaseApiAwareAction implements Act
             $cartToken = $paymentOptions['metadata']['cartToken'];
             $saveCardInfo = $paymentOptions['metadata']['saveCardInfo'];
             $useSavedCards = $paymentOptions['metadata']['useSavedCards'];
-            $selectedIssuer = PaymentMethod::IDEAL === $paymentMethod ? $paymentOptions['metadata']['selected_issuer'] : null;
         } else {
             $paymentMethod = $paymentOptions['molliePaymentMethods'] ?? null;
             $cartToken = $paymentOptions['cartToken'];
             $saveCardInfo = $paymentOptions['saveCardInfo'];
             $useSavedCards = $paymentOptions['useSavedCards'];
-            $selectedIssuer = null;
-            if (PaymentMethod::IDEAL === $paymentMethod && null !== $paymentOptions['issuers']) {
-                $selectedIssuer = $paymentOptions['issuers']['id'];
-            }
         }
 
         /** @var MollieGatewayConfigInterface $method */
@@ -134,7 +128,6 @@ final class ConvertMolliePaymentAction extends BaseApiAwareAction implements Act
                 'cartToken' => $cartToken ?? null,
                 'saveCardInfo' => $saveCardInfo ?? null,
                 'useSavedCards' => $useSavedCards ?? null,
-                'selected_issuer' => $selectedIssuer ?? null,
             ],
             'full_name' => $customer->getFullName() ?? null,
             'email' => $customer->getEmail() ?? null,

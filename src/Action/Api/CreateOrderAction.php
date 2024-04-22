@@ -38,7 +38,6 @@ final class CreateOrderAction extends BaseApiAwareAction implements ActionInterf
     {
         $details = ArrayObject::ensureArrayObject($request->getModel());
 
-        $issuer = $details['metadata']['selected_issuer'] ?? null;
         $customerId = $details['metadata']['customer_mollie_id'] ?? null;
         $method = $details['metadata']['molliePaymentMethods'] ?? '';
 
@@ -56,7 +55,6 @@ final class CreateOrderAction extends BaseApiAwareAction implements ActionInterf
             $order = $this->mollieApiClient->orders->create([
                 'method' => $method,
                 'payment' => [
-                    'issuer' => $issuer,
                     'cardToken' => $details['metadata']['cartToken'],
                     'customerId' => $customerId,
                     'webhookUrl' => $details['webhookUrl'],

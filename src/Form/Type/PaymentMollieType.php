@@ -30,7 +30,6 @@ final class PaymentMollieType extends AbstractType
 
         $data = $methods['data'];
         $images = $methods['image'];
-        $issuers = $methods['issuers'];
         $paymentFee = $methods['paymentFee'];
 
         $builder
@@ -47,14 +46,6 @@ final class PaymentMollieType extends AbstractType
                         'image' => $images[$value],
                         'paymentFee' => $paymentFee[$value],
                     ];
-                },
-            ])
-            ->add('issuers', ChoiceType::class, [
-                'label' => false,
-                'choices' => $issuers['ideal'] ?? null,
-                'choice_label' => 'name',
-                'choice_attr' => function ($value): array {
-                    return ['image' => $value->image->svg];
                 },
             ])
             ->add('cartToken', HiddenType::class)

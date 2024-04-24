@@ -128,7 +128,7 @@ class Order extends BaseOrder implements OrderInterface
      * @var ?int
      * @ORM\Column(type="integer", name="recurring_sequence_index", nullable=true)
      */
-    protected ?int $recurringSequenceIndex;
+    protected ?int $recurringSequenceIndex = null;
 
     /**
      * @var MollieSubscriptionInterface|null

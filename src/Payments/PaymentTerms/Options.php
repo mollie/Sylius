@@ -81,4 +81,11 @@ final class Options
             MealVoucher::MEAL_VOUCHERS,
         ];
     }
+
+    public static function getOnlyPaymentAPIMethods(): array
+    {
+        return [
+            PaymentMethod::ALMA
+        ];
+    }
 }

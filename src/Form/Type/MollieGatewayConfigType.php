@@ -184,6 +184,10 @@ final class MollieGatewayConfigType extends AbstractResourceType
                     $data['paymentType'] = AbstractMethod::ORDER_API;
                 }
 
+                if (in_array($object->getMethodId(), Options::getOnlyPaymentAPIMethods(), true)) {
+                    $data['paymentType'] = AbstractMethod::PAYMENT_API;
+                }
+
                 $event->setData($data);
             });
     }

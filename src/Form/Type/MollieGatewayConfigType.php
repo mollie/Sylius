@@ -14,7 +14,6 @@ use SyliusMolliePlugin\Form\Type\Translation\MollieGatewayConfigTranslationType;
 use SyliusMolliePlugin\Options\Country\Options as CountryOptions;
 use SyliusMolliePlugin\Payments\Methods\AbstractMethod;
 use SyliusMolliePlugin\Payments\PaymentTerms\Options;
-use SyliusMolliePlugin\Validator\Constraints\MollieMinMaxValidatorType;
 use SyliusMolliePlugin\Validator\Constraints\PaymentSurchargeType;
 use Sylius\Bundle\ProductBundle\Form\Type\ProductType as ProductFormType;
 use Sylius\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
@@ -186,6 +185,10 @@ final class MollieGatewayConfigType extends AbstractResourceType
 
                 if (in_array($object->getMethodId(), Options::getOnlyOrderAPIMethods(), true)) {
                     $data['paymentType'] = AbstractMethod::ORDER_API;
+                }
+
+                if (in_array($object->getMethodId(), Options::getOnlyPaymentAPIMethods(), true)) {
+                    $data['paymentType'] = AbstractMethod::PAYMENT_API;
                 }
 
                 $event->setData($data);

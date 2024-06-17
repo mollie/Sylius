@@ -11,7 +11,7 @@ Ensure that you have `wkhtmltopdf` installed, and that you have the proper path 
 #### 2. Require Mollie plugin with composer:
 
 ```bash
-composer require mollie/sylius-plugin --no-scripts -w
+composer require mollie/sylius-plugin --no-scripts -W
 ```
 
 #### 3. Update the GatewayConfig entity class with the following code:
@@ -79,7 +79,7 @@ If you don't use annotations, you can also define new Entity mapping inside your
 ```
 For an example, check [tests/Application/src/Resources/config/doctrine/GatewayConfig.orm.xml](/tests/Application/src/Resources/config/doctrine/GatewayConfig.orm.xml) file.
 
-Override GatewayConfig resource:
+Ensure that the GatewayConfig resource is overridden in the Sylius configuration file:
 ```yaml
 # config/packages/_sylius.yaml
 ...
@@ -101,6 +101,7 @@ declare(strict_types=1);
 namespace App\Entity\Order;
 
 use SyliusMolliePlugin\Entity\OrderInterface;
+use SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
 use SyliusMolliePlugin\Entity\AbandonedEmailOrderTrait;
 use SyliusMolliePlugin\Entity\QRCodeOrderTrait;
 use SyliusMolliePlugin\Entity\RecurringOrderTrait;
@@ -122,13 +123,13 @@ class Order extends BaseOrder implements OrderInterface
      * @var bool
      * @ORM\Column(type="boolean", name="abandoned_email")
      */
-    protected $abandonedEmail = false;
+    protected bool $abandonedEmail = false;
 
     /**
      * @var ?int
      * @ORM\Column(type="integer", name="recurring_sequence_index", nullable=true)
      */
-    protected $recurringSequenceIndex;
+    protected ?int $recurringSequenceIndex = null;
 
     /**
      * @var string|null
@@ -147,7 +148,7 @@ class Order extends BaseOrder implements OrderInterface
      * @ORM\ManyToOne(targetEntity="SyliusMolliePlugin\Entity\MollieSubscription")
      * @ORM\JoinColumn(name="subscription_id", fieldName="subscription", onDelete="RESTRICT")
      */
-    protected $subscription = null;
+    protected ?MollieSubscriptionInterface $subscription = null;
 
     public function getRecurringItems(): Collection
     {
@@ -202,7 +203,7 @@ If you don't use annotations, you can also define new Entity mapping inside your
     </mapped-superclass>
 </doctrine-mapping>
 ```
-Override Order resource:
+Ensure that the Order resource is overridden in the Sylius configuration file:
 
 ```yaml
 # config/packages/_sylius.yaml
@@ -228,6 +229,7 @@ use Doctrine\ORM\Mapping as ORM;
 use SyliusMolliePlugin\Entity\ProductInterface;
 use SyliusMolliePlugin\Entity\ProductTrait;
 use Sylius\Component\Core\Model\Product as BaseProduct;
+use SyliusMolliePlugin\Entity\ProductType;
 
 /**
  * @ORM\Entity
@@ -241,7 +243,7 @@ class Product extends BaseProduct implements ProductInterface
      * @ORM\ManyToOne(targetEntity="SyliusMolliePlugin\Entity\ProductType")
      * @ORM\JoinColumn(name="product_type_id", fieldName="productType", onDelete="SET NULL")
      */
-    protected $productType;
+    protected ?ProductType $productType = null;
 }
 ```
 
@@ -268,7 +270,7 @@ If you don't use annotations, you can also define new Entity mapping inside your
     </entity>
 </doctrine-mapping>
 ```
-Override Product resource:
+Ensure that the Product resource is overridden in the Sylius configuration file:
 
 ```yaml
 # config/packages/_sylius.yaml
@@ -398,7 +400,7 @@ If you don't use annotations, you can also define new Entity mapping inside your
     </mapped-superclass>
 </doctrine-mapping>
 ```
-Override ProductVariant resource:
+Ensure that the ProductVariant resource is overridden in the Sylius configuration file:
 
 ```yaml
 # config/packages/_sylius.yaml
@@ -445,7 +447,6 @@ winzou_state_machine:
 ```
 
 #### 10. Add image directory parameter in `config/packages/_sylius.yaml`:
-
 ```yaml
 # config/packages/_sylius.yaml
 
@@ -481,13 +482,17 @@ bin/console doctrine:migrations:migrate
 ```
 
 #### 13. Copy Sylius templates overridden in plugin to your templates directory (e.g templates/bundles/):
+**Note:** Some directories may already exist in your project
 
 ```
 mkdir -p templates/bundles/SyliusAdminBundle/
 mkdir -p templates/bundles/SyliusShopBundle/
 mkdir -p templates/bundles/SyliusUiBundle/
 mkdir -p templates/bundles/SyliusRefundPlugin/
+```
+**Note:** Ba aware that the following commands will override your existing templates!
 
+```
 cp -R vendor/mollie/sylius-plugin/tests/Application/templates/bundles/SyliusAdminBundle/* templates/bundles/SyliusAdminBundle/
 cp -R vendor/mollie/sylius-plugin/tests/Application/templates/bundles/SyliusShopBundle/* templates/bundles/SyliusShopBundle/
 cp -R vendor/mollie/sylius-plugin/tests/Application/templates/bundles/SyliusUiBundle/* templates/bundles/SyliusUiBundle/
@@ -601,7 +606,7 @@ nvm use 12
 Ensure you have the following packages installed:
 
 ```bash
-yarn add babel-preset-env bazinga-translator intl-messageformat lodash.get node-sass@4.14.1 shepherd.js@11.0 webpack-notifier
+yarn add @babel/preset-env bazinga-translator intl-messageformat lodash.get node-sass@4.14.1 shepherd.js@11.0 webpack-notifier
 yarn add --dev @babel/core@7.16.0 @babel/register@7.16.0 @babel/plugin-proposal-object-rest-spread@7.16.5 @symfony/webpack-encore@1.5.0
 ```
 
@@ -623,4 +628,10 @@ Update the scheme, since webpack and asset require new tables that are not in th
 
 ```bash
 php bin/console doctrine:schema:update --force
+```
+
+If you are missing translations, just clear the cache:
+
+```bash
+php bin/console cache:clear
 ```

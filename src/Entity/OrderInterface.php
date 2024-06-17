@@ -25,7 +25,7 @@ interface OrderInterface extends BaseOrderInterface
 
     public function getSubscription(): ?MollieSubscriptionInterface;
 
-    public function setSubscription(MollieSubscriptionInterface $subscription): void;
+    public function setSubscription(?MollieSubscriptionInterface $subscription): void;
 
     /** @return Collection|OrderItemInterface[] */
     public function getRecurringItems(): Collection;

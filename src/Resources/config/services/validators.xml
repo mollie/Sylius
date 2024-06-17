@@ -36,11 +36,5 @@
         <service id="Sylius\RefundPlugin\Validator\RefundUnitsCommandValidatorInterface"
                  alias="sylius_mollie_plugin.validator.refund.refund_units_command_validator"
         />
-
-        <service id="sylius_mollie_plugin.validator.constraints.mollie_min_max_validator"
-                 class="SyliusMolliePlugin\Validator\Constraints\MollieMinMaxValidator">
-            <tag name="validator.constraint_validator"/>
-            <argument type="service" id="sylius_mollie_plugin.repository.mollie_gateway_config"/>
-        </service>
     </services>
 </container>

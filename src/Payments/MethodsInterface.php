@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace SyliusMolliePlugin\Payments;
 
+use SyliusMolliePlugin\Payments\Methods\Alma;
 use SyliusMolliePlugin\Payments\Methods\ApplePay;
 use SyliusMolliePlugin\Payments\Methods\Bancontact;
 use SyliusMolliePlugin\Payments\Methods\BankTransfer;
@@ -34,6 +35,7 @@ use SyliusMolliePlugin\Payments\Methods\Twint;
 interface MethodsInterface
 {
     public const GATEWAYS = [
+        Alma::class,
         ApplePay::class,
         Bancontact::class,
         BankTransfer::class,

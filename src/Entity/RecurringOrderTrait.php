@@ -10,12 +10,12 @@ trait RecurringOrderTrait
     /**
      * @var int|null
      */
-    protected $recurringSequenceIndex = null;
+    protected ?int $recurringSequenceIndex = null;
 
     /**
      * @var MollieSubscriptionInterface|null
      */
-    protected $subscription = null;
+    protected ?MollieSubscriptionInterface $subscription = null;
 
     public function getRecurringSequenceIndex(): ?int
     {
@@ -32,7 +32,7 @@ trait RecurringOrderTrait
         return $this->subscription;
     }
 
-    public function setSubscription(MollieSubscriptionInterface $subscription): void
+    public function setSubscription(?MollieSubscriptionInterface $subscription): void
     {
         $this->subscription = $subscription;
     }

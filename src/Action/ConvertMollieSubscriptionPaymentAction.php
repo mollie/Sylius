@@ -13,7 +13,6 @@ use SyliusMolliePlugin\Helper\PaymentDescriptionInterface;
 use SyliusMolliePlugin\Provider\Divisor\DivisorProviderInterface;
 use SyliusMolliePlugin\Request\Api\CreateCustomer;
 use SyliusMolliePlugin\Resolver\PaymentLocaleResolverInterface;
-use Mollie\Api\Types\PaymentMethod;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Exception\RequestNotSupportedException;
@@ -107,7 +106,6 @@ final class ConvertMollieSubscriptionPaymentAction extends BaseApiAwareAction im
         } else {
             $paymentMethod = $paymentOptions['molliePaymentMethods'] ?? null;
         }
-        $selectedIssuer = PaymentMethod::IDEAL === $paymentMethod ? $paymentOptions['issuers']['id'] : null;
 
         $details = [
             'amount' => [
@@ -123,7 +121,6 @@ final class ConvertMollieSubscriptionPaymentAction extends BaseApiAwareAction im
                 'cartToken' => $cartToken ?? null,
                 'sequenceType' => $sequenceType,
                 'gateway' => $request->getToken()->getGatewayName(),
-                'selected_issuer' => $selectedIssuer ?? null,
             ],
             'full_name' => $customer->getFullName() ?? null,
             'email' => $customer->getEmail() ?? null,

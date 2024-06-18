@@ -92,20 +92,11 @@ $(function () {
                     return;
                 }
 
-                if (target && target.value === 'bancontact') {
+                if (target && (target.value === 'bancontact' || target.value === 'ideal')) {
                     createMolliePayment(target.getAttribute('data-qrcode'), target.value);
                 } else {
-                    if (target.id.indexOf("choice-issuer") !== -1 || target.value === 'ideal') {
-                        if (target.value === 'ideal') {
-                            qrCodeUrl = target.getAttribute('data-qrcode');
-                            return;
-                        }
-                        let issuer = fetchIssuer(target);
-                        createMolliePayment(qrCodeUrl, 'ideal', issuer);
-                    } else {
-                        let removeQrCodeUrl = mollieData[0].getAttribute('data-removeQrCode');
-                        removeQrCode(removeQrCodeUrl);
-                    }
+                    let removeQrCodeUrl = mollieData[0].getAttribute('data-removeQrCode');
+                    removeQrCode(removeQrCodeUrl);
                 }
             }
         }
@@ -143,7 +134,8 @@ $(function () {
 
         fetch(url)
             .then((response) => response.json())
-            .then((data) => {});
+            .then((data) => {
+            });
     }
 
     function fetchQrCode(url) {
@@ -177,13 +169,14 @@ $(function () {
             });
     }
 
-    function removeQrCode(url, shouldDeletePaymentId = true){
+    function removeQrCode(url, shouldDeletePaymentId = true) {
         url = url + '?orderToken=' + extractOrderToken();
         url = shouldDeletePaymentId ? url + '&shouldDeletePaymentId=true' : url;
 
         fetch(url)
             .then((response) => response.json())
-            .then((data) => {});
+            .then((data) => {
+            });
     }
 
     function isOrderSummaryPage() {

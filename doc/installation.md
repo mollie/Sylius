@@ -100,6 +100,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Order;
 
+use SyliusMolliePlugin\Entity\MolliePaymentIdOrderTrait;
 use SyliusMolliePlugin\Entity\OrderInterface;
 use SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
 use SyliusMolliePlugin\Entity\AbandonedEmailOrderTrait;
@@ -118,6 +119,7 @@ class Order extends BaseOrder implements OrderInterface
     use AbandonedEmailOrderTrait;
     use RecurringOrderTrait;
     use QRCodeOrderTrait;
+    use MolliePaymentIdOrderTrait;
 
     /**
      * @var bool

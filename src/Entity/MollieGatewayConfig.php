@@ -63,6 +63,11 @@ class MollieGatewayConfig extends AbstractMethod implements ResourceInterface, M
     /** @var int|null */
     protected $position;
 
+    /**
+     * @var bool|null
+     */
+    protected $qrCodeEnabled;
+
     public function __construct()
     {
         $this->initializeTranslationsCollection();
@@ -216,6 +221,16 @@ class MollieGatewayConfig extends AbstractMethod implements ResourceInterface, M
     public function setAmountLimits(?MollieMinMaxInterface $amountLimits): void
     {
         $this->amountLimits = $amountLimits;
+    }
+
+    public function isQrCodeEnabled(): ?bool
+    {
+        return $this->qrCodeEnabled;
+    }
+
+    public function setQrCodeEnabled(?bool $qrCodeEnabled): void
+    {
+        $this->qrCodeEnabled = $qrCodeEnabled;
     }
 
     protected function createTranslation(): TranslationInterface

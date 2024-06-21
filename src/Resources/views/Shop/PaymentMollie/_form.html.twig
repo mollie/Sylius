@@ -3,17 +3,19 @@
      data-profile_id="{{ gatewayConfig.config['profile_id'] }}"
      data-environment="{{ gatewayConfig.config['environment'] }}"
      data-components="{{ gatewayConfig.config['components'] | default(false) }}"
+     data-removeQrCode="{{ path('sylius_mollie_plugin_remove_qr_code') }}"
 >
     {% for keyChoice, choice in methodMollie.vars.choices %}
         <div class="online-payment__item online-payment__item--{{ choice.value }}" id="{{ choice.value }}"
-             data-feeurl="{{ path('sylius_mollie_plugin_payment_fee_calculate', {methodId: choice.value }) }}">
-
+             data-feeurl="{{ path('sylius_mollie_plugin_payment_fee_calculate', {methodId: choice.value }) }}"
+        >
             <input
                     type="radio"
                     value="{{ choice.value }}"
                     id="choice-{{ keyChoice }}"
                     name="{{ methodMollie.vars.full_name }}"
                     class="online-payment__input"
+                    data-qrcode="{{ path('sylius_mollie_plugin_qr_code') }}"
                     {{ sylius_test_html_attribute('payment-method-payment-item') }}
             >
             <label for="choice-{{ keyChoice }}" class="online-payment__label">
@@ -23,12 +25,6 @@
 
             {% if choice.value == 'creditcard' and true == gatewayConfig.config['components'] | default(false) %}
                 {% include '@SyliusMolliePlugin/Shop/PaymentMollie/_creditCardForm.html.twig' %}
-            {% elseif choice.value == 'ideal' %}
-                {% for key, method in mollie_payment_options %}
-                    {% if key == 'issuers' and method.vars.choices|length > 0 %}
-                        {% include '@SyliusMolliePlugin/Shop/PaymentMollie/_issuers.html.twig' %}
-                    {% endif %}
-                {% endfor %}
             {% endif %}
         </div>
     {% endfor %}

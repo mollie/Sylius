@@ -93,18 +93,15 @@
     margin-bottom: 0.5rem;
 }
 
-.online-payment__credit-card,
-.online-payment__issuers {
+.online-payment__credit-card {
     display: none;
 }
 
-.online-payment__item--active.online-payment__item--creditcard
-.online-payment__item--active.online-payment__item--ideal {
+.online-payment__item--active.online-payment__item--creditcard {
     width: 100%
 }
 
-.online-payment__item--active .online-payment__credit-card,
-.online-payment__item--active .online-payment__issuers {
+.online-payment__item--active .online-payment__credit-card {
     display: flex;
     flex-wrap: wrap;
 }
@@ -112,18 +109,6 @@
 .online-online-payment__container {
     margin-top: 0 !important;
     margin-bottom: 0 !important;
-}
-
-.online-payment__issuers:after {
-    content: '';
-    display: block;
-    width: calc(100% - 2rem);
-    margin: 1rem 1rem 0;
-    border-bottom: 1px solid #d9d9da;
-}
-
-.online-payment__issuers {
-    margin: 1rem -1rem;
 }
 
 .online-payment__credit-card {

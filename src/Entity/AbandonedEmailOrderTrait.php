@@ -8,7 +8,7 @@ namespace SyliusMolliePlugin\Entity;
 trait AbandonedEmailOrderTrait
 {
     /** @var bool */
-    protected $abandonedEmail = false;
+    protected bool $abandonedEmail = false;
 
     public function isAbandonedEmail(): bool
     {

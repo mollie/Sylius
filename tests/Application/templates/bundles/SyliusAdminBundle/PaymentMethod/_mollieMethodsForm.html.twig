@@ -1,10 +1,13 @@
 {% set mealvouchersId = constant('SyliusMolliePlugin\\Payments\\Methods\\MealVoucher::MEAL_VOUCHERS') %}
+{% set ideal = constant('Mollie\\Api\\Types\\PaymentMethod::IDEAL') %}
+{% set bancontact = constant('Mollie\\Api\\Types\\PaymentMethod::BANCONTACT') %}
 {% set applePay = constant('Mollie\\Api\\Types\\PaymentMethod::APPLEPAY') %}
 {% set klarnaOne = constant('Mollie\\Api\\Types\\PaymentMethod::KLARNA_ONE') %}
 {% set klarnaPayLater = constant('Mollie\\Api\\Types\\PaymentMethod::KLARNA_PAY_LATER') %}
 {% set klarnaSliceIt = constant('Mollie\\Api\\Types\\PaymentMethod::KLARNA_SLICE_IT') %}
 {% set billie = constant('Mollie\\Api\\Types\\PaymentMethod::BILLIE') %}
 {% set in3 = constant('Mollie\\Api\\Types\\PaymentMethod::IN3') %}
+{% set alma = constant('Mollie\\Api\\Types\\PaymentMethod::ALMA') %}
 {% import '@SyliusUi/Macro/flags.html.twig' as flags %}
 
 <div class="ui segment" id="mollie-payment-form" data-status="{{resource.id}}">
@@ -27,7 +30,7 @@
             </div>
             <div class="right aligned column">
                 <div class="ui buttons js-header-btn">
-                    <a href="#" id="get_methods" data-url="{{ path('mollie_admin_methods', {id: resource.id}) }}"
+                    <a href="#" id="get_methods" data-url="{{ path('mollie_admin_methods', {id: resource.gatewayConfig.id}) }}"
                        class="ui button primary">{{ 'sylius_mollie_plugin.ui.load_methods_button'|trans }}</a>
                 </div>
             </div>
@@ -138,6 +141,7 @@
                                     methodForm.vars.value.methodId == klarnaPayLater or
                                     methodForm.vars.value.methodId == klarnaSliceIt or
                                     methodForm.vars.value.methodId == billie or
+                                    methodForm.vars.value.methodId == alma or
                                     methodForm.vars.value.methodId == in3
                                 %}
                                     {{ form_row(methodForm.paymentType, {'attr': {'disabled': 'disabled', 'class': 'js-onboardingWizard-PaymentMethod'}}) }}
@@ -151,6 +155,13 @@
                                 {{ form_row(methodForm.orderExpiration) }}
                             </div>
                         </div>
+                    </div>
+                    <div class="field">
+                        {% if
+                            methodForm.vars.value.methodId == ideal or
+                            methodForm.vars.value.methodId == bancontact %}
+                            {{ form_row(methodForm.qrCodeEnabled) }}
+                        {% endif %}
                     </div>
                     <div class="field">
                         <div class="js-onboardingWizard-order-number">

@@ -3,3 +3,79 @@
     margin: 0.5rem 0 0 0.5rem;
   }
 }
+
+/* Popup container */
+.popup-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Ensure it's above other content */
+}
+
+/* Popup */
+.popup {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Popup header */
+.popup-header {
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+.popup-header h2 {
+    margin: 0;
+}
+
+.popup-header hr {
+    margin: 5px 0;
+    border: none;
+    border-top: 1px solid #cccccc;
+}
+
+/* Popup content */
+.popup-content {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.popup-content img {
+    display: block;
+    margin: 0 auto;
+}
+
+/* Popup buttons */
+.popup-buttons {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.popup-buttons button {
+    margin: 5px;
+    padding: 10px 20px;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    background-color: #ffffff;
+    cursor: pointer;
+}
+
+.popup-buttons button:hover {
+    background-color: #f0f0f0;
+}
+
+/* Styling for cancel button */
+.popup-buttons #cancel-button {
+    border: none;
+}
+

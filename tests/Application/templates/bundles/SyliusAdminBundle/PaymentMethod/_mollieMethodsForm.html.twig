@@ -8,6 +8,7 @@
 {% set billie = constant('Mollie\\Api\\Types\\PaymentMethod::BILLIE') %}
 {% set in3 = constant('Mollie\\Api\\Types\\PaymentMethod::IN3') %}
 {% set alma = constant('Mollie\\Api\\Types\\PaymentMethod::ALMA') %}
+{% set riverty = constant('Mollie\\Api\\Types\\PaymentMethod::RIVERTY') %}
 {% import '@SyliusUi/Macro/flags.html.twig' as flags %}
 
 <div class="ui segment" id="mollie-payment-form" data-status="{{resource.id}}">
@@ -142,6 +143,7 @@
                                     methodForm.vars.value.methodId == klarnaSliceIt or
                                     methodForm.vars.value.methodId == billie or
                                     methodForm.vars.value.methodId == alma or
+                                    methodForm.vars.value.methodId == riverty or
                                     methodForm.vars.value.methodId == in3
                                 %}
                                     {{ form_row(methodForm.paymentType, {'attr': {'disabled': 'disabled', 'class': 'js-onboardingWizard-PaymentMethod'}}) }}

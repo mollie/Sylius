@@ -28,6 +28,7 @@ use SyliusMolliePlugin\Payments\Methods\MealVoucher;
 use SyliusMolliePlugin\Payments\Methods\MyBank;
 use SyliusMolliePlugin\Payments\Methods\PayPal;
 use SyliusMolliePlugin\Payments\Methods\Przelewy24;
+use SyliusMolliePlugin\Payments\Methods\Riverty;
 use SyliusMolliePlugin\Payments\Methods\SofortBanking;
 use Mollie\Api\Resources\Method;
 use SyliusMolliePlugin\Payments\Methods\Twint;
@@ -60,6 +61,7 @@ interface MethodsInterface
         Billie::class,
         Twint::class,
         Blik::class,
+        Riverty::class
     ];
 
     public function getAllEnabled(): array;

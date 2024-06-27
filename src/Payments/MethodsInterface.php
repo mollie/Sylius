@@ -16,7 +16,6 @@ use SyliusMolliePlugin\Payments\Methods\CreditCard;
 use SyliusMolliePlugin\Payments\Methods\DirectDebit;
 use SyliusMolliePlugin\Payments\Methods\Eps;
 use SyliusMolliePlugin\Payments\Methods\GiftCard;
-use SyliusMolliePlugin\Payments\Methods\Giropay;
 use SyliusMolliePlugin\Payments\Methods\Ideal;
 use SyliusMolliePlugin\Payments\Methods\In3;
 use SyliusMolliePlugin\Payments\Methods\Kbc;
@@ -30,6 +29,7 @@ use SyliusMolliePlugin\Payments\Methods\PayPal;
 use SyliusMolliePlugin\Payments\Methods\Przelewy24;
 use SyliusMolliePlugin\Payments\Methods\SofortBanking;
 use Mollie\Api\Resources\Method;
+use SyliusMolliePlugin\Payments\Methods\Trustly;
 use SyliusMolliePlugin\Payments\Methods\Twint;
 
 interface MethodsInterface
@@ -43,7 +43,6 @@ interface MethodsInterface
         CreditCard::class,
         Eps::class,
         GiftCard::class,
-        Giropay::class,
         Ideal::class,
         Kbc::class,
         KlarnaOne::class,
@@ -60,6 +59,7 @@ interface MethodsInterface
         Billie::class,
         Twint::class,
         Blik::class,
+        Trustly::class
     ];
 
     public function getAllEnabled(): array;

@@ -22,7 +22,7 @@ final class Version20240301074755 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE ' . self::TABLE_NAME . ' ADD qr_code_enabled TINYINT(1) NOT NULL');
+        $this->addSql('ALTER TABLE ' . self::TABLE_NAME . ' ADD qr_code_enabled TINYINT(1) DEFAULT NULL');
     }
 
     public function down(Schema $schema): void

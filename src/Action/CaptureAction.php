@@ -163,7 +163,7 @@ final class CaptureAction extends BaseApiAwareAction implements CaptureActionInt
                     ));
                 }
 
-                $this->gateway->execute(new CreatePayment($details));
+                $this->gateway->execute(new CreateOrder($details));
             }
 
             if (isset($details['metadata']['methodType']) && Options::ORDER_API === $details['metadata']['methodType']) {

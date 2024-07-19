@@ -7,6 +7,7 @@ namespace SyliusMolliePlugin\Payments;
 
 use SyliusMolliePlugin\Payments\Methods\Alma;
 use SyliusMolliePlugin\Payments\Methods\ApplePay;
+use SyliusMolliePlugin\Payments\Methods\Bancomatpay;
 use SyliusMolliePlugin\Payments\Methods\Bancontact;
 use SyliusMolliePlugin\Payments\Methods\BankTransfer;
 use SyliusMolliePlugin\Payments\Methods\Belfius;
@@ -61,7 +62,8 @@ interface MethodsInterface
         Twint::class,
         Blik::class,
         Riverty::class,
-        Trustly::class
+        Trustly::class,
+        Bancomatpay::class
     ];
 
     public function getAllEnabled(): array;

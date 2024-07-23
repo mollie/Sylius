@@ -25,6 +25,7 @@ use SyliusMolliePlugin\Payments\Methods\KlarnaPayNow;
 use SyliusMolliePlugin\Payments\Methods\Klarnasliceit;
 use SyliusMolliePlugin\Payments\Methods\MealVoucher;
 use SyliusMolliePlugin\Payments\Methods\MyBank;
+use SyliusMolliePlugin\Payments\Methods\Payconiq;
 use SyliusMolliePlugin\Payments\Methods\PayPal;
 use SyliusMolliePlugin\Payments\Methods\Przelewy24;
 use SyliusMolliePlugin\Payments\Methods\Riverty;
@@ -61,7 +62,8 @@ interface MethodsInterface
         Twint::class,
         Blik::class,
         Riverty::class,
-        Trustly::class
+        Trustly::class,
+        Payconiq::class
     ];
 
     public function getAllEnabled(): array;

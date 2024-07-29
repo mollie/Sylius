@@ -79,6 +79,7 @@ final class Options
             PaymentMethod::IN3,
             PaymentMethod::BILLIE,
             MealVoucher::MEAL_VOUCHERS,
+            PaymentMethod::RIVERTY
         ];
     }
 

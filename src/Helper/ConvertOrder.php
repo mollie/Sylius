@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace SyliusMolliePlugin\Helper;
 
+use Mollie\Api\Types\PaymentMethod;
 use Sylius\Component\Addressing\Model\ZoneInterface;
 use Sylius\Component\Core\Model\Scope;
 use Sylius\Component\Core\Model\ShippingMethodInterface;
@@ -84,7 +85,7 @@ final class ConvertOrder implements ConvertOrderInterface
         $details['amount']['value'] = $amount;
         $details['orderNumber'] = (string) $order->getNumber();
         $details['shippingAddress'] = $this->createShippingAddress($customer);
-        $details['billingAddress'] = $this->createBillingAddress($customer);
+        $details['billingAddress'] = $this->createBillingAddress($customer, $method->getMethodId());
         $details['lines'] = $this->createLines($divisor, $method);
         $details['lines'] = array_merge($details['lines'], $this->createShippingFee($divisor));
 
@@ -109,13 +110,13 @@ final class ConvertOrder implements ConvertOrderInterface
         ];
     }
 
-    private function createBillingAddress(CustomerInterface $customer): array
+    private function createBillingAddress(CustomerInterface $customer, string $methodId): array
     {
         $billingAddress = $this->order->getBillingAddress();
 
         Assert::notNull($billingAddress);
 
-        return [
+        $address = [
             'streetAndNumber' => $billingAddress->getStreet(),
             'postalCode' => $billingAddress->getPostcode(),
             'city' => $billingAddress->getCity(),
@@ -123,8 +124,14 @@ final class ConvertOrder implements ConvertOrderInterface
             'givenName' => $billingAddress->getFirstName(),
             'familyName' => $billingAddress->getLastName(),
             'organizationName' => $billingAddress->getCompany(),
-            'email' => $customer->getEmail(),
+            'email' => $customer->getEmail()
         ];
+
+        if ($methodId === PaymentMethod::BANCOMATPAY && $billingAddress->getPhoneNumber()) {
+            $address['phone'] = $billingAddress->getPhoneNumber();
+        }
+
+        return $address;
     }
 
     private function createLines(int $divisor, MollieGatewayConfigInterface $method): array

@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace SyliusMolliePlugin\Action\Api;
 
+use Mollie\Api\Types\PaymentMethod;
 use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 use SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use SyliusMolliePlugin\Parser\Response\GuzzleNegativeResponseParserInterface;
@@ -66,6 +67,10 @@ final class CreatePaymentAction extends BaseApiAwareAction
                 'webhookUrl' => $details['webhookUrl'],
                 'metadata' => $details['metadata'],
             ];
+
+            if ($details['metadata']['molliePaymentMethods'] === PaymentMethod::ALMA) {
+                $paymentDetails['billingAddress'] = $details['billingAddress'];
+            }
 
             if (true === isset($details['locale'])) {
                 $paymentDetails['locale'] = $details['locale'];

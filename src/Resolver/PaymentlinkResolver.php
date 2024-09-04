@@ -61,16 +61,17 @@ final class PaymentlinkResolver implements PaymentlinkResolverInterface
 
         /** @var PaymentInterface $syliusPayment */
         $syliusPayment = $order->getPayments()->last();
+        $firstPayment = $order->getPayments()->first();
 
         /** @var PaymentMethodInterface $paymentMethod */
         $paymentMethod = $syliusPayment->getMethod();
 
         Assert::notNull($paymentMethod->getGatewayConfig());
         if (false === in_array(
-            $paymentMethod->getGatewayConfig()->getFactoryName(),
-            [MollieGatewayFactory::FACTORY_NAME, MollieSubscriptionGatewayFactory::FACTORY_NAME],
-            true
-        )) {
+                $paymentMethod->getGatewayConfig()->getFactoryName(),
+                [MollieGatewayFactory::FACTORY_NAME, MollieSubscriptionGatewayFactory::FACTORY_NAME],
+                true
+            )) {
             throw new NotFoundException('No method mollie found in order');
         }
 
@@ -86,7 +87,7 @@ final class PaymentlinkResolver implements PaymentlinkResolverInterface
         }
 
         $this->mollieApiClient->setApiKey($modusKey);
-        $details = $syliusPayment->getDetails();
+        $details = $firstPayment->getDetails();
 
         if (!isset($details['webhookUrl'])) {
             return '';

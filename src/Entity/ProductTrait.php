@@ -8,7 +8,7 @@ namespace SyliusMolliePlugin\Entity;
 trait ProductTrait
 {
     /** @var ProductTypeInterface */
-    protected $productType;
+    protected ?ProductType $productType = null;
 
     public function getProductType(): ?ProductTypeInterface
     {

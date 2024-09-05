@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace SyliusMolliePlugin\Action;
 
+use Mollie\Api\Types\PaymentMethod;
 use SyliusMolliePlugin\Action\Api\BaseApiAwareAction;
 use SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
 use SyliusMolliePlugin\Factory\ApiCustomerFactoryInterface;
@@ -138,6 +139,28 @@ final class ConvertMolliePaymentAction extends BaseApiAwareAction implements Act
             $this->gateway->execute($mollieCustomer);
             $model = $mollieCustomer->getModel();
             $details['metadata']['customer_mollie_id'] = $model['customer_mollie_id'];
+        }
+
+        if ($method->getMethodId() === PaymentMethod::ALMA) {
+            $billingAddress = $order->getBillingAddress();
+            $customer = $order->getCustomer();
+            $address = [];
+
+            if ($billingAddress) {
+                $address = [
+                    'streetAndNumber' => $billingAddress->getStreet(),
+                    'postalCode' => $billingAddress->getPostcode(),
+                    'city' => $billingAddress->getCity(),
+                    'country' => $billingAddress->getCountryCode(),
+                    'givenName' => $billingAddress->getFirstName(),
+                    'familyName' => $billingAddress->getLastName(),
+                    'organizationName' => $billingAddress->getCompany(),
+                    'email' => ($customer && $customer->getEmail()) ? $customer->getEmail() :
+                        (($order->getUser() && $order->getUser()->getEmail()) ? $order->getUser()->getEmail() : null)
+                ];
+            }
+
+            $details['billingAddress'] = $address;
         }
 
         if (false === $this->mollieApiClient->isRecurringSubscription()) {

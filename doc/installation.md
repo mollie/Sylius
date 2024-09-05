@@ -56,6 +56,57 @@ class GatewayConfig extends BaseGatewayConfig implements GatewayConfigInterface
     }
 }
 ```
+In case if you have installed Sylius version 1.13.x, use the following code instead
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Entity\Payment;
+
+use Doctrine\ORM\Mapping as ORM;
+use SyliusMolliePlugin\Entity\GatewayConfigInterface;
+use SyliusMolliePlugin\Entity\GatewayConfigTrait;
+use Doctrine\Common\Collections\ArrayCollection;
+use Sylius\Bundle\PayumBundle\Model\GatewayConfig as BaseGatewayConfig;
+use SyliusMolliePlugin\Entity\MollieGatewayConfig;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="sylius_gateway_config")
+ */
+#[ORM\Entity]
+#[ORM\Table(name: 'sylius_gateway_config')]
+class GatewayConfig extends BaseGatewayConfig implements GatewayConfigInterface
+{
+    use GatewayConfigTrait;
+
+    /**
+     * @var ArrayCollection
+     * @ORM\OneToMany(
+     *     targetEntity="SyliusMolliePlugin\Entity\MollieGatewayConfig",
+     *     mappedBy="gateway",
+     *     orphanRemoval=true,
+     *     cascade={"all"}
+     * )
+     */
+    #[ORM\OneToMany(
+        mappedBy: "gateway",
+        targetEntity: MollieGatewayConfig::class,
+        cascade: ["all"],
+        orphanRemoval: true
+    )]
+    protected $mollieGatewayConfig;
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->mollieGatewayConfig = new ArrayCollection();
+    }
+}
+
+```
 
 You can find more annotation examples under the [tests/Application/src/Entity/*](/tests/Application/src/Entity/) path.
 
@@ -109,6 +160,7 @@ use SyliusMolliePlugin\Entity\RecurringOrderTrait;
 use Doctrine\Common\Collections\Collection;
 use Sylius\Component\Core\Model\Order as BaseOrder;
 use Sylius\Component\Core\Model\OrderItemInterface;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
@@ -190,6 +242,114 @@ class Order extends BaseOrder implements OrderInterface
 }
 
 ```
+In case if you have installed Sylius version 1.13.x, use the following code instead
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Entity\Order;
+
+use SyliusMolliePlugin\Entity\MolliePaymentIdOrderTrait;
+use SyliusMolliePlugin\Entity\OrderInterface;
+use SyliusMolliePlugin\Entity\MollieSubscriptionInterface;
+use SyliusMolliePlugin\Entity\AbandonedEmailOrderTrait;
+use SyliusMolliePlugin\Entity\QRCodeOrderTrait;
+use SyliusMolliePlugin\Entity\RecurringOrderTrait;
+use Doctrine\Common\Collections\Collection;
+use Sylius\Component\Core\Model\Order as BaseOrder;
+use Sylius\Component\Core\Model\OrderItemInterface;
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="sylius_order")
+ */
+#[ORM\Entity]
+#[ORM\Table(name: 'sylius_order')]
+class Order extends BaseOrder implements OrderInterface
+{
+    use AbandonedEmailOrderTrait;
+    use RecurringOrderTrait;
+    use QRCodeOrderTrait;
+    use MolliePaymentIdOrderTrait;
+
+    /**
+     * @var bool
+     * @ORM\Column(type="boolean", name="abandoned_email")
+     */
+    #[ORM\Column(name: "abandoned_email", type: "boolean")]
+    protected bool $abandonedEmail = false;
+
+    /**
+     * @var ?int
+     * @ORM\Column(type="integer", name="recurring_sequence_index", nullable=true)
+     */
+    #[ORM\Column(name: "recurring_sequence_index", type: "integer", nullable: true)]
+    protected ?int $recurringSequenceIndex = null;
+
+    /**
+     * @var string|null
+     * @ORM\Column(type="text", name="qr_code", nullable=true)
+     */
+    #[ORM\Column(name: "qr_code", type: "text", nullable: true)]
+    protected ?string $qrCode = null;
+
+    /**
+     * @var string|null
+     * @ORM\Column(type="text", name="mollie_payment_id", nullable=true)
+     */
+    #[ORM\Column(name: "mollie_payment_id", type: "text", nullable: true)]
+    protected ?string $molliePaymentId = null;
+
+    /**
+     * @var MollieSubscriptionInterface|null
+     * @ORM\ManyToOne(targetEntity="SyliusMolliePlugin\Entity\MollieSubscription")
+     * @ORM\JoinColumn(name="subscription_id", fieldName="subscription", onDelete="RESTRICT")
+     */
+    #[ORM\ManyToOne(targetEntity: MollieSubscription::class)]
+    #[ORM\JoinColumn(name: "subscription_id", onDelete: "RESTRICT")]
+    protected ?MollieSubscriptionInterface $subscription = null;
+
+    public function getRecurringItems(): Collection
+    {
+        return $this
+            ->items
+            ->filter(function (OrderItemInterface $orderItem) {
+                $variant = $orderItem->getVariant();
+
+                return $variant !== null
+                    && true === $variant->isRecurring();
+            })
+            ;
+    }
+
+    public function getNonRecurringItems(): Collection
+    {
+        return $this
+            ->items
+            ->filter(function (OrderItemInterface $orderItem) {
+                $variant = $orderItem->getVariant();
+
+                return $variant !== null
+                    && false === $variant->isRecurring();
+            })
+            ;
+    }
+
+    public function hasRecurringContents(): bool
+    {
+        return 0 < $this->getRecurringItems()->count();
+    }
+
+    public function hasNonRecurringContents(): bool
+    {
+        return 0 < $this->getNonRecurringItems()->count();
+    }
+}
+
+
+```
 
 If you don't use annotations, you can also define new Entity mapping inside your `src/Resources/config/doctrine` directory.
 ```xml
@@ -247,6 +407,40 @@ class Product extends BaseProduct implements ProductInterface
      */
     protected ?ProductType $productType = null;
 }
+```
+In case if you have installed Sylius version 1.13.x, use the following code instead
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Entity\Product;
+
+use Doctrine\ORM\Mapping as ORM;
+use SyliusMolliePlugin\Entity\ProductInterface;
+use SyliusMolliePlugin\Entity\ProductTrait;
+use Sylius\Component\Core\Model\Product as BaseProduct;
+use SyliusMolliePlugin\Entity\ProductType;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="sylius_product")
+ */
+#[ORM\Entity]
+#[ORM\Table(name: 'sylius_product')]
+class Product extends BaseProduct implements ProductInterface
+{
+    use ProductTrait;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="SyliusMolliePlugin\Entity\ProductType")
+     * @ORM\JoinColumn(name="product_type_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    #[ORM\ManyToOne(targetEntity: ProductType::class)]
+    #[ORM\JoinColumn(name: "product_type_id", referencedColumnName: "id", onDelete: "SET NULL")]
+    protected ?ProductType $productType = null;
+}
+
 ```
 
 If you don't use annotations, you can also define new Entity mapping inside your `src/Resources/config/doctrine` directory.
@@ -379,6 +573,104 @@ trait RecurringProductVariantTrait
     }
 }
 ```
+In case if you have installed Sylius version 1.13.x, use the following code instead
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Entity\Product;
+
+use Doctrine\ORM\Mapping as ORM;
+use Sylius\Component\Core\Model\ProductVariant as BaseProductVariant;
+use Sylius\Component\Product\Model\ProductVariantTranslationInterface;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="sylius_product_variant")
+ */
+#[ORM\Entity]
+#[ORM\Table(name: 'sylius_product_variant')]
+class ProductVariant extends BaseProductVariant
+{
+    use RecurringProductVariantTrait;
+
+    protected function createTranslation(): ProductVariantTranslationInterface
+    {
+        return new ProductVariantTranslation();
+    }
+
+    public function getName(): ?string
+    {
+        return parent::getName() ?: $this->getProduct()->getName();
+    }
+}
+
+```
+Add RecurringProductVariantTrait implementation:
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Entity\Product;
+
+use Doctrine\ORM\Mapping as ORM;
+
+trait RecurringProductVariantTrait
+{
+    /**
+     * @var bool
+     * @ORM\Column(type="boolean", name="recurring", nullable="false", options={"default":0})
+     */
+    #[ORM\Column(name: "recurring", type: "boolean", nullable: false, options: ['default' => 0])]
+    private bool $recurring = false;
+
+    /**
+     * @var ?int
+     * @ORM\Column(type="integer", name="recurring_times", nullable="true")
+     */
+    #[ORM\Column(name: "recurring_times", type: "integer", nullable: true)]
+    private ?int $times = null;
+
+    /**
+     * @var ?string
+     * @ORM\Column(type="string", name="recurring_interval", nullable="true")
+     */
+    #[ORM\Column(name: "recurring_interval", type: "string", nullable: true)]
+    private ?string $interval = null;
+
+    public function isRecurring(): bool
+    {
+        return $this->recurring;
+    }
+
+    public function setRecurring(bool $recurring): void
+    {
+        $this->recurring = $recurring;
+    }
+
+    public function getTimes(): ?int
+    {
+        return $this->times;
+    }
+
+    public function setTimes(?int $times): void
+    {
+        $this->times = $times;
+    }
+
+    public function getInterval(): ?string
+    {
+        return $this->interval;
+    }
+
+    public function setInterval(?string $interval): void
+    {
+        $this->interval = $interval;
+    }
+}
+```
 
 If you don't use annotations, you can also define new Entity mapping inside your `src/Resources/config/doctrine` directory.
 
@@ -466,6 +758,9 @@ sylius_mollie_plugin:
 ```
 
 #### 12. Update your database
+
+In case if you have installed Sylius 1.13.x version, you will need to first remove { resource: "@SyliusRefundPlugin/Resources/config/app/config.yml" }
+from acme/config/packages/sylius_refund.yaml
 
 Apply migration to your database: (this is for the plugin fresh installation only)
 ```

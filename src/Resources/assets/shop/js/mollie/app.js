@@ -148,7 +148,11 @@ $(function () {
                 }
 
                 if (qrCode) {
-                    createPopup(qrCode);
+                    let qrCodeMethod = 'Bancontact';
+                    if (qrCode.indexOf('ideal') !== -1) {
+                        qrCodeMethod = 'iDeal';
+                    }
+                    createPopup(qrCode, qrCodeMethod);
                     qrCodeInterval = setInterval(() => checkQrCode(url + '?orderId=' + orderId), 1000);
                 }
             });
@@ -209,7 +213,7 @@ $(function () {
 
     showQrCodePopUp();
 
-    function createPopup(qrCode) {
+    function createPopup(qrCode, qrCodeMethod) {
         // Create popup container
         var popupContainer = document.createElement('div');
         popupContainer.id = 'popup-container';
@@ -232,7 +236,7 @@ $(function () {
         var popupContent = document.createElement('div');
         popupContent.classList.add('popup-content');
         var paragraph = document.createElement('p');
-        paragraph.textContent = 'Open your Bancontact app to scan the QR code.';
+        paragraph.textContent = 'Open your ' + qrCodeMethod + ' app to scan the QR code.';
         var qrCodeImg = document.createElement('img');
         qrCodeImg.src = qrCode;
         qrCodeImg.width = 180;

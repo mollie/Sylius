@@ -10,6 +10,7 @@ use SyliusMolliePlugin\DTO\MolliePayment\Amount;
 use SyliusMolliePlugin\DTO\MolliePayment\Metadata;
 use SyliusMolliePlugin\DTO\MolliePayment\MolliePayment;
 use SyliusMolliePlugin\Entity\OrderInterface;
+use SyliusMolliePlugin\Helper\IntToStringConverterInterface;
 use SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use SyliusMolliePlugin\Resolver\MollieApiClientKeyResolverInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -43,6 +44,9 @@ final class QrCodeAction
     /** @var RepositoryInterface */
     private $methodRepository;
 
+    /** @var IntToStringConverterInterface */
+    private $intToStringConverter;
+
     /**
      * QrCodeAction constructor
      */
@@ -53,7 +57,8 @@ final class QrCodeAction
         MollieApiClientKeyResolverInterface $apiClientKeyResolver,
         OrderRepositoryInterface $orderRepository,
         UrlGeneratorInterface $urlGenerator,
-        RepositoryInterface $methodRepository
+        RepositoryInterface $methodRepository,
+        IntToStringConverterInterface $intToStringConverter
     )
     {
         $this->loggerAction = $loggerAction;
@@ -63,6 +68,7 @@ final class QrCodeAction
         $this->orderRepository = $orderRepository;
         $this->urlGenerator = $urlGenerator;
         $this->methodRepository = $methodRepository;
+        $this->intToStringConverter = $intToStringConverter;
     }
 
     /**
@@ -189,7 +195,7 @@ final class QrCodeAction
     private function buildPaymentObject(Request $request, OrderInterface $order): MolliePayment
     {
         $molliePayment = new MolliePayment();
-        $molliePayment->setAmount(new Amount((string)($order->getTotal() / 100), $order->getCurrencyCode()));
+        $molliePayment->setAmount(new Amount($this->intToStringConverter->convertIntToString($order->getTotal()), $order->getCurrencyCode()));
         $molliePayment->setMethod($request->get('paymentMethod'));
         $molliePayment->setDescription((string)$order->getId());
         $molliePayment->setIssuer($request->get('issuer') ?? '');

@@ -70,14 +70,6 @@ final class Version20231225151033 extends AbstractMigration
     }
 
     /**
-     * @return bool
-     */
-    public function isTransactional(): bool
-    {
-        return false;
-    }
-
-    /**
      * @param Schema $schema
      * @param string $oldTableName
      * @param string $newTableName

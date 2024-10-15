@@ -12,6 +12,7 @@ use SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
 use SyliusMolliePlugin\Entity\OrderInterface as MollieOrderInterface;
 use SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use SyliusMolliePlugin\Repository\MollieGatewayConfigRepository;
+use SyliusMolliePlugin\Provider\Divisor\DivisorProviderInterface;
 use SyliusMolliePlugin\Repository\MollieGatewayConfigRepositoryInterface;
 use SyliusMolliePlugin\Repository\PaymentMethodRepositoryInterface;
 use SyliusMolliePlugin\Resolver\Order\PaymentCheckoutOrderResolverInterface;
@@ -49,6 +50,9 @@ final class MolliePaymentsMethodResolver implements MolliePaymentsMethodResolver
     /** @var MollieFactoryNameResolverInterface */
     private $mollieFactoryNameResolver;
 
+    /** @var DivisorProviderInterface */
+    private $divisorProvider;
+
     public function __construct(
         MollieGatewayConfigRepository $mollieGatewayRepository,
         MollieCountriesRestrictionResolverInterface $countriesRestrictionResolver,
@@ -57,7 +61,8 @@ final class MolliePaymentsMethodResolver implements MolliePaymentsMethodResolver
         PaymentMethodRepositoryInterface $paymentMethodRepository,
         MollieAllowedMethodsResolverInterface $allowedMethodsResolver,
         MollieLoggerActionInterface $loggerAction,
-        MollieFactoryNameResolverInterface $mollieFactoryNameResolver
+        MollieFactoryNameResolverInterface $mollieFactoryNameResolver,
+        DivisorProviderInterface $divisorProvider
     ) {
         $this->mollieGatewayRepository = $mollieGatewayRepository;
         $this->countriesRestrictionResolver = $countriesRestrictionResolver;
@@ -67,6 +72,7 @@ final class MolliePaymentsMethodResolver implements MolliePaymentsMethodResolver
         $this->allowedMethodsResolver = $allowedMethodsResolver;
         $this->loggerAction = $loggerAction;
         $this->mollieFactoryNameResolver = $mollieFactoryNameResolver;
+        $this->divisorProvider = $divisorProvider;
     }
 
     public function resolve(): array
@@ -128,7 +134,7 @@ final class MolliePaymentsMethodResolver implements MolliePaymentsMethodResolver
             return $this->getDefaultOptions();
         }
 
-        $allowedMethods = $this->filterPaymentMethods($paymentConfigs, $allowedMethodsIds, (float)$order->getTotal()/100);
+        $allowedMethods = $this->filterPaymentMethods($paymentConfigs, $allowedMethodsIds, (float)$order->getTotal()/$this->divisorProvider->getDivisor());
 
         if (0 === count($allowedMethods)) {
             return $this->getDefaultOptions();

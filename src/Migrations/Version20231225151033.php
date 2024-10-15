@@ -47,7 +47,7 @@ final class Version20231225151033 extends AbstractMigration
 
     /**
      * @param Schema $schema
-     * 
+     *
      * @return void
      */
     public function down(Schema $schema): void
@@ -67,14 +67,6 @@ final class Version20231225151033 extends AbstractMigration
         $this->renameTableIfExists($schema, 'mollie_subscription_payments', 'bitbag_mollie_subscription_payments');
         $this->renameTableIfExists($schema, 'mollie_subscription_configuration', 'bitbag_mollie_subscription_configuration');
         $this->renameTableIfExists($schema, 'mollie_subscription_schedule', 'bitbag_mollie_subscription_schedule');
-    }
-
-    /**
-     * @return bool
-     */
-    public function isTransactional(): bool
-    {
-        return false;
     }
 
     /**

@@ -269,12 +269,12 @@ $(function () {
         // Add event listeners to buttons
         cancelButton.addEventListener('click', function (event) {
             closePopup();
-            clearInterval(qrCodeInterval);
+            window.location.href = 'select-payment';
         });
 
         continueButton.addEventListener('click', function (event) {
             closePopup();
-            window.location.href = 'select-payment';
+            clearInterval(qrCodeInterval);
         });
 
         // Append popup container to body

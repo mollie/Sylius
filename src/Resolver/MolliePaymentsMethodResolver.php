@@ -11,6 +11,7 @@ use SyliusMolliePlugin\Entity\MollieGatewayConfig;
 use SyliusMolliePlugin\Entity\MollieGatewayConfigInterface;
 use SyliusMolliePlugin\Entity\OrderInterface as MollieOrderInterface;
 use SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
+use SyliusMolliePlugin\Provider\Divisor\DivisorProviderInterface;
 use SyliusMolliePlugin\Repository\MollieGatewayConfigRepository;
 use SyliusMolliePlugin\Provider\Divisor\DivisorProviderInterface;
 use SyliusMolliePlugin\Repository\MollieGatewayConfigRepositoryInterface;

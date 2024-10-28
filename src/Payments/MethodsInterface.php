@@ -30,6 +30,7 @@ use SyliusMolliePlugin\Payments\Methods\Payconiq;
 use SyliusMolliePlugin\Payments\Methods\PayPal;
 use SyliusMolliePlugin\Payments\Methods\Przelewy24;
 use SyliusMolliePlugin\Payments\Methods\Riverty;
+use SyliusMolliePlugin\Payments\Methods\Satispay;
 use SyliusMolliePlugin\Payments\Methods\SofortBanking;
 use Mollie\Api\Resources\Method;
 use SyliusMolliePlugin\Payments\Methods\Trustly;
@@ -65,7 +66,8 @@ interface MethodsInterface
         Riverty::class,
         Trustly::class,
         Bancomatpay::class,
-        Payconiq::class
+        Payconiq::class,
+        Satispay::class
     ];
 
     public function getAllEnabled(): array;

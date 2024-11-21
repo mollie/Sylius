@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace SyliusMolliePlugin\Payments\MethodResolver;
 
+use Doctrine\ORM\EntityManagerInterface;
 use SyliusMolliePlugin\Entity\OrderInterface;
 use SyliusMolliePlugin\Factory\MollieSubscriptionGatewayFactory;
 use SyliusMolliePlugin\Repository\PaymentMethodRepositoryInterface;
@@ -24,17 +25,21 @@ final class MolliePaymentMethodResolver implements PaymentMethodsResolverInterfa
 
     private MollieMethodFilterInterface $mollieMethodFilter;
 
+    private EntityManagerInterface $entityManager;
+
     public function __construct(
         PaymentMethodsResolverInterface $decoratedService,
         PaymentMethodRepositoryInterface $paymentMethodRepository,
         MollieFactoryNameResolverInterface $factoryNameResolver,
-        MollieMethodFilterInterface $mollieMethodFilter
+        MollieMethodFilterInterface $mollieMethodFilter,
+        EntityManagerInterface $entityManager
     )
     {
         $this->decoratedService = $decoratedService;
         $this->paymentMethodRepository = $paymentMethodRepository;
         $this->factoryNameResolver = $factoryNameResolver;
         $this->mollieMethodFilter = $mollieMethodFilter;
+        $this->entityManager = $entityManager;
     }
 
     public function getSupportedMethods(PaymentInterface $subject): array
@@ -58,6 +63,7 @@ final class MolliePaymentMethodResolver implements PaymentMethodsResolverInterfa
             return [$method];
         }
         $parentMethods = $this->decoratedService->getSupportedMethods($subject);
+        $parentMethods = $this->filterMethodsByChannel($parentMethods, $channel->getId());
 
         if (false === $order->hasRecurringContents()) {
             $parentMethods = $this->mollieMethodFilter->nonRecurringFilter($parentMethods);
@@ -84,6 +90,31 @@ final class MolliePaymentMethodResolver implements PaymentMethodsResolverInterfa
 
         return $order->hasRecurringContents() || $order->hasNonRecurringContents()
             && null !== $subject->getOrder()->getChannel();
+    }
+
+    private function filterMethodsByChannel(array $methods, int $channelId): array
+    {
+        $filteredMethods = [];
+
+        foreach ($methods as $method) {
+            $methodId = $method->getId();
+
+            $isAssociated = $this->entityManager->getConnection()->createQueryBuilder()
+                ->select('1')
+                ->from('sylius_payment_method_channels')
+                ->where('payment_method_id = :methodId')
+                ->andWhere('channel_id = :channelId')
+                ->setParameter('methodId', $methodId)
+                ->setParameter('channelId', $channelId)
+                ->execute()
+                ->fetchOne();
+
+            if ($isAssociated) {
+                $filteredMethods[] = $method;
+            }
+        }
+
+        return $filteredMethods;
     }
 
     /**

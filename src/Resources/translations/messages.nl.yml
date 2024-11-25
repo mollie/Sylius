@@ -1,5 +1,53 @@
 sylius_mollie_plugin:
     ui:
+        product_variant:
+            tab:
+                recurring: 'Recurring instellingen'
+        breadcrumbs:
+            subscriptions: 'Abonnementen'
+        subscription_list: ''
+        subscription:
+            block_name: 'Abonnement'
+            contents: 'Abonnement inhoud'
+            orders: 'Bestellingen'
+            payments: 'Betalingen'
+            subscription_duration: 'Komt %times% keer voor, met een interval van %interval%.'
+            schedule:
+                block_name: 'Betalingsschema'
+                index: '#'
+                scheduled_date: 'Geplande datum'
+                fulfilled_date: 'Vervulde datum'
+            transitions:
+                block_name: 'Abonnementsstatusbeheer'
+                cancel: 'Annuleer'
+                pause: 'Pauzeer'
+                resume: 'Hervat'
+            fields:
+                state: 'Staat'
+                started_at: 'Gestart op'
+                interval: 'Interval'
+                orders: 'Bestellingen'
+                recent_failed_payments_count: 'Aantal recent mislukte betalingen'
+                payment_state: 'Recente betalingsstatus'
+            state:
+                new: 'Nieuw'
+                active: 'Actief'
+                processing: 'Verwerken'
+                canceled: 'Geannuleerd'
+                aborted: 'Automatisch geannuleerd vanwege mislukte betalingen'
+                completed: 'Afgerond'
+                paused: 'Gepauzeerd'
+            payment_state:
+                pending: 'In behandeling'
+                fail: 'Mislukt'
+                ok: 'Ok'
+            grid:
+                filters:
+                    created_at: 'Aangemaakt op'
+                    started_at: 'Gestart op'
+        yes: 'Ja'
+        no: 'Nee'
+        per_interval: ' / %interval%'
         api_key_test: 'Test API Key'
         api_key_live: 'Live API Key'
         api_key_choice_test: 'Test'
@@ -12,7 +60,7 @@ sylius_mollie_plugin:
         interval: 'Interval'
         mollie_subscription_gateway_label: 'Mollie abonnement'
         mollie_order_gateway_label: 'Mollie order'
-        consumer_name: 'Consumer name'
+        consumer_name: 'Naam consument'
         iban: 'IBAN'
         cancel_subscription: 'Abonnement opzeggen'
         payment_mathod_conf_title: 'Configuratie Betaalmethode'
@@ -59,7 +107,7 @@ sylius_mollie_plugin:
         splitting_shipment_for_order: 'Verzending opsplitsen voor Bestelnr. #%number%'
         split_shipment: 'Verzending opsplitsen'
         partially_ship: 'Gedeeltelijk verzenden'
-        create_methods_before_loading: 'Vul de benodigde velden in en klik op de knop ''Creëren'' om de betalingsmethoden te configureren.'
+        create_methods_before_loading: 'Vul de benodigde velden in en klik op de knop "Creëren" om de betalingsmethoden te configureren.'
         no_methods_found_message: 'Geen betaalmethodes gevonden. Klik op de knop "Methodes inladen", maar voer eerst je profiel-ID en API-sleutel in.'
         paymentlink_generate: 'Betaallink aanmaken'
         paymentlink_generate_subtitle: 'Betaallink aanmaken en naar de klant sturen'
@@ -98,6 +146,9 @@ sylius_mollie_plugin:
         selected_countries: 'Geselecteerde landen'
         country_level_allow: 'Sta betaling toe vanuit specifieke landen'
         country_level_exclude: 'Betalingen uit specifieke landen uitsluiten'
+        mollie_subscriptions: 'Subscriptions'
+        mollie_recurring_payments: 'Recurring payments'
+        order_recurring: 'Is recurring (terugkomend)'
         mollie_profile_id: 'Mollie Profiel'
         find_you_api_key: |-
             Test API Key
@@ -111,7 +162,7 @@ sylius_mollie_plugin:
         enjoy_latest_version: 'om van de meest recente functies te kunnen genieten.'
         update: 'update'
         test_api_keys: 'Test API-sleutels'
-        inser_you_key_first: "Voer eerst uw sleutel in"
+        insert_you_key_first: "Voer eerst uw sleutel in"
         api_key_start_with_api_key_test: 'API-sleutel moet beginnen met test_'
         api_key_start_with_api_key_live: 'API-sleutel moet beginnen met live_'
         failed_with_test_api_key: 'Mislukt met test API-sleutel'
@@ -132,6 +183,19 @@ sylius_mollie_plugin:
     form:
         channel_should_be_unique: 'De Mollie-betalingsmethode is al ingeschakeld voor het {channels} kanaal. Mollie kan slecht een keer per kanaal worden geconfigureerd.'
         enabled_buy_now_button_help: 'De knop wordt getoond op de betalingspagina'
+        product_variant:
+            recurring: Is recurring? (terugkomend)
+            times: Recurring duur
+            times_help: Recurring duur als numerieke waarde die het aantal terugkerende keren beschrijft
+            interval: Recurring interval
+            complete_recurring_price: De productprijs verdelen over alle betalingen?
+            interval_configuration:
+                step: 'Interval stap eenheid'
+                amount: 'Interval stap'
+                steps:
+                    days: 'Dag(en)'
+                    weeks: 'Week(en)'
+                    months: 'Maand(en)'
         payment_methods:
             payment_description: 'Beschrijving'
             payment_description_help: |-

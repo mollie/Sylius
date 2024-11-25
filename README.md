@@ -31,23 +31,7 @@
 
 ![Screenshot showing payment method config in admin](doc/payment_method_config.png)
 
-[Mollie](https://www.mollie.com/) is the most popular and advanced payment gateway integration with Sylius. This plugin is officially certified by Mollie. The integration currently supports the following payment methods:
-
-1. Credit Cards (Master Card, VISA, American Express)
-2. PayPal
-3. ApplePay
-4. Klarna
-5. iDEAL
-6. SEPA
-7. SOFORT
-8. EPS
-9. Giropay
-10. KBC/CBC Payment Button
-11. Przelewy24
-12. ING Home'Pay
-13. Belfius Pay Button
-14. Gift cards
-15. Apple Pay Direct
+[Mollie](https://www.mollie.com/) is the most popular and advanced payment gateway integration with Sylius. This plugin is officially certified by Mollie. 
 
 Few words from Mollie: Our mission is to create a greater playing field for everyone. By offering convenient, safe world-wide payment solutions we remove barriers so you could focus on growing your business. Being authentic is our baseline.
 

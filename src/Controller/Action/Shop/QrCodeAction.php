@@ -10,6 +10,7 @@ use SyliusMolliePlugin\DTO\MolliePayment\Amount;
 use SyliusMolliePlugin\DTO\MolliePayment\Metadata;
 use SyliusMolliePlugin\DTO\MolliePayment\MolliePayment;
 use SyliusMolliePlugin\Entity\OrderInterface;
+use SyliusMolliePlugin\Helper\IntToStringConverterInterface;
 use SyliusMolliePlugin\Logger\MollieLoggerActionInterface;
 use SyliusMolliePlugin\Resolver\MollieApiClientKeyResolverInterface;
 use SyliusMolliePlugin\Helper\IntToStringConverterInterface;

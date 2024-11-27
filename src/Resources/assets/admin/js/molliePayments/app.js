@@ -1,3 +1,4 @@
+$ = window.$;
 $(function () {
     const mollieFormIncluded = document.getElementById('mollie-payment-form');
     const liveApiValue = '1';

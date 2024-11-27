@@ -1,3 +1,4 @@
+$ = window.$;
 $(function () {
     const container = document.querySelector('.js-sortable');
 

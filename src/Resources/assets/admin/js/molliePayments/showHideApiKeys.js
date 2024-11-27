@@ -1,3 +1,4 @@
+$ = window.$;
 $(function () {
     const testApiKeyButton = document.getElementById('api_key_test');
     const liveApiKeyButton = document.getElementById('api_key_live');

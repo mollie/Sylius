@@ -1,3 +1,4 @@
+$ = window.$;
 $(function () {
     const testApiKeyButton = document.getElementsByClassName(' test-api-key-button');
 

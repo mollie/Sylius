@@ -14,20 +14,21 @@ use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\PaymentMethodInterface;
 use Sylius\Component\Core\Model\ShipmentInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Webmozart\Assert\Assert;
 
 final class ShipmentShipEventListener
 {
-    /** @var Session */
-    private $session;
+    /** @var RequestStack */
+    private $requestStack;
 
     /** @var MollieApiClient */
     private $apiClient;
 
-    public function __construct(MollieApiClient $apiClient)
+    public function __construct(MollieApiClient $apiClient, RequestStack $requestStack)
     {
         $this->apiClient = $apiClient;
+        $this->requestStack = $requestStack;
     }
 
     public function shipAll(GenericEvent $event): void
@@ -62,7 +63,7 @@ final class ShipmentShipEventListener
             $order = $this->apiClient->orders->get($payment->getDetails()['order_mollie_id']);
             $order->shipAll();
         } catch (ApiException $e) {
-            $this->session->getFlashBag()->add('error', $e->getMessage());
+            $this->requestStack->getSession()->getFlashBag()->add('error', $e->getMessage());
         }
     }
 

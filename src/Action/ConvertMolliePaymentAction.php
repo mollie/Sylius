@@ -141,7 +141,7 @@ final class ConvertMolliePaymentAction extends BaseApiAwareAction implements Act
             $details['metadata']['customer_mollie_id'] = $model['customer_mollie_id'];
         }
 
-        if ($method->getMethodId() === PaymentMethod::ALMA) {
+        if ($method->getMethodId() === PaymentMethod::ALMA || $method->getMethodId() === PaymentMethod::TRUSTLY) {
             $billingAddress = $order->getBillingAddress();
             $customer = $order->getCustomer();
             $address = [];

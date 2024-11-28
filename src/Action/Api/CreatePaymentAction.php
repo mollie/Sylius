@@ -68,7 +68,8 @@ final class CreatePaymentAction extends BaseApiAwareAction
                 'metadata' => $details['metadata'],
             ];
 
-            if ($details['metadata']['molliePaymentMethods'] === PaymentMethod::ALMA) {
+            if ($details['metadata']['molliePaymentMethods'] === PaymentMethod::ALMA ||
+                $details['metadata']['molliePaymentMethods'] === PaymentMethod::TRUSTLY) {
                 $paymentDetails['billingAddress'] = $details['billingAddress'];
             }
 

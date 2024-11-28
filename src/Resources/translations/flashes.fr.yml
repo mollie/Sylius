@@ -22,4 +22,6 @@ sylius_mollie_plugin:
     empty_payment_method_checkout: 'Veuillez choisir une méthode de paiement Mollie'
   billie.error:
     company_missing: "Le nom de l'entreprise est requis lorsque la méthode de paiement Billie est utilisée. Veuillez indiquer le nom de l'entreprise ou choisir une autre méthode de paiement"
+  billing_address.error:
+    info_missing: "Le prénom, le nom et l'e-mail sont requis lorsque le mode de paiement Trustly est utilisé. Veuillez ajouter les données manquantes ou choisir un autre mode de paiement."
 

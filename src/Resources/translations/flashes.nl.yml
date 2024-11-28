@@ -22,4 +22,6 @@ sylius_mollie_plugin:
     empty_payment_method_checkout: 'Kies een van de Mollie-betalingsmethoden'
   billie.error:
     company_missing: 'De bedrijfsnaam is vereist bij het gebruik van Billie. Geef de bedrijfsnaam op of kies voor een andere betaalmethode.'
+  billing_address.error:
+    error: 'Voornaam, achternaam en e-mailadres zijn vereist bij gebruik van de Trustly-betaalmethode. Voeg ontbrekende gegevens toe of kies een andere betaalmethode.'
 

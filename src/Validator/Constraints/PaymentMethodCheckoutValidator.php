@@ -27,9 +27,10 @@ final class PaymentMethodCheckoutValidator extends ConstraintValidator
 
     public function __construct(
         PaymentCheckoutOrderResolverInterface $paymentCheckoutOrderResolver,
-        RequestStack $requestStack,
-        MollieGatewayFactoryCheckerInterface $mollieGatewayFactoryChecker
-    ) {
+        RequestStack                          $requestStack,
+        MollieGatewayFactoryCheckerInterface  $mollieGatewayFactoryChecker
+    )
+    {
         $this->requestStack = $requestStack;
         $this->paymentCheckoutOrderResolver = $paymentCheckoutOrderResolver;
         $this->mollieGatewayFactoryChecker = $mollieGatewayFactoryChecker;
@@ -42,8 +43,7 @@ final class PaymentMethodCheckoutValidator extends ConstraintValidator
         /** @var PaymentInterface|null $payment */
         $payment = $order->getPayments()->last();
 
-        if(null === $payment || false === $payment)
-        {
+        if (null === $payment || false === $payment) {
             return;
         }
 
@@ -62,6 +62,19 @@ final class PaymentMethodCheckoutValidator extends ConstraintValidator
 
         if ($value === PaymentMethod::BILLIE && empty($order->getBillingAddress()->getCompany())) {
             $this->flashMessage($constraint, 'error', 'sylius_mollie_plugin.billie.error.company_missing');
+        }
+
+        $customer = $order->getCustomer();
+        $email = ($customer && $customer->getEmail()) ? $customer->getEmail() :
+            (($order->getUser() && $order->getUser()->getEmail()) ? $order->getUser()->getEmail() : null);
+
+        if (($value === PaymentMethod::TRUSTLY || $value === PaymentMethod::ALMA) &&
+            (
+                empty($order->getBillingAddress()->getFirstName()) ||
+                empty($order->getBillingAddress()->getLastName()) ||
+                empty($email)
+            )) {
+            $this->flashMessage($constraint, 'error', 'sylius_mollie_plugin.billing_address.error.info_missing');
         }
     }
 

@@ -55,6 +55,12 @@ sylius_mollie_plugin:
         veryfication_code: "Code de vérification"
         save_card: 'Save credit card for the future purchases'
         use_saved_card: 'Use saved credit card information'
+        credit_card_validations:
+            empty_card_holder: "Titulaire de la carte ne peut pas être vide"
+            empty_card_number: "Numéro de carte ne peut pas être vide"
+            empty_expiry_date: "Date d'expiration ne peut pas être vide"
+            empty_verification_code: "Code de vérification ne peut pas être vide"
+            one_or_more_invalid_fields: "Un ou plusieurs champs ne sont pas valides"
         surcharge_title: "Supplément"
         splitting_shipment_for_order: "Fractionner l'envoi de la commande nº #%number%"
         split_shipment: "Expédition fractionnée"

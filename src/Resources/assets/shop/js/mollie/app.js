@@ -12,8 +12,10 @@ $(function () {
     const components = Boolean(mollieData.data('components'));
     let creditCardTranslations = {};
 
-    let fetchTranslationsUrl = mollieData[0].getAttribute('data-fetchTranslations');
-    fetchTranslations(fetchTranslationsUrl);
+    if (mollieData && mollieData[0]) {
+        let fetchTranslationsUrl = mollieData[0].getAttribute('data-fetchTranslations');
+        fetchTranslations(fetchTranslationsUrl);
+    }
 
     $('input[id*="sylius_checkout_select_payment_"][type=radio]').on('change', ({currentTarget}) => {
         if (!currentTarget.classList.contains('mollie-payments')) {
@@ -202,7 +204,7 @@ $(function () {
     }
 
     function showQrCodePopUp() {
-        let cartVariantDetails = document.getElementById('cart-variant-details')
+        let cartVariantDetails = document.getElementById('cart-variant-details');
 
         if (cartVariantDetails) {
             let qrCodeGetUrl = cartVariantDetails.getAttribute('data-getQrCode');
@@ -337,7 +339,6 @@ $(function () {
     }
 
     function initializeCreditCartFields(selectedValue) {
-
         const environment = mollieData.data('environment');
         let testmode = true;
 

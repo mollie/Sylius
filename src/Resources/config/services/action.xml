@@ -18,6 +18,7 @@
             <tag name="payum.action" factory="mollie" alias="payum.action.create_order"/>
         </service>
         <service id="sylius_mollie_plugin.action.mollie_payment" class="SyliusMolliePlugin\Action\ApiPlatform\MolliePayment">
+            <argument type="service" id="router" />
             <tag name="sylius.api.payment_method_handler" />
         </service>
         <service class="SyliusMolliePlugin\Action\Api\CreateOnDemandPaymentAction" id="sylius_mollie_plugin.action.api.create_on_demand_payment_action">

@@ -17,6 +17,9 @@
             <argument type="service" id="sylius_mollie_plugin.logger.mollie_logger_action"/>
             <tag name="payum.action" factory="mollie" alias="payum.action.create_order"/>
         </service>
+        <service id="sylius_mollie_plugin.action.mollie_payment" class="SyliusMolliePlugin\Action\ApiPlatform\MolliePayment">
+            <tag name="sylius.api.payment_method_handler" />
+        </service>
         <service class="SyliusMolliePlugin\Action\Api\CreateOnDemandPaymentAction" id="sylius_mollie_plugin.action.api.create_on_demand_payment_action">
             <argument id="sylius_mollie_plugin.logger.mollie_logger_action" type="service"/>
             <argument id="sylius_mollie_plugin.parser.response.guzzle_negative_response_parser" type="service"/>

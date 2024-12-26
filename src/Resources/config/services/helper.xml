@@ -13,6 +13,7 @@
             <argument type="service" id="sylius_mollie_plugin.resolver.meal_voucher_resolver"/>
             <argument type="service" id="sylius.tax_rate_resolver"/>
             <argument type="service" id="sylius.zone_matcher"/>
+            <argument type="service" id="request_stack"/>
         </service>
         <service id="sylius_mollie_plugin.helper.convert_price_to_amount" class="SyliusMolliePlugin\Helper\ConvertPriceToAmount">
             <argument type="service" id="sylius.context.currency"/>

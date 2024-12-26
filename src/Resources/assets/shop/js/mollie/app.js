@@ -6,11 +6,16 @@ $(function () {
     let mollieData = $('.online-online-payment__container');
     let orderId = null;
     let qrCodeInterval = null;
-    let qrCodeUrl = null;
     const initialOrderTotal = $('#sylius-summary-grand-total').text();
     const cardActiveClass = 'online-payment__item--active';
     const orderTotalRow = $('#sylius-summary-grand-total');
     const components = Boolean(mollieData.data('components'));
+    let creditCardTranslations = {};
+
+    if (mollieData && mollieData[0]) {
+        let fetchTranslationsUrl = mollieData[0].getAttribute('data-fetchTranslations');
+        fetchTranslations(fetchTranslationsUrl);
+    }
 
     $('input[id*="sylius_checkout_select_payment_"][type=radio]').on('change', ({currentTarget}) => {
         if (!currentTarget.classList.contains('mollie-payments')) {
@@ -199,7 +204,7 @@ $(function () {
     }
 
     function showQrCodePopUp() {
-        let cartVariantDetails = document.getElementById('cart-variant-details')
+        let cartVariantDetails = document.getElementById('cart-variant-details');
 
         if (cartVariantDetails) {
             let qrCodeGetUrl = cartVariantDetails.getAttribute('data-getQrCode');
@@ -327,8 +332,13 @@ $(function () {
         mollieComponentFields.classList.remove('display-grid');
     }
 
-    function initializeCreditCartFields(selectedValue) {
+    function fetchTranslations(url) {
+        fetch(url).then(response => response.json()).then(data => {
+            creditCardTranslations = data.translations;
+        });
+    }
 
+    function initializeCreditCartFields(selectedValue) {
         const environment = mollieData.data('environment');
         let testmode = true;
 
@@ -355,7 +365,7 @@ $(function () {
         const cardHolderError = document.getElementById('card-holder-error');
         cardHolder.addEventListener('change', (event) => {
             if (event.error && event.touched) {
-                cardHolderError.textContent = event.error;
+                cardHolderError.textContent = creditCardTranslations.emptyCardHolder ? creditCardTranslations.emptyCardHolder : event.error;
             } else {
                 cardHolderError.textContent = '';
             }
@@ -368,7 +378,7 @@ $(function () {
 
         cardNumber.addEventListener('change', (event) => {
             if (event.error && event.touched) {
-                cardNumberError.textContent = event.error;
+                cardNumberError.textContent = creditCardTranslations.emptyCardNumber ? creditCardTranslations.emptyCardNumber : event.error;
             } else {
                 cardNumberError.textContent = '';
             }
@@ -381,7 +391,7 @@ $(function () {
 
         expiryDate.addEventListener('change', (event) => {
             if (event.error && event.touched) {
-                expiryDateError.textContent = event.error;
+                expiryDateError.textContent = creditCardTranslations.emptyExpiryDate ? creditCardTranslations.emptyExpiryDate : event.error;
             } else {
                 expiryDateError.textContent = '';
             }
@@ -394,7 +404,7 @@ $(function () {
 
         verificationCode.addEventListener('change', (event) => {
             if (event.error && event.touched) {
-                verificationCodeError.textContent = event.error;
+                verificationCodeError.textContent = creditCardTranslations.emptyVerificationCode ? creditCardTranslations.emptyVerificationCode : event.error;
             } else {
                 verificationCodeError.textContent = '';
             }

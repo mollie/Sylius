@@ -4,6 +4,7 @@
      data-environment="{{ gatewayConfig.config['environment'] }}"
      data-components="{{ gatewayConfig.config['components'] | default(false) }}"
      data-removeQrCode="{{ path('sylius_mollie_plugin_remove_qr_code') }}"
+     data-fetchTranslations="{{ path('sylius_mollie_plugin_credit_card_translation') }}"
 >
     {% for keyChoice, choice in methodMollie.vars.choices %}
         <div class="online-payment__item online-payment__item--{{ choice.value }}" id="{{ choice.value }}"

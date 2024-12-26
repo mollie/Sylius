@@ -55,6 +55,12 @@ sylius_mollie_plugin:
         veryfication_code: 'Verifizierungscode'
         save_card: 'Save credit card for the future purchases'
         use_saved_card: 'Use saved credit card information'
+        credit_card_validations:
+            empty_card_holder: "Karteninhaber/in muss ausgefüllt werden"
+            empty_card_number: "Kartennummer muss ausgefüllt werden"
+            empty_expiry_date: "Gültig bis muss ausgefüllt werden"
+            empty_verification_code: "Prüfungsscode muss ausgefüllt werden"
+            one_or_more_invalid_fields: "Ein oder mehrere Felder sind ungültig"
         surcharge_title: 'Aufschlag'
         splitting_shipment_for_order: 'Lieferung für Auftrag #%number% teilen'
         split_shipment: 'Lieferung teilen'

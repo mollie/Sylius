@@ -12,3 +12,5 @@ mollie_payment_webhook:
   resource: "shop/paymentWebhook.yaml"
 mollie_page_redirect:
   resource: "shop/pageRedirect.yaml"
+mollie_credit_card_translation:
+  resource: "shop/creditCardTranslation.yaml"

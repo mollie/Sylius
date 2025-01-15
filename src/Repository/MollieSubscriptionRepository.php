@@ -13,14 +13,18 @@ final class MollieSubscriptionRepository extends EntityRepository implements Mol
 {
     public function findOneByOrderId(int $orderId): ?MollieSubscriptionInterface
     {
-        $qb = $this->createQueryBuilder('q');
+        try {
+            $qb = $this->createQueryBuilder('q');
 
-        $qb->leftJoin('q.orders', 'o');
-        $qb->andWhere('o.id = :orderId');
-        $qb->setParameter('orderId', $orderId);
+            $qb->leftJoin('q.orders', 'o');
+            $qb->andWhere('o.id = :orderId');
+            $qb->setParameter('orderId', $orderId);
 
-        return $qb->getQuery()->getOneOrNullResult()
-        ;
+            return $qb->getQuery()->getOneOrNullResult()
+                ;
+        } catch (\Exception $exception) {
+            return null;
+        }
     }
 
     public function findByOrderId(int $orderId): array

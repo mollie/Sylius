@@ -932,3 +932,42 @@ If you are missing translations, just clear the cache:
 ```bash
 php bin/console cache:clear
 ```
+
+# Sylius API
+In order to create Mollie payment with Sylius API, the following steps must be followed:
+
+- send the following request to the Sylius API in order to retrieve Mollie payment method configuration: /api/v2/shop/orders/{tokenValue}/payments/{paymentId}/configuration
+- tokenValue represents order token which is saved in the sylius_order DB table
+- response from this endpoint should be in the following format:
+
+```json
+{
+  "method": "ideal",
+  "issuer": "ideal_ABNANL2A",
+  "cardToken": null,
+  "amount": {"value":"18.75","currency":"EUR"},
+  "customerId": null,
+  "description": "000000157",
+  "redirectUrl": "{redirect_url}",
+  "webhookUrl": "{webhook_url}",
+  "metadata": {"order_id":170,"customer_id":22,"molliePaymentMethods":"ideal","cartToken":null,"saveCardInfo":null,"useSavedCards":null,"selected_issuer":"ideal_ABNANL2A","methodType":"Payments API","refund_token":"{token}"},
+  "locale": "en_US"
+}
+```
+- create the payment on Mollie, using Mollie API. Response from the above-mentioned step should be put in the request body. 
+Request should be sent to the POST: https://api.mollie.com/v2/payments. Bearer token should be sent in the request authorization header.
+Token can be copied from the Mollie admin configuration page.
+
+- after payment has been created, API response will contain checkout field. User should enter this url in the browser.
+
+```json
+{
+  "checkout": 
+    {
+    "href": "https://www.mollie.com/checkout/test-mode?method=ideal&token=6.voklib",
+    "type": "text/html"
+}}
+```
+- open checkout url in the browser and complete the payment
+
+

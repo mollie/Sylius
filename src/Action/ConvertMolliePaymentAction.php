@@ -108,9 +108,9 @@ final class ConvertMolliePaymentAction extends BaseApiAwareAction implements Act
             $useSavedCards = $paymentOptions['metadata']['useSavedCards'];
         } else {
             $paymentMethod = $paymentOptions['molliePaymentMethods'] ?? null;
-            $cartToken = $paymentOptions['cartToken'];
-            $saveCardInfo = $paymentOptions['saveCardInfo'];
-            $useSavedCards = $paymentOptions['useSavedCards'];
+            $cartToken = $paymentOptions['cartToken'] ?? null;
+            $saveCardInfo = $paymentOptions['saveCardInfo'] ?? null;
+            $useSavedCards = $paymentOptions['useSavedCards'] ?? null;
         }
 
         /** @var MollieGatewayConfigInterface $method */

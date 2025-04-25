@@ -1,7 +1,7 @@
 # [![](https://cdn.mollie.com/assets/og-image-mollie.png)](https://mollie.com/en)
 
 ### This plugin is discontinued. 
-This Plugin is now maintained by Sylius. Please use the Mollie Plugin offered on the Sylius Namespace (https://github.com/Sylius/MolliePlugin). You can find the new packgae here: sylius/mollie-plugin (https://packagist.org/packages/sylius/mollie-plugin)
+This Plugin is now maintained by Sylius. Please use the Mollie Plugin offered on the Sylius Namespace (https://github.com/Sylius/MolliePlugin). You can find the new package here: sylius/mollie-plugin (https://packagist.org/packages/sylius/mollie-plugin)
 
 # Mollie Payments Plugin for Sylius
 ----

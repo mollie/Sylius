@@ -1,5 +1,7 @@
 # [![](https://cdn.mollie.com/assets/og-image-mollie.png)](https://mollie.com/en)
 
+### This plugin is discontinued. Please use the Mollie Plugin on the Sylius Namespace sylius/mollie-plugin
+
 # Mollie Payments Plugin for Sylius
 ----
 

@@ -1,5 +1,5 @@
 {
-    "abandoned": "Sylius/MolliePlugin",
+    "abandoned": "sylius/mollie-plugin",
     "name": "mollie/sylius-plugin",
     "type": "sylius-plugin",
     "description": "Mollie payment plugin for Sylius applications.",
